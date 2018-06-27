@@ -65,7 +65,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
 	<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
-	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
+	<body class="page-header-fixed page-quick-sidebar-over-content page-full-width" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
 		<!-- BEGIN HEADER -->
 		<div class="page-header navbar navbar-fixed-top" style=" background: -webkit-linear-gradient(#f37a65, #ef586d); "> 
 			<!-- BEGIN HEADER INNER -->
@@ -80,10 +80,6 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 				</div>
 				<!-- END LOGO -->
-				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-				<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-				</a>
-				<!-- END RESPONSIVE MENU TOGGLER -->
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
 					<ul class="nav navbar-nav pull-right">
@@ -116,19 +112,6 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<!-- BEGIN CONTAINER -->
 		<div class="page-container">
-			<div class="page-sidebar navbar-collapse collapse" style="background:#061c3a !important;">
-				<!-- BEGIN SIDEBAR MENU -->
-				<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-				<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-				<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-				<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-				<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-				<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-				<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-					<?= $this->element('menu'); ?>
-				</ul>
-				<!-- BEGIN CONTENT -->
-			</div>
 			<div class="page-content-wrapper">
 				<div class="page-content">
 					<!-- BEGIN PAGE CONTENT-->
@@ -143,7 +126,6 @@ License: You must have a valid license purchased only from themeforest(the above
 					<!-- END PAGE CONTENT-->
 				</div>
 			</div>
-			<!-- END CONTENT -->
 		</div>
 		<!-- END CONTAINER -->
 		<!-- BEGIN FOOTER -->
