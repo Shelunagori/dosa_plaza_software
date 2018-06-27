@@ -1,21 +1,6 @@
 <!DOCTYPE html>
-<!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.1
-Version: 3.3.0
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
-	<!--<![endif]-->
-	<!-- BEGIN HEAD -->
+ 
+<html lang="en"> 
 	<head>
 		<?= $this->Html->charset() ?>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,6 +36,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			text-align: right;
 			font-weight: bold;
 		}
+		.caption{ font-size: 16px !important;}
 		</style>
 		<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">
 	</head>
@@ -172,6 +158,8 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->script('/assets/global/plugins/jquery.blockui.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/jquery.cokie.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
+		<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>
+		<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 		<!-- END CORE PLUGINS -->
 		<?= $this->fetch('PAGE_LEVEL_PLUGINS_JS')?>
@@ -186,6 +174,8 @@ License: You must have a valid license purchased only from themeforest(the above
 		jQuery(document).ready(function() {  
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
+			FormValidation.init();
+
 		});
 		$(document).ready(function() {
 			$('a[role=button]').live('click',function(e) {
