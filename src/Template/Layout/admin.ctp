@@ -73,7 +73,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				<!-- BEGIN LOGO -->
 				<div class="page-logo">
 					<a href="#" style="margin-top: 10px;" role="button" style="text-decoration: none !important;">
-						<span style="font-size:20px;color:#FFF;"><b>SCHOOL ERP</b></span>
+						<span style="font-size:20px;color:#FFF;"><b>DOSA PLAZA</b></span>
 					</a>
 					<div class="menu-toggler sidebar-toggler hide">
 						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -91,7 +91,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
-							<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo $coreVariable['employee_name']; ?></span>
+							<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo $coreVariable['user_name']; ?></span>
 							<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">

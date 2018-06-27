@@ -49,7 +49,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<body class="login">
 		<!-- BEGIN LOGO -->
 		<div class="logo">
-			<span style="font-size:26px;color:#44b6ae;"><b>School ERP</b></span>
+			<span style="font-size:26px;color:#44b6ae;"><b>DOSA PLAZA</b></span>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
