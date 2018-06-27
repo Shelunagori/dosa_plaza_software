@@ -1,1 +1,0 @@
-<?php echo $this->Form->control('exam_id',['class'=>'form-control input-sm selectClass','label'=>false, 'options' => $exams,'empty'=>'--Select--']); ?>

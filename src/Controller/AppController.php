@@ -52,22 +52,22 @@ class AppController extends Controller
                         'username' => 'username',
                         'password' => 'password'
                     ],
-                      'userModel' => 'Employees'
+                      'userModel' => 'Users'
                 ]
             ],
             'loginRedirect' => [
-                'controller' => 'Employees',
+                'controller' => 'Users',
                 'action' => 'login'
             ],
 			'logoutRedirect' => [
-                'controller' => 'Employees',
+                'controller' => 'Users',
                 'action' => 'login'
             ],
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
 		$coreVariable = [
-			'employee_name' => $this->Auth->User('name')
+			'user_name' => $this->Auth->User('name')
 		];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));
