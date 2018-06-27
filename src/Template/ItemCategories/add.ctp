@@ -65,7 +65,7 @@
 					<thead>
 						<tr style="background-color:#DFD9C4;">
 							<th scope="col"><?= ('S.No') ?></th> 
-							<th scope="col"><?= $this->Paginator->sort('country_name') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
