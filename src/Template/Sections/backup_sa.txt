@@ -1,0 +1,241 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+
+/**
+ * Students Controller
+ *
+ * @property \App\Model\Table\StudentsTable $Students
+ *
+ * @method \App\Model\Entity\Student[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ */
+class StudentsController extends AppController
+{
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index()
+    {
+		$this->viewBuilder()->layout('main');
+        $students = $this->paginate($this->Students);
+
+        $this->set(compact('students'));
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Student id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $student = $this->Students->get($id, [
+            'contain' => ['StudentInfos']
+        ]);
+
+        $this->set('student', $student);
+    }
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+		$this->viewBuilder()->layout('main');
+		$ActiveYear=$this->Auth->User('ActiveYear');
+        $student = $this->Students->newEntity();
+		$sections = $this->Students->StudentInfos->Sections->find('threaded');
+        $this->set(compact('student','sections'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Student id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $student = $this->Students->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $student = $this->Students->patchEntity($student, $this->request->getData());
+            if ($this->Students->save($student)) {
+                $this->Flash->success(__('The student has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The student could not be saved. Please, try again.'));
+        }
+        $this->set(compact('student'));
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Student id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $student = $this->Students->get($id);
+        if ($this->Students->delete($student)) {
+            $this->Flash->success(__('The student has been deleted.'));
+        } else {
+            $this->Flash->error(__('The student could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+	
+	public function fillMarks()
+    {
+		$this->viewBuilder()->layout('main');
+		$sections = $this->Students->StudentInfos->Sections->find('threaded')->order(['Sections.id'=>'DESC']);
+		$this->set(compact('sections'));
+	}
+	
+	public function getExams($session_id=null)
+    {
+		$exams = $this->Students->StudentInfos->Sections->Exams->find('list')->where(['section_id'=>@$session_id])->order(['Exams.id'=>'DESC']);
+		$this->set(compact('exams'));
+	}
+	public function getStudentSubjectDetail($section_id=null,$exam_id=null)
+    {
+		$session = $this->request->session();
+		$Subjects2=$this->Students->StudentInfos->Sections->Subjects->find('threaded')->where(['section_id' => $section_id]);
+		
+		$session->write('main_subjects', null);
+		$this->Students->StudentInfos->Sections->Subjects->fetchCategoryData($session,$Subjects2);
+		$main_subjects = $session->read('main_subjects');
+		$session->write('main_subjects', null);
+		
+		$students = $this->Students->find()->order(['Students.id'=>'DESC'])->matching('StudentInfos', function ($qq) use($section_id){
+			return $qq->where(['StudentInfos.section_id'=>$section_id]);
+		});
+		$marksArr=[];$idArr=[];
+		$marks = $this->Students->Marks->find()->where(['Marks.exam_id'=>$exam_id]);
+		if(sizeof($marks->toArray())>0)
+		{
+			foreach($marks as $mark)
+			{
+				@$marksArr[@$mark->subject_id][@$mark->exam_id][@$mark->student_id]=@$mark->points;
+				@$idArr[@$mark->subject_id][@$mark->exam_id][@$mark->student_id]=@$mark->id;
+			}
+		}
+		$this->set(compact('section_id','main_subjects','students','exam_id','marksArr','idArr'));
+	}
+	
+	public function savePoints($student_id=null,$exam_id=null,$subject_id=null,$point=null)
+    { 
+		$marks =  $this->Students->Marks->find()->where(['Marks.student_id'=>$student_id,'Marks.exam_id'=>$exam_id,'Marks.subject_id'=>$subject_id])->first();
+		if(sizeof($marks)>0)
+		{
+			$mark = $this->Students->Marks->get($marks->id);
+		}
+		else{
+			$mark = $this->Students->Marks->newEntity();
+		}
+		$mark->student_id = $student_id;
+		$mark->exam_id    = $exam_id;
+		$mark->subject_id = $subject_id;
+		$mark->points     = $point; 
+		if($this->Students->Marks->save($mark))
+		{
+		    echo 1;
+		}
+		else{ 
+            echo 0;
+		} 
+		exit;
+	}
+	
+	public function StudentAttendance($student_id=null,$section_id=null,$TotalMeeting=null,$MeetingsAttended=null)
+    {
+
+		if(empty($student_id) && empty($section_id) && empty($TotalMeeting) && empty($MeetingsAttended) )
+		{
+			$this->viewBuilder()->layout('main');
+		}	
+		else
+		{
+			
+		}	
+		
+        $student = $this->Students->newEntity();
+		$sectionId=$this->request->query('section-id');
+		$ActiveYear=$this->Auth->User('ActiveYear');
+
+		$studentNames = $this->Students->find()->order(['Students.id'=>'DESC'])->matching('StudentInfos', function ($qq) use($sectionId){
+			return $qq->where(['StudentInfos.section_id'=>$sectionId]);
+		}); 
+		
+		$total_meetings=[];
+		$meetings_attended=[];		
+		foreach($studentNames as $studentName){
+			 
+				$studentDetail=$this->Students->StudentInfos->find()->where(['student_id'=>$student_id, 'section_id'=>$section_id, 'exam_id'=>$Exam->id])->first();
+				$maxMarks[$Exam->id][$Subject->id]=@$studentDetail->max_marks;
+				$SubjectId[$Exam->id][$Subject->id]=@$studentDetail->employee_id;
+			 
+		}
+		
+		
+ 
+		$sections = $this->Students->StudentInfos->Sections->find('threaded');
+        $this->set(compact('student','sections','sectionId','studentNames'));
+		
+		$StudentInfo =  $this->Students->StudentInfos->find()->where(['StudentInfos.student_id'=>$student_id,'StudentInfos.section_id'=>$section_id,'StudentInfos.year_id'=>$ActiveYear->id])->first(); 			
+		if(sizeof($StudentInfo)>0)		
+		{
+			$StudentInfo = $this->Students->StudentInfos->get($StudentInfo->id);	
+		}
+		else{
+			$StudentInfo = $this->Students->StudentInfos->newEntity();
+		}
+		
+		$StudentInfo->student_id = $student_id;
+		$StudentInfo->section_id = $section_id;
+		$StudentInfo->total_meetings = $TotalMeeting;
+		$StudentInfo->meetings_attended = $MeetingsAttended;
+		$StudentInfo->year_id = $ActiveYear->id; 
+		if($this->Students->StudentInfos->save($StudentInfo))
+		{
+		    echo 1;
+		}
+		else{ 
+            echo 0;
+		}
+		
+		$totalMeetingArr=[];
+		$meetingsAttendedArr=[];
+		$StudentInfos = $this->Students->StudentInfos->find()->order(['StudentInfos.id'=>'DESC']);
+		if(sizeof($StudentInfos->toArray())>0)
+		{
+			foreach($StudentInfos as $info)
+			{
+				@$totalMeetingArr[@$info->section_id][@$info->student_id] =$info->total_meetings;
+				@$meetingsAttendedArr[@$info->section_id][@$info->student_id] =$info->meetings_attended;
+			}
+			
+		}
+		  $this->set(compact('totalMeetingArr','meetingsAttendedArr'));
+    }
+	
+	
+	   
+     
+
+}
