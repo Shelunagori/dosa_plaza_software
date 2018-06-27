@@ -45,6 +45,11 @@ class UsersController extends AppController
     {
         $this->viewBuilder()->layout('admin');
     }
+	
+	public function dashboard2()
+    {
+        $this->viewBuilder()->layout('counter');
+    }
 
     /**
      * Index method
