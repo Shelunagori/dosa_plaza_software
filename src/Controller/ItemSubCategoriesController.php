@@ -11,102 +11,51 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\ItemSubCategory[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ItemSubCategoriesController extends AppController
-{
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
+{    
+    public function add($id = null)
     {
-        $this->paginate = [
-            'contain' => ['ItemCategories']
-        ];
-        $itemSubCategories = $this->paginate($this->ItemSubCategories);
-
-        $this->set(compact('itemSubCategories'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Item Sub Category id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $itemSubCategory = $this->ItemSubCategories->get($id, [
-            'contain' => ['ItemCategories', 'Items']
-        ]);
-
-        $this->set('itemSubCategory', $itemSubCategory);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $itemSubCategory = $this->ItemSubCategories->newEntity();
-        if ($this->request->is('post')) {
+		$this->viewBuilder()->layout('admin');
+		if(!$id)
+		{				
+			$itemSubCategory = $this->ItemSubCategories->newEntity();
+		}
+		else
+		{
+			$itemSubCategory = $this->ItemSubCategories->get($id, [
+				'contain' => ['ItemCategories']
+			]);
+		} 
+        if ($this->request->is(['patch','post','put'])){
             $itemSubCategory = $this->ItemSubCategories->patchEntity($itemSubCategory, $this->request->getData());
             if ($this->ItemSubCategories->save($itemSubCategory)) {
                 $this->Flash->success(__('The item sub category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
-            $this->Flash->error(__('The item sub category could not be saved. Please, try again.'));
+            $this->Flash->error(__('The item category could not be saved. Please, try again.'));
         }
-        $itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200]);
-        $this->set(compact('itemSubCategory', 'itemCategories'));
+		$this->paginate = [
+            'contain' => ['ItemCategories']
+        ];
+		$ItemSubCategoriesList = $this->paginate($this->ItemSubCategories->find()->where(['ItemSubCategories.is_deleted'=>0]));
+		$itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200]);
+        $this->set(compact('itemSubCategory','ItemSubCategoriesList','itemCategories','id'));
     }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Item Sub Category id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
+ 
+    public function delete($id = null)
     {
         $itemSubCategory = $this->ItemSubCategories->get($id, [
             'contain' => []
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $itemSubCategory = $this->ItemSubCategories->patchEntity($itemSubCategory, $this->request->getData());
-            if ($this->ItemSubCategories->save($itemSubCategory)) {
-                $this->Flash->success(__('The item sub category has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The item sub category could not be saved. Please, try again.'));
-        }
-        $itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200]);
-        $this->set(compact('itemSubCategory', 'itemCategories'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Item Sub Category id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $itemSubCategory = $this->ItemSubCategories->get($id);
-        if ($this->ItemSubCategories->delete($itemSubCategory)) {
+        
+		$itemSubCategory = $this->ItemSubCategories->patchEntity($itemSubCategory, $this->request->getData());
+		$itemSubCategory->is_deleted=1;
+		if ($this->ItemSubCategories->save($itemSubCategory)) {
             $this->Flash->success(__('The item sub category has been deleted.'));
         } else {
             $this->Flash->error(__('The item sub category could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add']);
     }
 }
