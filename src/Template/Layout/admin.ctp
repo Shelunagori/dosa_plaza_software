@@ -158,8 +158,6 @@
 		<?php echo $this->Html->script('/assets/global/plugins/jquery.blockui.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/jquery.cokie.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
-		<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js'); ?>
-		<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'); ?>
 		<?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 		<!-- END CORE PLUGINS -->
 		<?= $this->fetch('PAGE_LEVEL_PLUGINS_JS')?>
@@ -174,7 +172,6 @@
 		jQuery(document).ready(function() {  
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
-			FormValidation.init();
 
 		});
 		$(document).ready(function() {
