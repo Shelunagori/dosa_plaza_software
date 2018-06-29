@@ -43,7 +43,7 @@ class KotsFixture extends TestFixture
                 'id' => 1,
                 'voucher_no' => 1,
                 'table_id' => 1,
-                'created_on' => '2018-06-29 05:23:46'
+                'created_on' => '2018-06-29 06:59:42'
             ],
         ];
         parent::init();

@@ -170,15 +170,24 @@
 		$('.CreateKOT').die().live('click',function(event){
 			event.preventDefault();
 			//$('#WaitBox').show().addClass('animated bounceInLeft');
-			postData=[];
+			var postData=[];
 			$('#kotBox tbody tr').each(function(){
 				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
 				var quantity=$(this).find('td:nth-child(3)').text();
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount});
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount}); 
 			});
-			console.log(postData);
+			var table_id=$('#tableInput').val();
+			var myJSON = JSON.stringify(postData);
+			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id;
+			console.log(url);
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				console.log(response);
+			});
 		});
 		
 	});	
@@ -187,7 +196,7 @@
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
 <div id="WaitBox" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
-<div class="modal-backdrop fade in" ></div>
+	<div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
