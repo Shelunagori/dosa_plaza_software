@@ -49,6 +49,10 @@ class UsersController extends AppController
 	public function dashboard2()
     {
         $this->viewBuilder()->layout('counter');
+		
+		$Tables=$this->Users->Tables->find();
+		$ItemCategories=$this->Users->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);
+		$this->set(compact('Tables', 'ItemCategories'));
     }
 
     /**

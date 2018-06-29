@@ -34,6 +34,9 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+		
+		$this->belongsTo('Tables');
+		$this->belongsTo('ItemCategories');
     }
 
     /**
