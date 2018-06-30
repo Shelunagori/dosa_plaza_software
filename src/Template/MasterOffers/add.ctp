@@ -42,7 +42,7 @@
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$masterOffer->percentage."'"; } ?> name="percentage" class="form-control input-large" Placeholder="Enter Offer Percentage" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >									 
+									<input type="text" <?php if(!empty($id)){ echo "value='".$masterOffer->percentage."'"; } ?> name="percentage" class="form-control" Placeholder="Enter Offer Percentage" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >									 
 								</div>
 							</div>
 						</div>
@@ -163,6 +163,9 @@ $(document).ready(function() {
 			name: { 
 				required: true,
 				specialChars: true
+			},
+			percentage: { 
+				required: true, 
 			},
 		},
 
