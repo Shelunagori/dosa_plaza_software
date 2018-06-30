@@ -115,6 +115,8 @@
 </style>
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <?php
+	$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Submitting...</span></div>';
+	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">KOT Created</span></div>';
 	$js="
 	$(document).ready(function() {
 		$('.tblBox').die().live('click',function(event){
@@ -169,7 +171,8 @@
 		
 		$('.CreateKOT').die().live('click',function(event){
 			event.preventDefault();
-			//$('#WaitBox').show().addClass('animated bounceInLeft');
+			$('#WaitBox').show().addClass('animated fadeIn');
+			$('#WaitBox div.modal-body').html('".$waitingMessage."');
 			var postData=[];
 			$('#kotBox tbody tr').each(function(){
 				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
@@ -182,25 +185,27 @@
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
 			url=url+'?myJSON='+myJSON+'&table_id='+table_id;
-			console.log(url);
 			$.ajax({
 				url: url,
 			}).done(function(response) {
-				console.log(response);
+				$('#kotBox tbody tr').remove();
+				$('#WaitBox div.modal-body').html('".$successMessage."');
 			});
 		});
 		
 	});	
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
+
+
 ?>
+
 <div id="WaitBox" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
 	<div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
-				Please wait...
 			</div>
 		</div>
 	</div>

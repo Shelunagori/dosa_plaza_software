@@ -54,10 +54,7 @@ class KotsController extends AppController
 		$myJSON=$this->request->query('myJSON');
 		$table_id=$this->request->query('table_id');
 		$q = json_decode($myJSON, true);
-		/* foreach($q as $row){
-			pr($row['item_id']);
-		}
-		exit; */
+		
         $kot = $this->Kots->newEntity();
 			
 		$last_voucher_no=$this->Kots->find()->select(['voucher_no'])->order(['id' => 'DESC'])->first();
@@ -67,16 +64,24 @@ class KotsController extends AppController
 			$kot->voucher_no=1;
 		}
 			
-		$kot->table_id=1;
 		$kot->table_id=$table_id;
-		if ($this->Kots->save($kot)) {
-			$this->Flash->success(__('The kot has been saved.'));
-
-			return $this->redirect(['action' => 'index']);
+		
+		$kot_rows=[];
+		foreach($q as $row){
+			$kot_row = $this->Kots->KotRows->newEntity();
+			$kot_row->item_id=$row['item_id'];
+			$kot_row->quantity=$row['quantity'];
+			$kot_row->rate=$row['rate'];
+			$kot_row->amount=$row['amount'];
+			$kot_rows[]=$kot_row;
 		}
-		$this->Flash->error(__('The kot could not be saved. Please, try again.'));
-        $tables = $this->Kots->Tables->find('list', ['limit' => 200]);
-        $this->set(compact('kot', 'tables'));
+		$kot->kot_rows=$kot_rows;
+		if ($this->Kots->save($kot)) {
+			echo '1';
+		}else{
+			echo '0';
+		}
+		exit;
     }
 
     /**
