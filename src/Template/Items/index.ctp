@@ -1,57 +1,71 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Item[]|\Cake\Collection\CollectionInterface $items
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Item'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Item Sub Categories'), ['controller' => 'ItemSubCategories', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Item Sub Category'), ['controller' => 'ItemSubCategories', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="items index large-9 medium-8 columns content">
-    <h3><?= __('Items') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('item_sub_category_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_by') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('is_deleted') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item): ?>
-            <tr>
-                <td><?= $this->Number->format($item->id) ?></td>
-                <td><?= $item->has('item_sub_category') ? $this->Html->link($item->item_sub_category->name, ['controller' => 'ItemSubCategories', 'action' => 'view', $item->item_sub_category->id]) : '' ?></td>
-                <td><?= h($item->name) ?></td>
-                <td><?= h($item->created_on) ?></td>
-                <td><?= $this->Number->format($item->created_by) ?></td>
-                <td><?= h($item->is_deleted) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $item->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $item->id], ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<?php $this->set("title", 'Item'); ?>
+<div class="row">
+	<div class="col-md-12">
+		<!-- BEGIN ALERTS PORTLET-->
+		<div class="portlet blue box">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-book"></i>View Item List
+				</div>
+				<div class="tools"> 
+ 				</div>
+			</div>
+			<div class="portlet-body">
+				<table class="table table-bordered" cellpadding="0" cellspacing="0">
+					<thead>
+						<tr style="background-color:#DFD9C4;">
+							<th scope="col"><?= ('S.No') ?></th> 
+							<th scope="col"><?= ('Name') ?></th>
+							<th scope="col"><?= ('Rate') ?></th>
+							<th scope="col"><?= ('Item Sub Category') ?></th>
+							<th scope="col"><?= ('Discount Applicable') ?></th>
+							<th scope="col" class="actions"><?= __('Actions') ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $x=0; foreach ($itemslist as $country): ?>
+						<tr>
+							<td><?= ++$x; ?></td> 
+							<td><?= h($country->name) ?></td>
+							<td><?= h($country->rate) ?></td>
+							<td><?= h($country->item_sub_category->name) ?></td>
+							<td><?php if($country->discount_applicable==0){ echo "No";} else{ echo "Yes";}?></td>
+							<td class="actions">
+								<?php echo $this->Html->link('<i class="fa fa-edit"></i>','/Items/add/'.$country->id,array('escape'=>false,'class'=>'btn btn-warning btn-xs'));?>
+								<a class=" btn btn-danger btn-xs" data-target="#deletemodal<?php echo $country->id; ?>" data-toggle=modal><i class="fa fa-trash"></i></a>
+								<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Items','action'=>'delete',$country->id)) ?>">
+											<div class="modal-content">
+											  <div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title">
+													Are you sure you want to remove this Category?
+													</h4>
+												</div>
+												<div class="modal-footer">
+													<button type="submit" class="btn  btn-sm btn-info">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal">Cancel</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							    
+							</td>
+						</tr>
+						<?php endforeach; ?> 
+					</tbody>
+				</table>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+					</ul>
+					<p><?= $this->Paginator->counter() ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

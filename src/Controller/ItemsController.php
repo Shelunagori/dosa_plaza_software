@@ -11,7 +11,15 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Item[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ItemsController extends AppController
-{     
+{   
+	public function index(){
+		$this->viewBuilder()->layout('admin');
+		$this->paginate = [
+            'contain' => ['ItemSubCategories']
+        ];
+        $itemslist = $this->paginate($this->Items->find()->where(['Items.is_deleted'=>0]));
+		$this->set(compact('itemslist'));
+	}
     public function add($id = null)
     {
 		$this->viewBuilder()->layout('admin');
@@ -30,18 +38,16 @@ class ItemsController extends AppController
             $item = $this->Items->patchEntity($item, $this->request->getData());
 			$item->created_by=$loginId;
 			$item->rate=$this->request->getData('rate'); 
+			$item->discount_applicable=$this->request->getData('discount_applicable'); 
             if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-		$this->paginate = [
-            'contain' => ['ItemSubCategories']
-        ];
-        $itemslist = $this->paginate($this->Items->find()->where(['Items.is_deleted'=>0]));
-        $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200]);
-        $this->set(compact('item', 'itemSubCategories','itemslist','id'));
+		
+        $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
+        $this->set(compact('item', 'itemSubCategories','id'));
     }
  
     public function delete($id = null)
@@ -57,6 +63,6 @@ class ItemsController extends AppController
             $this->Flash->error(__('The item could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'add']);
+        return $this->redirect(['action' => 'index']);
     }
 }

@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'School ERP');
+$this->set('title', 'DOSA PLAZA');
 if(!empty($id)){
     @$updateId = @$id;
 }

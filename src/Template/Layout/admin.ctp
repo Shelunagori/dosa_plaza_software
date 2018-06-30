@@ -172,7 +172,6 @@
 		jQuery(document).ready(function() {  
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
-
 		});
 		$(document).ready(function() {
 			$('a[role=button]').live('click',function(e) {
@@ -182,6 +181,8 @@
 			$('.PointBox').live('click',function(e) {
 				$(this).select();
 			});
+			
+			$('input[type="text"]'). attr("autocomplete", "off");
 		});
 		
 		
