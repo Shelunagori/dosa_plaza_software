@@ -1,7 +1,16 @@
+<div class="row" style=" border-bottom: solid 1px #e5e5e5; margin-bottom: 10px; ">
+	<div class="col-md-3">
+		<span id="BackToTables" style="display:none;font-weight: bold;" ><i class="fa fa-chevron-left"></i> Tables </span>
+	</div>
+	<div class="col-md-6" align="center">
+		<span id="TablesHeading" style="font-weight: bold;" > TABLES </span>
+		<span id="KOTHeading" style="display:none;font-weight: bold;" ><span>CREATE KOT FOR TABLE :</span> <span id="tableOutput"></span> <input type="hidden"  id="tableInput" /></span>
+	</div>
+</div>
 <div class="row TableView">
 	<div class="col-md-12">
 		<?php foreach($Tables as $Table){ ?>
-		<div class="tblBox" table_id="<?= h($Table->id) ?>">
+		<div class="tblBox" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
 			<div align="center" style="border-bottom:solid 1px #f27466;color: #FFF;background-color: #f27466;"><?= h($Table->name) ?></div>
 			<div style="font-size:10px;background-color: #f1f1f178;">
 				<div style="padding:2px;">
@@ -65,10 +74,9 @@
 					</div>
 				</td>
 				<td valign="top" width="50%">
-					<div>CREATE KOT FOR TABLE : 101 <input type="text"  id="tableInput" /></div>
 					<div>Search Item Area</div>
 					<div style="height:200px;overflow: auto;">
-						<table class="table table-condensed table-hover" id="kotBox">
+						<table class="table table-condensed table-striped table-hover" id="kotBox">
 							<thead>
 								<tr>
 									<th>#</th>
@@ -84,8 +92,12 @@
 						</table>
 					</div>
 					<div align="right">
-						<a href="#" class="btn btn-sm grey-cascade"><i class="fa fa-comment-o"></i> KOT COMMENT </a>
-						<a href="#" class="btn btn-sm grey-cascade CreateKOT" ><i class="fa fa-plus"></i> CREATE KOT </a>
+						<a href="#" class="btn btn-sm bg-grey-gallery"><i class="fa fa-comment-o"></i> KOT COMMENT </a>
+						<a href="#" class="btn btn-sm bg-grey-gallery CreateKOT" ><i class="fa fa-plus"></i> CREATE KOT </a>
+					</div>
+					<br/>
+					<div align="right">
+						<a href="#" class="btn btn-sm bg-grey-gallery CreateBill" ><i class="fa fa-money"></i> CREATE BILL </a>
 					</div>
 				</td>
 			</tr>
@@ -112,18 +124,46 @@
 	background-color: #f26e68;
     color: #FFF;
 }
+#BackToTables{
+	color: #f16969;
+	font-size: 15px;
+	cursor: pointer
+}
+#TablesHeading, #KOTHeading{
+	color: #f16969;
+	font-size: 16px;
+}
+#billTable{
+	tr td{
+		padding:2px;
+	}
+}
 </style>
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <?php
-	$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Submitting...</span></div>';
-	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">KOT Created</span></div>';
+	$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Submitting...</span></div>';
+	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">KOT Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
+	$errorMessage='<div align=center><br/><span aria-hidden=true class=icon-close style="font-size:50px;color: #ae0808; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #ae0808; font-weight: bold;">Something went wrong.</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$js="
 	$(document).ready(function() {
+		$('#BackToTables').die().live('click',function(event){
+			$('.TableView').show().addClass('animated bounceInDown');
+			$('#BackToTables').hide();
+			$('#TablesHeading').show();
+			$('#KOTHeading').hide();
+			$('.KOTView').removeClass('animated bounceInDown').hide();
+		});
+		
 		$('.tblBox').die().live('click',function(event){
 			var table_id=$(this).attr('table_id');
+			var table_name=$(this).attr('table_name');
 			$('.TableView').hide();
-			$('.KOTView').show().addClass('animated bounceInLeft');
+			$('#BackToTables').show();
+			$('#TablesHeading').hide();
+			$('#KOTHeading').show();
+			$('.KOTView').show().addClass('animated bounceInDown');
 			$('#tableInput').val(table_id);
+			$('#tableOutput').text(table_name);
 		});
 		
 		var q=$('.ItemCategoryBox').clone();
@@ -166,12 +206,18 @@
 			var item_id=$(this).attr('item_id');
 			var item_name=$(this).attr('item_name');
 			var rate=$(this).attr('rate');
-			$('#kotBox').append('<tr><td>#</td><td item_id='+item_id+'>'+item_name+'</td><td><span>1</span></td><td>'+rate+'</td><td>'+rate+'</td></tr>');
+			var c=$('#kotBox tbody tr').length;
+			c=c+1;
+			$('#kotBox').append('<tr><td>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td><span>1</span></td><td>'+rate+'</td><td>'+rate+'</td></tr>');
+		});
+		
+		$('.closePopup').die().live('click',function(event){
+			$('#WaitBox').hide();
 		});
 		
 		$('.CreateKOT').die().live('click',function(event){
 			event.preventDefault();
-			$('#WaitBox').show().addClass('animated fadeIn');
+			$('#WaitBox').show();
 			$('#WaitBox div.modal-body').html('".$waitingMessage."');
 			var postData=[];
 			$('#kotBox tbody tr').each(function(){
@@ -188,8 +234,27 @@
 			$.ajax({
 				url: url,
 			}).done(function(response) {
-				$('#kotBox tbody tr').remove();
-				$('#WaitBox div.modal-body').html('".$successMessage."');
+				if(response=='1'){
+					$('#kotBox tbody tr').remove();
+					$('#WaitBox div.modal-body').html('".$successMessage."');
+				}else{
+					$('#WaitBox div.modal-body').html('".$errorMessage."');
+				}
+				
+			});
+		});
+		
+		$('.CreateBill').die().live('click',function(event){
+			event.preventDefault();
+			var table_id=$('#tableInput').val();
+			$('#WaitBox').show();
+			$('#WaitBox div.modal-body').html('".$waitingMessage."');
+			var url='".$this->Url->build(['controller'=>'Kots','action'=>'view'])."';
+			url=url+'?table_id='+table_id;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				$('#WaitBox div.modal-body').html(response);
 			});
 		});
 		

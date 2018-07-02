@@ -35,13 +35,12 @@ class KotsController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
-        $kot = $this->Kots->get($id, [
-            'contain' => ['Tables', 'KotRows']
-        ]);
-
-        $this->set('kot', $kot);
+        $table_id=$this->request->query('table_id');
+		
+		$Kots=$this->Kots->find()->where(['table_id'=>$table_id])->contain(['KotRows'=>['Items']]);
+		$this->set(compact('Kots'));
     }
 
     /**
