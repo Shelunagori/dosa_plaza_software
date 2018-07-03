@@ -12,14 +12,9 @@ use App\Controller\AppController;
  */
 class AttendancesController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
     public function index()
     {
+		$this->viewBuilder()->layout('admin');
         $this->paginate = [
             'contain' => ['Employees']
         ];
@@ -28,15 +23,10 @@ class AttendancesController extends AppController
         $this->set(compact('attendances'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Attendance id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+     
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('admin');
         $attendance = $this->Attendances->get($id, [
             'contain' => ['Employees']
         ]);
@@ -51,17 +41,37 @@ class AttendancesController extends AppController
      */
     public function add()
     {
-        $attendance = $this->Attendances->newEntity();
+		$this->viewBuilder()->layout('admin');
+        
         if ($this->request->is('post')) {
-            $attendance = $this->Attendances->patchEntity($attendance, $this->request->getData());
-            if ($this->Attendances->save($attendance)) {
-                $this->Flash->success(__('The attendance has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The attendance could not be saved. Please, try again.'));
+			 
+			$Attendance=$this->request->getData('attendance');
+			$employee_id=$this->request->getData('employee_id');
+			$remarks=$this->request->getData('remarks');
+			 
+			$x=0;
+			$insert=0;
+			$attendance_date=date('Y-m-d');
+			foreach($employee_id as $employee){
+				$attendanceinsert = $this->Attendances->newEntity();
+				$attendanceinsert = $this->Attendances->patchEntity($attendanceinsert, $this->request->getData());
+				$attendanceinsert->employee_id=$employee;
+				$attendanceinsert->attendance_status=$Attendance[$employee];
+				$attendanceinsert->remarks=$remarks[$x];
+				$attendanceinsert->attendance_date=$attendance_date;
+				 
+				if ($this->Attendances->save($attendanceinsert)) { 
+					$insert=1;
+				}
+				$x++;
+			}
+			if($insert==1){
+				$this->Flash->success(__('The attendance has been saved.'));
+				return $this->redirect(['action' => 'add']);
+			}
+			$this->Flash->error(__('The attendance could not be saved. Please, try again.'));	
         }
-        $employees = $this->Attendances->Employees->find('list', ['limit' => 200]);
+        $employees = $this->paginate($this->Attendances->Employees->find()->where(['Employees.is_deleted'=>0]));
         $this->set(compact('attendance', 'employees'));
     }
 
@@ -74,6 +84,7 @@ class AttendancesController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('admin');
         $attendance = $this->Attendances->get($id, [
             'contain' => []
         ]);
@@ -86,7 +97,7 @@ class AttendancesController extends AppController
             }
             $this->Flash->error(__('The attendance could not be saved. Please, try again.'));
         }
-        $employees = $this->Attendances->Employees->find('list', ['limit' => 200]);
+        $employees = $this->Attendances->Employees->find()->where(['is_deleted'=>0]);
         $this->set(compact('attendance', 'employees'));
     }
 
