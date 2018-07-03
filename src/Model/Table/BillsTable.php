@@ -7,21 +7,22 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Kots Model
+ * Bills Model
  *
  * @property \App\Model\Table\TablesTable|\Cake\ORM\Association\BelongsTo $Tables
- * @property \App\Model\Table\KotRowsTable|\Cake\ORM\Association\HasMany $KotRows
+ * @property |\Cake\ORM\Association\BelongsTo $Kots
+ * @property \App\Model\Table\BillRowsTable|\Cake\ORM\Association\HasMany $BillRows
  *
- * @method \App\Model\Entity\Kot get($primaryKey, $options = [])
- * @method \App\Model\Entity\Kot newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Kot[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Kot|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Kot|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Kot patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Kot[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Kot findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Bill get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Bill newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Bill[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Bill|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Bill|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Bill patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Bill[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Bill findOrCreate($search, callable $callback = null, $options = [])
  */
-class KotsTable extends Table
+class BillsTable extends Table
 {
 
     /**
@@ -34,7 +35,7 @@ class KotsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('kots');
+        $this->setTable('bills');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
@@ -42,11 +43,12 @@ class KotsTable extends Table
             'foreignKey' => 'table_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('KotRows', [
-            'foreignKey' => 'kot_id'
+        $this->belongsTo('Kots', [
+            'foreignKey' => 'kot_id',
+            'joinType' => 'INNER'
         ]);
-		$this->hasOne('Bills', [
-            'foreignKey' => 'kot_id'
+        $this->hasMany('BillRows', [
+            'foreignKey' => 'bill_id'
         ]);
     }
 
@@ -63,14 +65,10 @@ class KotsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('voucher_no')
+            ->scalar('voucher_no')
+            ->maxLength('voucher_no', 50)
             ->requirePresence('voucher_no', 'create')
             ->notEmpty('voucher_no');
-
-        $validator
-            ->dateTime('created_on')
-            ->requirePresence('created_on', 'create')
-            ->notEmpty('created_on');
 
         return $validator;
     }
@@ -85,6 +83,7 @@ class KotsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['table_id'], 'Tables'));
+        $rules->add($rules->existsIn(['kot_id'], 'Kots'));
 
         return $rules;
     }

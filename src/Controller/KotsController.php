@@ -39,8 +39,10 @@ class KotsController extends AppController
     {
         $table_id=$this->request->query('table_id');
 		
-		$Kots=$this->Kots->find()->where(['table_id'=>$table_id])->contain(['KotRows'=>['Items']]);
-		$this->set(compact('Kots'));
+		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
+		
+		$Table=$this->Kots->Tables->get($table_id);
+		$this->set(compact('Kots', 'Table'));
     }
 
     /**

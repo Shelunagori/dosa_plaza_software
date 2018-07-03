@@ -142,7 +142,9 @@
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <?php
 	$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Submitting...</span></div>';
+	$waitingMessage2='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Loading...</span></div>';
 	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">KOT Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
+	$BillSuccessMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Bill Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$errorMessage='<div align=center><br/><span aria-hidden=true class=icon-close style="font-size:50px;color: #ae0808; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #ae0808; font-weight: bold;">Something went wrong.</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$js="
 	$(document).ready(function() {
@@ -248,7 +250,7 @@
 			event.preventDefault();
 			var table_id=$('#tableInput').val();
 			$('#WaitBox').show();
-			$('#WaitBox div.modal-body').html('".$waitingMessage."');
+			$('#WaitBox div.modal-body').html('".$waitingMessage2."');
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'view'])."';
 			url=url+'?table_id='+table_id;
 			$.ajax({
@@ -258,15 +260,65 @@
 			});
 		});
 		
+		$('.CancelBill').die().live('click',function(event){
+			event.preventDefault();
+			$('#WaitBox').hide();
+		});
+		
+		$('.SubmitBill').die().live('click',function(event){
+			event.preventDefault();
+			$('#WaitBox2').show();
+			$('#WaitBox2 div.modal-body').html('".$waitingMessage."');
+			var postData=[];
+			$('#billTable tbody tr').each(function(){
+				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
+				var quantity=$(this).find('td:nth-child(3)').text();
+				var rate=$(this).find('td:nth-child(4)').text();
+				var amount=$(this).find('td:nth-child(5)').text();
+				var discount_per=$(this).find('td:nth-child(6) input').val();
+				var net_amount=$(this).find('td:nth-child(7)').text();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount}); 
+			});
+			var table_id=$('#tableInput').val();
+			var myJSON = JSON.stringify(postData);
+			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id;
+			console.log(url);
+			$.ajax({
+				url: url,
+			}).done(function(bill_id) {
+				if(bill_id!=0){
+					$('#WaitBox2').hide();
+					$('#WaitBox div.modal-body').html('".$BillSuccessMessage."');
+					
+					var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
+					url=url+'?bill_id='+bill_id;
+					var w = window.open(url, 'popupWindow', 'scrollbars=yes');
+				}else{
+					$('#WaitBox div.modal-body').html('".$errorMessage."');
+				}
+				
+			});
+		});
+		
+		
 	});	
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
-
-
 ?>
 
 <div id="WaitBox" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox2" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
 	<div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog">
 		<div class="modal-content">
