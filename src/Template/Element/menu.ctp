@@ -28,6 +28,18 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 <li class="start">
 	<a href="javascript:;">
 	<i class="fa fa-gear"></i>
+	<span class="title">Employee</span>
+	<span class="arrow "></span>
+	</a>
+	<ul class="sub-menu">
+		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Employees/add',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Employees/index',['escape' => false]).'</li>';?>
+ 	</ul>
+</li>
+
+<li class="start">
+	<a href="javascript:;">
+	<i class="fa fa-gear"></i>
 	<span class="title">Vendor</span>
 	<span class="arrow "></span>
 	</a>
