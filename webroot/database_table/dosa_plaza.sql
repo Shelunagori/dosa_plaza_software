@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2018 at 11:24 AM
+-- Generation Time: Jul 03, 2018 at 09:12 AM
 -- Server version: 10.1.13-MariaDB
--- PHP Version: 7.0.8
+-- PHP Version: 5.6.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,34 +23,54 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Table structure for table `attendances`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` varchar(30) NOT NULL
+CREATE TABLE `attendances` (
+  `id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `attendance_status` int(5) NOT NULL COMMENT '1 for Present, 2 for Leave, 3 for HalfDay, 4 Official Off',
+  `attendance_date` date NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `mobile_no` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `created_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Dumping data for table `employees`
 --
 
-INSERT INTO `users` (`id`, `name`, `username`, `password`, `role`) VALUES
-(1, 'Abhilash Lohar', 'admin', '$2y$10$knPwGMrRd0wj13/JHlWOr.CQddABk08iNjXjfA7P5WSfi6BZ6giMK', ''),
-(2, 'sdf', 'admin', '$2y$10$WxmIxmYOrWAjzObZTvI9EuzbsKcliecxS/HMCoiUa.lKq8l9pqHxO', ''),
-(3, 'adsd', 'admin', '$2y$10$fV9.nrJ01tvWVmbEvZ5p/ugsG60V4CRV3V00BKJPA328B8OoOG.qq', '');
+INSERT INTO `employees` (`id`, `name`, `mobile_no`, `email`, `address`, `created_on`, `is_deleted`) VALUES
+(1, 'Dashrath Menaria', '9680747166', 'dasumenaria@gmail.com', 'Test', '2018-07-03 06:51:00', 0);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `users`
+-- Indexes for table `attendances`
 --
-ALTER TABLE `users`
+ALTER TABLE `attendances`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -58,10 +78,15 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT for table `attendances`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `attendances`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
