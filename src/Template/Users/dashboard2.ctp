@@ -1,115 +1,182 @@
-<div class="row" style=" border-bottom: solid 1px #e5e5e5; margin-bottom: 10px; ">
-	<div class="col-md-3">
-		<span id="BackToTables" style="display:none;font-weight: bold;" ><i class="fa fa-chevron-left"></i> Tables </span>
+<style>
+.topBtnActive{
+	color: #FFF; border-radius: 5px !important; background-color: #1AB696; padding: 7px 18px;margin-left: 8px;
+}
+.topBtn{
+	color: #818182; border-radius: 5px !important; background-color: #FFF; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
+}
+.topBtn2{
+	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
+}
+</style>
+<?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
+<div class="row" style="background: #FEFEFE;padding: 15px;">
+	<div class="col-md-6" >
+		<span class="topBtnActive">Dinner In</span>
+		<span class="topBtn">Delivery</span>
+		<span class="topBtn">Take Away</span>
 	</div>
-	<div class="col-md-6" align="center">
-		<span id="TablesHeading" style="font-weight: bold;" > TABLES </span>
-		<span id="KOTHeading" style="display:none;font-weight: bold;" ><span>CREATE KOT FOR TABLE :</span> <span id="tableOutput"></span> <input type="hidden"  id="tableInput" /></span>
+	<div class="col-md-6" align="right">
+		<span class="topBtn2">Booking</span>
+		<span class="topBtn2">Bills</span>
+		<span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
+		<span style="color: #2FBD9F;font-size: 15px;margin-left: 8px;">₹5000</span>
 	</div>
 </div>
-<div class="row TableView">
-	<div class="col-md-12">
-		<?php foreach($Tables as $Table){ ?>
-		<div class="tblBox" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
-			<div align="center" style="border-bottom:solid 1px #f27466;color: #FFF;background-color: #f27466;"><?= h($Table->name) ?></div>
-			<div style="font-size:10px;background-color: #f1f1f178;">
-				<div style="padding:2px;">
-				<table width="100%">
-					<tr>
-						<th valign="top">STEWARD </th>
-						<th valign="top"> :</th>
-						<td valign="top">KISHAN SHARMA</td>
-					</tr>
-					<tr>
-						<th valign="top">RUNNING BILL AMOUNT </th>
-						<th valign="top"> :</th>
-						<td valign="top">1559</td>
-					</tr>
-				</table>
+<div style="background: #EBEEF3;">
+	<div class="row" style="margin-bottom: 15px;margin-top: 15px; ">
+		<div class="col-md-3">
+			<span id="BackToTables" style="display:none;font-weight: bold;" ><i class="fa fa-chevron-left"></i>  </span>
+		</div>
+		<div class="col-md-6" align="center">
+			<span id="TablesHeading" style="font-weight: bold;color:#373435;" > TABLES </span>
+			<span id="KOTHeading" style="display:none;font-weight: bold;color:#373435;" ><span>CREATE KOT FOR TABLE :</span> <span id="tableOutput"></span> <input type="hidden"  id="tableInput" /></span>
+		</div>
+	</div>
+	<div class="row TableView" style="padding:10px;">
+		<div class="col-md-12"  align="center">
+			<?php 
+			$i=0;
+			foreach($Tables as $Table){ ?>
+			<div class="tblBox" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
+				<span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
+				<div style="font-size:14px;">
+					<div align="center">
+						<span style="font-size: 14px; color: #3b393a;">Steward Name</span>
+						<span style="font-size: 14px;color: #BDBFC1;float:  right;"><i class="fa fa-ellipsis-v"></i></span>
+					</div>
+					<div style="padding:2px 10px;">
+						<table width="100%" style="font-size:12px;line-height: 22px;">
+							<tr>
+								<td valign="top">
+									<span style="color:#96989A;">Time</span>
+									<span style="color:#373435;margin-left:13px;">15 min</span>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<span style="color:#96989A;">Customer Name</span>
+									<span style="color:#373435;margin-left:13px;">Rahul Soni</span>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<span style="color:#96989A;">Pax Per Rate</span>
+									<span style="color:#373435;margin-left:13px;">₹50</span>
+								</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<span style="color:#96989A;">Running Billing Amount</span>
+									<span style="color:#373435;margin-left:13px;">₹450</span>
+								</td>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
+			<?php 
+			if($i==10){ $i=0; }
+			} ?>
 		</div>
-		<?php } ?>
 	</div>
-</div>
-<div class="row KOTView" style="display: none;">
-	<div class="col-md-12">
-		<table width="100%">
-			<tr>
-				<td valign="top" width="50%">
-					<table width="100%">
-						<tr>
-							<td id="ItemArea" style="padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top"></td>
-						</tr>
-						<tr>
-							<td id="SubCategoryArea" style="padding-top: 5px;padding-bottom: 5px; border-bottom: solid 1px #CCC;" valign="top"></td>
-						</tr>
-						<tr>
-							<td id="CategoryArea" style="padding-top: 5px; " valign="top"></td>
-						</tr>
-					</table>
-					<div>
-						<?php foreach($ItemCategories as $ItemCategory){ ?>
-							<div class="ItemCategoryBox" category_id="<?= h($ItemCategory->id) ?>" >
-								<?= h($ItemCategory->name) ?>
-							</div>
-							
-							<div  category_id="<?= h($ItemCategory->id) ?>">
-							<?php foreach($ItemCategory->item_sub_categories as $item_sub_category){ ?>
-								<div class="ItemSubCategoryBox" category_id="<?= h($ItemCategory->id) ?>" sub_category_id="<?= h($item_sub_category->id) ?>" >
-									<?= h($item_sub_category->name) ?>
+	<div class="row KOTView" style="display: none;padding:10px;">
+		<div class="col-md-12">
+			<table width="100%">
+				<tr>
+					<td valign="top" width="50%">
+						<table width="100%">
+							<tr>
+								<td id="ItemArea" style="padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top"></td>
+							</tr>
+							<tr>
+								<td id="SubCategoryArea" style="padding-top: 5px;padding-bottom: 5px; border-bottom: solid 1px #CCC;" valign="top"></td>
+							</tr>
+							<tr>
+								<td id="CategoryArea" style="padding-top: 5px; " valign="top">
+									<span>CHOOSE CATEGORY</span><br/>
+								</td>
+							</tr>
+						</table>
+						<div>
+							<?php foreach($ItemCategories as $ItemCategory){ ?>
+								<div class="ItemCategoryBox" category_id="<?= h($ItemCategory->id) ?>" >
+									<?= h($ItemCategory->name) ?>
 								</div>
 								
-								<div  sub_category_id="<?= h($item_sub_category->id) ?>">
-								<?php foreach($item_sub_category->items as $item){ ?>
-									<div class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
-										<?= h($item->name) ?>
+								<div  category_id="<?= h($ItemCategory->id) ?>">
+								<?php foreach($ItemCategory->item_sub_categories as $item_sub_category){ ?>
+									<div class="ItemSubCategoryBox" category_id="<?= h($ItemCategory->id) ?>" sub_category_id="<?= h($item_sub_category->id) ?>" >
+										<?= h($item_sub_category->name) ?>
+									</div>
+									
+									<div  sub_category_id="<?= h($item_sub_category->id) ?>">
+									<?php foreach($item_sub_category->items as $item){ ?>
+										<div class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
+											<?= h($item->name) ?>
+										</div>
+									<?php } ?>
 									</div>
 								<?php } ?>
 								</div>
+								
 							<?php } ?>
-							</div>
-							
-						<?php } ?>
-					</div>
-				</td>
-				<td valign="top" width="50%">
-					<div>Search Item Area</div>
-					<div style="height:200px;overflow: auto;">
-						<table class="table table-condensed table-striped table-hover" id="kotBox">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>Name</th>
-									<th>Qty</th>
-									<th>Rate</th>
-									<th>Amount</th>
-								</tr>
-							</thead>
-							<tbody>
-							
-							</tbody>
-						</table>
-					</div>
-					<div align="right">
-						<a href="#" class="btn btn-sm bg-grey-gallery"><i class="fa fa-comment-o"></i> KOT COMMENT </a>
-						<a href="#" class="btn btn-sm bg-grey-gallery CreateKOT" ><i class="fa fa-plus"></i> CREATE KOT </a>
-					</div>
-					<br/>
-					<div align="right">
-						<a href="#" class="btn btn-sm bg-grey-gallery CreateBill" ><i class="fa fa-money"></i> CREATE BILL </a>
-					</div>
-				</td>
-			</tr>
-		</table>
+						</div>
+					</td>
+					<td valign="top" width="50%">
+						<div>Search Item Area</div>
+						<div style="height:200px;overflow: auto;">
+							<table class="table table-condensed table-striped table-hover" id="kotBox">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Name</th>
+										<th>Qty</th>
+										<th>Rate</th>
+										<th>Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+								
+								</tbody>
+							</table>
+						</div>
+						<div align="right">
+							<a href="#" class="btn btn-sm bg-grey-gallery"><i class="fa fa-comment-o"></i> KOT COMMENT </a>
+							<a href="#" class="btn btn-sm bg-grey-gallery CreateKOT" ><i class="fa fa-plus"></i> CREATE KOT </a>
+						</div>
+						<br/>
+						<div align="right">
+							<a href="#" class="btn btn-sm bg-grey-gallery CreateBill" ><i class="fa fa-money"></i> CREATE BILL </a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 </div>
 <style>
 .tblBox{
-	width: 210px; border: solid 2px #f27466; float: left;margin: 5px 5px;
+	width: 240px; margin: 10px;
+	background-color: #FFF;
+    padding: 7px;
+    border-radius: 7px !important;
+	position: relative;
+	margin-bottom:25px;
+	display: inline-block;
+}
+.tblLabel{
+	position: absolute;
+    top: -15px;
+    left: 15px;
+    padding: 7px 6px;
+    background-color: #FA6E58;
+    color: #FEFEFE;
+    border-radius: 5px !important;
+    font-weight: bold;
 }
 .tblBox:hover{
-	cursor: pointer;background-color: #ffcfcc;
+	cursor: pointer;
 }
 .ItemCategoryBox, .ItemSubCategoryBox, .ItemBox{
     width: 100px;
@@ -170,7 +237,7 @@
 		
 		var q=$('.ItemCategoryBox').clone();
 		$('.ItemCategoryBox').remove();
-		$('#CategoryArea').html(q);
+		$('#CategoryArea').append(q);
 		var q=$('.ItemSubCategoryBox').clone();
 		$('.ItemSubCategoryBox').remove();
 		$('#SubCategoryArea').html(q);

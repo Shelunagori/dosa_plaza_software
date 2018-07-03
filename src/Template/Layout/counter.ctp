@@ -72,7 +72,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
 				<div class="page-logo">
-					<span style="font-size:20px;color:#FFF;">LOGO</span>
+					<div style="font-size:20px;color:#FFF;margin-top: 10px;">LOGO</div>
 					<div class="menu-toggler sidebar-toggler hide">
 						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 					</div>
@@ -85,8 +85,13 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
-							<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo $coreVariable['user_name']; ?></span>
-							<i class="fa fa-angle-down"></i>
+								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;">Find Bill</span>
+							</a>
+						</li>
+						<li class="dropdown dropdown-user">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
+								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo $coreVariable['user_name']; ?></span>
+								<i class="fa fa-sort-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
 								<li>
@@ -127,14 +132,14 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<!-- END CONTAINER -->
 		<!-- BEGIN FOOTER -->
-		<div class="page-footer">
+		<!-- <div class="page-footer">
 			<div class="page-footer-inner">
 				 2018 &copy; PHP Poets IT Solutions Pvt. Ltd.
 			</div>
 			<div class="scroll-to-top">
 				<i class="icon-arrow-up"></i>
 			</div>
-		</div>
+		</div> -->
 		<!-- END FOOTER -->
 		<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 		<!-- BEGIN CORE PLUGINS -->
@@ -171,10 +176,6 @@ License: You must have a valid license purchased only from themeforest(the above
 			$('a[role=button]').live('click',function(e) {
 				e.preventDefault();
 			});
-			
-			$('.PointBox').live('click',function(e) {
-				$(this).select();
-			});
 		});
 		
 		
@@ -203,3 +204,19 @@ License: You must have a valid license purchased only from themeforest(the above
 	</body>
 	<!-- END BODY -->
 </html>
+<style>
+.page-content{
+	padding: 0 !important;
+	background-color: #ebeef3;
+}
+.page-content .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+.page-content .row .col-md-12{
+    padding-right: 0;
+    padding-left: 0;
+}
+
+
+</style>
