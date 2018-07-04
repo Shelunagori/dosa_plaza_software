@@ -23,6 +23,9 @@
 					</thead>
 					<tbody>
 						<?php $d=0; foreach ($employees as $vendor): ?>
+						<?php $employee_id=0; if($vendor->attendances) { $employee_id=$vendor->attendances[0]['employee_id']; }
+						if(!$employee_id){
+						?>
 						<tr>
 							<td><?= (++$d) ?></td>
 							<td><?= h($vendor->name) ?></td>
@@ -41,9 +44,9 @@
 									</div>
 								</div>
 							</td>
-							<td><input type="text" name="remarks[]" class="form-control input-small" Placeholder="Remarks" /></td> 
+							<td><input type="text" name="remarks[]" class="form-control" Placeholder="Remarks" /></td> 
 						</tr>
-						<?php endforeach; ?>
+						<?php } endforeach; ?>
 					</tbody>
 				</table>
 				<div class="col-md-12"><hr></hr></div>
