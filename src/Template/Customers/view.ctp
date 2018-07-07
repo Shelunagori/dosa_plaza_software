@@ -1,23 +1,36 @@
-<div style="padding:10px;background-color:#2D4161;color:#FFF;"><?php echo strtoupper($customer->name); ?></div>
-<div style="padding:10px;background-color:#F5F5F5;color:#FFF;">
-    <table width="100%" style="font-size:12px;">
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Customer $customer
+ */
+?>
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('Edit Customer'), ['action' => 'edit', $customer->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Customer'), ['action' => 'delete', $customer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]) ?> </li>
+        <li><?= $this->Html->link(__('List Customers'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Customer'), ['action' => 'add']) ?> </li>
+    </ul>
+</nav>
+<div class="customers view large-9 medium-8 columns content">
+    <h3><?= h($customer->name) ?></h3>
+    <table class="vertical-table">
         <tr>
-            <td style="color:#97989A;" valign="top" width="40%">Mobile No.</td>
-            <td style="color:#373435;" valign="top"><?php echo ($customer->mobile_no); ?></td>
+            <th scope="row"><?= __('Name') ?></th>
+            <td><?= h($customer->name) ?></td>
         </tr>
         <tr>
-            <td style="color:#97989A;" valign="top">Address</td>
-            <td style="color:#373435;" valign="top"><?= h($customer->address); ?></td>
+            <th scope="row"><?= __('Mobile') ?></th>
+            <td><?= h($customer->mobile) ?></td>
         </tr>
         <tr>
-            <td style="color:#97989A;" valign="top" colspan="2">
-                <br/>
-                <span style="color:#3D3B3C;font-size:12px;    font-weight: bold;">FAVOURITE ITEMS</span><br/>
-                <span>Chilli Paneer</span><br/>
-                <span>Uthapam</span><br/>
-            
-            </td>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($customer->id) ?></td>
         </tr>
     </table>
+    <div class="row">
+        <h4><?= __('Address') ?></h4>
+        <?= $this->Text->autoParagraph(h($customer->address)); ?>
+    </div>
 </div>
-<input type="hidden" name="customer_id" value="<?php echo $c_id; ?>">

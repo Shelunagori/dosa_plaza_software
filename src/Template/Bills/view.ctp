@@ -1,63 +1,94 @@
 <!DOCTYPE html>
 <html>
-	<body onload="window.print();">
-		<div>
-			<button type="button" class="btn btn-sm bg-grey-gallery hide_at_print" onclick="window.print();" ><i class="fa fa-money"></i> PRINT </button>
-			<div style=" border: solid 1px #CCC; padding: 5px; " id='DivIdToPrint'>
-				<table width="100%">
-					<tr>
-						<td width="30%" align="left">COMPANY LOGO</td>
-						<td align="center">TAX INVOICE</td>
-						<td width="30%" align="right">COMPANY NAME <BR/> OTHER DETAILS</td>
-					</tr>
-				</table>
-				<hr>
-				<table width="100%" id="billBox">
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+	</head>
+	<body style="margin: 0; font-family: 'Poppins', sans-serif; font-size: 12px;" onload="window.print();">
+		<div style="width: 300px;">
+			<div style=" padding: 5px; " id='DivIdToPrint'>
+				<div align="center" style="line-height: 24px;">
+					<span style="font-size: 16px;font-weight: bold;color: #373435;">DOSA PLAZA</span><br/>
+					<span style="font-size: 16px;font-weight: bold;color: #373435;">S S ENTERPRISES</span><br/>
+					<span style="font-size: 14px;font-weight: bold;color: #606062;">100 Feet Road, Near Shobhagpura Circle, Udaipur 0294 6999988</span><br/>
+				</div>
+				<div style="border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
+					<span style="color: #606062;">Name: </span><span style="margin-left: 10px;"> <?= h($bill->customer->name) ?> </span><br/>
+					<span style="color: #606062;">Mobile No: </span><span style="margin-left: 10px;"> <?= h($bill->customer->mobile_no) ?> </span><br/>
+					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h($bill->customer->address) ?> </span>
+				</div>	
+				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
+					<span style="color: #606062;">Name: </span><span style="margin-left: 10px;"> <?= h($bill->customer->name) ?> </span><br/>
+					<span style="color: #606062;">Mobile No: </span><span style="margin-left: 10px;"> <?= h($bill->customer->mobile_no) ?> </span><br/>
+					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h($bill->customer->address) ?> </span>
+				</div>				
+
+				<table width="100%" id="billBox" style="line-height: 20px;padding: 0;margin: 0;">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>Item</th>
+							<th>No.</th>
+							<th style="text-align:left;">Item Name</th>
 							<th style="text-align:center;">Qty</th>
 							<th style="text-align:center;">Rate</th>
-							<th style="text-align:center;">Amount</th>
-							<th>Dis%</th>
-							<th style="text-align:right;">Net</th>
+							<th style="text-align:center;">Total</th>
 						</tr>
 					</thead>
 					<tbody>
 					<?php 
-					$i=0;
-					foreach($bill->bill_rows as $bill_row){ ?>
-						<tr >
+					$i=0; $sub_total=0; $discountAmount=0;
+					foreach($bill->bill_rows as $bill_row){
+						$sub_total+=$bill_row->net_amount;
+						$discountAmount+=$bill_row->amount*$bill_row->discount_per/100;
+						?>
+						<tr>
 							<td><?php echo ++$i; ?></td>
-							<td><?php echo $bill_row->item_id; ?></td>
+							<td><?php echo $bill_row->item->name; ?></td>
 							<td style="text-align:center;" ><?php echo $bill_row->quantity; ?></td>
 							<td style="text-align:center;" ><?php echo $bill_row->rate; ?></td>
-							<td style="text-align:center;" ><?php echo $bill_row->amount; ?></td>
-							<td>-</td>
-							<td style="text-align:right;" >-</td>
+							<td></td>
+						</tr>
+						<tr style="">
+							<td colspan="2" style="text-align:left;border-bottom: 1px dashed #D2D2D3;">
+								<span style="margin-left: 35px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
+							</td>
+							<td colspan="3" style="text-align:right;border-bottom: 1px dashed #D2D2D3;"><?php echo $bill_row->net_amount; ?></td>
 						</tr>
 					<?php } ?>
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="6" style="text-align:right;">Total</th>
-							<th style="text-align:right;">-</th>
+							<th></th>
+							<th colspan="3" style="text-align:left;">Sub Total</th>
+							<th style="text-align:right;"><?php echo $sub_total; ?></th>
 						</tr>
 						<tr>
-							<td colspan="4">Terms & conditions</td>
-							<td colspan="3" style="text-align:right;" >Sign</td>
+							<td></td>
+							<td colspan="3" style="text-align:left;">Discount</td>
+							<td style="text-align:right;"><?php echo $discountAmount; ?></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3" style="text-align:left;">CGST : <?php echo $bill->tax->tax_per/2; ?>%</td>
+							<td style="text-align:right;"><?php echo round($sub_total*($bill->tax->tax_per/2)/100,2); ?></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="3" style="text-align:left;">SGST : <?php echo $bill->tax->tax_per/2; ?>%</td>
+							<td style="text-align:right;"><?php echo round($sub_total*($bill->tax->tax_per/2)/100,2); ?></td>
+						</tr>
+						<tr>
+							<th style="border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;"></th>
+							<th colspan="3" style="text-align:left;border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;">Total</th>
+							<th style="text-align:right;border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;"><?php echo $bill->grand_total; ?></th>
 						</tr>
 					<tfoot>
-				</table>
+				</table><br/>
+				<div><span>GSTIN: 08AMXPM4697C1ZC</span></div><br/>
+				<div align="center">
+					<span>www.dosaplaza.com</span><br/>
+					<span>Thank you for your order. Have a nice day !</span>
+				</div>
 			</div>
 		</div>
-		<style>
-		table#billBox > tbody > tr > td {
-		border-collapse: collapse;
-			border-bottom: 1px dashed black;
-		}
-		</style>
 		<style type="text/css" media="print">
 		@page {
 			width:100%;

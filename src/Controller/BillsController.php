@@ -41,7 +41,7 @@ class BillsController extends AppController
 		$bill_id=$this->request->query('bill_id');
 		
         $bill = $this->Bills->get($bill_id, [
-            'contain' => ['BillRows']
+            'contain' => ['BillRows'=>['Items'], 'Customers', 'Taxes']
         ]);
 
         $this->set('bill', $bill);

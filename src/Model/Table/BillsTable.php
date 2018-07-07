@@ -47,6 +47,14 @@ class BillsTable extends Table
             'foreignKey' => 'kot_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Taxes', [
+            'foreignKey' => 'tax_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Customers', [
+            'foreignKey' => 'customer_id',
+            'joinType' => 'LEFT'
+        ]);
         $this->hasMany('BillRows', [
             'foreignKey' => 'bill_id'
         ]);
