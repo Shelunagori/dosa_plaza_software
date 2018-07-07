@@ -56,6 +56,12 @@ class BillsController extends AppController
     {
 		$myJSON=$this->request->query('myJSON');
 		$table_id=$this->request->query('table_id');
+		$total=$this->request->query('total');
+		$tax_id=$this->request->query('tax_id');
+		$roundOff=$this->request->query('roundOff');
+        $net=$this->request->query('net');
+        $customer_id=$this->request->query('customer_id');
+		$kot_ids=explode(',', $this->request->query('kot_ids'));
 		$q = json_decode($myJSON, true);
 		
         $bill = $this->Bills->newEntity();
@@ -68,6 +74,11 @@ class BillsController extends AppController
 		}
 		
 		$bill->table_id=$table_id;
+		$bill->total=$total;
+		$bill->tax_id=$tax_id;
+		$bill->round_off=$roundOff;
+        $bill->grand_total=$net;
+		$bill->customer_id=$customer_id;
 		
         $bill_rows=[];
 		foreach($q as $row){
@@ -88,6 +99,14 @@ class BillsController extends AppController
 				->where(['table_id' => $table_id])
 				->execute();
 			echo $bill->id;
+
+            foreach ($kot_ids as $key => $kot_id) {
+                $query = $this->Bills->Kots->query();
+                $query->update()
+                    ->set(['bill_id' => $bill->id])
+                    ->where(['id' => $kot_id])
+                    ->execute();
+            }
 		}else{
 			echo '0';
 		}

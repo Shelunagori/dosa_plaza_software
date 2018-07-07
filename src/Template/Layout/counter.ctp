@@ -67,7 +67,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
 	<body class="page-header-fixed page-quick-sidebar-over-content page-full-width" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
 		<!-- BEGIN HEADER -->
-		<div class="page-header navbar navbar-fixed-top" style=" background: -webkit-linear-gradient(#504358, #504358); "> 
+		<div class="page-header navbar navbar-fixed-top" style=" background: -webkit-linear-gradient(#2D4161, #2D4161); "> 
 			<!-- BEGIN HEADER INNER -->
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->

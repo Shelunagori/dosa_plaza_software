@@ -52,7 +52,8 @@ class UsersController extends AppController
 		
 		$Tables=$this->Users->Tables->find();
 		$ItemCategories=$this->Users->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);
-		$this->set(compact('Tables', 'ItemCategories'));
+		$Items=$this->Users->ItemCategories->ItemSubCategories->Items->find()->order(['Items.name'=>'ASC']);
+		$this->set(compact('Tables', 'ItemCategories', 'Items'));
     }
 
     /**

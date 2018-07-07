@@ -1,55 +1,60 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Kot[]|\Cake\Collection\CollectionInterface $kots
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Kot'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Tables'), ['controller' => 'Tables', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Table'), ['controller' => 'Tables', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Kot Rows'), ['controller' => 'KotRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Kot Row'), ['controller' => 'KotRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="kots index large-9 medium-8 columns content">
-    <h3><?= __('Kots') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('table_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($kots as $kot): ?>
-            <tr>
-                <td><?= $this->Number->format($kot->id) ?></td>
-                <td><?= $this->Number->format($kot->voucher_no) ?></td>
-                <td><?= $kot->has('table') ? $this->Html->link($kot->table->name, ['controller' => 'Tables', 'action' => 'view', $kot->table->id]) : '' ?></td>
-                <td><?= h($kot->created_on) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $kot->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $kot->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $kot->id], ['confirm' => __('Are you sure you want to delete # {0}?', $kot->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<style type="text/css">
+	#kotTable tr td{
+		padding: 10px 0px;
+	}
+</style>
+<div align="center" style="position: relative;">
+	<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL</span>
+	<span class="closeViewKot">Close</span>
 </div>
+
+<?php if(sizeof($kots->toArray())==0){ ?>
+	<br/><div style="background-color: #E6E7E8;padding: 10px;">No KOT found.</div>
+<?php } ?>
+<br/>
+<div id="accordion1" class="panel-group">
+	<?php foreach ($kots as $kot): ?>
+	<div class="panel panel-default" style=" border: none; ">
+		<div class="panel-heading" style="padding:10px;background-color: #E6E7E8;">
+			<span class="panel-title" style="font-size: 14px; color: #373435;">
+			<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion_<?php echo $kot->id; ?>" aria-expanded="false">
+			KOT#<?php echo $kot->voucher_no; ?> [<?php echo $kot->created_on; ?>]
+			</a>
+			</span>
+			<span class="iconBox" style="color: #000; float: right;"><i class="fa fa-plus"></i></span>
+		</div>
+		<div id="accordion_<?php echo $kot->id; ?>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+			<div class="panel-body" style="border: none;">
+				 <table width="100%" id="kotTable">
+					<thead>
+						<tr style="border-bottom: solid 1px #F1F1F2; " > 
+							<th width="5%">#</th>
+							<th>Item</th>
+							<th style="text-align:center;" width="5%">Qty</th>
+							<th style="text-align:center;" width="10%">Rate</th>
+							<th style="text-align:center;" width="10%">Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php 
+					$i=0; $total=0;
+					foreach($kot->kot_rows as $kot_row){ ?>
+						<tr style="border-bottom: solid 1px #F1F1F2; ">
+							<td><?php echo ++$i.'.'; ?></td>
+							<td ><?php echo $kot_row->item->name; ?></td>
+							<td style="text-align:center;"><?php echo $kot_row->quantity; ?></td>
+							<td style="text-align:center;"><?php echo $kot_row->rate; ?></td>
+							<td style="text-align:center;"><?php echo $kot_row->amount; ?></td>
+						</tr>
+					<?php } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<?php endforeach; ?>
+</div>
+
+
+        
+

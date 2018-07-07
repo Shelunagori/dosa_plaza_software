@@ -42,6 +42,7 @@ class KotsTable extends Table
             'foreignKey' => 'table_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Taxes');
         $this->hasMany('KotRows', [
             'foreignKey' => 'kot_id'
         ]);

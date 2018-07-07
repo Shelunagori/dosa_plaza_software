@@ -20,10 +20,8 @@ class KotsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Tables']
-        ];
-        $kots = $this->paginate($this->Kots);
+        $table_id=$this->request->query('table_id');
+        $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
 
         $this->set(compact('kots'));
     }
@@ -42,7 +40,8 @@ class KotsController extends AppController
 		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
 		
 		$Table=$this->Kots->Tables->get($table_id);
-		$this->set(compact('Kots', 'Table'));
+		$taxes=$this->Kots->Taxes->find();
+		$this->set(compact('Kots', 'Table', 'taxes'));
     }
 
     /**
