@@ -6,3 +6,4 @@
     <span style="color: #727376;">chilli Paneer</span><br/>
     <span style="color: #727376;">Uthapam</span><br/>
 </div>
+<input type="hidden" value="<?php echo $c_id; ?>" name="customer_id">

@@ -17,19 +17,20 @@
 					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h($bill->customer->address) ?> </span>
 				</div>	
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
-					<span style="color: #606062;">Name: </span><span style="margin-left: 10px;"> <?= h($bill->customer->name) ?> </span><br/>
-					<span style="color: #606062;">Mobile No: </span><span style="margin-left: 10px;"> <?= h($bill->customer->mobile_no) ?> </span><br/>
-					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h($bill->customer->address) ?> </span>
+					<span style="color: #606062;">Bill No.: </span><span style="margin-left: 10px;"> RBL-<?php echo str_pad($bill->voucher_no, 6, "0", STR_PAD_LEFT); ?> </span><br/>
+					<span style="color: #606062;">Bill Date: </span><span style="margin-left: 10px;"> <?php echo date('d-m-Y',strtotime($bill->created_on)); ?> </span><br/>
+					<span style="color: #606062;">Bill Time: <span style="margin-left: 10px;"> <?php echo date('H:i',strtotime($bill->created_on)); ?> </span><br/>
+					<span style="color: #606062;">Table No.: <span style="margin-left: 10px;"> <?php echo $bill->table->name; ?> </span><br/>
 				</div>				
 
 				<table width="100%" id="billBox" style="line-height: 20px;padding: 0;margin: 0;">
 					<thead>
 						<tr>
-							<th>No.</th>
-							<th style="text-align:left;">Item Name</th>
-							<th style="text-align:center;">Qty</th>
-							<th style="text-align:center;">Rate</th>
-							<th style="text-align:center;">Total</th>
+							<th style="border-bottom: solid 1px #CCC;">No.</th>
+							<th style="text-align:left;border-bottom: solid 1px #CCC;">Item Name</th>
+							<th style="text-align:center;border-bottom: solid 1px #CCC;">Qty</th>
+							<th style="text-align:center;border-bottom: solid 1px #CCC;">Rate</th>
+							<th style="text-align:center;border-bottom: solid 1px #CCC;">Total</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -40,17 +41,19 @@
 						$discountAmount+=$bill_row->amount*$bill_row->discount_per/100;
 						?>
 						<tr>
-							<td><?php echo ++$i; ?></td>
-							<td><?php echo $bill_row->item->name; ?></td>
-							<td style="text-align:center;" ><?php echo $bill_row->quantity; ?></td>
-							<td style="text-align:center;" ><?php echo $bill_row->rate; ?></td>
-							<td></td>
+							<td style="padding-top: 5px;"><?php echo ++$i; ?></td>
+							<td style="padding-top: 5px;"><?php echo $bill_row->item->name; ?></td>
+							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->quantity; ?></td>
+							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->rate; ?></td>
+							<td style="padding-top: 5px;"></td>
 						</tr>
 						<tr style="">
-							<td colspan="2" style="text-align:left;border-bottom: 1px dashed #D2D2D3;">
-								<span style="margin-left: 35px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
+							<td colspan="2" style="text-align:left;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;">
+								<?php if($bill_row->discount_per>0){ ?>
+									<span style="margin-left: 40px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
+								<?php } ?>
 							</td>
-							<td colspan="3" style="text-align:right;border-bottom: 1px dashed #D2D2D3;"><?php echo $bill_row->net_amount; ?></td>
+							<td colspan="3" style="text-align:right;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;"><?php echo $bill_row->net_amount; ?></td>
 						</tr>
 					<?php } ?>
 					</tbody>

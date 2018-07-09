@@ -26,7 +26,7 @@ foreach($Kots as $Kot){
 						<td style="padding-right:10px;">
 							<div class="input-icon">
 								<i class="fa fa-search"></i>
-								<input type="text" class="form-control" placeholder="Search by Mobile No." style="background-color: #f5f5f5 !important" name="mobile_no">
+								<input type="text" class="form-control" placeholder="Search by Mobile No." style="background-color: #f5f5f5 !important" name="mobile_no" maxlength="10">
 							</div>
 						</td>
 						<td>
