@@ -53,7 +53,7 @@
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
 	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
 		<!-- BEGIN HEADER -->
-		<div class="page-header navbar navbar-fixed-top" style=" background: -webkit-linear-gradient(#f37a65, #ef586d); "> 
+		<div class="page-header navbar navbar-fixed-top" style=" background: background:#061c3a !important; "> 
 			<!-- BEGIN HEADER INNER -->
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
@@ -116,7 +116,7 @@
 				<!-- BEGIN CONTENT -->
 			</div>
 			<div class="page-content-wrapper">
-				<div class="page-content">
+				<div class="page-content" >
 					<!-- BEGIN PAGE CONTENT-->
 					<div class="row">
 						<div class="col-md-12">

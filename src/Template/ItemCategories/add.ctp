@@ -1,10 +1,20 @@
 <?php $this->set("title", 'Item Category'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption">
+				<i class="icon-bar-chart font-green-sharp hide"></i>
+				<span>Item Sub Category</span>
+			</div>
+		</div>
+	</div>
+<div class="row">
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet green box">
 			<div class="portlet-title">
+			
 				<div class="caption">
 					<i class="fa fa-edit"></i>
 					<?php if(!empty($id)){ ?>
