@@ -211,3 +211,17 @@
 	</body>
 	<!-- END BODY -->
 </html>
+<style>
+.page-content{
+	padding: 0 !important;
+	background-color: #ebeef3;
+}
+.page-content .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+.page-content .row .col-md-12{
+    padding-right: 0;
+    padding-left: 0;
+}
+</style>
