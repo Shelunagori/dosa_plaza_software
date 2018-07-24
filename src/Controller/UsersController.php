@@ -29,7 +29,12 @@ class UsersController extends AppController
 			{
 				$user=$this->Users->get($user['id']);
                 $this->Auth->setUser($user);
-				return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
+                if($user['role']=='admin'){
+                    return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
+                }
+                else{
+                    return $this->redirect(['controller'=>'Users','action' => 'Dashboard2']);
+                }				
             }
             $this->Flash->error(__('Invalid Username or Password'));
         }

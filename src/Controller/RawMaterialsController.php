@@ -26,27 +26,6 @@ class RawMaterialsController extends AppController
         $this->set(compact('rawMaterials'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Raw Material id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $rawMaterial = $this->RawMaterials->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('rawMaterial', $rawMaterial);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
     public function add()
     {
 		$this->viewBuilder()->layout('admin');
@@ -60,8 +39,9 @@ class RawMaterialsController extends AppController
             }
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
-		$Taxes = $this->RawMaterials->Taxes->find('list' );
-        $this->set(compact('rawMaterial','Taxes'));
+		$Taxes = $this->RawMaterials->Taxes->find('list');
+        $units = $this->RawMaterials->SecondaryUnits->find('list')->where(['is_deleted'=>0]);
+        $this->set(compact('rawMaterial','Taxes','units'));
     }
 
     /**
