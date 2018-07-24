@@ -39,6 +39,20 @@ class RawMaterialsTable extends Table
             'foreignKey' => 'tax_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->belongsTo('PrimaryUnits', [
+            'className'=>'Units',
+            'foreignKey' => 'primary_unit_id',
+            'joinType' => 'primary_unit'
+        ]);
+
+        $this->belongsTo('SecondaryUnits', [
+            'className'=>'Units',
+            'foreignKey' => 'secondary_unit_id',
+            'joinType' => 'secondary_unit'
+        ]);
+
+
     }
 
     /**
