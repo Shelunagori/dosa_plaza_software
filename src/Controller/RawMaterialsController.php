@@ -40,7 +40,7 @@ class RawMaterialsController extends AppController
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
 		$Taxes = $this->RawMaterials->Taxes->find('list');
-        $units = $this->RawMaterials->SecondaryUnits->find('list')->where(['is_deleted'=>0]);
+        $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
         $this->set(compact('rawMaterial','Taxes','units'));
     }
 
