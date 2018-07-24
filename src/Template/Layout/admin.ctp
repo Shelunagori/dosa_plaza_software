@@ -15,6 +15,7 @@
 		<?php echo $this->Html->css('/assets/global/plugins/bootstrap/css/bootstrap.min.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/uniform/css/uniform.default.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
+		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-toastr/toastr.min.css'); ?>
 		<!-- END GLOBAL MANDATORY STYLES -->
 		<?= $this->fetch('PAGE_LEVEL_CSS')?>
 		<!-- BEGIN THEME STYLES -->
@@ -83,10 +84,6 @@
 							<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
-								<li>
-									<a href="extra_profile.html">
-									<i class="icon-user"></i> My Profile </a>
-								</li>
 								<li>
 									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
 								</li>
