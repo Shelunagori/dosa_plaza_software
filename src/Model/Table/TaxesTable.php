@@ -34,6 +34,10 @@ class TaxesTable extends Table
         $this->setTable('taxes');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+		
+		 $this->hasMany('RawMaterials', [
+            'foreignKey' => 'tax_id'
+        ]);
     }
 
     /**

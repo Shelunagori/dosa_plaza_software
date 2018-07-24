@@ -9,6 +9,7 @@
 		</title>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+		
 		<?php echo $this->Html->css('/assets/global/plugins/font-awesome/css/font-awesome.min.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/bootstrap/css/bootstrap.min.css'); ?>
@@ -22,6 +23,7 @@
 		<?php echo $this->Html->css('/assets/admin/layout/css/layout.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/themes/darkblue.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
+		
 		<!-- END THEME STYLES -->
 		<style>
 		span.required{
@@ -38,7 +40,7 @@
 		}
 		.caption{ font-size: 16px !important;}
 		</style>
-		<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
@@ -51,9 +53,9 @@
 	<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
 	<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
-	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
+	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#2D4161 !important;font-family: 'Poppins', sans-serif;">
 		<!-- BEGIN HEADER -->
-		<div class="page-header navbar navbar-fixed-top" style=" background: background:#061c3a !important; "> 
+		<div class="page-header navbar navbar-fixed-top" style="background:#2D4161 !important; "> 
 			<!-- BEGIN HEADER INNER -->
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
@@ -102,7 +104,7 @@
 		</div>
 		<!-- BEGIN CONTAINER -->
 		<div class="page-container">
-			<div class="page-sidebar navbar-collapse collapse" style="background:#061c3a !important;">
+			<div class="page-sidebar navbar-collapse collapse" style="background:#2D4161 !important;">
 				<!-- BEGIN SIDEBAR MENU -->
 				<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
 				<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
@@ -214,7 +216,7 @@
 <style>
 .page-content{
 	padding: 0 !important;
-	background-color: #ebeef3;
+	background: #ececec !important;
 }
 .page-content .row {
     margin-right: 0;
@@ -223,5 +225,9 @@
 .page-content .row .col-md-12{
     padding-right: 0;
     padding-left: 0;
+}
+.portlet.light{
+    padding: 20px 20px 15px 20px;
+    background-color: #fff;
 }
 </style>

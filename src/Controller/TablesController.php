@@ -20,6 +20,7 @@ class TablesController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('admin');
         $tables = $this->paginate($this->Tables);
 
         $this->set(compact('tables'));
@@ -34,6 +35,7 @@ class TablesController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('admin');
         $table = $this->Tables->get($id, [
             'contain' => []
         ]);
@@ -48,6 +50,7 @@ class TablesController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('admin');
         $table = $this->Tables->newEntity();
         if ($this->request->is('post')) {
             $table = $this->Tables->patchEntity($table, $this->request->getData());
@@ -70,6 +73,7 @@ class TablesController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('admin');
         $table = $this->Tables->get($id, [
             'contain' => []
         ]);

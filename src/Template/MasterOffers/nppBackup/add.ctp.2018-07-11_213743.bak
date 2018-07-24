@@ -1,61 +1,68 @@
-<?php $this->set("title", 'Item Sub Category'); ?>
+<?php $this->set("title", 'Item Category'); ?>
 <!-- BEGIN PAGE CONTENT-->
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Item Sub Category</span>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet green box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>
+					
 					<?php if(!empty($id)){ ?>
-						Edit Sub Category
+						Edit Offer
 					<?php }else{ ?>
-						Add Sub Category
+						Add Offer
 					<?php } ?>
 				</div>
 				<div class="tools">
 					<?php if(!empty($id)){ ?>
-						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/ItemSubCategories/add/',array('escape'=>false,'style'=>'color:#fff'));?>
+						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/MasterOffers/add/',array('escape'=>false,'style'=>'color:#fff'));?>
 					<?php }?>
 				</div>
 			</div>
 			<div class="portlet-body">
 				<div class="">
-					<?= $this->Form->create($itemSubCategory,['id'=>'CountryForm']) ?>
+					<?= $this->Form->create($masterOffer,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Sub Category <span class="required" aria-required="true">
-							* </span>
+							<label class="control-label col-md-4">Offer Name <span class="required" aria-required="true">
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$itemSubCategory->name."'"; } ?> name="name" class="form-control" Placeholder="Enter Sub Category Name">
+									<input type="text" <?php if(!empty($id)){ echo "value='".$masterOffer->name."'"; } ?> name="name" class="form-control" Placeholder="Enter offer Name">
+									 
 								</div>
 							</div>
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Category <span class="required" aria-required="true">
-							* </span>
+							<label class="control-label col-md-4">Percentage <span class="required" aria-required="true">
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<?php  
-									echo $this->Form->input('item_category_id',['options' =>$itemCategories,'label' => false,'class'=>'form-control select2 selectState','empty'=> 'Select...']);?>
+									<input type="text" <?php if(!empty($id)){ echo "value='".$masterOffer->percentage."'"; } ?> name="percentage" class="form-control" Placeholder="Enter Offer Percentage" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >									 
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12"><hr></hr></div>
 						<div class="form-actions">
 							<div class="row">
-							
 								<div class="col-md-offset-6 col-md-9">
 									<?php echo $this->Form->button('Submit',['class'=>'btn btn-primary']); ?> 
 								</div>
 							</div>
 						</div>
- 						 
 					<?= $this->Form->end() ?>
 				</div> 
 			</div>
@@ -66,7 +73,7 @@
 		<div class="portlet blue box">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-book"></i>View Sub Category List
+					<i class="fa fa-book"></i>View Offer List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -76,28 +83,28 @@
 					<thead>
 						<tr style="background-color:#DFD9C4;">
 							<th scope="col"><?= ('S.No') ?></th> 
-							<th scope="col"><?= ('Name') ?></th>
-							<th scope="col"><?= ('Item Category') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('percentage') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php $x=0; foreach ($ItemSubCategoriesList as $country): ?>
+						<?php $x=0; foreach ($masterOfferslist as $country): ?>
 						<tr>
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
-							<td><?= h($country->item_category->name) ?></td>
+							<td><?= h($country->percentage) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-edit"></i>','/ItemSubCategories/add/'.$country->id,array('escape'=>false,'class'=>'btn btn-warning btn-xs'));?>
+								<?php echo $this->Html->link('<i class="fa fa-edit"></i>','/MasterOffers/add/'.$country->id,array('escape'=>false,'class'=>'btn btn-warning btn-xs'));?>
 								<a class=" btn btn-danger btn-xs" data-target="#deletemodal<?php echo $country->id; ?>" data-toggle=modal><i class="fa fa-trash"></i></a>
 										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
 											<div class="modal-dialog modal-md" >
-												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemSubCategories','action'=>'delete',$country->id)) ?>">
+												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'MasterOffers','action'=>'delete',$country->id)) ?>">
 													<div class="modal-content">
 													  <div class="modal-header">
 															<button type="button" class="close" data-dismiss="modal">&times;</button>
 															<h4 class="modal-title">
-															Are you sure you want to remove this Category?
+															Are you sure you want to remove this Offer?
 															</h4>
 														</div>
 														<div class="modal-footer">
@@ -166,8 +173,8 @@ $(document).ready(function() {
 				required: true,
 				specialChars: true
 			},
-			item_category_id: { 
-				required: true 
+			percentage: { 
+				required: true, 
 			},
 		},
 
@@ -181,7 +188,7 @@ $(document).ready(function() {
 
 		highlight: function (element) { // hightlight error inputs
 			$(element)
-				.closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group  s 
+				.closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group   
 		},
 		success: function (label, element) {
 			var icon = $(element).parent(".input-icon").children("i");

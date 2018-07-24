@@ -46,7 +46,7 @@ class ItemsController extends AppController
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
 		
-        $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
+        $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']);
         $this->set(compact('item', 'itemSubCategories','id'));
     }
  

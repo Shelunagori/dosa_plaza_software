@@ -37,7 +37,8 @@ class ItemSubCategoriesController extends AppController
 		$this->paginate = [
             'contain' => ['ItemCategories']
         ];
-		$ItemSubCategoriesList = $this->paginate($this->ItemSubCategories->find()->where(['ItemSubCategories.is_deleted'=>0]));
+		
+		$ItemSubCategoriesList = $this->paginate($this->ItemSubCategories->find()->where(['ItemSubCategories.is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']));
 		$itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200]);
         $this->set(compact('itemSubCategory','ItemSubCategoriesList','itemCategories','id'));
     }

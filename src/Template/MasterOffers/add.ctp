@@ -1,12 +1,21 @@
 <?php $this->set("title", 'Item Category'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Item Sub Category</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet green box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>
+					
 					<?php if(!empty($id)){ ?>
 						Edit Offer
 					<?php }else{ ?>
@@ -24,7 +33,7 @@
 					<?= $this->Form->create($masterOffer,['id'=>'CountryForm']) ?>
 						<div class="form-group">
 							<label class="control-label col-md-4">Offer Name <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -37,7 +46,7 @@
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
 							<label class="control-label col-md-4">Percentage <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -61,18 +70,18 @@
 	</div>
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet blue box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-book"></i>View Offer List
+					View Offer List
 				</div>
 				<div class="tools"> 
  				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-bordered" cellpadding="0" cellspacing="0">
+				<table class="table table-str " cellpadding="0" cellspacing="0">
 					<thead>
-						<tr style="background-color:#DFD9C4;">
+						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('percentage') ?></th>
@@ -86,9 +95,9 @@
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->percentage) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-edit"></i>','/MasterOffers/add/'.$country->id,array('escape'=>false,'class'=>'btn btn-warning btn-xs'));?>
-								<a class=" btn btn-danger btn-xs" data-target="#deletemodal<?php echo $country->id; ?>" data-toggle=modal><i class="fa fa-trash"></i></a>
-										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
+								<?php echo $this->Html->link('<i class="fa fa-pencil"></i>','/MasterOffers/add/'.$country->id,array('escape'=>false));?>
+								<a data-target="#deletemodal<?php echo $country->id; ?>" data-toggle=modal><i class="fa fa-trash"></i></a>
+										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" 	role="dialog">
 											<div class="modal-dialog modal-md" >
 												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'MasterOffers','action'=>'delete',$country->id)) ?>">
 													<div class="modal-content">
@@ -112,14 +121,6 @@
 						<?php endforeach; ?> 
 					</tbody>
 				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-					</ul>
-					<p><?= $this->Paginator->counter() ?></p>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -196,3 +197,32 @@ $(document).ready(function() {
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
+<style>
+	.top-caption{
+		font-size:15px !important;
+	}
+	.actions a{
+		color:#F36161;
+	}
+	.portlet.box.blue-hoki{
+		border-radius:5%;
+	}
+	.blue-hoki{
+		overflow:hidden !important;
+		border-radius: 10px !important;
+	}
+	.fa {
+		padding:3px 10px; font-size: 18px;
+	}
+	.fa-pencil{
+		color:#A6A7A9 !important;
+		border-bottom: 1px solid;
+		padding: 2px;
+	}
+	.control-label{
+		font-weight:bold !important;
+	}
+	.btn-danger{}
+	.table-str>tbody>tr:nth-child(even){background-color: #f2f2f2;!important}}
+	
+</style>

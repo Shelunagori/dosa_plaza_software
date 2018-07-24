@@ -37,10 +37,7 @@ class ItemsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('ItemSubCategories', [
-            'foreignKey' => 'item_sub_category_id',
-            'joinType' => 'INNER'
-        ]);
+       
     }
 
     /**

@@ -1,12 +1,23 @@
+<?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Item'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
 	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Add Item</span>
+			</div>
+		</div>
+	</div>
+</div>	
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet green box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>
+					
 					<?php if(!empty($id)){ ?>
 						Edit Item
 					<?php }else{ ?>
@@ -18,13 +29,16 @@
 						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/Items/add/',array('escape'=>false,'style'=>'color:#fff'));?>
 					<?php }?>
 				</div>
+				<div class="row">	
+						<div class="col-md-12 horizontal "></div>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<div class="">
 					<?= $this->Form->create($item,['id'=>'CountryForm']) ; ?>
 						<div class="form-group">
 							<label class="control-label col-md-4"> Item <span class="required" aria-required="true">
-							* </span>
+							</span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -36,7 +50,7 @@
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
 							<label class="control-label col-md-4"> Rate <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -48,7 +62,7 @@
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
 							<label class="control-label col-md-4"> Select Sub Category <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -69,12 +83,12 @@
 							</div>
 						</div>
 
-						<div class="col-md-12"><hr></hr></div>
+						
 						<div class="form-actions">
 							<div class="row">
 							
 								<div class="col-md-offset-6 col-md-9">
-									<?php echo $this->Form->button('Submit',['class'=>'btn btn-primary']); ?> 
+									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
 						</div>
@@ -84,7 +98,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<div class="col-md-2"></div>
 </div>
 <!-- BEGIN PAGE LEVEL STYLES -->
 	

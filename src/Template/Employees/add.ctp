@@ -1,12 +1,23 @@
+<?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Item'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
 	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Add Employee</span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet green box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-edit"></i>
+					
 					<?php if(!empty($id)){ ?>
 						Edit Employee
 					<?php }else{ ?>
@@ -18,13 +29,16 @@
 						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/Employees/add/',array('escape'=>false,'style'=>'color:#fff'));?>
 					<?php }?>
 				</div>
+				<div class="row">	
+						<div class="col-md-12 horizontal "></div>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<div class="">
 					<?= $this->Form->create($employee,['id'=>'CountryForm']); ?>
 						<div class="form-group col-md-6">
 							<label class="control-label col-md-12"> Name <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
@@ -36,7 +50,7 @@
 						
 						<div class="form-group col-md-6">
 							<label class="control-label col-md-12"> Email <span class="required" aria-required="true">
-							* </span>
+							 </span>
 							</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
@@ -48,7 +62,7 @@
 						
 						<div class="form-group col-md-6">
 							<label class="control-label col-md-12"> Mobile Number <span class="required" aria-required="true">
-							* </span>
+							</span>
 							</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
@@ -69,12 +83,12 @@
 							</div>
 						</div>
 						
- 						<div class="col-md-12"><hr></hr></div>
-						<div class="form-actions">
+ 						
+						<div class="form-actions btn-sets">
 							<div class="row">
 							
 								<div class="col-md-offset-6 col-md-9">
-									<?php echo $this->Form->button('Submit',['class'=>'btn btn-primary']); ?> 
+									<?php echo $this->Form->button('Submit',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
 						</div>
@@ -84,7 +98,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<div class="col-md-2"></div>
 </div>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <!-- BEGIN COMPONENTS DROPDOWNS -->
@@ -169,3 +183,8 @@ $(document).ready(function() {
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
+<style>
+.btn-sets{
+	
+}
+</style>

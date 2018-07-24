@@ -14,6 +14,7 @@ class ItemCategoriesController extends AppController
 { 
     public function add($id = null)
     {
+		
 		$this->viewBuilder()->layout('admin');
 		if(!$id)
 		{				

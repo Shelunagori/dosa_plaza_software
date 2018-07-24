@@ -1,22 +1,21 @@
+<?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Item Category'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light">
-			<div class="caption">
-				<i class="icon-bar-chart font-green-sharp hide"></i>
-				<span>Item Sub Category</span>
+			<div class="caption top-caption">
+				<span>Item Category</span>
 			</div>
 		</div>
 	</div>
+</div>	
 <div class="row">
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet green box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
-			
 				<div class="caption">
-					<i class="fa fa-edit"></i>
 					<?php if(!empty($id)){ ?>
 						Edit Category
 					<?php }else{ ?>
@@ -28,13 +27,16 @@
 						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/ItemCategories/add/',array('escape'=>false,'style'=>'color:#fff'));?>
 					<?php }?>
 				</div>
+				<div class="row">	
+						<div class="col-md-12 horizontal "></div>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<div class="">
 					<?= $this->Form->create($itemCategory,['id'=>'CountryForm']) ?>
 						<div class="form-group">
 							<label class="control-label col-md-4">Category Name <span class="required" aria-required="true">
-							* </span>
+							</span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -44,12 +46,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-12"><hr></hr></div>
+						
 						<div class="form-actions">
 							<div class="row">
 							
 								<div class="col-md-offset-6 col-md-9">
-									<?php echo $this->Form->button('Submit',['class'=>'btn btn-primary']); ?> 
+									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
 						</div>
@@ -61,20 +63,23 @@
 	</div>
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet blue box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-book"></i>View Category List
+					View Category List
 				</div>
 				<div class="tools"> 
  				</div>
+				<div class="row">	
+						<div class="col-md-12 horizontal "></div>
+				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-bordered" cellpadding="0" cellspacing="0">
+				<table class="table table-str table-hover " cellpadding="0" cellspacing="0">
 					<thead>
-						<tr style="background-color:#DFD9C4;">
+						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
-							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
+							<th scope="col"><?= ('Name') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -84,40 +89,34 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link('<i class="fa fa-edit"></i>','/ItemCategories/add/'.$country->id,array('escape'=>false,'class'=>'btn btn-warning btn-xs'));?>
-								<a class=" btn btn-danger btn-xs" data-target="#deletemodal<?php echo $country->id; ?>" data-toggle=modal><i class="fa fa-trash"></i></a>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemCategories','action'=>'add',$country->id]]);?>
+								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
+								
 										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
 											<div class="modal-dialog modal-md" >
 												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemCategories','action'=>'delete',$country->id)) ?>">
 													<div class="modal-content">
 													  <div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal">&times;</button>
+															
 															<h4 class="modal-title">
 															Are you sure you want to remove this Category?
 															</h4>
 														</div>
-														<div class="modal-footer">
-															<button type="submit" class="btn  btn-sm btn-info">Yes</button>
-															<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal">Cancel</button>
+														<div class="modal-footer" style="border:none;">
+															<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+															<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
 														</div>
 													</div>
 												</form>
 											</div>
 										</div>
-							   <?php  $this->Form->PostLink('<i class="fa fa-trash"></i>','/Countries/delete/'.$country->id,array('escape'=>false,'class'=>'btn btn-danger btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $country->id)));?>
+							   <?php  $this->Form->PostLink('<i class="fa fa-trash-o"></i>','/Countries/delete/'.$country->id,array('escape'=>false,'class'=>'btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $country->id)));?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 
 					</tbody>
 				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-					</ul>
-					<p><?= $this->Paginator->counter() ?></p>
-				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -191,3 +190,4 @@ $(document).ready(function() {
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
+
