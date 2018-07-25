@@ -32,6 +32,7 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->newEntity();
         if ($this->request->is('post')) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
+           // pr($rawMaterial);exit;
             if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
@@ -40,7 +41,7 @@ class RawMaterialsController extends AppController
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
 		$Taxes = $this->RawMaterials->Taxes->find('list');
-        $units = $this->RawMaterials->SecondaryUnits->find('list')->where(['is_deleted'=>0]);
+        $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
         $this->set(compact('rawMaterial','Taxes','units'));
     }
 
