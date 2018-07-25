@@ -22,14 +22,15 @@
 				</div>
 			</div>	
 			<div class="portlet-body">
-				<div class="form-group">
-					<div class="col-md-4">
-						<label class="control-label" style="padding:0;">Transaction Date</label>
+				<div class="">
+					<div class="form-group col-md-4">
+						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span>
+</label>
 						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
 					</div>	
-					<div class="col-md-4">
-						<label class="control-label" style="padding:0;">Vendors<span class="required" required name="vandors"></span></label>
-						<?php echo $this->Form->input('vendor_id',['options' =>$Vendors,'label' => false,'class'=>'form-control  select2me input-medium ','empty'=> 'select . . .']);?>
+					<div class="form-group col-md-4">
+						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
+						<?php echo $this->Form->input('vendor_id',['options' =>$Vendors,'label' => false,'class'=>'form-control  select2me input-medium ','empty'=> 'select . . .','required'=>'required']);?>
 					</div>
 				</div>
 			</div>
@@ -39,13 +40,13 @@
 						<thead class="bg_color">
 							<tr align="center">
 								<th rowspan="2" style="text-align:left;">Sr</th>
-								<th rowspan="2" style="text-align:left;width:15%">Item</th>
-								<th rowspan="2" style="text-align:left;">Quantity</th>
-								<th rowspan="2" style="text-align:left;width:8%;">Rate</th>
+								<th rowspan="2" style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
+								<th rowspan="2" style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th>
+								<th rowspan="2" style="text-align:left;width:8%;">Rate <span class="required" required name="vandors">*</span></th>
 								<th colspan="2" style="text-align:center;">Discount</th>
 								<th rowspan="2" style="text-align:left;"> Taxable Value</th>
 								<th colspan="2" style="text-align:center;"> GST</th>
-								<th rowspan="2" style="text-align:left;"> Round off</th>
+								<th rowspan="2" style="text-align:left;"> Round off </th>
 								<th rowspan="2" style="text-align:left;">Total </th>
 								<th rowspan="2" style="text-align:left;">Action</th>
 							</tr>
@@ -83,57 +84,36 @@
 	</div>
 </div>
 <!-- BEGIN PAGE LEVEL STYLES -->
-	<!-- BEGIN COMPONENTS PICKERS -->
-	<?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<!-- END COMPONENTS PICKERS -->
-
 	<!-- BEGIN COMPONENTS DROPDOWNS -->
 	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 	<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
-	<?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL STYLES -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 	<!-- BEGIN COMPONENTS PICKERS -->
 	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<!-- END COMPONENTS PICKERS -->
 	
 	<!-- BEGIN COMPONENTS DROPDOWNS -->
 	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>			
-	<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 	<!-- BEGIN COMPONENTS PICKERS -->
-	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?> 
 	<!-- END COMPONENTS PICKERS -->
 
 	<!-- BEGIN COMPONENTS DROPDOWNS -->
-	<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
-	<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
-	<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
-	<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	 
 	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-dropdowns.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
 	<!-- BEGIN VALIDATEION -->
 	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<!-- END VALIDATEION --> 
-	<!-- END COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<!-- END VALIDATEION -->  
     <!-- END PAGE LEVEL SCRIPTS -->
 	
 	<?php
@@ -307,7 +287,7 @@
 				$('#main_table tbody#main_tbody tr.main_tr').each(function(){
                     var row_no = $(this).attr('row_no');					
 					$(this).find('td:nth-child(1)').html(i+1);
-					$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][raw_material_id]', id:' purchase_voucher_rows-'+i+'-raw_material_id'
+					$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][raw_material_id]', id:'purchase_voucher_rows-'+i+'-raw_material_id'
 							});
 					$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][quantity]', id:'Purchase_Voucher_Rows-'+i+'-quantity'
 							});
@@ -335,90 +315,60 @@
 						i++;
 						
 				});
-	var FormValidation = function () {
 
-			// basic validation
-		var handleValidation1 = function() {
-			// for more info visit the official plugin documentation: 
-            // http://docs.jquery.com/Plugins/Validation
+		var FormValidation = function () {
+				// basic validation
+			var handleValidation1 = function() {
+				// for more info visit the official plugin documentation: 
+	            // http://docs.jquery.com/Plugins/Validation
 
-            var form1 = $('#form_sample_1');
-            var error1 = $('.alert-danger', form1);
-            var success1 = $('.alert-success', form1);
-            form1.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                 // validate all fields including form hidden input
-               
-                rules: {
-                    transaction_date: {
-                        required: true
-                    },
-                    vandors: {
-                        required: true,
-                     },
-                    url: {
-                        required: true,
-                        url: true
-                    },
-                    number: {
-                        required: true,
-                        number: true
-                    },
-                    digits: {
-                        required: true,
-                        digits: true
-                    },
-                    creditcard: {
-                        required: true,
-                        creditcard: true
-                    },
-                    occupation: {
-                        minlength: 5,
-                    },
-                    select: {
-                        required: true
-                    },
-                    select_multi: {
-                        required: true,
-                        minlength: 1,
-                        maxlength: 3
-                    }
-                },
+	            var form1 = $('#form_sample_1');
+	            var error1 = $('.alert-danger', form1);
+	            var success1 = $('.alert-success', form1);
+	            form1.validate({
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block help-block-error', // default input error message class
+	                focusInvalid: false, // do not focus the last invalid input
+	                 // validate all fields including form hidden input
+	               
+	                rules: {
+	                    transaction_date: {
+	                        required: true
+	                    },
+	                },
 
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success1.hide();
-                    error1.show();
-                    Metronic.scrollTo(error1, -200);
-                },
+	                invalidHandler: function (event, validator) { //display error alert on form submit              
+	                    success1.hide();
+	                    error1.show();
+	                    Metronic.scrollTo(error1, -200);
+	                },
 
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').addClass('has-error'); // set error class to the control group
-                },
+	                highlight: function (element) { // hightlight error inputs
+	                    $(element)
+	                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+	                },
 
-                unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-                },
+	                unhighlight: function (element) { // revert the change done by hightlight
+	                    $(element)
+	                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+	                },
 
-                success: function (label) {
-                    label
-                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-                },
+	                success: function (label) {
+	                    label
+	                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+	                },
 
-                submitHandler: function (form) {
-                    success1.show();
-                    error1.hide();
-                }
+	                submitHandler: function (form) { 
+	                    success1.show();
+	                    error1.hide();
+	                    form[0].submit(); // submit the form
+	                }
 
-            });
+	            });
 
+	    	}
 
-    }
-
-}();
+		}();
 	}
 	";
 
@@ -429,16 +379,16 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<tr class="main_tr">
 			<td style="vertical-align: top !important;"></td>
 			<td width="15%" align="left">
-				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false]); ?>
+				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
 			<td width="5%" align="center">
-				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm calc Qty rightAligntextClass']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm calc Qty rightAligntextClass','required'=>'required']); ?>
 			</td>
 			<td width="8%" align="center">
 				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm calc  Rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'autofocus','required'=>'required']); ?>
 			</td>		
 			<td width="8%" align="center">
-				<?php echo $this->Form->input('discount_per',['class'=>' discount_per form-control input-sm calc  dis numberOnly rightAligntextClass','label'=>false,'autofocus','required'=>'required']); ?>
+				<?php echo $this->Form->input('discount_per',['class'=>' discount_per form-control input-sm calc  dis numberOnly rightAligntextClass','label'=>false,'autofocus']); ?>
 			</td>
 			<td  width="10%" align="center">
 				<?php echo $this->Form->input('discount_amt', ['style'=>'text-align:right','label' => false,'class' => 'discount_amt form-control input-sm calc discountAmount numberOnly','type'=>'text']);
