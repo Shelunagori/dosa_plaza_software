@@ -28,7 +28,7 @@
 						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
 					</div>	
 					<div class="col-md-4">
-						<label class="control-label" style="padding:0;">Vendors<span class="required" aria-required="true"></span></label>
+						<label class="control-label" style="padding:0;">Vendors<span class="required" required name="vandors"></span></label>
 						<?php echo $this->Form->input('vendor_id',['options' =>$Vendors,'label' => false,'class'=>'form-control  select2me input-medium ','empty'=> 'select . . .']);?>
 					</div>
 				</div>
@@ -355,10 +355,9 @@
                     transaction_date: {
                         required: true
                     },
-                    email: {
+                    vandors: {
                         required: true,
-                        email: true
-                    },
+                     },
                     url: {
                         required: true,
                         url: true
@@ -430,7 +429,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<tr class="main_tr">
 			<td style="vertical-align: top !important;"></td>
 			<td width="15%" align="left">
-				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc','empty' => '--Select Item--','label'=>false]); ?>
+				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false]); ?>
 			</td>
 			<td width="5%" align="center">
 				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm calc Qty rightAligntextClass']); ?>
