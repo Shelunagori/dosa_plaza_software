@@ -95,10 +95,6 @@ License: You must have a valid license purchased only from themeforest(the above
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
 								<li>
-									<a href="extra_profile.html">
-									<i class="icon-user"></i> My Profile </a>
-								</li>
-								<li>
 									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
 								</li>
 							</ul>

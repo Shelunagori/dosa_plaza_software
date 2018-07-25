@@ -66,9 +66,11 @@ class AppController extends Controller
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
-		$coreVariable = [
-			'user_name' => $this->Auth->User('name')
-		];
+		
+        $coreVariable = [
+            'user_name' => $this->Auth->User('name'),
+            'role' => $this->Auth->User('role'),
+        ];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));
 
