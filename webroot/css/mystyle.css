@@ -15,9 +15,10 @@
 	}
 	.portlet.box.blue-hoki > .portlet-title > .caption {
 		color: #F3565D;
+		
     }
 	.portlet.box>.portlet-title>.caption {
-		padding: 13px 0 11px 18px;
+		padding: 13px 0 11px 18px !important;
 	}
 	.portlet.box.blue-hoki > .portlet-title {
 		background-color: #FFFFFF;
