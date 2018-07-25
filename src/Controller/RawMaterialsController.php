@@ -88,7 +88,7 @@ class RawMaterialsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-	public function stock_adjustment(){
+	public function stockAdjustment(){
 		
 		
 		
