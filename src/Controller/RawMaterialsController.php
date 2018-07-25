@@ -89,8 +89,8 @@ class RawMaterialsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	public function stockAdjustment(){
-		
-		
-		
+		  
+		$Names = $this->RawMaterials->Names->find('list'); 
+		$this->set(compact('Names'));
 	}
 }
