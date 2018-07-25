@@ -32,6 +32,7 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->newEntity();
         if ($this->request->is('post')) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
+           // pr($rawMaterial);exit;
             if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
