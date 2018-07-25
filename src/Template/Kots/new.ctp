@@ -29,18 +29,10 @@
 .CreateBill{
 	color: #FFF; background-color: #2D4161; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
 }
-.topBtnActive{
-	color: #FFF; border-radius: 5px !important; background-color: #FA6775; padding: 7px 18px;margin-left: 8px;
-}
-.topBtn{
-	color: #818182; border-radius: 5px !important; background-color: #FFF; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
-}
-.topBtn2{
-	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
-}
+
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
-
+<?= $this->element('header'); ?>
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	

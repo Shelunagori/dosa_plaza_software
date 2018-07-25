@@ -17,20 +17,8 @@
 }
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
-<div class="row" style="background: #FEFEFE;padding: 15px;">
-    <div class="col-md-6" >
-        <span id="BackToTables" style="display:none;font-weight: bold;" ><i class="fa fa-arrow-left"></i></span>
-        <span class="topBtnActive">Dinner In</span>
-        <span class="topBtn">Delivery</span>
-        <span class="topBtn">Take Away</span>
-    </div>
-    <div class="col-md-6" align="right">
-        <span class="topBtn2">Booking</span>
-        <span class="topBtn2">Bills</span>
-        <span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
-        <span style="color: #2FBD9F;font-size: 15px;margin-left: 8px;">₹5000</span>
-    </div>
-</div>
+<?= $this->element('header'); ?>
+
 <div style="background: #EBEEF3;">
     <input type="hidden"  id="tableInput" />
     <div class="row TableView" style="padding:10px;">
@@ -80,7 +68,7 @@
                                 </tr>
                                 <tr>
                                     <td valign="Bottom" style="text-align: center;">
-                                        <a style="color:#fa6775;">Customer Info</a>
+                                        <a style="color:#fa6775;">Customer Info.</a>
                                         <span style=" margin: 0 10px;color:#96989A; ">|</span>
                                         <?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'new', $Table->id], ['style' => 'color:#fa6775;']) ?>
                                     </td>
@@ -101,7 +89,7 @@
                                             <?php echo $this->Html->image('/table-icon.png', ['alt' => 'Empty Table']); ?>
                                             <br/>
                                             <span class="EmptyTbl" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">Available Now</span>
-                                            <div style="height: 37px;"></div>
+                                            <div style="height: 60px;"></div>
                                         </div>
                                     </td>
                                 </tr>
