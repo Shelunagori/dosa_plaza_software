@@ -33,7 +33,7 @@ class UsersController extends AppController
                     return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
                 }
                 else{
-                    return $this->redirect(['controller'=>'Users','action' => 'Dashboard2']);
+                    return $this->redirect(['controller'=>'tables','action' => 'index']);
                 }				
             }
             $this->Flash->error(__('Invalid Username or Password'));
