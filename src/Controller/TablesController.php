@@ -20,10 +20,34 @@ class TablesController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('admin');
-        $tables = $this->paginate($this->Tables);
+		$this->viewBuilder()->layout('counter');
+        
+        $Tables=$this->Tables->find();
 
-        $this->set(compact('tables'));
+        $this->set(compact('Tables'));
+    }
+
+
+    public function saveTable()
+    {
+        $this->viewBuilder()->layout('');
+        
+        $c_name=$this->request->query('c_name');
+        $c_mobile=$this->request->query('c_mobile');
+        $c_pax=$this->request->query('c_pax');
+        $table_id=$this->request->query('table_id');
+        $Table=$this->Tables->get($table_id);
+        $Table->status='occupied';
+        $Table->c_name=$c_name;
+        $Table->c_mobile=$c_mobile;
+        $Table->no_of_pax=$c_pax;
+        $Table->occupied_time=date( "Y-m-d H:i:s" );
+        if($this->Tables->save($Table)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+        exit;
     }
 
     /**

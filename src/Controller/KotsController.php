@@ -26,6 +26,16 @@ class KotsController extends AppController
         $this->set(compact('kots'));
     }
 
+    public function new($table_id=null)
+    {
+        $this->viewBuilder()->layout('counter');
+
+
+        $ItemCategories=$this->Kots->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);
+        $Items=$this->Kots->ItemCategories->ItemSubCategories->Items->find()->order(['Items.name'=>'ASC']);
+        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id'));
+    }
+
     /**
      * View method
      *
