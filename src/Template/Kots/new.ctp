@@ -452,7 +452,13 @@
 				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount}); 
 			});
 			var table_id=$('#tableInput').val();
-			var customer_id=$('input[name=customer_id]').val();
+			var c_name=$('#c_name').val();
+			var c_mobile_no=$('#c_mobile_no').val();
+			var c_pax=$('#c_pax').val();
+			var dob=$('#dob').val();
+			var doa=$('#doa').val();
+			var c_email=$('#c_email').val();
+			var c_address=$('#c_address').val();
 			
 			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text();
 			var tax_id=$('#billTable tfoot tr:nth-child(2) td:nth-child(2) select option:selected').attr('tax_id');
@@ -462,20 +468,22 @@
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&tax_id='+tax_id+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&customer_id='+customer_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&tax_id='+tax_id+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax;
+			url=encodeURI(url);
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
-				if(bill_id!=0){
-					$('#WaitBox3').hide();
-					$('#WaitBox2').hide();
+				console.log(bill_id);
+				// if(bill_id!=0){
+				// 	$('#WaitBox3').hide();
+				// 	$('#WaitBox2').hide();
 					
-					var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
-					url=url+'?bill_id='+bill_id;
-					var w = window.open(url, 'popupWindow', 'scrollbars=yes');
-				}else{
-					$('#WaitBox3 div.modal-body').html('".$errorMessage."');
-				}
+				// 	var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
+				// 	url=url+'?bill_id='+bill_id;
+				// 	var w = window.open(url, 'popupWindow', 'scrollbars=yes');
+				// }else{
+				// 	$('#WaitBox3 div.modal-body').html('".$errorMessage."');
+				// }
 				
 			});
 		});
@@ -612,7 +620,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 
 <div id="WaitBox3" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
 	<div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-full">
 		<div class="modal-content">
 			<div class="modal-body">
 			</div>

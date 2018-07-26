@@ -50,6 +50,29 @@ class TablesController extends AppController
         exit;
     }
 
+    public function saveCustomer()
+    {
+        $this->viewBuilder()->layout('');
+
+        $table_id=$this->request->query('table_id');
+        
+        $Table=$this->Tables->get($table_id);
+        
+        $Table->c_name=$this->request->query('c_name');
+        $Table->c_mobile=$this->request->query('c_mobile_no');
+        $Table->no_of_pax=$this->request->query('c_pax');
+        $Table->dob=$this->request->query('dob');
+        $Table->doa=$this->request->query('doa');
+        $Table->email=$this->request->query('c_email');
+        $Table->c_address=$this->request->query('c_address');
+        if($this->Tables->save($Table)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+        exit;
+    }
+
     /**
      * View method
      *
