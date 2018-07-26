@@ -113,6 +113,13 @@ class TablesController extends AppController
         $this->set(compact('table'));
     }
 
+    public function customer($id = null)
+    {
+        $this->viewBuilder()->layout('');
+        $table = $this->Tables->get($id);
+        $this->set(compact('table'));
+    }
+
     /**
      * Delete method
      *

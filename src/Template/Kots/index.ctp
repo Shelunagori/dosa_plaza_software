@@ -4,7 +4,7 @@
 	}
 </style>
 <div align="center" style="position: relative;">
-	<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL</span>
+	<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">VIEW ALL KOT</span>
 	<span class="closeViewKot">Close</span>
 </div>
 
@@ -18,7 +18,7 @@
 		<div class="panel-heading" style="padding:10px;background-color: #E6E7E8;">
 			<span class="panel-title" style="font-size: 14px; color: #373435;">
 			<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion_<?php echo $kot->id; ?>" aria-expanded="false">
-			KOT#<?php echo $kot->voucher_no; ?> [<?php echo $kot->created_on; ?>]
+			KOT#<?php echo $kot->voucher_no; ?> [<?php echo $kot->created_on->format('d-m-Y h:i'); ?>]
 			</a>
 			</span>
 			<span class="iconBox" style="color: #000; float: right;"><i class="fa fa-plus"></i></span>

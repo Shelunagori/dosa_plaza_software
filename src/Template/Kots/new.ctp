@@ -1,4 +1,10 @@
 <style>
+.createCustomer{
+	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+}
+.closeCustomerBox{
+	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
 .closePopup{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
@@ -116,6 +122,7 @@
 											<th style="text-align:center;">Quantity</th>
 											<th style="text-align:center;">Rate</th>
 											<th style="text-align:center;">Amount</th>
+											<th style="text-align:center;">Comment</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -125,10 +132,12 @@
 								</table>
 							</div>
 							<div style="padding-top:12px" align="center">
+								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
 							</div>
 							<br/><br/>
 							<div style="padding-top:12px" align="right">
+								<span class="CreateBill" >GENERATE BILL </span>
 								<span class="ViewAllKOT" >VIEW ALL KOT</span>
 							</div>
 							<br/><br/>
@@ -328,7 +337,7 @@
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
 		
 		
@@ -342,7 +351,7 @@
 				
 				var c=$('#kotBox tbody tr').length;
 				c=c+1;
-				$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 			}
 			
 		});
@@ -536,9 +545,44 @@
 						$('#customerView').html(response);
 					});
 				}
-				
 			});
 		});
+
+
+		$('.closeCustomerBox').die().live('click',function(event){
+			$('#WaitBox4').hide();
+		});
+
+		$('.createCustomer').die().live('click',function(event){
+
+			var ths=$(this);
+			
+			var c_name=$('input[name=c_name]').val();
+			if(c_name.length==0){
+				alert('Enter customer name.');
+				return;
+			}
+			var c_mobile_no=$('input[name=c_mobile_no]').val();
+			var c_address=encodeURI($('textarea[name=c_address]').val());
+			$(this).html('<i class=\"fa fa-refresh fa-spin\"></i> Loading');
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'saveCustomer'])."';
+			url=url+'?c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&c_address='+c_address;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				$('#WaitBox4').hide();
+				$('input[name=mobile_no]').val('');
+				var url='".$this->Url->build(['controller'=>'Customers','action'=>'view'])."';
+				url=url+'?c_id='+response;
+				$.ajax({
+					url: url,
+				}).done(function(response) {
+					$('#customerView').html(response);
+				});
+			});
+		});
+
+		
 		
 	});	
 	";

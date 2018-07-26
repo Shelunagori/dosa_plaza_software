@@ -68,7 +68,7 @@
                                 </tr>
                                 <tr>
                                     <td valign="Bottom" style="text-align: center;">
-                                        <a style="color:#fa6775;">Customer Info.</a>
+                                        <a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
                                         <span style=" margin: 0 10px;color:#96989A; ">|</span>
                                         <?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'new', $Table->id], ['style' => 'color:#fa6775;']) ?>
                                     </td>
@@ -155,6 +155,7 @@
 
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <?php
+$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Loading...</span></div>';
 $js="
 $(document).ready(function() {
     $('.EmptyTbl').die().live('click',function(event){
@@ -210,6 +211,27 @@ $(document).ready(function() {
         window.location.href = url;
     }); 
 
+
+    $('.customer_info').die().live('click',function(event){
+        $('#WaitBox2').show();
+        $('#WaitBox2 div.modal-body').html('".$waitingMessage."');
+
+        var table_id=$(this).attr('table_id');
+        var url='".$this->Url->build(['controller'=>'Tables','action'=>'customer'])."';
+        url=url+'/'+table_id;
+        $.ajax({
+            url: url,
+        }).done(function(response) {
+            $('#WaitBox2 div.modal-body').html(response);
+        });
+    });
+
+
+    $('.closeCustomerBox').die().live('click',function(event){
+        $('#WaitBox2').hide();
+    });
+
+
 });
 ";
 
@@ -233,7 +255,6 @@ foreach($Tables as $Table){
             , 1000);
         ";
     }
-    
 }
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
@@ -277,6 +298,16 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
                     <span class="closeCustomerBox">CLOSE</span>
                     <span class="registerCustomer">OCCUPY</span>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="WaitBox2" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+    <div class="modal-backdrop fade in" ></div>
+    <div class="modal-dialog" style="width: 500px !important;">
+        <div class="modal-content">
+            <div class="modal-body">
             </div>
         </div>
     </div>
