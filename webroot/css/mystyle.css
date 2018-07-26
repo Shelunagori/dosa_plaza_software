@@ -1,4 +1,4 @@
-.portlet.light{
+	.portlet.light{
 		padding: 14px 20px 14px 25px !important;
 		margin: 0px 0px 15px !important;
 	}
@@ -92,7 +92,9 @@
 		padding-right:15px !important ;
 		padding-left:15px !important ;
 	}
-		
+	.help-block-error{
+		color: #a94442;
+	}	
 	
 	
 	.table-str>tbody>tr:nth-child(even){background-color: #f2f2f2;!important}}
