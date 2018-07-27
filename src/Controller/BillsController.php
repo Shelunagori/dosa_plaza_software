@@ -85,7 +85,12 @@ class BillsController extends AppController
             
             $last_Customer=$this->Bills->Customers->find()
                             ->order(['customer_code' => 'DESC'])->first();
-            $Customer->customer_code=$last_Customer->customer_code+1;
+            if($last_Customer){
+                $Customer->customer_code=$last_Customer->customer_code+1;
+            }else{
+                $Customer->customer_code=2001;
+            }
+            
 
             $this->Bills->Customers->save($Customer);
         }
@@ -130,6 +135,10 @@ class BillsController extends AppController
 			$bill_rows[]=$bill_row;
 		}
 		$bill->bill_rows=$bill_rows;
+
+        $Table = $this->Bills->Tables->get($table_id);
+        $bill->occupied_time=$Table->occupied_time;
+
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
 			$query->update()
@@ -145,6 +154,18 @@ class BillsController extends AppController
                     ->where(['id' => $kot_id])
                     ->execute();
             }
+
+            
+            $Table->status = 'vacant';
+            $Table->c_name = '';
+            $Table->c_mobile = '';
+            $Table->no_of_pax = '';
+            $Table->occupied_time = '';
+            $Table->dob = '';
+            $Table->doa = '';
+            $Table->email = '';
+            $Table->c_address = '';
+            $this->Bills->Tables->save($Table);
 		}else{
 			echo '0';
 		}

@@ -1,10 +1,4 @@
 <style>
-.createCustomer{
-	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
-}
-.closeCustomerBox{
-	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
-}
 .closePopup{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
@@ -17,9 +11,7 @@
 .SubmitBill{
 	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
 }
-.searchCustomer{
-	color: #FFF; background-color: #FA6775; padding: 10px 18px;font-size:12px;cursor: pointer;margin-bottom: 2px;
-}
+
 .AddItemBtn{
 	color: #FFF; background-color: #FA6775; padding: 9px 18px;font-size:12px;cursor: pointer;
 }
@@ -401,20 +393,20 @@
 		});
 		
 		$('.closeViewKot').die().live('click',function(event){
-			$('#WaitBox3').hide();
+			$('#WaitBox4').hide();
 		});
 
 		$('.ViewAllKOT').die().live('click',function(event){
 			event.preventDefault();
 			var table_id=$('#tableInput').val();
-			$('#WaitBox3').show();
-			$('#WaitBox3 div.modal-body').html('".$waitingMessage2."');
+			$('#WaitBox4').show();
+			$('#WaitBox4 div.modal-body').html('".$waitingMessage2."');
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
 			url=url+'?table_id='+table_id;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
-				$('#WaitBox3 div.modal-body').html(response);
+				$('#WaitBox4 div.modal-body').html(response);
 			});
 		});
 		
@@ -439,6 +431,7 @@
 		
 		$('.SubmitBill').die().live('click',function(event){
 			event.preventDefault();
+			$(this).text('Saving...');
 			$('#WaitBox2').show();
 			$('#WaitBox2 div.modal-body').html('".$waitingMessage."');
 			var postData=[];
@@ -473,17 +466,22 @@
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
-				console.log(bill_id);
-				// if(bill_id!=0){
-				// 	$('#WaitBox3').hide();
-				// 	$('#WaitBox2').hide();
+				if(bill_id!=0){
+					$('#WaitBox3').hide();
+					$('#WaitBox2').hide();
 					
-				// 	var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
-				// 	url=url+'?bill_id='+bill_id;
-				// 	var w = window.open(url, 'popupWindow', 'scrollbars=yes');
-				// }else{
-				// 	$('#WaitBox3 div.modal-body').html('".$errorMessage."');
-				// }
+					var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
+					url=url+'?bill_id='+bill_id;
+					var win = window.open(url, '_blank');
+					win.focus();
+
+					var url2='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."';
+  					window.location.href = url2;
+
+  					
+				}else{
+					$('#WaitBox3 div.modal-body').html('".$errorMessage."');
+				}
 				
 			});
 		});
@@ -523,74 +521,6 @@
 			$(this).closest('div.panel-heading').find('span.iconBox').html('<i class=\"fa fa-minus\"></i>').css('color','#FFF');
 		});
 
-		$('.searchCustomer').die().live('click',function(event){
-			var mobile_no=$('input[name=mobile_no]').val();
-			if(mobile_no.length!=10){
-				alert('Mobile No should be of 10 digits.');
-				return;
-			}
-			var url='".$this->Url->build(['controller'=>'Customers','action'=>'check-customer'])."';
-			url=url+'?mobile_no='+mobile_no;
-			$.ajax({
-				url: url,
-			}).done(function(response) {
-				if(response=='0'){
-					$('#WaitBox4').show();
-					$('#WaitBox4 div.modal-body').html('".$waitingMessage2."');
-					var url='".$this->Url->build(['controller'=>'Customers','action'=>'add'])."';
-					url=url+'?mobile_no='+mobile_no;
-					$.ajax({
-						url: url,
-					}).done(function(response) {
-						$('#WaitBox4 div.modal-body').html(response);
-					});
-				}else{
-					var url='".$this->Url->build(['controller'=>'Customers','action'=>'view'])."';
-					url=url+'?c_id='+response;
-					$.ajax({
-						url: url,
-					}).done(function(response) {
-						$('#customerView').html(response);
-					});
-				}
-			});
-		});
-
-
-		$('.closeCustomerBox').die().live('click',function(event){
-			$('#WaitBox4').hide();
-		});
-
-		$('.createCustomer').die().live('click',function(event){
-
-			var ths=$(this);
-			
-			var c_name=$('input[name=c_name]').val();
-			if(c_name.length==0){
-				alert('Enter customer name.');
-				return;
-			}
-			var c_mobile_no=$('input[name=c_mobile_no]').val();
-			var c_address=encodeURI($('textarea[name=c_address]').val());
-			$(this).html('<i class=\"fa fa-refresh fa-spin\"></i> Loading');
-			var url='".$this->Url->build(['controller'=>'Customers','action'=>'saveCustomer'])."';
-			url=url+'?c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&c_address='+c_address;
-			$.ajax({
-				url: url,
-			}).done(function(response) {
-				$('#WaitBox4').hide();
-				$('input[name=mobile_no]').val('');
-				var url='".$this->Url->build(['controller'=>'Customers','action'=>'view'])."';
-				url=url+'?c_id='+response;
-				$.ajax({
-					url: url,
-				}).done(function(response) {
-					$('#customerView').html(response);
-				});
-			});
-		});
-
-		
 		
 	});	
 	";
@@ -619,7 +549,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 </div>
 
 <div id="WaitBox3" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
-	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-backdrop " ></div>
 	<div class="modal-dialog modal-full">
 		<div class="modal-content">
 			<div class="modal-body">

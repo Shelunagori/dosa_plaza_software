@@ -325,7 +325,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<br/><br/>
 				<div align="center">
 					<span class="closeCustomerBox">CLOSE</span>
-					<span class="registerCustomer">OCCUPY</span>
+					<span class="registerCustomer">BOOK THE TABLE</span>
 				</div>
 			</div>
 		</div>
