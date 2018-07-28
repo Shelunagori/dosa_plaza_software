@@ -1,4 +1,18 @@
 <style>
+.commentString{
+    background-color: #2d4161;
+    padding:  5px;
+    border-radius:  5px;
+    color:  #FFF;
+    margin-right:  5px;
+    cursor:  pointer;
+}
+.closeCommentBox{
+	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
+.saveComment{
+	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+}
 .closePopup{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
@@ -124,6 +138,7 @@
 								</table>
 							</div>
 							<div style="padding-top:12px" align="center">
+								<textarea id="oneComment" style="display: none;"></textarea>
 								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
 							</div>
@@ -329,7 +344,7 @@
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
 		
 		
@@ -343,7 +358,7 @@
 				
 				var c=$('#kotBox tbody tr').length;
 				c=c+1;
-				$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 			}
 			
 		});
@@ -352,7 +367,8 @@
 			$(this).closest('tr').remove();
 			var c=0;
 			$('#kotBox tbody tr').each(function(){
-				var item_id=$(this).find('td:nth-child(1)').text(++c);
+				var item_id=$(this).attr('row_no',++c);
+				var item_id=$(this).find('td:nth-child(1)').text(c);
 			});
 		});
 		
@@ -374,17 +390,20 @@
 				var quantity=$(this).find('td:nth-child(3)').text();
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount}); 
+				var comment=$(this).find('.comment').val();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, comment : comment}); 
 			});
 			var table_id=$('#tableInput').val();
+			var one_comment=$('#oneComment').val();
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
 				if(response=='1'){
 					$('#kotBox tbody tr').remove();
+					$('#oneComment').val('');
 					$('#WaitBox div.modal-body').html('".$successMessage."');
 				}else{
 					$('#WaitBox div.modal-body').html('".$errorMessage."');
@@ -521,6 +540,51 @@
 			$(this).closest('div.panel-heading').find('span.iconBox').html('<i class=\"fa fa-minus\"></i>').css('color','#FFF');
 		});
 
+
+		$('.commentRow').die().live('click',function(event){
+			var c=$(this).closest('tr').find('.comment').val();
+			$('.commentContainor').val(c);
+			var sr_no=$(this).closest('tr').attr('row_no');
+			$('#rowSR').val(sr_no);
+			$('#WaitBox5').show();
+		});
+
+		$('.closeCommentBox').die().live('click',function(event){
+			$('#WaitBox5').hide();
+		});
+
+		$('.commentString').die().live('click',function(event){
+			var s=$(this).text();
+			old_s=$('.commentContainor').val();
+			if(old_s!=''){
+				s=old_s+', '+s;
+			}
+			
+			$('.commentContainor').val(s);
+		});
+
+		$('.saveComment').die().live('click',function(event){
+			var c=$('.commentContainor').val();
+			var sr_no=$('#rowSR').val();
+			if(sr_no=='0'){
+				$('#oneComment').val(c);
+				$('#WaitBox5').hide();
+			}else{
+				$('tr[row_no='+sr_no+']').find('.comment').val(c);
+				$('#WaitBox5').hide();
+			}
+			
+		});
+
+		$('.KOTComment').die().live('click',function(event){
+			var c=$('#oneComment').val();
+			$('.commentContainor').val(c);
+			var sr_no=0;
+			$('#rowSR').val(sr_no);
+			$('#WaitBox5').show();
+		});
+
+
 		
 	});	
 	";
@@ -563,6 +627,36 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox5" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<input type="hidden" id="rowSR">
+				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">COMMENT BOX</div>
+				<br/>
+				<div class="form-group">
+					<textarea class="form-control commentContainor" rows="3" style="background-color: #F5F5F5;"></textarea>
+				</div>
+				<br/>
+				<div>
+					<label style=" color: #2D4161; font-weight: bold; font-size: 14px; ">Predefined Comments</label>
+					<div>
+						<?php foreach ($Comments as $Comment) { ?>
+							<span class="commentString"><?php echo $Comment; ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<br/><br/>
+				<div align="center">
+					<span class="closeCommentBox">CLOSE</span>
+					<span class="saveComment">SAVE COMMENT</span>
+				</div>
 			</div>
 		</div>
 	</div>

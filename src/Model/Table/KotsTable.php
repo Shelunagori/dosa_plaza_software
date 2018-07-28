@@ -43,7 +43,8 @@ class KotsTable extends Table
             'joinType' => 'INNER'
         ]);
 
-		$this->belongsTo('Taxes');
+        $this->belongsTo('Taxes');
+		$this->belongsTo('Comments');
 
         $this->belongsTo('ItemCategories');
         

@@ -31,9 +31,12 @@ class KotsController extends AppController
         $this->viewBuilder()->layout('counter');
 
 
-        $ItemCategories=$this->Kots->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);
-        $Items=$this->Kots->ItemCategories->ItemSubCategories->Items->find()->order(['Items.name'=>'ASC']);
-        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id'));
+        $ItemCategories =   $this->Kots->ItemCategories->find()
+                            ->contain(['ItemSubCategories'=>['Items']]);
+        $Items =    $this->Kots->ItemCategories->ItemSubCategories->Items->find()
+                    ->order(['Items.name'=>'ASC']);
+        $Comments = $this->Kots->Comments->find('list');
+        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments'));
     }
 
     /**
@@ -62,7 +65,8 @@ class KotsController extends AppController
     public function add()
     {
 		$myJSON=$this->request->query('myJSON');
-		$table_id=$this->request->query('table_id');
+        $table_id=$this->request->query('table_id');
+		$one_comment=$this->request->query('one_comment');
 		$q = json_decode($myJSON, true);
 		
         $kot = $this->Kots->newEntity();
@@ -74,7 +78,8 @@ class KotsController extends AppController
 			$kot->voucher_no=1;
 		}
 			
-		$kot->table_id=$table_id;
+        $kot->table_id=$table_id;
+		$kot->one_comment=$one_comment;
 		
 		$kot_rows=[];
 		foreach($q as $row){
@@ -82,7 +87,8 @@ class KotsController extends AppController
 			$kot_row->item_id=$row['item_id'];
 			$kot_row->quantity=$row['quantity'];
 			$kot_row->rate=$row['rate'];
-			$kot_row->amount=$row['amount'];
+            $kot_row->amount=$row['amount'];
+			$kot_row->item_comment=$row['comment'];
 			$kot_rows[]=$kot_row;
 		}
 		$kot->kot_rows=$kot_rows;
