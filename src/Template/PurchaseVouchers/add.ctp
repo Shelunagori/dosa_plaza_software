@@ -25,7 +25,7 @@
 				<div class="">
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span>
-</label>
+						</label>
 						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
 					</div>	
 					<div class="form-group col-md-4">
@@ -368,7 +368,7 @@
 
 	    	}
 
-		}();
+		};
 	}
 	";
 
@@ -381,9 +381,8 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<td width="15%" align="left">
 				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
-			<td width="5%" align="center">
-				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm calc Qty rightAligntextClass','required'=>'required']); ?>
-			</td>
+			
+			
 			<td width="8%" align="center">
 				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm calc  Rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'autofocus','required'=>'required']); ?>
 			</td>		

@@ -89,8 +89,22 @@ class RawMaterialsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	public function stockAdjustment(){
-		  
-		$Names = $this->RawMaterials->Names->find('list'); 
-		$this->set(compact('Names'));
+		$this->viewBuilder()->layout('admin');
+		
+		$q=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
+		$q->select([$q->func()->sum('StockLedgers.quantity')]);
+		
+		$q2=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
+		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+		
+		$RawMaterials =	$this->RawMaterials->find();
+		$RawMaterials->select([
+			'total_in' => $q,
+			'total_out' => $q2
+		])
+		->contain(['PrimaryUnits'])
+		->autoFields(true);
+		
+		$this->set(compact('RawMaterials'));
 	}
 }
