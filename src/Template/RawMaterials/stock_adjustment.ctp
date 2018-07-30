@@ -1,87 +1,92 @@
 <div class="col-md-12 main-div">
-		<div class="portlet box blue-hoki">
-			<?= $this->Form->create($RawMaterials, ['id'=>'configform']) ?>
-			<div class="portlet-title">
-				<div class="caption"style="padding: 13px; color: red;">
-					Stock Adjustment
-				</div>
-				<div class="row">	
-					<div class="col-md-12 horizontal "></div>
-				</div>
+	<div class="portlet box blue-hoki">
+		<?= $this->Form->create($RawMaterials, ['id'=>'configform']) ?>
+		<div class="portlet-title">
+			<div class="caption"style="padding: 13px; color: red;">
+				Stock Adjustment
 			</div>
-			<div class="portlet-body">
-				<table class="table " cellpadding="0" cellspacing="0" id="main_table">
-					<thead>
-						<tr>
-							<th style="width:10%"><?= ('S.No.') ?></th>
-							<th style="width:15%"><?= ('Item') ?></th>
-							<th style="width:15%" ><?= ('Current stock') ?></th>
-							<th style="width:15%"><?= ('Physical stock') ?></th>
-							<th style="width:20%;"><?= ('Adjustment') ?></th> 
-						</tr>
-					</thead>
-					<tbody id="main_tbody">
-						<?php $d=0; foreach ($RawMaterials as $RawMaterial): ?>
-						<tr class="main_tr">
-							<td><?= (++$d) ?></td>
-							<td><?= h($RawMaterial->name) ?></td>
-							<td>
-								<span class="current_stock"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
-								<?= h($RawMaterial->primary_unit->name) ?>
-							</td>
-							<td>
-								<div class="input-group input-sm ">
-									<input class="form-control physical" autocomplete="off">
-									<span class="input-group-addon">
-										<?= h($RawMaterial->primary_unit->name) ?>
-									</span>
-								</div>
-								<div style="padding: 12px;">
-									<textarea rows="1" cols="15" name="comment" form="" style="padding: 10px 33px 2px 11px;">
-									Enter text here...</textarea>
-								</div>
-									<?php //echo $this->Form->input('physical_stock', ['label' => false,'class'=>'form-control input-sm physical','required'=>'required','style'=>'width: 60%;']); ?>
-							</td>
-							<td>
-								<div class="input-group input-sm ">
-									<input class="form-control adjust" autocomplete="off">
-									<span class="input-group-addon">
-										<?= h($RawMaterial->primary_unit->name) ?>
-									</span>
-								</div>
-									<?php // echo $this->Form->input('Adjustment', ['label' => false,'class'=>'form-control input-sm adjust','required'=>'required','style'=>'width:60%;']); ?>
-								<div class="input-group  hiddendiv" style="padding-top:3%;">
-									<div style="width:42%; float:left; margin-right:4%;text-align: left;	">
-									<label style="text-align:left;">No resaon </label>
-									<input  class="form-control input input-sm resaon" style ="width:60%"/>
-										<span class="input-group-addon" style="float:left;">
-												<?= h($RawMaterial->primary_unit->name) ?>
-										</span>
-									</div>
-									<div style="width:42%; float:left;text-align: left;">
-										<label style="text-align:left;">wastage</label>
-										<input  class= "form-control input-sm  wastage" style="width:60%" />
-										<span class="input-group-addon" style="float:left";>
-											<?= h($RawMaterial->primary_unit->name) ?>
-										</span>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
+			<div class="row">	
+				<div class="col-md-12 horizontal "></div>
 			</div>
-			<div class="row">
-				<div class="box-footer"  style="text-align:center;padding-bottom: 18px;padding: 25px;">
-					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">Submit</button>
-				</div>
-			</div>
-			<?= $this->Form->end() ?>
 		</div>
+		<div class="portlet-body">
+			<table class="table " cellpadding="0" cellspacing="0" id="main_table">
+				<thead>
+					<tr>
+						<th style="width:10%"><?= ('S.No.') ?></th>
+						<th style="width:15%"><?= ('Item') ?></th>
+						<th style="width:15%" ><?= ('Current stock') ?></th>
+						<th style="width:15%"><?= ('Physical stock') ?></th>
+						<th style="width:20%;"><?= ('Adjustment') ?></th> 
+						<th style="width:20%;"><?= ('commant') ?></th> 
+					</tr>
+				</thead>
+				<tbody id="main_tbody">
+				<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+					<tr class="main_tr">
+						<td><?= (++$d) ?></td>
+						<td><?= h($RawMaterial->name) ?>
+						<?php echo $this->Form->input('StockLedgers['.$x.'][raw_material_id]',array('type'=>'hidden','value'=>$RawMaterial->id)); ?>
+						</td>
+						<td>
+							<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
+							<?= h($RawMaterial->primary_unit->quantity) ?> 
+						</td>
+						<td>
+							<div class="input-group input-sm ">
+								<input class="form-control physical" autocomplete="off">
+								<span class="input-group-addon">
+									<?= h($RawMaterial->primary_unit->name) ?>
+								</span>
+							</div> 
+						</td>
+						<td>
+							<div class="input-group input-sm ">
+								<input class="form-control adjust" autocomplete="off" name="StockLedgers[<?php echo $x;?>][adjust]">
+								<span class="input-group-addon">
+									<?= h($RawMaterial->primary_unit->name) ?>
+								</span>
+							</div>
+							<div class="input-group  hiddendiv" style="padding-top:3%;">
+								<div style="width:45%; float:left; margin-right:4%;text-align: left;	">
+									<label style="text-align:left;">No resaon </label>
+									<input  class="form-control input input-sm resaon" name="StockLedgers[<?php echo $x;?>][noresaon]" style ="width:60%"/>
+									<span class="input-group-addon" style="float:left;">
+										<?= h($RawMaterial->primary_unit->name) ?>
+									</span>
+								</div>
+								<div style="width:45%; float:left;text-align: left;">
+									<label style="text-align:left;">wastage</label>
+									<input  class= "form-control input-sm  wastage" name="StockLedgers[<?php echo $x;?>][wastage]" style="width:60%" />
+									<span class="input-group-addon" style="float:left";>
+										<?= h($RawMaterial->primary_unit->name) ?>
+									</span>
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="input-group input-sm hiddencommant ">
+								<input class="form-control " autocomplete="off" placeholder="adjustment commant" name="adjustment_commant[<?php echo $x;?>][Adjustcommant]">
+							</div>
+							<div>
+								<div class="input-group input-sm  hiddencom ">
+									<input class="form-control " autocomplete="off" placeholder="wastage" name="wastagecommant[<?php echo $x; ?>][wastagecommant]">
+								</div>
+							</div>
+						</td>
+					</tr>
+					<?php $x++; endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<div class="row">
+			<div class="box-footer"  style="text-align:center;padding-bottom: 18px;padding: 25px;">
+					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">Submit</button>
+			</div>
+		</div>
+		<?= $this->Form->end() ?>
 	</div>
 </div>
-
 <!-- BEGIN PAGE LEVEL STYLES -->
 	<!-- BEGIN COMPONENTS DROPDOWNS -->
 	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
@@ -119,6 +124,8 @@
 	$(document).ready(function() {	
 		
 		$('.hiddendiv').hide()
+		$('.hiddencommant').show()
+		$('.hiddencom').hide()
 		$(document).on('keyup', '.physical', function()
 		{   
 			var cs 	=  $(this).closest('tr').find('span.current_stock').text();
@@ -130,10 +137,12 @@
 				if (adjustmant>=0){
 					$(this).closest('tr').find('.adjust').val(adjustmant);
 					$(this).closest('tr').find('.hiddendiv').hide();
+					$(this).closest('tr').find('.hiddencom').hide();
 				}	
 				else {
 					$(this).closest('tr').find('.adjust').val(adjustmant);
 					$(this).closest('tr').find('.hiddendiv').show(); 
+					$(this).closest('tr').find('.hiddencom').show();
 				}
 				$(this).closest('tr').find('.resaon').val(Math.abs(adjustmant));
 			}
@@ -159,9 +168,12 @@
 			if(a>=0){
 				var phy = cs + a;
 				$(this).closest('tr').find('.hiddendiv').hide();
+				$(this).closest('tr').find('.hiddencom').hide();
 			}else{
 				var phy = cs - Math.abs(a);
 				$(this).closest('tr').find('.hiddendiv').show();
+				$(this).closest('tr').find('.hiddencom').show();
+				
 			}
 			phy   = round(phy,2);
 			$(this).closest('tr').find('.physical').val(phy);
@@ -211,7 +223,7 @@
 			$(this).closest('tr').find('.resaon').val(NR);
 			
 		});
-		
+	
 		
 	
 	});
