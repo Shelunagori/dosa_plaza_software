@@ -1,67 +1,77 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<div style="height: 10px;" >.</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Purchase Vouchers</span>
+			</div>
+		</div>
+	</div>
+</div>	
 <div class="row">
     <div class="col-md-12 main-div">
 		<div class= "portlet box blue-hoki">
+		<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 			<div class="portlet-title">
-				<div class="caption">
-					Purchase Voucher
+							
+				<div class="caption" style="padding:13px 0 11px 18px;">
+					Purchase Vouchers
 				</div>
 				<div class="row">	
-						<div class="col-md-12 horizontal "></div>
+					<div class="col-md-12 horizontal"></div>
 				</div>
-			</div>
+			</div>	
 			<div class="portlet-body">
-				<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
-				<div class="row">
-					<div class="form-group col-md-2">
-						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
-						 <input class="form-control input-sm" type="date" name="transaction_date" required /> 
+				<div class="">
+					<div class="form-group col-md-4">
+						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span>
+</label>
+						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
 					</div>	
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
-						<?php echo $this->Form->input('vendor_id',['options' =>$Vendors,'label' => false,'class'=>'form-control input-sm  select2me ','empty'=> '--select--','required'=>'required']);?>
+						<?php echo $this->Form->input('vendor_id',['options' =>$Vendors,'label' => false,'class'=>'form-control  select2me input-medium ','empty'=> 'select . . .','required'=>'required']);?>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-12" style="margin-top:10px;" id="main">
-						<table class="table table-bordered" id="main_table">	
-							<thead class="bg_color">
-								<tr align="center">
-									<th rowspan="2" style="text-align:left;">Sr</th>
-									<th rowspan="2" style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
-									<th rowspan="2" style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th>
-									<th rowspan="2" style="text-align:left;width:8%;">Rate <span class="required" required name="vandors">*</span></th>
-									<th colspan="2" style="text-align:center;">Discount</th>
-									<th rowspan="2" style="text-align:left;"> Taxable Value</th>
-									<th colspan="2" style="text-align:center;"> GST</th>
-									<th rowspan="2" style="text-align:left;"> Round off </th>
-									<th rowspan="2" style="text-align:left;">Total </th>
-									<th rowspan="2" style="text-align:left;">Action</th>
-								</tr>
-								<tr>
-									<th><div align="center">%</div></th>
-									<th><div align="center">Rs</div></th>
-									<th><div align="center">%</div></th>
-									<th><div align="center">RS</div></th>
-								</tr>
-								
-							</thead>
-							<tbody id="main_tbody">
-												
-							</tbody>
-							<tfoot>
-								<tr>
-									<td  colspan="10" style ="text-align:right; font-weight:bold;"> 
-									Grand Total</td>
-									<td colspan="1">
-									<?php echo $this->Form->input('grand_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm grand_total','type'=>'text','readonly'=>'readonly']);
-									?>
-									</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12" style="margin-top:80px;" id="main">
+					<table class="table table-bordered" id="main_table">	
+						<thead class="bg_color">
+							<tr align="center">
+								<th rowspan="2" style="text-align:left;">Sr</th>
+								<th rowspan="2" style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
+								<th rowspan="2" style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th>
+								<th rowspan="2" style="text-align:left;width:8%;">Rate <span class="required" required name="vandors">*</span></th>
+								<th colspan="2" style="text-align:center;">Discount</th>
+								<th rowspan="2" style="text-align:left;"> Taxable Value</th>
+								<th colspan="2" style="text-align:center;"> GST</th>
+								<th rowspan="2" style="text-align:left;"> Round off </th>
+								<th rowspan="2" style="text-align:left;">Total </th>
+								<th rowspan="2" style="text-align:left;">Action</th>
+							</tr>
+							<tr>
+								<th><div align="center">%</div></th>
+								<th><div align="center">Rs</div></th>
+								<th><div align="center">%</div></th>
+								<th><div align="center">RS</div></th>
+							</tr>
+							
+						</thead>
+						<tbody id="main_tbody">
+											
+						</tbody>
+						<tfoot>
+							<tr>
+								<td  colspan="10" style ="text-align:right; font-weight:bold;"> 
+								Grand Total</td>
+								<td colspan="1">
+								<?php echo $this->Form->input('grand_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm grand_total','type'=>'text','readonly'=>'readonly']);
+								?>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
 				</div>
 			</div>
 			<div class="row">

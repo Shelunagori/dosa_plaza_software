@@ -28,67 +28,68 @@
 		</div>
 		<div class="portlet-body">
 			<?= $this->Form->create($rawMaterial, ['id'=>'configform']) ?>
-				<div class="form-group col-md-6">
-					<label class="control-label col-md-12"> Name </label>
-					<div class ="row">
-						<div class="col-md-12 input-icon right">
-							<i class="fa"></i>
-							<?php echo $this->Form->control('name',['class'=>'form-control  ','label'=>false,'placeholder'=>'Enter RawMaterials','required']); ?>
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label class="control-label col-md-12"> Name </label>
+						<div class ="row">
+							<div class="col-md-12 input-icon right">
+								<i class="fa"></i>
+								<?php echo $this->Form->control('name',['class'=>'form-control  ','label'=>false,'placeholder'=>'Raw Material Name','required']); ?>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="form-group col-md-6 ">
-					<label class="control-label col-md-12"> Tax </label>
-					<div class="row">
-						<div class="col-md-12 input-icon right">
-							<i class="fa"></i>
-							<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2 ','empty'=> 'Select...','required']);?>
-						</div>
-					</div>	
-				</div>
-
-				<div class="form-group col-md-5 ">
-					<label class="control-label col-md-12"> Primary Unit </label>
-					<div class ="row">
-						<div class="col-md-12 input-icon right">
-							<i class="fa"></i>
-							<?php 
-							$options=array();
-							foreach($units as $unit)
-							{
-								$options[] = ['value'=>$unit->id,'text'=>$unit->name,'UnitName'=>$unit->name];
-							};
-							echo $this->Form->input('primary_unit_id',['options' =>$options,'label' => false,'class'=>'form-control select2 primary_unit','empty'=> 'Select...','required']); ?>
-						</div>
+					<div class="form-group col-md-2 ">
+						<label class="control-label col-md-12"> Tax </label>
+						<div class="row">
+							<div class="col-md-12 input-icon right">
+								<i class="fa"></i>
+								<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2 ','required']);?>
+							</div>
+						</div>	
 					</div>
 				</div>
 
-				<div class="form-group col-md-2">
-					<label>&nbsp;</label>
-					<div class="checkbox-list">
-						<label class="checkbox-inline">
-						<input type="checkbox" name="has_secondary_unit" id="alterneteunit" value="1">Alternate Unit </label> 
+				<div class="row">
+					<div class="form-group col-md-2 ">
+						<label class="control-label col-md-12"> Primary Unit </label>
+						<div class ="row">
+							<div class="col-md-12 input-icon right">
+								<i class="fa"></i>
+								<?php 
+								$options=array();
+								foreach($units as $unit)
+								{
+									$options[] = ['value'=>$unit->id,'text'=>$unit->name,'UnitName'=>$unit->name];
+								};
+								echo $this->Form->input('primary_unit_id',['options' =>$options,'label' => false,'class'=>'form-control select2 primary_unit','empty'=> 'Select...','required']); ?>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-md-2">
+						<label>&nbsp;</label>
+						<div class="checkbox-list">
+							<label class="checkbox-inline">
+							<input type="checkbox" name="has_secondary_unit" id="alterneteunit" value="1">Alternate Unit </label> 
+						</div>
+					</div>
+					<div class="form-group col-md-2 secondery">
+						<label class="control-label col-md-12"> Secondary Unit </label>
+						<div class="row">
+							<div class="col-md-12 input-icon right">
+								<i class="fa"></i>
+								<?php  
+								$options=array();
+								foreach($units as $unit)
+								{
+									$options[] = ['value'=>$unit->id,'text'=>$unit->name,'UnitName'=>$unit->name];
+								};
+								echo $this->Form->input('secondary_unit_id',['options' =>$options,'label' => false,'class'=>'form-control select2 secondary_unit','empty'=> 'Select...']);?>
+							</div>
+						</div>	
 					</div>
 				</div>
 				 
-				<div class="form-group col-md-5 secondery">
-					<label class="control-label col-md-12"> Secondary Unit </label>
-					<div class="row">
-						<div class="col-md-12 input-icon right">
-							<i class="fa"></i>
-							<?php  
-							$options=array();
-							foreach($units as $unit)
-							{
-								$options[] = ['value'=>$unit->id,'text'=>$unit->name,'UnitName'=>$unit->name];
-							};
-							echo $this->Form->input('secondary_unit_id',['options' =>$options,'label' => false,'class'=>'form-control select2 secondary_unit','empty'=> 'Select...']);?>
-						</div>
-					</div>	
-				</div>
-
-				 
-				<div class="form-group col-md-5 secondery">
+				<div class="form-group col-md-4 secondery">
 					<label for="exampleInputPassword1">Where</label>
 					<div class="input-group input-icon right">
 						<i class="fa"></i>
@@ -99,14 +100,14 @@
 					</div>
 				</div>
 
-				<div class="form-group col-md-2 secondery">
+				<div class="form-group col-md-1 secondery">
 					<label>&nbsp;</label>
-					<div align="center">
+					<div align="center" style="margin-top: 6px; font-size: 20px;">
 						=
 					</div>
 				</div>
 
-				<div class="form-group col-md-5 secondery">
+				<div class="form-group col-md-4 secondery">
 					<label for="exampleInputPassword1">Equal To</label>
 					<div class="input-group input-icon right">
 						<i class="fa"></i>
