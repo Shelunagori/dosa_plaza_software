@@ -246,7 +246,7 @@
 				grand_total += Total_amount;
 			
 			});
-			$('.grand_total').val(grand_total);
+			$('.grand_total').val(round(grand_total,2));
 		}
 		  
 		$(document).on('keyup','.discount_per',function(e){
