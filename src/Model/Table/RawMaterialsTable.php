@@ -43,16 +43,18 @@ class RawMaterialsTable extends Table
         $this->belongsTo('PrimaryUnits', [
             'className'=>'Units',
             'foreignKey' => 'primary_unit_id',
-            'joinType' => 'primary_unit'
+            'propartyName' => 'primary_unit'
         ]);
 
         $this->belongsTo('SecondaryUnits', [
             'className'=>'Units',
             'foreignKey' => 'secondary_unit_id',
-            'joinType' => 'secondary_unit'
+            'propartyName' => 'secondary_unit'
         ]);
 
-
+		$this->hasMany('StockLedgers', [
+            'foreignKey' => 'raw_material_id'
+        ]);
     }
 
     /**

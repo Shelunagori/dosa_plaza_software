@@ -12,11 +12,19 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+<<<<<<< HEAD
+				<div class="">
+					<div class="form-group col-md-4">
+						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span>
+						</label>
+						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
+=======
 				<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 				<div class="row">
 					<div class="form-group col-md-2">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
 						 <input class="form-control input-sm" type="date" name="transaction_date" required /> 
+>>>>>>> 37481d4b0ea0e2436d62fd4f0933940a11d4d614
 					</div>	
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
@@ -358,7 +366,7 @@
 
 	    	}
 
-		}();
+		};
 	}
 	";
 
@@ -371,9 +379,8 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<td width="15%" align="left">
 				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
-			<td width="5%" align="center">
-				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm calc Qty rightAligntextClass','required'=>'required']); ?>
-			</td>
+			
+			
 			<td width="8%" align="center">
 				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm calc  Rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'autofocus','required'=>'required']); ?>
 			</td>		
