@@ -52,13 +52,12 @@
 							<tbody id="main_tbody"></tbody>
 							<tfoot>
 								<tr>
-									<td  colspan="11" style ="text-align:right; font-weight:bold;">
-										<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']),['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?>
-									Grand Total</td>
+									<td colspan="2"><?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']).'Add Row',['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?></td>
+									<td  colspan="9" style ="text-align:right; font-weight:bold;">Grand Total</td>
 									<td>
-									<?php echo $this->Form->input('grand_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm grand_total','type'=>'text','readonly'=>'readonly']);
-									?>
+										<?php echo $this->Form->input('grand_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm grand_total','type'=>'text','readonly'=>'readonly', 'tabindex' => '-1']); ?>
 									</td>
+									<td></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -67,7 +66,7 @@
 			</div>
 			<div class="row">
 				<div class="box-footer"  style="text-align:center;padding-bottom: 18px;">
-					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">Submit</button>
+					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">SUBMIT</button>
 				</div>
 			</div>
 			<?= $this->Form->end() ?>
@@ -108,65 +107,69 @@
     <!-- END PAGE LEVEL SCRIPTS -->
 	
 	<?php
-	$js="FormValidation.init();
+	$js="
 	$(document).ready(function() {
-		ComponentsPickers.init();
 		
 
-		var FormValidation = function () {
-		    var handleValidation1 = function() {
+		var form3 = $('#form_sample_1');
+		var error3 = $('.alert-danger', form3);
+		var success3 = $('.alert-success', form3);
+		form3.validate({
+			errorElement: 'span', //default input error message container
+			errorClass: 'help-block help-block-error', // default input error message class
+			focusInvalid: true, // do not focus the last invalid input
+			rules: {
+					transaction_date:{
+						required: true,
+					},
+				},
 
-		            var form1 = $('#form_sample_1');
-		            var error1 = $('.alert-danger', form1);
-		            var success1 = $('.alert-success', form1);
-		            form1.validate({
-		                errorElement: 'span', //default input error message container
-		                errorClass: 'help-block help-block-error', // default input error message class
-		                focusInvalid: false, // do not focus the last invalid input
-		                ignore: '',  // validate all fields including form hidden input
-		                messages: {
-		                    select_multi: {
-		                        maxlength: jQuery.validator.format(\"Max {0} items allowed for selection\"),
-		                        minlength: jQuery.validator.format(\"At least {0} items must be selected\")
-		                    }
-		                },
-		                rules: {
-		                    transaction_date: {
-		                        required: true
-		                    }
-		                },
+			errorPlacement: function (error, element) { // render error placement for each input type
+				if (element.parent('.input-group').size() > 0) {
+					error.insertAfter(element.parent('.input-group'));
+				} else if (element.attr('data-error-container')) { 
+					error.appendTo(element.attr('data-error-container'));
+				} else if (element.parents('.radio-list').size() > 0) { 
+					error.appendTo(element.parents('.radio-list').attr('data-error-container'));
+				} else if (element.parents('.radio-inline').size() > 0) { 
+					error.appendTo(element.parents('.radio-inline').attr('data-error-container'));
+				} else if (element.parents('.checkbox-list').size() > 0) {
+					error.appendTo(element.parents('.checkbox-list').attr('data-error-container'));
+				} else if (element.parents('.checkbox-inline').size() > 0) { 
+					error.appendTo(element.parents('.checkbox-inline').attr('data-error-container'));
+				} else {
+					error.insertAfter(element); // for other inputs, just perform default behavior
+				}
+			},
 
-		                invalidHandler: function (event, validator) { //display error alert on form submit              
-		                    success1.hide();
-		                    error1.show();
-		                    Metronic.scrollTo(error1, -200);
-		                },
+			invalidHandler: function (event, validator) { //display error alert on form submit   
+				success3.hide();
+				error3.show();
+			},
 
-		                highlight: function (element) { // hightlight error inputs
-		                    $(element)
-		                        .closest('.form-group').addClass('has-error'); // set error class to the control group
-		                },
+			highlight: function (element) { // hightlight error inputs
+			   $(element)
+					.closest('.form-group').addClass('has-error'); // set error class to the control group
+			},
 
-		                unhighlight: function (element) { // revert the change done by hightlight
-		                    $(element)
-		                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-		                },
+			unhighlight: function (element) { // revert the change done by hightlight
+				$(element)
+					.closest('.form-group').removeClass('has-error'); // set error class to the control group
+			},
 
-		                success: function (label) {
-		                    label
-		                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-		                },
+			success: function (label) {
+				label
+					.closest('.form-group').removeClass('has-error'); // set success class to the control group
+			},
 
-		                submitHandler: function (form) {
-		                    success1.show();
-		                    error1.hide();
-		                }
-		            });
+			submitHandler: function (form) {
+				
+				success3.show();
+				error3.hide();
+				form[0].submit(); // submit the form
+			}
 
-
-		    }
-
-		}();
+		});
     
 		$(document).on('click', '.add_row', function(e){ 
 			add_row();
@@ -384,7 +387,8 @@
 		}
 
 
-		
+		ComponentsPickers.init();
+		FormValidation.init();
 
 	});
 	";
@@ -418,11 +422,11 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				?>	
 			</td>
 			<td  width="6%" align="center">
-				<?php echo $this->Form->input('tax_per', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_per  numberOnly ','type'=>'text','value'=>0]);
+				<?php echo $this->Form->input('tax_per', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_per  numberOnly ','type'=>'text','value'=>0, 'readonly', 'tabindex' => '-1']);
 				?>	
 			</td>
 			<td  width="10%" align="center">
-				<?php echo $this->Form->input('tax_amt', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_amt numberOnly','type'=>'text','value'=>0]);
+				<?php echo $this->Form->input('tax_amt', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_amt numberOnly','type'=>'text','value'=>0, 'readonly', 'tabindex' => '-1']);
 				?>	
 			</td>
 			<td  width="7%" align="center">

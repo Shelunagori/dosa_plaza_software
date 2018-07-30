@@ -62,7 +62,7 @@ class PurchaseVouchersController extends AppController
 			$lastvoucherno= $this->PurchaseVouchers->lastvoucherno();
 			$purchaseVoucher->transaction_date=date('Y-m-d',strtotime($this->request->getData('transaction_date')));
 			$purchaseVoucher->voucher_no=$lastvoucherno;
-			pr($purchaseVoucher->purchase_voucher_row);Exit;
+			pr($this->request->getData());Exit;
 			if ($this->PurchaseVouchers->save($purchaseVoucher)) {
 				
                 $this->Flash->success(__('The purchase voucher has been saved.'));
