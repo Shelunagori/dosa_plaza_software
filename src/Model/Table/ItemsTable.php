@@ -37,12 +37,19 @@ class ItemsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 		
-		  $this->hasMany('ItemSubCategories', [
+		$this->hasMany('ItemSubCategories', [
             'foreignKey' => 'item_sub_category_id'
+        ]);
+        $this->hasMany('ItemRows', [
+            'foreignKey' => 'item_id'
         ]); 
 		
-		 $this->belongsTo('ItemSubCategories', [
+		$this->belongsTo('ItemSubCategories', [
             'foreignKey' => 'item_sub_category_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Taxes', [
+            'foreignKey' => 'tax_id',
             'joinType' => 'INNER'
         ]);
 		

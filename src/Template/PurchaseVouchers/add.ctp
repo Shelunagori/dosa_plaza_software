@@ -11,20 +11,13 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
+			<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 			<div class="portlet-body">
-<<<<<<< HEAD
-				<div class="">
-					<div class="form-group col-md-4">
-						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span>
-						</label>
-						 <input class="form-control form-control-inline input-medium date-picker" size="16" type="text" placeholder="dd-mm-yyyy" name="transaction_date" required data-date-format="dd-mm-yyyy"/> 
-=======
-				<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 				<div class="row">
 					<div class="form-group col-md-2">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
-						 <input class="form-control input-sm" type="date" name="transaction_date" required /> 
->>>>>>> 37481d4b0ea0e2436d62fd4f0933940a11d4d614
+						<input class="form-control input-sm" type="date" name="transaction_date" required /> 
+
 					</div>	
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
@@ -37,9 +30,10 @@
 							<thead class="bg_color">
 								<tr align="center">
 									<th rowspan="2" style="text-align:left;">Sr</th>
-									<th rowspan="2" style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
-									<th rowspan="2" style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th>
-									<th rowspan="2" style="text-align:left;width:8%;">Rate <span class="required" required name="vandors">*</span></th>
+									<th rowspan="2" style="text-align:left;">Item</th>
+									<th rowspan="2" style="text-align:left;">Quantity</th>
+									<th rowspan="2" style="text-align:left;">Unit</th>
+									<th rowspan="2" style="text-align:left;">Rate</th>
 									<th colspan="2" style="text-align:center;">Discount</th>
 									<th rowspan="2" style="text-align:left;"> Taxable Value</th>
 									<th colspan="2" style="text-align:center;"> GST</th>
@@ -55,14 +49,13 @@
 								</tr>
 								
 							</thead>
-							<tbody id="main_tbody">
-												
-							</tbody>
+							<tbody id="main_tbody"></tbody>
 							<tfoot>
 								<tr>
-									<td  colspan="10" style ="text-align:right; font-weight:bold;"> 
+									<td  colspan="11" style ="text-align:right; font-weight:bold;">
+										<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']),['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?>
 									Grand Total</td>
-									<td colspan="1">
+									<td>
 									<?php echo $this->Form->input('grand_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm grand_total','type'=>'text','readonly'=>'readonly']);
 									?>
 									</td>
@@ -115,259 +108,285 @@
     <!-- END PAGE LEVEL SCRIPTS -->
 	
 	<?php
-	$js="
-	$(document).ready(function() {	
+	$js="FormValidation.init();
+	$(document).ready(function() {
 		ComponentsPickers.init();
-		FormValidation.init();
-
-    
-	$(document).on('click', '.add_row', function(e)
-    { 
-		add_row();
-	});
-	add_row();
-	function add_row(){ 
-		var tr=$('#sample tbody tr.main_tr').clone();
-		$('#main_table tbody#main_tbody').append(tr);
-	
-		rename_rows();
-	}
-	
-	$(document).on('keyup','.calc',function(e){
-		var obj= $(this);
-		calculation(obj);
 		
-	});
-	$(document).on('change','.calc',function(e){
-		var obj =$(this);
-		calculation (obj);			
-	});
-	function calculation(obj=null){
-		var total_amount_fixed=0;
-		var grand_total = 0;
-		var Total_amount=0;
-	$('#main_table tbody#main_tbody tr.main_tr').each(function()
-	{
-		var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-		var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4) input').val());
-		var discount_Rs   = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
-		var round_off     = parseFloat($(this).closest('tr').find('td:nth-child(10) input').val());
-
-		if(!isNaN(qty) && !isNaN(rate))
-		{ 
-			var finalAmt = 0; 
-			var amount   = qty*rate;						
-				if(discount_Rs)
-				{   
-					var finalAmt  = amount - discount_Rs;
-					finalAmt =  round(finalAmt,2);
-				}
-				else{
-					finalAmt = amount;
-					finalAmt = round(finalAmt,2);					
-				}
-				$(this).closest('tr').find('td:nth-child(7) input').val(finalAmt);
-				
-		}
-		else
-		{
-			// $(this).closest('tr').find('td:nth-child(7) input').val(0);
-			$(this).closest('tr').find('td:nth-child(11) input').val(0);
-			
-		}
-		
-		var tax     = $(this).closest('tr').find('td:nth-child(2) select option:selected').attr('tax');
-		var tax_per = $(this).closest('tr').find('td:nth-child(8) input').val(tax);
-		var gstamt =(finalAmt*tax)/100;
-		gstamt 	   = round(gstamt,2);
-		if(isNaN(gstamt))
-		{
-			gstamt=0;
-		}
-		var tax_per1       = $(this).closest('tr').find('td:nth-child(9) input').val(gstamt);
-		var Total_amount   = gstamt+finalAmt;
-		Total_amount= round(Total_amount,2);
-		if(isNaN(Total_amount))
-		{
-			Total_amount=0;
-		}
-		
-		var Totel          = $(this).closest('tr').find('td:nth-child(11) input').val(Total_amount); 
-		Total_amount_round       = Total_amount+round_off;
-		Total_amount_round =round(Total_amount_round,2);
-		if(isNaN(Total_amount_round))
-		{
-			Total_amount_round=0;
-		}
-		if(round_off !='' && !isNaN(round_off)){
-			$(this).closest('tr').find('td:nth-child(11) input').val(Total_amount_round);
-			
-		}
-		var final_total          = parseFloat($(this).closest('tr').find('td:nth-child(11) input').val()); 
-		grand_total += final_total;
-		
-		
-	});
-		$('.grand_total').val(grand_total);
-	
-	}
-	  
-	  $(document).on('keyup','.discount_per',function(e){
-		var obj = $(this);
-	    var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-		var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4) input').val());
-		var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
-		
-		if(!isNaN(qty) && !isNaN(rate))
-		{ 
-			var amount   = qty*rate;						
-				if(discount_per)
-				{   
-					var disAmt    = (amount*discount_per)/100;
-					disAmt  = round(disAmt,2);
-				
-				}
-				$(this).closest('tr').find('td:nth-child(6) input').val(disAmt);
-				calculation(obj);
-		}
-	 });
-	 
-	  $(document).on('keyup','.discount_amt',function(e){
-		  var obj = $(this);
-		var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-		var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4) input').val());
-		var discount_amt  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
-		
-		if(!isNaN(qty) && !isNaN(rate))
-		{ 
-			var amount   = qty*rate;						
-				if(discount_amt)
-				{   
-					var dis_per   = (discount_amt*100)/amount;
-					dis_per = round(dis_per,2);
-					
-				}
-				$(this).closest('tr').find('td:nth-child(5) input').val(dis_per);
-				calculation(obj);
-		}
-	 });
-	
-	$(document).on('keyup','.backward_net_value',function(e){
-		var qty  = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-		var  t   = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
-		if(!isNaN(t))
-		{ 
-	        var p =  t/(100-discount_per)*100; 
-			
-			if(!isNaN(qty)){
-				    var rate =  p/qty;
-				}	 
-		    $(this).closest('tr').find('td:nth-child(4) input').val(rate);
-        }
-		calculation(obj);
-	});
-	 
-	  
-});	
-    
-	$(document).on('click', '.remove_row', function(e)
-    { 
-		var rowCount = $('#main_table tbody#main_tbody tr.main_tr').length; 
-		if(rowCount>1)
-		{
-			$(this).closest('tr').remove();
-			rename_rows();
-		}
-	});
-	
-	function rename_rows(){
-		var i=0;
-				$('#main_table tbody#main_tbody tr.main_tr').each(function(){
-                    var row_no = $(this).attr('row_no');					
-					$(this).find('td:nth-child(1)').html(i+1);
-					$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][raw_material_id]', id:'purchase_voucher_rows-'+i+'-raw_material_id'
-							});
-					$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][quantity]', id:'Purchase_Voucher_Rows-'+i+'-quantity'
-							});
-					 $(this).find('td:nth-child(4) input').attr({name:'purchase_voucher_rows['+i+'][rate]', id:'Purchase_Voucher_Rows-'+i+'-rate'
-							});
-					
-					$(this).find('td:nth-child(5) input').attr({name:'purchase_voucher_rows['+i+'][discount_per]', id:'Purchase_Voucher_Rows-'+i+'-discount_per'
-					
-							});
-					$(this).find('td:nth-child(6) input').attr({name:'purchase_voucher_rows['+i+'][discount_amt]', id:'Purchase_Voucher_Rows-'+i+'-discount_amt'
-					});
-					
-					$(this).find('td:nth-child(7) input').attr({name:'purchase_voucher_rows['+i+'][taxable_value]', id:'Purchase_Voucher_Rows-'+i+'-taxable_value'
-					});
-					
-					$(this).find('td:nth-child(8) input').attr({name:'purchase_voucher_rows['+i+'][tax_per]', id:'Purchase_Voucher_Rows-'+i+'-tax_per'
-					});
-					$(this).find('td:nth-child(9) input').attr({name:'purchase_voucher_rows['+i+'][tax_amt]', id:'Purchase_Voucher_Rows-'+i+'-tax_amt'
-					});
-					$(this).find('td:nth-child(10) input').attr({name:'purchase_voucher_rows['+i+'][round_off]', id:'Purchase_Voucher_Rows-'+i+'-round_off'
-					});
-					$(this).find('td:nth-child(11) input').attr({name:'purchase_voucher_rows['+i+'][net_amt_total]', id:'Purchase_Voucher_Rows-'+i+'-net_amt_total'
-					});
-					
-						i++;
-						
-				});
 
 		var FormValidation = function () {
-				// basic validation
-			var handleValidation1 = function() {
-				// for more info visit the official plugin documentation: 
-	            // http://docs.jquery.com/Plugins/Validation
+		    var handleValidation1 = function() {
 
-	            var form1 = $('#form_sample_1');
-	            var error1 = $('.alert-danger', form1);
-	            var success1 = $('.alert-success', form1);
-	            form1.validate({
-	                errorElement: 'span', //default input error message container
-	                errorClass: 'help-block help-block-error', // default input error message class
-	                focusInvalid: false, // do not focus the last invalid input
-	                 // validate all fields including form hidden input
-	               
-	                rules: {
-	                    transaction_date: {
-	                        required: true
-	                    },
-	                },
+		            var form1 = $('#form_sample_1');
+		            var error1 = $('.alert-danger', form1);
+		            var success1 = $('.alert-success', form1);
+		            form1.validate({
+		                errorElement: 'span', //default input error message container
+		                errorClass: 'help-block help-block-error', // default input error message class
+		                focusInvalid: false, // do not focus the last invalid input
+		                ignore: '',  // validate all fields including form hidden input
+		                messages: {
+		                    select_multi: {
+		                        maxlength: jQuery.validator.format(\"Max {0} items allowed for selection\"),
+		                        minlength: jQuery.validator.format(\"At least {0} items must be selected\")
+		                    }
+		                },
+		                rules: {
+		                    transaction_date: {
+		                        required: true
+		                    }
+		                },
 
-	                invalidHandler: function (event, validator) { //display error alert on form submit              
-	                    success1.hide();
-	                    error1.show();
-	                    Metronic.scrollTo(error1, -200);
-	                },
+		                invalidHandler: function (event, validator) { //display error alert on form submit              
+		                    success1.hide();
+		                    error1.show();
+		                    Metronic.scrollTo(error1, -200);
+		                },
 
-	                highlight: function (element) { // hightlight error inputs
-	                    $(element)
-	                        .closest('.form-group').addClass('has-error'); // set error class to the control group
-	                },
+		                highlight: function (element) { // hightlight error inputs
+		                    $(element)
+		                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+		                },
 
-	                unhighlight: function (element) { // revert the change done by hightlight
-	                    $(element)
-	                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-	                },
+		                unhighlight: function (element) { // revert the change done by hightlight
+		                    $(element)
+		                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		                },
 
-	                success: function (label) {
-	                    label
-	                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-	                },
+		                success: function (label) {
+		                    label
+		                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		                },
 
-	                submitHandler: function (form) { 
-	                    success1.show();
-	                    error1.hide();
-	                    form[0].submit(); // submit the form
-	                }
+		                submitHandler: function (form) {
+		                    success1.show();
+		                    error1.hide();
+		                }
+		            });
 
-	            });
 
-	    	}
+		    }
 
-		};
-	}
+		}();
+    
+		$(document).on('click', '.add_row', function(e){ 
+			add_row();
+		});
+
+		add_row();
+
+		function add_row(){
+			var tr=$('#sample tbody tr.main_tr').clone();
+			$('#main_table tbody#main_tbody').append(tr);
+		
+			rename_rows();
+		}
+		
+		$(document).on('keyup','.quantity,  .rate, .round_off', function(e){
+			calculation();
+		});
+		$(document).on('change','.raw_material', function(e){
+			calculation();
+		});
+
+
+		function calculation(){
+			var total_amount_fixed=0;
+			var grand_total = 0;
+			var Total_amount=0;
+			$('#main_table tbody#main_tbody tr.main_tr').each(function()
+			{
+				var unit_name     = $(this).closest('tr').find('select.raw_material option:selected').attr('unit_name');
+				$(this).closest('tr').find('td:nth-child(4)').html(unit_name);
+
+				var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
+				if(isNaN(qty)){ qty=0; }
+				var rate          = parseFloat($(this).closest('tr').find('input.rate').val());
+				if(isNaN(rate)){ rate=0; }
+				var discount_Rs   = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+				if(isNaN(discount_Rs)){ discount_Rs=0; }
+				var round_off     = parseFloat($(this).closest('tr').find('input.round_off').val());
+				if(isNaN(round_off)){ round_off=0; }
+
+
+				if(!isNaN(qty) && !isNaN(rate))
+				{ 
+					var finalAmt = 0; 
+					var amount   = qty*rate;						
+					if(discount_Rs)
+					{   
+						var finalAmt  = amount - discount_Rs;
+					}
+					else
+					{
+						finalAmt = amount;
+					}
+					finalAmt =  round(finalAmt,2);
+
+					$(this).closest('tr').find('input.taxable_value').val(finalAmt);
+				}
+			
+				var tax     = $(this).closest('tr').find('select.raw_material option:selected').attr('tax');
+				$(this).closest('tr').find('input.tax_per').val(tax);
+				var gstamt =(finalAmt*tax)/100;
+				gstamt 	   = round(gstamt,2);
+				if(isNaN(gstamt))
+				{
+					gstamt=0;
+				}
+				$(this).closest('tr').find('input.tax_amt').val(gstamt);
+				var Total_amount   = finalAmt+gstamt+round_off;
+				Total_amount= round(Total_amount,2);
+				Total_amount =round(Total_amount,2);
+
+				$(this).closest('tr').find('input.net_amt_total').val(Total_amount); 
+				
+				grand_total += Total_amount;
+			
+			});
+			$('.grand_total').val(grand_total);
+		}
+		  
+		$(document).on('keyup','.discount_per',function(e){
+		    var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
+		    if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('input.rate').val());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_per  = parseFloat($(this).closest('tr').find('input.discount_per').val());
+			if(isNaN(discount_per)){ discount_per=0; }
+			
+			var amount   = qty*rate;						
+			if(discount_per)
+			{   
+				var disAmt    = (amount*discount_per)/100;
+				disAmt  = round(disAmt,2);
+			
+			}
+			$(this).closest('tr').find('input.discount_amt').val(disAmt);
+			calculation();
+		});
+		 
+		$(document).on('keyup','.discount_amt',function(e){
+			var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('input.rate').val());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+			
+			var amount   = qty*rate;
+
+			if(discount_amt && amount>0)
+			{   
+				var dis_per   = (discount_amt*100)/amount;
+				dis_per = round(dis_per,2);
+				
+			}
+			$(this).closest('tr').find('input.discount_per').val(dis_per);
+			calculation();
+		});
+
+		$(document).on('blur','.taxable_value',function(e){
+			var taxable_value = parseFloat($(this).val());
+		    if(isNaN(taxable_value)){ taxable_value=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+
+			var quantity  = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(quantity)){ quantity=0; }
+
+			var amount=taxable_value+discount_amt;
+			if(quantity>0){
+				var rate=amount/quantity;
+			}
+			if(isNaN(rate)){ rate=0; }
+			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			calculation();
+		});
+
+		$(document).on('blur','.net_amt_total',function(e){
+			var net_amt_total = parseFloat($(this).val());
+		    if(isNaN(net_amt_total)){ net_amt_total=0; }
+
+		    var round_off  = parseFloat($(this).closest('tr').find('input.round_off').val());
+		    if(isNaN(round_off)){ round_off=0; }
+
+		    var amountBeforeRoundoff=net_amt_total-round_off;
+
+		    var tax_per  = parseFloat($(this).closest('tr').find('input.tax_per').val());
+		    if(isNaN(tax_per)){ tax_per=0; }
+
+		    var taxable_value = amountBeforeRoundoff*100/(100+tax_per);
+		   	$(this).closest('tr').find('input.taxable_value').val(round(taxable_value,2));
+
+		   	var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+
+			var quantity  = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(quantity)){ quantity=0; }
+
+			var amount=taxable_value+discount_amt;
+			if(quantity>0){
+				var rate=amount/quantity;
+			}
+			if(isNaN(rate)){ rate=0; }
+			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			calculation();
+
+		});
+		
+		
+		$(document).on('click', '.remove_row', function(e){ 
+			var rowCount = $('#main_table tbody#main_tbody tr.main_tr').length; 
+			if(rowCount>1)
+			{
+				$(this).closest('tr').remove();
+				rename_rows();
+			}
+		});
+		
+		function rename_rows(){
+			var i=0;
+			$('#main_table tbody#main_tbody tr.main_tr').each(function(){
+				var row_no = $(this).attr('row_no');					
+				$(this).find('td:nth-child(1)').html(i+1);
+				$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][raw_material_id]', id:'purchase_voucher_rows-'+i+'-raw_material_id'
+						});
+				$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][quantity]', id:'Purchase_Voucher_Rows-'+i+'-quantity'
+						});
+				 $(this).find('td:nth-child(5) input').attr({name:'purchase_voucher_rows['+i+'][rate]', id:'Purchase_Voucher_Rows-'+i+'-rate'
+						});
+				
+				$(this).find('td:nth-child(6) input').attr({name:'purchase_voucher_rows['+i+'][discount_per]', id:'Purchase_Voucher_Rows-'+i+'-discount_per'
+				
+						});
+				$(this).find('td:nth-child(7) input').attr({name:'purchase_voucher_rows['+i+'][discount_amt]', id:'Purchase_Voucher_Rows-'+i+'-discount_amt'
+				});
+				
+				$(this).find('td:nth-child(8) input').attr({name:'purchase_voucher_rows['+i+'][taxable_value]', id:'Purchase_Voucher_Rows-'+i+'-taxable_value'
+				});
+				
+				$(this).find('td:nth-child(9) input').attr({name:'purchase_voucher_rows['+i+'][tax_per]', id:'Purchase_Voucher_Rows-'+i+'-tax_per'
+				});
+				$(this).find('td:nth-child(10) input').attr({name:'purchase_voucher_rows['+i+'][tax_amt]', id:'Purchase_Voucher_Rows-'+i+'-tax_amt'
+				});
+				$(this).find('td:nth-child(11) input').attr({name:'purchase_voucher_rows['+i+'][round_off]', id:'Purchase_Voucher_Rows-'+i+'-round_off'
+				});
+				$(this).find('td:nth-child(12) input').attr({name:'purchase_voucher_rows['+i+'][net_amt_total]', id:'Purchase_Voucher_Rows-'+i+'-net_amt_total'
+				});
+				
+				i++;
+			});
+		}
+
+
+		
+
+	});
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
@@ -377,47 +396,46 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<tr class="main_tr">
 			<td style="vertical-align: top !important;"></td>
 			<td width="15%" align="left">
-				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 calc ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
+				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 raw_material ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
-			
-			
+			<td width="5%" align="center">
+				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm quantity rightAligntextClass','required'=>'required']); ?>
+			</td>
+			<td width="5%" align="center"></td>
+
 			<td width="8%" align="center">
-				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm calc  Rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'autofocus','required'=>'required']); ?>
+				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'required'=>'required']); ?>
 			</td>		
 			<td width="8%" align="center">
-				<?php echo $this->Form->input('discount_per',['class'=>' discount_per form-control input-sm calc  dis numberOnly rightAligntextClass','label'=>false,'autofocus']); ?>
+				<?php echo $this->Form->input('discount_per',['class'=>' discount_per form-control input-sm discount_per numberOnly rightAligntextClass','label'=>false]); ?>
 			</td>
 			<td  width="10%" align="center">
-				<?php echo $this->Form->input('discount_amt', ['style'=>'text-align:right','label' => false,'class' => 'discount_amt form-control input-sm calc discountAmount numberOnly','type'=>'text']);
+				<?php echo $this->Form->input('discount_amt', ['style'=>'text-align:right','label' => false,'class' => 'discount_amt form-control input-sm numberOnly','type'=>'text']);
 				?>	
 			</td>
 			<td  width="10%" align="center">
-				<?php echo $this->Form->input('taxable_value', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  calc backward_net_value ','type'=>'text']);
+				<?php echo $this->Form->input('taxable_value', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm taxable_value','type'=>'text']);
 				?>	
 			</td>
 			<td  width="6%" align="center">
-				<?php echo $this->Form->input('tax_per', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  calc  numberOnly ','type'=>'text','value'=>0]);
+				<?php echo $this->Form->input('tax_per', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_per  numberOnly ','type'=>'text','value'=>0]);
 				?>	
 			</td>
 			<td  width="10%" align="center">
-				<?php echo $this->Form->input('tax_amt', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  calc gst_amt numberOnly','type'=>'text','value'=>0]);
+				<?php echo $this->Form->input('tax_amt', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_amt numberOnly','type'=>'text','value'=>0]);
 				?>	
 			</td>
 			<td  width="7%" align="center">
-				<?php echo $this->Form->input('round_off', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm calc','placeholder'=>'','type'=>'text']);
+				<?php echo $this->Form->input('round_off', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm round_off','placeholder'=>'','type'=>'text']);
 				?>	
 			</td>
 			<td  width="15%" align="center">
-				<?php echo $this->Form->input('net_amt_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm netAmount  backward_net_value','type'=>'text']);
+				<?php echo $this->Form->input('net_amt_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm net_amt_total','type'=>'text']);
 				?>	
 			</td>
 			<td>
-				<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']),['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?>
 				<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button']); ?>
 			</td>
 		</tr>
-	   
 	</tbody>
-	
-		
 </table>	

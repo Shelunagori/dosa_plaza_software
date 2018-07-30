@@ -20,6 +20,7 @@ class ItemsController extends AppController
         $itemslist = $this->paginate($this->Items->find()->where(['Items.is_deleted'=>0]));
 		$this->set(compact('itemslist'));
 	}
+
     public function add($id = null)
     {
 		$this->viewBuilder()->layout('admin');
@@ -30,7 +31,7 @@ class ItemsController extends AppController
 		else
 		{
 			$item = $this->Items->get($id, [
-				'contain' => []
+				'contain' => ['ItemRows']
 			]);
 		}
 		$loginId=$this->Auth->User('id'); 
@@ -39,6 +40,7 @@ class ItemsController extends AppController
 			$item->created_by=$loginId;
 			$item->rate=$this->request->getData('rate'); 
 			$item->discount_applicable=$this->request->getData('discount_applicable'); 
+            //pr($item); exit;
             if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
                 return $this->redirect(['action' => 'index']);
@@ -47,7 +49,28 @@ class ItemsController extends AppController
         }
 		
         $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']);
-        $this->set(compact('item', 'itemSubCategories','id'));
+        $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->where(['status'=>'active'])->order(['Taxes.id'=>'ASC']);
+        $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['PrimaryUnits','SecondaryUnits' ])
+                            ->order(['RawMaterials.name'=>'ASC']);;
+        
+        $option=[];
+        foreach($raw_materials as $raw_material)
+        {
+            
+            if($raw_material->recipe_unit_type=="primary"){
+                $unit_name = $raw_material->primary_unit->name;
+            }else if($raw_material->recipe_unit_type=="secondary"){
+                $unit_name = $raw_material->secondary_unit->name;
+            }
+            $option[] = [
+                            'value'=>$raw_material->id,
+                            'text'=>$raw_material->name, 
+                            'unit_name'=>$unit_name,
+                        ];
+        }
+        
+        $this->set(compact('item', 'itemSubCategories','id','Taxes','option'));
+
     }
  
     public function delete($id = null)
