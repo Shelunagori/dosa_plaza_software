@@ -50,22 +50,21 @@ class ItemsController extends AppController
 		
         $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']);
         $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->where(['status'=>'active'])->order(['Taxes.id'=>'ASC']);
-        $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['Taxes','PrimaryUnits', 'SecondaryUnits' ])
+        $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['PrimaryUnits','SecondaryUnits' ])
                             ->order(['RawMaterials.name'=>'ASC']);;
         
         $option=[];
         foreach($raw_materials as $raw_material)
         {
+            
             if($raw_material->recipe_unit_type=="primary"){
                 $unit_name = $raw_material->primary_unit->name;
             }else if($raw_material->recipe_unit_type=="secondary"){
                 $unit_name = $raw_material->secondary_unit->name;
             }
-
             $option[] = [
                             'value'=>$raw_material->id,
-                            'text'=>$raw_material->name,
-                            'tax'=>$raw_material->tax->tax_per,
+                            'text'=>$raw_material->name, 
                             'unit_name'=>$unit_name,
                         ];
         }
