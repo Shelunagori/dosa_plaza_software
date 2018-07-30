@@ -247,7 +247,6 @@
 		}
 		  
 		$(document).on('keyup','.discount_per',function(e){
-			var obj = $(this);
 		    var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
 		    if(isNaN(qty)){ qty=0; }
 
@@ -269,7 +268,6 @@
 		});
 		 
 		$(document).on('keyup','.discount_amt',function(e){
-			var obj = $(this);
 			var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
 			if(isNaN(qty)){ qty=0; }
 
@@ -289,6 +287,56 @@
 			}
 			$(this).closest('tr').find('input.discount_per').val(dis_per);
 			calculation();
+		});
+
+		$(document).on('blur','.taxable_value',function(e){
+			var taxable_value = parseFloat($(this).val());
+		    if(isNaN(taxable_value)){ taxable_value=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+
+			var quantity  = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(quantity)){ quantity=0; }
+
+			var amount=taxable_value+discount_amt;
+			if(quantity>0){
+				var rate=amount/quantity;
+			}
+			if(isNaN(rate)){ rate=0; }
+			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			calculation();
+		});
+
+		$(document).on('blur','.net_amt_total',function(e){
+			var net_amt_total = parseFloat($(this).val());
+		    if(isNaN(net_amt_total)){ net_amt_total=0; }
+
+		    var round_off  = parseFloat($(this).closest('tr').find('input.round_off').val());
+		    if(isNaN(round_off)){ round_off=0; }
+
+		    var amountBeforeRoundoff=net_amt_total-round_off;
+
+		    var tax_per  = parseFloat($(this).closest('tr').find('input.tax_per').val());
+		    if(isNaN(tax_per)){ tax_per=0; }
+
+		    var taxable_value = amountBeforeRoundoff*100/(100+tax_per);
+		   	$(this).closest('tr').find('input.taxable_value').val(round(taxable_value,2));
+
+		   	var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+
+			var quantity  = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(quantity)){ quantity=0; }
+
+			var amount=taxable_value+discount_amt;
+			if(quantity>0){
+				var rate=amount/quantity;
+			}
+			if(isNaN(rate)){ rate=0; }
+			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			calculation();
+
 		});
 		
 		
