@@ -4,18 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Item Entity
+ * ItemRow Entity
  *
  * @property int $id
- * @property int $item_sub_category_id
- * @property string $name
- * @property \Cake\I18n\FrozenTime $created_on
- * @property int $created_by
- * @property bool $is_deleted
+ * @property int $item_id
+ * @property int $raw_material_id
+ * @property float $quantity
  *
- * @property \App\Model\Entity\ItemSubCategory $item_sub_category
+ * @property \App\Model\Entity\RawMaterial $raw_material
  */
-class Item extends Entity
+class ItemRow extends Entity
 {
 
     /**
@@ -28,7 +26,9 @@ class Item extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-         
+        'item_id' => true,
+        'raw_material_id' => true,
+        'quantity' => true,
+        'raw_material' => true
     ];
 }
