@@ -26,7 +26,7 @@
 			</div>
 			<div class="portlet-body">
 				<div class="">
-					<?= $this->Form->create($item,['id'=>'CountryForm']) ; ?>
+					<?= $this->Form->create($item,['id'=>'form_sample_1']) ; ?>
 						<div class="row">
 							<div class="form-group col-md-4">
 								<label class=""> Item Name <span class="required" aria-required="true">*</span></label>
@@ -37,7 +37,7 @@
 							<div class="form-group col-md-4">
 								<label class=""> Sales Rate <span class="required" aria-required="true">*</span></label>
 								<div class="col-md-12"> 
-									<input type="text" <?php if(!empty($id)){ echo "value='".$item->rate."'"; } ?> name="rate" class="form-control input-large rightAligntextClass" Placeholder="Enter item sales rate" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" >
+									<input type="text" <?php if(!empty($id)){ echo "value='".$item->rate."'"; } ?> name="rate" class="form-control input-large rightAligntextClass" Placeholder="Enter item sales rate" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required="required" >
 								</div>
 							</div>
 							<div class="form-group col-md-4">
@@ -78,7 +78,7 @@
 							<div class="col-sm-12" style="margin-top:10px;" id="main">
 								<table class="table table-bordered" id="main_table">	
 									<thead class="bg_color">
-										<tr align="center">
+										<tr align="">
 											<th style="text-align:left;">Sr</th>
 											<th style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
 											<th style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th> 
@@ -88,6 +88,34 @@
 										
 									</thead>
 									<tbody id="main_tbody">
+										<?php if(!empty($id)){  
+											foreach($item->item_rows as $rowData){ ?>
+												<tr class="main_tr">
+													<td style="vertical-align: top !important;"></td>
+													<td width="30%" align="left">
+														<?php $v=0;
+															foreach($option as $dataopt){ 
+																$inserted=$dataopt['value'];
+																$optionnew[]=$dataopt;
+																if($rowData->raw_material_id==$inserted){
+																	$optionnew[$v]['selected']='selected';
+																}
+																$v++;
+															}
+															echo $this->Form->input('raw_material_id',['options'=>$optionnew,'class'=>'form-control select2 ShowUnit','empty' => '--Select Item--','label'=>false,'required'=>'required' ]); ?>
+													</td>
+													<td width="30%" align="">
+														<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');",'value'=>$rowData->quantity]); ?>
+													</td>
+													<td width="15%" class="">
+														<?php echo $this->Form->control('dasd', ['label' => false,'placeholder'=>'Unit','class'=>'form-control unitType','readonly'=>'readonly','tabindex'=>'1']); ?>
+													</td>
+													<td  width="20%">
+														<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button']); ?>
+													</td>
+												</tr>
+											<?php }
+										} ?>
 								
 									</tbody>
 									<tfoot>
@@ -124,12 +152,21 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 	<!-- BEGIN VALIDATEION -->
 	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<!-- END VALIDATEION --> 
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <?php 
-$js='
+$js=' FormValidation.init();
 $(document).ready(function() {
+	
+	$(document).on("change",".ShowUnit", function(){
+		var unit_name = $("option:selected", this).attr("unit_name");
+		$(this).closest("tr.main_tr").find(".unitType").val(unit_name); 
+		 
+		
+	});
+
 	$(document).on("click", ".add_row", function(e)
     { 
 		add_row();
@@ -173,55 +210,68 @@ $(document).ready(function() {
 		}
 		return true;
 	}, "please use only alphabetic characters");
-	
-	//-- Validation
-	var form2 = $("#CountryForm");
-	var error2 = $(".alert-danger", form2);
-	var success2 = $(".alert-success", form2);
+	 
+ });
 
-	form2.validate({
-		errorElement: "span", //default input error message container
-		errorClass: "help-block help-block-error", // default input error message class
-		focusInvalid: false, // do not focus the last invalid input
-		ignore: "",  // validate all fields including form hidden input
-		rules: {
-			name: { 
-				required: true,
-				specialChars: true
-			},
-			item_sub_category_id: { 
-				required: true 
-			},
-			rate: { 
-				required: true 
-			},
-		},
+	var FormValidation = function () {
+	    var handleValidation1 = function() {
+		    var form1 = $("#form_sample_1");
+		    var error1 = $(".alert-danger", form1);
+		    var success1 = $(".alert-success", form1);
 
-		 
+		    form1.validate({
+		        errorElement: "span", //default input error message container
+		        errorClass: "help-block help-block-error", // default input error message class
+		        focusInvalid: false, // do not focus the last invalid input
+		        ignore: "",  // validate all fields including form hidden input
+		        messages: {
+		            select_multi: {
+		                maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
+		                minlength: jQuery.validator.format("At least {0} items must be selected")
+		            }
+		        },
+		        rules: {
+		            name: {
+		                required: true
+		            },
+		            item_sub_category_id: {
+		                required: true,
+		            }, 
+		            rate: {
+		                required: true,
+		                number: true
+		            }, 
+		        },
 
-		errorPlacement: function (error, element) { // render error placement for each input type
-			var icon = $(element).parent(".input-icon").children("i");
-			icon.removeClass("fa-check").addClass("fa-warning");  
-			icon.attr("data-original-title", error.text()).tooltip({"container": "body"});
-		},
+		        invalidHandler: function (event, validator) { //display error alert on form submit              
+		            success1.hide();
+		            error1.show();
+		            Metronic.scrollTo(error1, -200);
+		        },
 
-		highlight: function (element) { // hightlight error inputs
-			$(element)
-				.closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group   
-		},
-		success: function (label, element) {
-			var icon = $(element).parent(".input-icon").children("i");
-			$(element).closest(".form-group").removeClass("has-error").addClass("has-success"); // set success class to the control group
-			icon.removeClass("fa-warning").addClass("fa-check");
-		},
+		        highlight: function (element) { // hightlight error inputs
+		            $(element)
+		                .closest(".form-group").addClass("has-error"); // set error class to the control group
+		        },
 
-		submitHandler: function (form) {
-			success2.show();
-			error2.hide();
-			form[0].submit(); // submit the form
+		        unhighlight: function (element) { // revert the change done by hightlight
+		            $(element)
+		                .closest(".form-group").removeClass("has-error"); // set error class to the control group
+		        },
+
+		        success: function (label) {
+		            label
+		                .closest(".form-group").removeClass("has-error"); // set success class to the control group
+		        },
+
+		        submitHandler: function (form) {
+		            success1.show();
+		            error1.hide();
+		        }
+		    });
 		}
-	}); 	
- });';
+	}();
+';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 <table id="sample" style="display:none;"  width="1500px">
@@ -229,18 +279,17 @@ $(document).ready(function() {
 		<tr class="main_tr">
 			<td style="vertical-align: top !important;"></td>
 			<td width="30%" align="left">
-				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control select2','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
+				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control select2 ShowUnit','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
-			<td width="30%" align="center">
-				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required']); ?>
+			<td width="30%" align="">
+				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
 			</td>
-			<td width="15%" class="unitType">
-				
+			<td width="15%" class="">
+				<?php echo $this->Form->control('dasd', ['label' => false,'placeholder'=>'Unit','class'=>'form-control unitType','readonly'=>'readonly','tabindex'=>'1']); ?>
 			</td>
 			<td  width="20%">
 				<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button']); ?>
 			</td>
-
 		</tr>
 	</tbody>		
 </table>
