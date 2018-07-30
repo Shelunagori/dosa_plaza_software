@@ -3,7 +3,6 @@
 <div class="row">
     <div class="col-md-12 main-div">
 		<div class= "portlet box blue-hoki">
-			<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 			<div class="portlet-title">
 				<div class="caption">
 					Purchase Voucher
@@ -12,11 +11,12 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
+			<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
 			<div class="portlet-body">
 				<div class="row">
 					<div class="form-group col-md-2">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
-						 <input class="form-control input-sm" type="date" name="transaction_date" required /> 
+						<input class="form-control input-sm" type="date" name="transaction_date" required /> 
 
 					</div>	
 					<div class="form-group col-md-4">
@@ -108,11 +108,65 @@
     <!-- END PAGE LEVEL SCRIPTS -->
 	
 	<?php
-	$js="
+	$js="FormValidation.init();
 	$(document).ready(function() {
 		ComponentsPickers.init();
-		FormValidation.init();
+		
 
+		var FormValidation = function () {
+		    var handleValidation1 = function() {
+
+		            var form1 = $('#form_sample_1');
+		            var error1 = $('.alert-danger', form1);
+		            var success1 = $('.alert-success', form1);
+		            form1.validate({
+		                errorElement: 'span', //default input error message container
+		                errorClass: 'help-block help-block-error', // default input error message class
+		                focusInvalid: false, // do not focus the last invalid input
+		                ignore: '',  // validate all fields including form hidden input
+		                messages: {
+		                    select_multi: {
+		                        maxlength: jQuery.validator.format(\"Max {0} items allowed for selection\"),
+		                        minlength: jQuery.validator.format(\"At least {0} items must be selected\")
+		                    }
+		                },
+		                rules: {
+		                    transaction_date: {
+		                        required: true
+		                    }
+		                },
+
+		                invalidHandler: function (event, validator) { //display error alert on form submit              
+		                    success1.hide();
+		                    error1.show();
+		                    Metronic.scrollTo(error1, -200);
+		                },
+
+		                highlight: function (element) { // hightlight error inputs
+		                    $(element)
+		                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+		                },
+
+		                unhighlight: function (element) { // revert the change done by hightlight
+		                    $(element)
+		                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+		                },
+
+		                success: function (label) {
+		                    label
+		                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+		                },
+
+		                submitHandler: function (form) {
+		                    success1.show();
+		                    error1.hide();
+		                }
+		            });
+
+
+		    }
+
+		}();
     
 		$(document).on('click', '.add_row', function(e){ 
 			add_row();
@@ -120,7 +174,7 @@
 
 		add_row();
 
-		function add_row(){ 
+		function add_row(){
 			var tr=$('#sample tbody tr.main_tr').clone();
 			$('#main_table tbody#main_tbody').append(tr);
 		
@@ -129,13 +183,11 @@
 		
 		$(document).on('keyup','.quantity,  .rate, .round_off', function(e){
 			calculation();
-			
+		});
+		$(document).on('change','.raw_material', function(e){
+			calculation();
 		});
 
-		$(document).on('change','.calc',function(e){
-			var obj =$(this);
-			calculation (obj);			
-		});
 
 		function calculation(){
 			var total_amount_fixed=0;
@@ -196,47 +248,51 @@
 		  
 		$(document).on('keyup','.discount_per',function(e){
 			var obj = $(this);
-		    var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
-			var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+		    var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
+		    if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('input.rate').val());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_per  = parseFloat($(this).closest('tr').find('input.discount_per').val());
+			if(isNaN(discount_per)){ discount_per=0; }
 			
-			if(!isNaN(qty) && !isNaN(rate))
-			{ 
-				var amount   = qty*rate;						
-				if(discount_per)
-				{   
-					var disAmt    = (amount*discount_per)/100;
-					disAmt  = round(disAmt,2);
-				
-				}
-				$(this).closest('tr').find('td:nth-child(7) input').val(disAmt);
-				calculation(obj);
+			var amount   = qty*rate;						
+			if(discount_per)
+			{   
+				var disAmt    = (amount*discount_per)/100;
+				disAmt  = round(disAmt,2);
+			
 			}
+			$(this).closest('tr').find('input.discount_amt').val(disAmt);
+			calculation();
 		});
 		 
 		$(document).on('keyup','.discount_amt',function(e){
 			var obj = $(this);
-			var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3) input').val());
-			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
-			var discount_amt  = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+			var qty           = parseFloat($(this).closest('tr').find('input.quantity').val());
+			if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('input.rate').val());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('input.discount_amt').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
 			
-			if(!isNaN(qty) && !isNaN(rate))
-			{ 
-				var amount   = qty*rate;						
-					if(discount_amt)
-					{   
-						var dis_per   = (discount_amt*100)/amount;
-						dis_per = round(dis_per,2);
-						
-					}
-					$(this).closest('tr').find('td:nth-child(6) input').val(dis_per);
-					calculation(obj);
+			var amount   = qty*rate;
+
+			if(discount_amt && amount>0)
+			{   
+				var dis_per   = (discount_amt*100)/amount;
+				dis_per = round(dis_per,2);
+				
 			}
+			$(this).closest('tr').find('input.discount_per').val(dis_per);
+			calculation();
 		});
 		
 		
-		$(document).on('click', '.remove_row', function(e)
-	    { 
+		$(document).on('click', '.remove_row', function(e){ 
 			var rowCount = $('#main_table tbody#main_tbody tr.main_tr').length; 
 			if(rowCount>1)
 			{
@@ -276,64 +332,13 @@
 				});
 				
 				i++;
-					
 			});
-
-			var FormValidation = function () {
-					// basic validation
-				var handleValidation1 = function() {
-					// for more info visit the official plugin documentation: 
-		            // http://docs.jquery.com/Plugins/Validation
-
-		            var form1 = $('#form_sample_1');
-		            var error1 = $('.alert-danger', form1);
-		            var success1 = $('.alert-success', form1);
-		            form1.validate({
-		                errorElement: 'span', //default input error message container
-		                errorClass: 'help-block help-block-error', // default input error message class
-		                focusInvalid: false, // do not focus the last invalid input
-		                 // validate all fields including form hidden input
-		               
-		                rules: {
-		                    transaction_date: {
-		                        required: true
-		                    },
-		                },
-
-		                invalidHandler: function (event, validator) { //display error alert on form submit              
-		                    success1.hide();
-		                    error1.show();
-		                    Metronic.scrollTo(error1, -200);
-		                },
-
-		                highlight: function (element) { // hightlight error inputs
-		                    $(element)
-		                        .closest('.form-group').addClass('has-error'); // set error class to the control group
-		                },
-
-		                unhighlight: function (element) { // revert the change done by hightlight
-		                    $(element)
-		                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
-		                },
-
-		                success: function (label) {
-		                    label
-		                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
-		                },
-
-		                submitHandler: function (form) { 
-		                    success1.show();
-		                    error1.hide();
-		                    form[0].submit(); // submit the form
-		                }
-
-		            });
-
-		    	}
+		}
 
 
-		};
-	}
+		
+
+	});
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
