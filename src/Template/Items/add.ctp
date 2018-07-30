@@ -156,8 +156,20 @@
 	<!-- END VALIDATEION --> 
 <!-- END PAGE LEVEL SCRIPTS -->
 
-<?php 
-$js=' FormValidation.init();
+<?php
+$js=' ';
+if(!empty($id)){  
+	foreach($item->item_rows as $rowData){  
+	$js.='
+		$(".main_tr").each(function(){
+			var selectedval=$(this).closest("tr").find(".ShowUnit option:selected").attr("unit_name");
+			$(this).closest("tr").find(".unitType").val(selectedval); 
+		})
+	';
+	}
+}
+
+$js.=';
 $(document).ready(function() {
 	
 	$(document).on("change",".ShowUnit", function(){
@@ -171,7 +183,11 @@ $(document).ready(function() {
     { 
 		add_row();
 	});
-	add_row();
+';
+if(empty($id)){ 
+	$js.='add_row();';
+}
+$js.='	
 	function add_row(){ 
 		var tr=$("#sample tbody tr.main_tr").clone();
 		$("#main_table tbody#main_tbody").append(tr);
@@ -267,11 +283,14 @@ $(document).ready(function() {
 		        submitHandler: function (form) {
 		            success1.show();
 		            error1.hide();
+		           	$(form).submit(); 
 		        }
 		    });
 		}
 	}();
+
 ';
+$js.='FormValidation.init()';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 <table id="sample" style="display:none;"  width="1500px">

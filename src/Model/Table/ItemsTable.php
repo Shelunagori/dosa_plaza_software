@@ -41,7 +41,8 @@ class ItemsTable extends Table
             'foreignKey' => 'item_sub_category_id'
         ]);
         $this->hasMany('ItemRows', [
-            'foreignKey' => 'item_id'
+            'foreignKey' => 'item_id',
+            'saveStrategy'=>'replace',
         ]); 
 		
 		$this->belongsTo('ItemSubCategories', [
