@@ -1,2 +1,5 @@
 24-7-2018 4:26 Abhilash
 status	varchar(30)	in tables
+
+3-7-2018 9:45 Abhilash
+purchase_voucher_unit_type varchar(20)	in raw_materials
