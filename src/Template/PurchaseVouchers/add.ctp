@@ -331,15 +331,9 @@
 
 		    	}
 
-<<<<<<< HEAD
-			}();
-		}
-		  
-	});
-=======
+
 		};
 	}
->>>>>>> a7ed9f663863d578ac6149978412075b3caa79bb
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
@@ -351,15 +345,11 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<td width="15%" align="left">
 				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 raw_material ','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
-<<<<<<< HEAD
 			<td width="5%" align="center">
 				<?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm quantity rightAligntextClass','required'=>'required']); ?>
 			</td>
 			<td width="5%" align="center"></td>
-=======
-			
-			
->>>>>>> a7ed9f663863d578ac6149978412075b3caa79bb
+
 			<td width="8%" align="center">
 				<?php echo $this->Form->input('rate',['class'=>'form-control input-sm rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'required'=>'required']); ?>
 			</td>		
