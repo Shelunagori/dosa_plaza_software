@@ -32,7 +32,7 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->newEntity();
         if ($this->request->is('post')) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
-           // pr($rawMaterial);exit;
+           
             if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
@@ -90,6 +90,67 @@ class RawMaterialsController extends AppController
     }
 	public function stockAdjustment(){
 		$this->viewBuilder()->layout('admin');
+		
+		//pr( $this->request);Exit();
+		 if ($this->request->is(['patch', 'post', 'put'])) {
+			$PostedStockLedgers=$this->request->getData('StockLedgers');
+			  
+			foreach($PostedStockLedgers as $PosteData){
+				
+				$adjust=$PosteData['adjust'];
+				$raw_material_id=$PosteData['raw_material_id'];
+				$adjust=$PosteData['adjust'];
+				
+				
+				if($adjust>0){
+					$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
+					$AdjustData=array();
+					$AdjustData['quantity']=$adjust;
+					$AdjustData['raw_material_id']=$raw_material_id;
+					$AdjustData['rate']=0;
+					$AdjustData['status']='in';
+					$AdjustData['voucher_name']='stock adjustment';
+					$AdjustData['adjustment_commant']='adjustment_commant';
+					$StockLedger = $this->RawMaterials->StockLedgers->patchEntity($StockLedger, $AdjustData);
+					$this->RawMaterials->StockLedgers->save($StockLedger);
+				}
+				else{
+					//--  No Reason Submit
+					$noresaon=$PosteData['noresaon'];
+					if($noresaon>0){
+						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
+						$AdjustData=array();
+						$AdjustData['quantity']=$noresaon;
+						$AdjustData['raw_material_id']=$raw_material_id;
+						$AdjustData['rate']=0;
+						$AdjustData['status']='out';
+						$AdjustData['voucher_name']='stock adjustment';
+						$AdjustData['adjustment_commant']='adjustment_commant';
+						$AdjustData['wastage_commant']='wastagecommant';
+						$StockLedger = $this->RawMaterials->StockLedgers->patchEntity($StockLedger, $AdjustData);
+						$this->RawMaterials->StockLedgers->save($StockLedger);
+					}
+					//--  Westge Submit
+					$wastage=$PosteData['wastage'];
+					if($wastage>0){
+						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
+						$AdjustData=array();
+						$AdjustData['quantity']=$wastage;
+						$AdjustData['raw_material_id']=$raw_material_id;
+						$AdjustData['rate']=0;
+						$AdjustData['status']='out';
+						$AdjustData['voucher_name']='stock adjustment';
+						$AdjustData['adjustment_commant']='adjustment_commant';
+						$AdjustData['wastage_commant']='wastagecommant';
+						$StockLedger = $this->RawMaterials->StockLedgers->patchEntity($StockLedger, $AdjustData);
+						$this->RawMaterials->StockLedgers->save($StockLedger);
+					}
+					 
+				}
+			} 
+				return $this->redirect(['action' => 'index']);
+             
+        }
 		
 		$q=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
 		$q->select([$q->func()->sum('StockLedgers.quantity')]);

@@ -71,10 +71,7 @@ class StockLedgersTable extends Table
             ->requirePresence('status', 'create')
             ->notEmpty('status');
 
-        $validator
-            ->dateTime('effected_on')
-            ->requirePresence('effected_on', 'create')
-            ->notEmpty('effected_on');
+        
 
         return $validator;
     }
