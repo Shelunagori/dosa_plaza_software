@@ -1,0 +1,1 @@
+ALTER TABLE `items` ADD `edited_on` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL AFTER `created_by`;
