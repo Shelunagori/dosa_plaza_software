@@ -31,7 +31,7 @@ class ItemsController extends AppController
 		else
 		{
 			$item = $this->Items->get($id, [
-				'contain' => []
+				'contain' => ['ItemRows']
 			]);
 		}
 		$loginId=$this->Auth->User('id'); 
