@@ -43,13 +43,13 @@ class RawMaterialsTable extends Table
         $this->belongsTo('PrimaryUnits', [
             'className'=>'Units',
             'foreignKey' => 'primary_unit_id',
-            'joinType' => 'primary_unit'
+            'propertyName' => 'primary_unit'
         ]);
 
         $this->belongsTo('SecondaryUnits', [
             'className'=>'Units',
             'foreignKey' => 'secondary_unit_id',
-            'joinType' => 'secondary_unit'
+            'propertyName' => 'secondary_unit'
         ]);
 
 
