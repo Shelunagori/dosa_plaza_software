@@ -52,7 +52,9 @@ class RawMaterialsTable extends Table
             'propertyName' => 'secondary_unit'
         ]);
 
-
+		$this->hasMany('StockLedgers', [
+            'foreignKey' => 'raw_material_id'
+        ]);
     }
 
     /**
