@@ -1,4 +1,18 @@
 <style>
+.commentString{
+    background-color: #2d4161;
+    padding:  5px;
+    border-radius:  5px;
+    color:  #FFF;
+    margin-right:  5px;
+    cursor:  pointer;
+}
+.closeCommentBox{
+	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
+.saveComment{
+	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+}
 .closePopup{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
@@ -11,9 +25,7 @@
 .SubmitBill{
 	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
 }
-.searchCustomer{
-	color: #FFF; background-color: #FA6775; padding: 10px 18px;font-size:12px;cursor: pointer;margin-bottom: 2px;
-}
+
 .AddItemBtn{
 	color: #FFF; background-color: #FA6775; padding: 9px 18px;font-size:12px;cursor: pointer;
 }
@@ -29,18 +41,10 @@
 .CreateBill{
 	color: #FFF; background-color: #2D4161; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
 }
-.topBtnActive{
-	color: #FFF; border-radius: 5px !important; background-color: #FA6775; padding: 7px 18px;margin-left: 8px;
-}
-.topBtn{
-	color: #818182; border-radius: 5px !important; background-color: #FFF; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
-}
-.topBtn2{
-	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
-}
+
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
-
+<?= $this->element('header'); ?>
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	
@@ -124,6 +128,7 @@
 											<th style="text-align:center;">Quantity</th>
 											<th style="text-align:center;">Rate</th>
 											<th style="text-align:center;">Amount</th>
+											<th style="text-align:center;">Comment</th>
 											<th></th>
 										</tr>
 									</thead>
@@ -133,10 +138,13 @@
 								</table>
 							</div>
 							<div style="padding-top:12px" align="center">
+								<textarea id="oneComment" style="display: none;"></textarea>
+								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
 							</div>
 							<br/><br/>
 							<div style="padding-top:12px" align="right">
+								<span class="CreateBill" >GENERATE BILL </span>
 								<span class="ViewAllKOT" >VIEW ALL KOT</span>
 							</div>
 							<br/><br/>
@@ -336,7 +344,7 @@
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
 		
 		
@@ -350,7 +358,7 @@
 				
 				var c=$('#kotBox tbody tr').length;
 				c=c+1;
-				$('#kotBox').append('<tr><td style=text-align:center;>'+c+'.</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>'+Qty+'</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 			}
 			
 		});
@@ -359,7 +367,8 @@
 			$(this).closest('tr').remove();
 			var c=0;
 			$('#kotBox tbody tr').each(function(){
-				var item_id=$(this).find('td:nth-child(1)').text(++c);
+				var item_id=$(this).attr('row_no',++c);
+				var item_id=$(this).find('td:nth-child(1)').text(c);
 			});
 		});
 		
@@ -381,17 +390,20 @@
 				var quantity=$(this).find('td:nth-child(3)').text();
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount}); 
+				var comment=$(this).find('.comment').val();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, comment : comment}); 
 			});
 			var table_id=$('#tableInput').val();
+			var one_comment=$('#oneComment').val();
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
 				if(response=='1'){
 					$('#kotBox tbody tr').remove();
+					$('#oneComment').val('');
 					$('#WaitBox div.modal-body').html('".$successMessage."');
 				}else{
 					$('#WaitBox div.modal-body').html('".$errorMessage."');
@@ -400,20 +412,20 @@
 		});
 		
 		$('.closeViewKot').die().live('click',function(event){
-			$('#WaitBox3').hide();
+			$('#WaitBox4').hide();
 		});
 
 		$('.ViewAllKOT').die().live('click',function(event){
 			event.preventDefault();
 			var table_id=$('#tableInput').val();
-			$('#WaitBox3').show();
-			$('#WaitBox3 div.modal-body').html('".$waitingMessage2."');
+			$('#WaitBox4').show();
+			$('#WaitBox4 div.modal-body').html('".$waitingMessage2."');
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
 			url=url+'?table_id='+table_id;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
-				$('#WaitBox3 div.modal-body').html(response);
+				$('#WaitBox4 div.modal-body').html(response);
 			});
 		});
 		
@@ -438,6 +450,7 @@
 		
 		$('.SubmitBill').die().live('click',function(event){
 			event.preventDefault();
+			$(this).text('Saving...');
 			$('#WaitBox2').show();
 			$('#WaitBox2 div.modal-body').html('".$waitingMessage."');
 			var postData=[];
@@ -451,7 +464,13 @@
 				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount}); 
 			});
 			var table_id=$('#tableInput').val();
-			var customer_id=$('input[name=customer_id]').val();
+			var c_name=$('#c_name').val();
+			var c_mobile_no=$('#c_mobile_no').val();
+			var c_pax=$('#c_pax').val();
+			var dob=$('#dob').val();
+			var doa=$('#doa').val();
+			var c_email=$('#c_email').val();
+			var c_address=$('#c_address').val();
 			
 			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text();
 			var tax_id=$('#billTable tfoot tr:nth-child(2) td:nth-child(2) select option:selected').attr('tax_id');
@@ -461,7 +480,8 @@
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&tax_id='+tax_id+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&customer_id='+customer_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&tax_id='+tax_id+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax;
+			url=encodeURI(url);
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
@@ -471,7 +491,13 @@
 					
 					var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
 					url=url+'?bill_id='+bill_id;
-					var w = window.open(url, 'popupWindow', 'scrollbars=yes');
+					var win = window.open(url, '_blank');
+					win.focus();
+
+					var url2='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."';
+  					window.location.href = url2;
+
+  					
 				}else{
 					$('#WaitBox3 div.modal-body').html('".$errorMessage."');
 				}
@@ -514,39 +540,51 @@
 			$(this).closest('div.panel-heading').find('span.iconBox').html('<i class=\"fa fa-minus\"></i>').css('color','#FFF');
 		});
 
-		$('.searchCustomer').die().live('click',function(event){
-			var mobile_no=$('input[name=mobile_no]').val();
-			if(mobile_no.length!=10){
-				alert('Mobile No should be of 10 digits.');
-				return;
-			}
-			var url='".$this->Url->build(['controller'=>'Customers','action'=>'check-customer'])."';
-			url=url+'?mobile_no='+mobile_no;
-			$.ajax({
-				url: url,
-			}).done(function(response) {
-				if(response=='0'){
-					$('#WaitBox4').show();
-					$('#WaitBox4 div.modal-body').html('".$waitingMessage2."');
-					var url='".$this->Url->build(['controller'=>'Customers','action'=>'add'])."';
-					url=url+'?mobile_no='+mobile_no;
-					$.ajax({
-						url: url,
-					}).done(function(response) {
-						$('#WaitBox4 div.modal-body').html(response);
-					});
-				}else{
-					var url='".$this->Url->build(['controller'=>'Customers','action'=>'view'])."';
-					url=url+'?c_id='+response;
-					$.ajax({
-						url: url,
-					}).done(function(response) {
-						$('#customerView').html(response);
-					});
-				}
-				
-			});
+
+		$('.commentRow').die().live('click',function(event){
+			var c=$(this).closest('tr').find('.comment').val();
+			$('.commentContainor').val(c);
+			var sr_no=$(this).closest('tr').attr('row_no');
+			$('#rowSR').val(sr_no);
+			$('#WaitBox5').show();
 		});
+
+		$('.closeCommentBox').die().live('click',function(event){
+			$('#WaitBox5').hide();
+		});
+
+		$('.commentString').die().live('click',function(event){
+			var s=$(this).text();
+			old_s=$('.commentContainor').val();
+			if(old_s!=''){
+				s=old_s+', '+s;
+			}
+			
+			$('.commentContainor').val(s);
+		});
+
+		$('.saveComment').die().live('click',function(event){
+			var c=$('.commentContainor').val();
+			var sr_no=$('#rowSR').val();
+			if(sr_no=='0'){
+				$('#oneComment').val(c);
+				$('#WaitBox5').hide();
+			}else{
+				$('tr[row_no='+sr_no+']').find('.comment').val(c);
+				$('#WaitBox5').hide();
+			}
+			
+		});
+
+		$('.KOTComment').die().live('click',function(event){
+			var c=$('#oneComment').val();
+			$('.commentContainor').val(c);
+			var sr_no=0;
+			$('#rowSR').val(sr_no);
+			$('#WaitBox5').show();
+		});
+
+
 		
 	});	
 	";
@@ -575,8 +613,8 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 </div>
 
 <div id="WaitBox3" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
-	<div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog modal-lg">
+	<div class="modal-backdrop " ></div>
+	<div class="modal-dialog modal-full">
 		<div class="modal-content">
 			<div class="modal-body">
 			</div>
@@ -589,6 +627,36 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox5" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<input type="hidden" id="rowSR">
+				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">COMMENT BOX</div>
+				<br/>
+				<div class="form-group">
+					<textarea class="form-control commentContainor" rows="3" style="background-color: #F5F5F5;"></textarea>
+				</div>
+				<br/>
+				<div>
+					<label style=" color: #2D4161; font-weight: bold; font-size: 14px; ">Predefined Comments</label>
+					<div>
+						<?php foreach ($Comments as $Comment) { ?>
+							<span class="commentString"><?php echo $Comment; ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<br/><br/>
+				<div align="center">
+					<span class="closeCommentBox">CLOSE</span>
+					<span class="saveComment">SAVE COMMENT</span>
+				</div>
 			</div>
 		</div>
 	</div>

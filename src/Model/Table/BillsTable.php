@@ -39,6 +39,8 @@ class BillsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Customers');
+        
         $this->belongsTo('Tables', [
             'foreignKey' => 'table_id',
             'joinType' => 'INNER'
