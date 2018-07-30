@@ -28,11 +28,12 @@ class StockLedger extends Entity
      * @var array
      */
     protected $_accessible = [
-        'raw_material_id' => true,
+        '*' => true,
         'quantity' => true,
         'rate' => true,
         'status' => true,
         'effected_on' => true,
-        'raw_material' => true
+        'raw_material' => true,
+		'voucher_no' =>  true,
     ];
 }
