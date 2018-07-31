@@ -1,104 +1,97 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light">
-			<div class="caption top-caption">
-				<span>Stock Adjustment</span>
+<div class="row" style="margin-top:15px;">
+	<div class="col-md-12 main-div">
+		<div class="portlet box blue-hoki">
+			<?= $this->Form->create($RawMaterials, ['id'=>'configform']) ?>
+			<div class="portlet-title">
+				<div class="caption"style="padding:13px; color: red;">
+					Stock Adjustment
+				</div>
+				<div style="text-align:right;padding:12px 51px 18px;">
+					<input id="search3" type="text" placeholder="Search" />
+					<i id="filtersubmit" class="fa fa-search"></i>
+				</div>
+				<div class="row">	
+					<div class="col-md-12 horizontal "></div>
+				</div>
 			</div>
-		</div>
-	</div>
-</div>	
-<div class="col-md-12 main-div">
-	<div class="portlet box blue-hoki">
-		<?= $this->Form->create($RawMaterials, ['id'=>'configform']) ?>
-		<div class="portlet-title">
-			<div class="caption"style="padding:13px; color: red;">
-				Stock Adjustment
-			</div>
-			<div style="text-align:right;padding: 12px 51px 18px;"
-				<input id="search3" type="text" placeholder="Search" />
-				<i id="filtersubmit" class="fa fa-search"></i>
-			</div>
-			<div class="row">	
-				<div class="col-md-12 horizontal "></div>
-			</div>
-		</div>
-		<div class="portlet-body">
-			<table class="table " cellpadding="0" cellspacing="0" id="main_table">
-				<thead>
-					<tr>
-						<th style="width:10%"><?= ('S.No.') ?></th>
-						<th style="width:15%"><?= ('Item') ?></th>
-						<th style="width:15%" ><?= ('Current stock') ?></th>
-						<th style="width:15%"><?= ('Physical stock') ?></th>
-						<th style="width:20%;"><?= ('Adjustment') ?></th> 
-						<th style="width:20%;"><?= ('Commant') ?></th> 
-					</tr>
-				</thead>
-				<tbody id="main_tbody">
-				<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
-					<tr class="main_tr">
-						<td><?= (++$d) ?></td>
-						<td><?= h($RawMaterial->name) ?>
-						<?php echo $this->Form->input('StockLedgers['.$x.'][raw_material_id]',array('type'=>'hidden','value'=>$RawMaterial->id)); ?>
-						</td>
-						<td>
-							<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
-							<?= h($RawMaterial->primary_unit->quantity) ?> 
-						</td>
-						<td>
-							<div class="input-group input-sm ">
-								<input class="form-control physical" autocomplete="off">
-								<span class="input-group-addon">
-									<?= h($RawMaterial->primary_unit->name) ?>
-								</span>
-							</div> 
-						</td>
-						<td>
-							<div class="input-group input-sm ">
-								<input class="form-control adjust" autocomplete="off" name="StockLedgers[<?php echo $x;?>][adjust]">
-								<span class="input-group-addon">
-									<?= h($RawMaterial->primary_unit->name) ?>
-								</span>
-							</div>
-							<div class="input-group  hiddendiv" style="padding-top:3%;">
-								<div style="width:46%; float:left; margin-right:4%;text-align: left;	">
-									<label style="text-align:left;">No resaon </label>
-									<input  class="form-control input input-sm resaon" name="StockLedgers[<?php echo $x;?>][noresaon]" style ="width:60%"/>
-									<span class="input-group-addon" style="float:left;">
+			<div class="portlet-body">
+				<table class="table " cellpadding="0" cellspacing="0" id="main_table">
+					<thead>
+						<tr>
+							<th style="width:10%"><?= ('S.No.') ?></th>
+							<th style="width:15%"><?= ('Item') ?></th>
+							<th style="width:15%" ><?= ('Current stock') ?></th>
+							<th style="width:15%"><?= ('Physical stock') ?></th>
+							<th style="width:20%;"><?= ('Adjustment') ?></th> 
+							<th style="width:20%;"><?= ('Commant') ?></th> 
+						</tr>
+					</thead>
+					<tbody id="main_tbody">
+					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+						<tr class="main_tr">
+							<td><?= (++$d) ?></td>
+							<td><?= h($RawMaterial->name) ?>
+							<?php echo $this->Form->input('StockLedgers['.$x.'][raw_material_id]',array('type'=>'hidden','value'=>$RawMaterial->id)); ?>
+							</td>
+							<td>
+								<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
+								<?= h($RawMaterial->primary_unit->quantity) ?> 
+							</td>
+							<td>
+								<div class="input-group input-sm ">
+									<input class="form-control physical" autocomplete="off">
+									<span class="input-group-addon">
+										<?= h($RawMaterial->primary_unit->name) ?>
+									</span>
+								</div> 
+							</td>
+							<td>
+								<div class="input-group input-sm ">
+									<input class="form-control adjust" autocomplete="off" name="StockLedgers[<?php echo $x;?>][adjust]">
+									<span class="input-group-addon">
 										<?= h($RawMaterial->primary_unit->name) ?>
 									</span>
 								</div>
-								<div style="width:46%; float:left;text-align: left;">
-									<label style="text-align:left;">wastage</label>
-									<input  class= "form-control input-sm  wastage" name="StockLedgers[<?php echo $x;?>][wastage]" style="width:60%" />
-									<span class="input-group-addon" style="float:left";>
-										<?= h($RawMaterial->primary_unit->name) ?>
-									</span>
+								<div class="input-group  hiddendiv" style="padding-top:3%;">
+									<div style="width:46%; float:left; margin-right:4%;text-align: left;	">
+										<label style="text-align:left;">No resaon </label>
+										<input  class="form-control input input-sm resaon" name="StockLedgers[<?php echo $x;?>][noresaon]" style ="width:60%"/>
+										<span class="input-group-addon" style="float:left;">
+											<?= h($RawMaterial->primary_unit->name) ?>
+										</span>
+									</div>
+									<div style="width:46%; float:left;text-align: left;">
+										<label style="text-align:left;">wastage</label>
+										<input  class= "form-control input-sm  wastage" name="StockLedgers[<?php echo $x;?>][wastage]" style="width:60%" />
+										<span class="input-group-addon" style="float:left";>
+											<?= h($RawMaterial->primary_unit->name) ?>
+										</span>
+									</div>
 								</div>
-							</div>
-						</td>
-						<td>
-							<div class="input-group input-sm hiddencommant ">
-								<input class="form-control " autocomplete="off" placeholder="Adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
-							</div>
-							<div>
-								<div class="input-group input-sm  hiddencom ">
-									<input class="form-control " autocomplete="off" placeholder="Wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
+							</td>
+							<td>
+								<div class="input-group input-sm hiddencommant ">
+									<input class="form-control " autocomplete="off" placeholder="Adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
 								</div>
-							</div>
-						</td>
-					</tr>
-					<?php $x++; endforeach; ?>
-				</tbody>
-			</table>
-		</div>
-		<div class="row">
-			<div class="box-footer"  style="text-align:center;padding-bottom:18px;padding: 25px;">
-					<button type="submit" class="btn btn-danger" id="order_btn" value="submit">Submit</button>
+								<div>
+									<div class="input-group input-sm  hiddencom ">
+										<input class="form-control " autocomplete="off" placeholder="Wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
+									</div>
+								</div>
+							</td>
+						</tr>
+						<?php $x++; endforeach; ?>
+					</tbody>
+				</table>
 			</div>
+			<div class="row">
+				<div class="box-footer"  style="text-align:center;padding-bottom:18px;padding: 25px;">
+						<button type="submit" class="btn btn-danger" id="order_btn" value="submit">Submit</button>
+				</div>
+			</div>
+			<?= $this->Form->end() ?>
 		</div>
-		<?= $this->Form->end() ?>
 	</div>
 </div>
 <!-- BEGIN PAGE LEVEL STYLES -->

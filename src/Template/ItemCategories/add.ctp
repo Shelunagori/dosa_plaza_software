@@ -1,16 +1,7 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Item Category'); ?>
 <!-- BEGIN PAGE CONTENT-->
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light">
-			<div class="caption top-caption">
-				<span>Item Category</span>
-			</div>
-		</div>
-	</div>
-</div>	
-<div class="row">
+<div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
 		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet box blue-hoki">
@@ -48,7 +39,8 @@
 						</div>
 						<div class="form-actions ">
 							<div class="row">
-								<div class="col-md-offset-6 col-md-9">
+								<div class="col-md-12" style=" text-align: center;">
+									<hr></hr>
 									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
@@ -89,25 +81,23 @@
 							<td class="actions">
 								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemCategories','action'=>'add',$country->id]]);?>
 								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
-								
-										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
-											<div class="modal-dialog modal-md" >
-												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemCategories','action'=>'delete',$country->id)) ?>">
-													<div class="modal-content">
-													  <div class="modal-header">
-															
-															<h4 class="modal-title">
-															Are you sure you want to remove this Category?
-															</h4>
-														</div>
-														<div class="modal-footer" style="border:none;">
-															<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-															<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
-														</div>
-													</div>
-												</form>
+								<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemCategories','action'=>'delete',$country->id)) ?>">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Are you sure you want to remove this Category?
+													</h4>
+												</div>
+												<div class="modal-footer" style="border:none;">
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
+												</div>
 											</div>
-										</div>
+										</form>
+									</div>
+								</div>
 							   <?php  $this->Form->PostLink('<i class="fa fa-trash-o"></i>','/Countries/delete/'.$country->id,array('escape'=>false,'class'=>'btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $country->id)));?>
 							</td>
 						</tr>
