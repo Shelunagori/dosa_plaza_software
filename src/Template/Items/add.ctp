@@ -59,9 +59,9 @@
 								<label  class="">Discount Applicable</label>
 								<div class="radio-list col-md-12">
 									<label class="radio-inline">
-									<input type="radio" name="discount_applicable" value="1" checked> Applicable</label>
+									<input type="radio" name="discount_applicable" value="1" <?php  if(!empty($id)){ if($item->discount_applicable==1){ echo "checked";} }else{ echo "checked"; } ?>> Applicable</label>
 									<label class="radio-inline">
-									<input type="radio" name="discount_applicable" value="0"> Not Applicable </label>
+									<input type="radio" name="discount_applicable" value="0" <?php  if(!empty($id)){ if($item->discount_applicable==0){ echo "checked";} } ?>> Not Applicable </label>
 								</div>
 							</div>
 						</div>
