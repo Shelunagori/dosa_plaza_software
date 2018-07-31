@@ -1,4 +1,9 @@
 <?php echo $this->Html->css('mystyle'); ?>
+<style>
+	.help-block-error{
+		font-size: 12px; 
+	}
+</style>
 <div style="height: 10px;" >.</div>
 <div class="row">
     <div class="col-md-12 main-div">
@@ -7,8 +12,8 @@
 				<div class="caption">
 					Purchase Voucher
 				</div>
-				<div class="row">	
-						<div class="col-md-12 horizontal "></div>
+				<div class="row">
+					<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
 			<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
@@ -123,6 +128,7 @@
 						required: true,
 					},
 				},
+			
 
 			errorPlacement: function (error, element) { // render error placement for each input type
 				if (element.parent('.input-group').size() > 0) {
@@ -170,8 +176,11 @@
 			}
 
 		});
-    
-		$(document).on('click', '.add_row', function(e){ 
+		jQuery.extend(jQuery.validator.messages, {
+		    required: 'Required.',
+		});
+		    
+		$(document).on('click', '.add_row', function(e){
 			add_row();
 		});
 
@@ -349,6 +358,7 @@
 			{
 				$(this).closest('tr').remove();
 				rename_rows();
+				calculation();
 			}
 		});
 		

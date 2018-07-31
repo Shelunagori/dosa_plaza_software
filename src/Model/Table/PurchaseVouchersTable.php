@@ -43,7 +43,8 @@ class PurchaseVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('PurchaseVoucherRows', [
-            'foreignKey' => 'purchase_voucher_id'
+            'foreignKey' => 'purchase_voucher_id',
+            'saveStrategy' => 'replace'
         ]);
 		  $this->belongsTo('Items', [
             'foreignKey' => 'purchase_voucher_id',
