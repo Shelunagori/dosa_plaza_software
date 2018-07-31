@@ -66,11 +66,11 @@
 						</td>
 						<td>
 							<div class="input-group input-sm hiddencommant ">
-								<input class="form-control " autocomplete="off" placeholder="adjustment commant" name="adjustment_commant[<?php echo $x;?>][Adjustcommant]">
+								<input class="form-control " autocomplete="off" placeholder="adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
 							</div>
 							<div>
 								<div class="input-group input-sm  hiddencom ">
-									<input class="form-control " autocomplete="off" placeholder="wastage" name="wastagecommant[<?php echo $x; ?>][wastagecommant]">
+									<input class="form-control " autocomplete="off" placeholder="wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
 								</div>
 							</div>
 						</td>
