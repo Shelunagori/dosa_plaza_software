@@ -5,12 +5,15 @@
 			<div class="caption"style="padding: 13px; color: red;">
 				Stock Adjustment
 			</div>
+			<div style="text-align: right; padding: 11px 68px 23px 31px;">
+				<input type="text" id="search3"  placeholder="Search for item.." title="Type in a name">
+			</div>
 			<div class="row">	
 				<div class="col-md-12 horizontal "></div>
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table " cellpadding="0" cellspacing="0" id="main_table">
+			<table class="table " cellpadding="0" cellspacing="0" id="main_tble">
 				<thead>
 					<tr>
 						<th style="width:10%"><?= ('S.No.') ?></th>
@@ -223,6 +226,21 @@
 			$(this).closest('tr').find('.resaon').val(NR);
 			
 		});
+		var $rows = $('#main_tble tbody tr');
+		$('#search3').on('keyup',function() {
+	
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    		var v = $(this).val();
+    		if(v){ 
+    			$rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			$rows.show();
+    		}
+    	});
 	
 		
 	
