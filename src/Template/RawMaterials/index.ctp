@@ -32,7 +32,7 @@
 								<td><?= h($rawMaterial->name) ?></td>
 								<td><?= h($rawMaterial->tax->name) ?></td>
 								<td><?= h($rawMaterial->primary_unit->name) ?></td>
-								<td><?= h($rawMaterial->secondary_unit->name) ?></td>
+								<td><?= h(@$rawMaterial->secondary_unit->name) ?></td>
 								<td class="actions">
 									<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'edit',$rawMaterial->id]]);?>
 									<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$rawMaterial->id,'data-toggle'=>'modal']);?>
