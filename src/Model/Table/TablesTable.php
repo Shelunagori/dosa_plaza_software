@@ -39,6 +39,7 @@ class TablesTable extends Table
             'foreignKey' => 'employee_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Kots');
     }
 
     /**

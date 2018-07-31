@@ -27,7 +27,7 @@ class KotsController extends AppController
         $this->set(compact('kots''));
     }
 
-    public function new($table_id=null)
+    public function generate($table_id=null)
     {
         $this->viewBuilder()->layout('counter');
 
