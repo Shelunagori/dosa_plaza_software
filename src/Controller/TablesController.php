@@ -24,7 +24,9 @@ class TablesController extends AppController
         
         $Tables=$this->Tables->find();
 
-        $this->set(compact('Tables'));
+        $Employees = $this->Tables->Employees->find('list');
+
+        $this->set(compact('Tables', 'Employees'));
     }
 
 
@@ -65,6 +67,22 @@ class TablesController extends AppController
         $Table->doa=$this->request->query('doa');
         $Table->email=$this->request->query('c_email');
         $Table->c_address=$this->request->query('c_address');
+        if($this->Tables->save($Table)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+        exit;
+    }
+
+    public function saveSteward()
+    {
+        $this->viewBuilder()->layout('');
+        $table_id=$this->request->query('table_id');
+        $steward_id=$table_id=$this->request->query('steward_id');
+
+        $Table=$this->Tables->get($table_id);
+        $Table->employee_id=$steward_id;
         if($this->Tables->save($Table)){
             echo '1';
         }else{
