@@ -23,14 +23,16 @@ class TablesController extends AppController
 		$this->viewBuilder()->layout('counter');
         
         //--
-        $q = $this->Tables->Kots->find();
-        $q->select([$q->func()->count('*')]);
-
+       /* $q = $this->Tables->Kots->Kotrows->find();
+        $q->select([
+            'total_Likes' => $q->where(['Kotrows.kot_id = Kots.id']),
+            ]);
+pr($q) ;exit;*/
         $Tables=$this->Tables->find();
-        $Tables->select([
-                'id',
-                'total_Likes' => $q->where(['PostTravlePackageLikes.post_travle_package_id = PostTravlePackages.id']),
-            ])
+        /*$Tables->select([
+            'id',
+            'total_Likes' => $q->where(['PostTravlePackageLikes.post_travle_package_id = PostTravlePackages.id']),
+        ]);*/
 
         $this->set(compact('Tables'));
     }
