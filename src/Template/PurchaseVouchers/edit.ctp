@@ -10,7 +10,7 @@
         <div class= "portlet box blue-hoki">
             <div class="portlet-title">
                 <div class="caption">
-                    Purchase Voucher
+                    Purchase Voucher Edit: <?= h($purchaseVoucher->voucher_no) ?>
                 </div>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
