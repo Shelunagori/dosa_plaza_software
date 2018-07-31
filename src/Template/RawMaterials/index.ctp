@@ -1,15 +1,7 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<div class="row">
+<?php $this->set("title", 'RawMaterials'); ?>	
+<div class="row" style="margin:15px">
 	<div class="col-md-12">
-		<div class="portlet light">
-			<div class="caption top-caption">
-				<span>Row Materiales List</span>
-			</div>
-		</div>
-	</div>
-</div>	
-<div class="row">
-	<div class="col-md-6">
 		<div class="portlet  box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
@@ -26,6 +18,10 @@
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
 							<th scope="col"><?= ('Name') ?></th>
+							<th scope="col"><?= ('Tax') ?></th>
+							<th scope="col"><?= ('Primary Unit') ?></th>
+							<th scope="col"><?= ('Secondary Unit') ?></th>
+
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -34,8 +30,11 @@
 							<tr>
 								<td><?= ++$x; ?></td> 
 								<td><?= h($rawMaterial->name) ?></td>
+								<td><?= h($rawMaterial->tax->name) ?></td>
+								<td><?= h($rawMaterial->primary_unit->name) ?></td>
+								<td><?= h($rawMaterial->secondary_unit->name) ?></td>
 								<td class="actions">
-									<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'add',$rawMaterial->id]]);?>
+									<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'edit',$rawMaterial->id]]);?>
 									<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$rawMaterial->id,'data-toggle'=>'modal']);?>
 									<div id="deletemodal<?php echo $rawMaterial->id; ?>" class="modal fade" role="dialog">
 										<div class="modal-dialog modal-md" >

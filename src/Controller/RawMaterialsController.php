@@ -21,7 +21,13 @@ class RawMaterialsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('admin');
-        $rawMaterials = $this->paginate($this->RawMaterials);
+		$this->paginate = [
+            'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits']
+        ];
+        $rawMaterials = $this->paginate(
+        				$this->RawMaterials->find()
+        				->where(['RawMaterials.is_deleted'=>0])
+        			);
 
         $this->set(compact('rawMaterials'));
     }
@@ -32,6 +38,7 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->newEntity();
         if ($this->request->is('post')) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
+            $rawMaterial->formula=$this->request->getData('formulas');
 			if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
@@ -53,8 +60,9 @@ class RawMaterialsController extends AppController
      */
     public function edit($id = null)
     {
+    	$this->viewBuilder()->layout('admin');
         $rawMaterial = $this->RawMaterials->get($id, [
-            'contain' => []
+            'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
@@ -65,7 +73,10 @@ class RawMaterialsController extends AppController
             }
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
-        $this->set(compact('rawMaterial'));
+        $Taxes = $this->RawMaterials->Taxes->find('list');
+        $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
+        $this->set(compact('rawMaterial','Taxes','units'));
+        
     }
 
     /**
@@ -77,9 +88,12 @@ class RawMaterialsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $rawMaterial = $this->RawMaterials->get($id);
-        if ($this->RawMaterials->delete($rawMaterial)) {
+       $rawMaterial = $this->RawMaterials->get($id, [
+            'contain' => []
+        ]);
+        $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
+        $rawMaterial->is_deleted=1;
+        if ($this->RawMaterials->save($rawMaterial)) {
             $this->Flash->success(__('The raw material has been deleted.'));
         } else {
             $this->Flash->error(__('The raw material could not be deleted. Please, try again.'));
