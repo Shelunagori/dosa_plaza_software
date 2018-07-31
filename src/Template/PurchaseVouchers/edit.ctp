@@ -58,9 +58,12 @@
                                 $c=0;
                                 foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) { ?>
                                     <tr class="main_tr">
-                                        <td style="vertical-align: top !important;"><?php echo ++$c; ?></td>
+                                        <td style="vertical-align: top !important;">
+                                            <?php echo ++$c; ?>
+                                        </td>
                                         <td width="15%" align="left">
                                             <?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 raw_material ','empty' => '--Select Item--','label'=>false,'required'=>'required', 'value' => $purchase_voucher_row->raw_material_id]); ?>
+                                            <input type="hidden" class="purchase_voucher_row_id" value="<?php echo $purchase_voucher_row->id; ?>" /> 
                                         </td>
                                         <td width="5%" align="center">
                                             <?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm quantity rightAligntextClass','required'=>'required', 'value' => $purchase_voucher_row->quantity]); ?>
@@ -417,6 +420,9 @@
             $('#main_table tbody#main_tbody tr.main_tr').each(function(){
                 var row_no = $(this).attr('row_no');                    
                 $(this).find('td:nth-child(1)').html(i+1);
+
+                $(this).find('input.purchase_voucher_row_id').attr({name:'purchase_voucher_rows['+i+'][id]', id:'purchase_voucher_rows-'+i+'-id'});
+
                 $(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][raw_material_id]', id:'purchase_voucher_rows-'+i+'-raw_material_id'
                         });
                 $(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][quantity]', id:'Purchase_Voucher_Rows-'+i+'-quantity'
