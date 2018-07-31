@@ -24,6 +24,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+				<?php $page_no=$this->Paginator->current('PurchaseVouchers'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-str " cellpadding="0" cellspacing="0">
 					<thead>
 						<tr>
@@ -31,38 +32,20 @@
 							<th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('vandor_id') ?></th>
-							<th scope="col"><?= ('grand_total') ?></th> 
+							<th scope="col" style="text-align: right;"><?= $this->Paginator->sort('grand_total') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php $d=0; foreach ($purchaseVouchers as $purchaseVoucher): ?>
 						 <tr>
-							<td><?= h($purchaseVoucher->id) ?></td>
+							<td><?= h(++$page_no) ?></td>
 							<td><?= h($purchaseVoucher->voucher_no) ?></td>
-							<td><?= h($purchaseVoucher->transaction_date) ?></td>
-							<td><?= h($purchaseVoucher->vandor_id) ?></td>
-							<td><?= h($purchaseVoucher->grand_total) ?></td>
+							<td><?= h($purchaseVoucher->transaction_date->format('d-m-Y')) ?></td>
+							<td><?= h($purchaseVoucher->vendor->name) ?></td>
+							<td style="text-align: right;"><?= h($purchaseVoucher->grand_total) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'PurchaseVouchers','action'=>'edit',$purchaseVoucher->id]]);?>
-								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$purchaseVoucher->id,'data-toggle'=>'modal']);?>
-								<div id="deletemodal<?php echo $purchaseVoucher->id; ?>" class="modal fade" role="dialog">
-									<div class="modal-dialog modal-md" >
-										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'PurchaseVouchers','action'=>'delete',$purchaseVoucher->id)) ?>">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h4 class="modal-title">
-														Are you sure you want to remove this Employee?
-													</h4>
-												</div>
-												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Cancel</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
 							</td>
 						</tr>
 						<?php endforeach; ?>
