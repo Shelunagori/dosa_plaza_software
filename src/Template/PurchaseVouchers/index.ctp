@@ -44,7 +44,7 @@
 							<td><?= h($purchaseVoucher->vandor_id) ?></td>
 							<td><?= h($purchaseVoucher->grand_total) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'PurchaseVouchers','action'=>'add',$purchaseVoucher->id]]);?>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'PurchaseVouchers','action'=>'edit',$purchaseVoucher->id]]);?>
 								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$purchaseVoucher->id,'data-toggle'=>'modal']);?>
 								<div id="deletemodal<?php echo $purchaseVoucher->id; ?>" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
