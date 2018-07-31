@@ -46,6 +46,9 @@ class PurchaseVoucherRowsTable extends Table
             'foreignKey' => 'purchase_voucher_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('StockLedgers', [
+            'foreignKey' => 'purchase_voucher_row_id'
+        ]);
     }
 
     /**

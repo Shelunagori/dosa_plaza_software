@@ -3,3 +3,7 @@ status	varchar(30)	in tables
 
 3-7-2018 9:45 Abhilash
 purchase_voucher_unit_type varchar(20)	in raw_materials
+
+31-7-2018 1:00 PM Table : stock_ledgers
+purchase_voucher_row_id	int(10)			
+purchase_voucher_id	int(10)
