@@ -59,9 +59,9 @@
 								<label  class="">Discount Applicable</label>
 								<div class="radio-list col-md-12">
 									<label class="radio-inline">
-									<input type="radio" name="discount_applicable" value="1" checked> Applicable</label>
+									<input type="radio" name="discount_applicable" value="1" <?php  if(!empty($id)){ if($item->discount_applicable==1){ echo "checked";} }else{ echo "checked"; } ?>> Applicable</label>
 									<label class="radio-inline">
-									<input type="radio" name="discount_applicable" value="0"> Not Applicable </label>
+									<input type="radio" name="discount_applicable" value="0" <?php  if(!empty($id)){ if($item->discount_applicable==0){ echo "checked";} } ?>> Not Applicable </label>
 								</div>
 							</div>
 						</div>
@@ -157,21 +157,87 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <?php
-$js=' ';
+$js="var form3 = $('#form_sample_1');
+		var error3 = $('.alert-danger', form3);
+		var success3 = $('.alert-success', form3);
+		form3.validate({
+			errorElement: 'span', //default input error message container
+			errorClass: 'help-block help-block-error', // default input error message class
+			focusInvalid: true, // do not focus the last invalid input
+			rules: {
+		            name: {
+		                required: true
+		            },
+		            item_sub_category_id: {
+		                required: true,
+		            }, 
+		            rate: {
+		                required: true,
+		                number: true
+		            }, 
+		        },
+
+			errorPlacement: function (error, element) { // render error placement for each input type
+				if (element.parent('.input-group').size() > 0) {
+					error.insertAfter(element.parent('.input-group'));
+				} else if (element.attr('data-error-container')) { 
+					error.appendTo(element.attr('data-error-container'));
+				} else if (element.parents('.radio-list').size() > 0) { 
+					error.appendTo(element.parents('.radio-list').attr('data-error-container'));
+				} else if (element.parents('.radio-inline').size() > 0) { 
+					error.appendTo(element.parents('.radio-inline').attr('data-error-container'));
+				} else if (element.parents('.checkbox-list').size() > 0) {
+					error.appendTo(element.parents('.checkbox-list').attr('data-error-container'));
+				} else if (element.parents('.checkbox-inline').size() > 0) { 
+					error.appendTo(element.parents('.checkbox-inline').attr('data-error-container'));
+				} else {
+					error.insertAfter(element); // for other inputs, just perform default behavior
+				}
+			},
+
+			invalidHandler: function (event, validator) { //display error alert on form submit   
+				success3.hide();
+				error3.show();
+			},
+
+			highlight: function (element) { // hightlight error inputs
+			   $(element)
+					.closest('.form-group').addClass('has-error'); // set error class to the control group
+			},
+
+			unhighlight: function (element) { // revert the change done by hightlight
+				$(element)
+					.closest('.form-group').removeClass('has-error'); // set error class to the control group
+			},
+
+			success: function (label) {
+				label
+					.closest('.form-group').removeClass('has-error'); // set success class to the control group
+			},
+
+			submitHandler: function (form) {
+				success3.show();
+				error3.hide();
+				form[0].submit(); // submit the form
+			}
+
+		});";
+
 if(!empty($id)){  
 	foreach($item->item_rows as $rowData){  
 	$js.='
+
 		$(".main_tr").each(function(){
 			var selectedval=$(this).closest("tr").find(".ShowUnit option:selected").attr("unit_name");
 			$(this).closest("tr").find(".unitType").val(selectedval); 
-		})
+		});
 	';
 	}
 }
 
 $js.=';
 $(document).ready(function() {
-	
+	rename_rows();
 	$(document).on("change",".ShowUnit", function(){
 		var unit_name = $("option:selected", this).attr("unit_name");
 		$(this).closest("tr.main_tr").find(".unitType").val(unit_name); 
@@ -209,7 +275,7 @@ $js.='
             var row_no = $(this).attr("row_no");					
 			$(this).find("td:nth-child(1)").html(i+1);
 			$(this).find("td:nth-child(2) select").select2().attr({name:"item_rows["+i+"][raw_material_id]", id:"item_rows-"+i+"-raw_material_id"});
-			$(this).find("td:nth-child(3) input").attr({name:"item_rows["+i+"][quantity]", id:"Purchase_Voucher_Rows-"+i+"-quantity"});
+			$(this).find("td:nth-child(3) input").attr({name:"item_rows["+i+"][quantity]", id:"item_rows-"+i+"-quantity"});
 			i++;
 		});
 	}
@@ -229,68 +295,8 @@ $js.='
 	 
  });
 
-	var FormValidation = function () {
-	    var handleValidation1 = function() {
-		    var form1 = $("#form_sample_1");
-		    var error1 = $(".alert-danger", form1);
-		    var success1 = $(".alert-success", form1);
-
-		    form1.validate({
-		        errorElement: "span", //default input error message container
-		        errorClass: "help-block help-block-error", // default input error message class
-		        focusInvalid: false, // do not focus the last invalid input
-		        ignore: "",  // validate all fields including form hidden input
-		        messages: {
-		            select_multi: {
-		                maxlength: jQuery.validator.format("Max {0} items allowed for selection"),
-		                minlength: jQuery.validator.format("At least {0} items must be selected")
-		            }
-		        },
-		        rules: {
-		            name: {
-		                required: true
-		            },
-		            item_sub_category_id: {
-		                required: true,
-		            }, 
-		            rate: {
-		                required: true,
-		                number: true
-		            }, 
-		        },
-
-		        invalidHandler: function (event, validator) { //display error alert on form submit              
-		            success1.hide();
-		            error1.show();
-		            Metronic.scrollTo(error1, -200);
-		        },
-
-		        highlight: function (element) { // hightlight error inputs
-		            $(element)
-		                .closest(".form-group").addClass("has-error"); // set error class to the control group
-		        },
-
-		        unhighlight: function (element) { // revert the change done by hightlight
-		            $(element)
-		                .closest(".form-group").removeClass("has-error"); // set error class to the control group
-		        },
-
-		        success: function (label) {
-		            label
-		                .closest(".form-group").removeClass("has-error"); // set success class to the control group
-		        },
-
-		        submitHandler: function (form) {
-		            success1.show();
-		            error1.hide();
-		           	$(form).submit(); 
-		        }
-		    });
-		}
-	}();
-
-';
-$js.='FormValidation.init()';
+FormValidation.init();
+'; 
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 <table id="sample" style="display:none;"  width="1500px">
