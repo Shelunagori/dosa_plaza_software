@@ -1,14 +1,6 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Employee'); ?>
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light">
-			<div class="caption top-caption">
-				<span>View Purchase Vouchers List</span>
-			</div>
-		</div>
-	</div>
-</div>
+<div style="height: 15px;" >.</div>
 <div class="row">
 	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
@@ -51,7 +43,16 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				
+				<div class="paginator">
+			        <ul class="pagination">
+			            <?= $this->Paginator->first('<< ' . __('first')) ?>
+			            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+			            <?= $this->Paginator->numbers() ?>
+			            <?= $this->Paginator->next(__('next') . ' >') ?>
+			            <?= $this->Paginator->last(__('last') . ' >>') ?>
+			        </ul>
+			        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+			    </div>
 			</div>
 		</div>
 	</div>
