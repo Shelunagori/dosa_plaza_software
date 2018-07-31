@@ -1,16 +1,7 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Units'); ?>
 <!-- BEGIN PAGE CONTENT-->
-<div class="row">
-    <div class="col-md-12">
-        <div class="portlet light">
-            <div class="caption top-caption">
-                <span>Units</span>
-            </div>
-        </div>
-    </div>
-</div>  
-<div class="row">
+<div class="row" style="margin-top:15px;">
     <div class="col-md-6">
         <!-- BEGIN ALERTS PORTLET-->
         <div class="portlet box blue-hoki">
@@ -50,7 +41,8 @@
                         <div class="form-actions">
                             <div class="row">
                             
-                                <div class="col-md-offset-6 col-md-9">
+                                <div class="col-md-12" style="text-align:center">
+									<hr></hr>
                                     <?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
                                 </div>
                             </div>
