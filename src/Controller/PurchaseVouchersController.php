@@ -67,7 +67,21 @@ class PurchaseVouchersController extends AppController
             }
 
 			if ($this->PurchaseVouchers->save($purchaseVoucher)) {
-				
+                foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) {
+                    $stockLedger = $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->newEntity();
+                    $stockLedger->raw_material_id = $purchase_voucher_row->raw_material_id;
+                    $stockLedger->quantity = $purchase_voucher_row->quantity;
+                    $stockLedger->rate = $purchase_voucher_row->taxable_value/$purchase_voucher_row->quantity;
+                    $stockLedger->status = 'in';
+                    $stockLedger->effected_on = date( "Y-m-d H:i:s" );
+                    $stockLedger->voucher_name = 'Purchase Voucher';
+                    $stockLedger->adjustment_commant = '';
+                    $stockLedger->wastage_commant = '';
+                    $stockLedger->purchase_voucher_row_id = $purchase_voucher_row->id;
+                    $stockLedger->purchase_voucher_id = $purchaseVoucher->id;
+                    $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->save($stockLedger);
+                }
+				//Stock Impact End//
                 $this->Flash->success(__('The purchase voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -115,7 +129,25 @@ class PurchaseVouchersController extends AppController
             $purchaseVoucher = $this->PurchaseVouchers->patchEntity($purchaseVoucher, $this->request->getData()); 
             
             if ($this->PurchaseVouchers->save($purchaseVoucher)) {
-                
+                //Delete old stock impact//
+                $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->deleteAll(['purchase_voucher_id' => $purchaseVoucher->id]);
+                //Stock Impact Start//
+                //Stock Impact Start//
+                foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) {
+                    $stockLedger = $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->newEntity();
+                    $stockLedger->raw_material_id = $purchase_voucher_row->raw_material_id;
+                    $stockLedger->quantity = $purchase_voucher_row->quantity;
+                    $stockLedger->rate = $purchase_voucher_row->taxable_value/$purchase_voucher_row->quantity;
+                    $stockLedger->status = 'in';
+                    $stockLedger->effected_on = date( "Y-m-d H:i:s" );
+                    $stockLedger->voucher_name = 'Purchase Voucher';
+                    $stockLedger->adjustment_commant = '';
+                    $stockLedger->wastage_commant = '';
+                    $stockLedger->purchase_voucher_row_id = $purchase_voucher_row->id;
+                    $stockLedger->purchase_voucher_id = $purchaseVoucher->id;
+                    $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->save($stockLedger);
+                }
+                //Stock Impact End//
                 $this->Flash->success(__('The purchase voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

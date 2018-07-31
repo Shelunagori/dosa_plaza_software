@@ -41,6 +41,10 @@ class StockLedgersTable extends Table
             'foreignKey' => 'raw_material_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('PurchaseVoucherRows', [
+            'foreignKey' => 'purchase_voucher_row_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
