@@ -34,6 +34,7 @@ class TablesTable extends Table
         $this->setTable('tables');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+        $this->belongsTo('Kots');
     }
 
     /**

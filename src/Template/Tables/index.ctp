@@ -29,7 +29,7 @@
 		<div class="col-md-12"  align="center">
 			<?php 
 			$i=0;
-			foreach($Tables as $Table){ ?>
+			foreach($Tables as $Table){  ?>
 			<div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
 				<span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
 				<?php if($Table->status=='occupied'){ ?>
@@ -48,7 +48,7 @@
 								<tr>
 									<td valign="top">
 										<span style="color:#96989A;">Customer Name</span>
-										<span style="color:#373435;margin-left:13px;"><?php echo $Table->c_name; ?></span>
+										<span style="color:#373435;margin-left:13px;"><?php echo @ucwords($Table->c_name); ?> </span>
 									</td>
 								</tr>
 								<tr>
@@ -73,7 +73,7 @@
 									<td valign="Bottom" style="text-align: center;">
 										<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
 										<span style=" margin: 0 10px;color:#96989A; ">|</span>
-										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'new', $Table->id], ['style' => 'color:#fa6775;']) ?>
+										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id], ['style' => 'color:#fa6775;']) ?>
 									</td>
 								</tr>
 							</table>
