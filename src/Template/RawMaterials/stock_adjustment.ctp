@@ -32,7 +32,7 @@
 						<th style="width:15%" ><?= ('Current stock') ?></th>
 						<th style="width:15%"><?= ('Physical stock') ?></th>
 						<th style="width:20%;"><?= ('Adjustment') ?></th> 
-						<th style="width:20%;"><?= ('commant') ?></th> 
+						<th style="width:20%;"><?= ('Commant') ?></th> 
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
@@ -62,14 +62,14 @@
 								</span>
 							</div>
 							<div class="input-group  hiddendiv" style="padding-top:3%;">
-								<div style="width:45%; float:left; margin-right:4%;text-align: left;	">
+								<div style="width:46%; float:left; margin-right:4%;text-align: left;	">
 									<label style="text-align:left;">No resaon </label>
 									<input  class="form-control input input-sm resaon" name="StockLedgers[<?php echo $x;?>][noresaon]" style ="width:60%"/>
 									<span class="input-group-addon" style="float:left;">
 										<?= h($RawMaterial->primary_unit->name) ?>
 									</span>
 								</div>
-								<div style="width:45%; float:left;text-align: left;">
+								<div style="width:46%; float:left;text-align: left;">
 									<label style="text-align:left;">wastage</label>
 									<input  class= "form-control input-sm  wastage" name="StockLedgers[<?php echo $x;?>][wastage]" style="width:60%" />
 									<span class="input-group-addon" style="float:left";>
@@ -80,11 +80,11 @@
 						</td>
 						<td>
 							<div class="input-group input-sm hiddencommant ">
-								<input class="form-control " autocomplete="off" placeholder="adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
+								<input class="form-control " autocomplete="off" placeholder="Adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
 							</div>
 							<div>
 								<div class="input-group input-sm  hiddencom ">
-									<input class="form-control " autocomplete="off" placeholder="wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
+									<input class="form-control " autocomplete="off" placeholder="Wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
 								</div>
 							</div>
 						</td>
@@ -94,8 +94,8 @@
 			</table>
 		</div>
 		<div class="row">
-			<div class="box-footer"  style="text-align:center;padding-bottom: 18px;padding: 25px;">
-					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">Submit</button>
+			<div class="box-footer"  style="text-align:center;padding-bottom:18px;padding: 25px;">
+					<button type="submit" class="btn btn-danger" id="order_btn" value="submit">Submit</button>
 			</div>
 		</div>
 		<?= $this->Form->end() ?>
