@@ -32,7 +32,7 @@
 						<th style="width:15%" ><?= ('Current stock') ?></th>
 						<th style="width:15%"><?= ('Physical stock') ?></th>
 						<th style="width:20%;"><?= ('Adjustment') ?></th> 
-						<th style="width:20%;"><?= ('commant') ?></th> 
+						<th style="width:20%;"><?= ('Commant') ?></th> 
 					</tr>
 				</thead>
 				<tbody id="main_tbody">
@@ -80,11 +80,11 @@
 						</td>
 						<td>
 							<div class="input-group input-sm hiddencommant ">
-								<input class="form-control " autocomplete="off" placeholder="adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
+								<input class="form-control " autocomplete="off" placeholder="Adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
 							</div>
 							<div>
 								<div class="input-group input-sm  hiddencom ">
-									<input class="form-control " autocomplete="off" placeholder="wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
+									<input class="form-control " autocomplete="off" placeholder="Wastage" name="StockLedgers[<?php echo $x; ?>][hiddencom]">
 								</div>
 							</div>
 						</td>
