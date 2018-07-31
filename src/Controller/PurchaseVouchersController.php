@@ -56,12 +56,8 @@ class PurchaseVouchersController extends AppController
 		$this->viewBuilder()->layout('admin');
         $purchaseVoucher = $this->PurchaseVouchers->newEntity();
 		if ($this->request->is('post')) {
-			$purchaseVoucher = $this->PurchaseVouchers->patchEntity($purchaseVoucher,$this->request->getData()); 
-			$lastvoucherno= $this->PurchaseVouchers->lastvoucherno();
-			$purchaseVoucher->transaction_date=date('Y-m-d',strtotime($this->request->getData('transaction_date')));
-			$purchaseVoucher->voucher_no=$lastvoucherno;
-			pr($this->request->getData());Exit;
-
+			$purchaseVoucher = $this->PurchaseVouchers->patchEntity($purchaseVoucher, $this->request->getData()); 
+			
 			if ($this->PurchaseVouchers->save($purchaseVoucher)) {
 				
                 $this->Flash->success(__('The purchase voucher has been saved.'));

@@ -60,50 +60,7 @@ class PurchaseVoucherRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->decimal('quantity')
-            ->requirePresence('quantity', 'create')
-            ->notEmpty('quantity');
 
-        $validator
-            ->decimal('rate')
-            ->requirePresence('rate', 'create')
-            ->notEmpty('rate');
-
-        $validator
-            ->decimal('discount_per')
-            ->requirePresence('discount_per', 'create')
-            ->notEmpty('discount_per');
-
-        $validator
-            ->decimal('discount_amt')
-            ->requirePresence('discount_amt', 'create')
-            ->notEmpty('discount_amt');
-		 
-		$validator
-            ->decimal('taxable_value')
-            ->requirePresence('taxable_value', 'create')
-            ->notEmpty('taxable_value');
-		
-		$validator
-            ->decimal('tax_per')
-            ->requirePresence('tax_per', 'create')
-            ->notEmpty('tax_per');
-
-        $validator
-            ->decimal('tax_amt')
-            ->requirePresence('tax_amt', 'create')
-            ->notEmpty('tax_amt');
-
-        $validator
-            ->decimal('round_off')
-            ->requirePresence('round_off', 'create')
-            ->notEmpty('round_off');
-
-        $validator
-            ->decimal('net_amt_total')
-            ->requirePresence('net_amt_total', 'create')
-            ->notEmpty('net_amt_total');
 
         return $validator;
     }
