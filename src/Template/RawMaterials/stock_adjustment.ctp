@@ -1,19 +1,30 @@
+<?php echo $this->Html->css('mystyle'); ?>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light">
+			<div class="caption top-caption">
+				<span>Stock Adjustment</span>
+			</div>
+		</div>
+	</div>
+</div>	
 <div class="col-md-12 main-div">
 	<div class="portlet box blue-hoki">
 		<?= $this->Form->create($RawMaterials, ['id'=>'configform']) ?>
 		<div class="portlet-title">
-			<div class="caption"style="padding: 13px; color: red;">
+			<div class="caption"style="padding:13px; color: red;">
 				Stock Adjustment
 			</div>
-			<div style="text-align: right; padding: 11px 68px 23px 31px;">
-				<input type="text" id="search3"  placeholder="Search for item.." title="Type in a name">
+			<div style="text-align:right;padding: 12px 51px 18px;"
+				<input id="search3" type="text" placeholder="Search" />
+				<i id="filtersubmit" class="fa fa-search"></i>
 			</div>
 			<div class="row">	
 				<div class="col-md-12 horizontal "></div>
 			</div>
 		</div>
 		<div class="portlet-body">
-			<table class="table " cellpadding="0" cellspacing="0" id="main_tble">
+			<table class="table " cellpadding="0" cellspacing="0" id="main_table">
 				<thead>
 					<tr>
 						<th style="width:10%"><?= ('S.No.') ?></th>
@@ -226,21 +237,23 @@
 			$(this).closest('tr').find('.resaon').val(NR);
 			
 		});
-		var $rows = $('#main_tble tbody tr');
+		
+		var rows = $('#main_tbody tr.main_tr');
 		$('#search3').on('keyup',function() {
-	
+	      
 			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-    		var v = $(this).val();
+			var v = $(this).val();
+			
     		if(v){ 
-    			$rows.show().filter(function() {
+    			rows.show().filter(function() {
     				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 		
     				return !~text.indexOf(val);
     			}).hide();
     		}else{
-    			$rows.show();
+    			rows.show();
     		}
-    	});
+    	}); 
 	
 		
 	
