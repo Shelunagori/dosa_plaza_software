@@ -34,6 +34,12 @@ class TablesTable extends Table
         $this->setTable('tables');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->belongsTo('Employees', [
+            'foreignKey' => 'employee_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Kots');
     }
 
     /**

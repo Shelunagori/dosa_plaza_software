@@ -23,10 +23,11 @@ class KotsController extends AppController
         $table_id=$this->request->query('table_id');
         $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
 
-        $this->set(compact('kots'));
+        
+        $this->set(compact('kots''));
     }
 
-    public function new($table_id=null)
+    public function generate($table_id=null)
     {
         $this->viewBuilder()->layout('counter');
 

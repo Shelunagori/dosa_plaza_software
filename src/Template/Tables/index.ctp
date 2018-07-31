@@ -29,13 +29,13 @@
 		<div class="col-md-12"  align="center">
 			<?php 
 			$i=0;
-			foreach($Tables as $Table){ ?>
+			foreach($Tables as $Table){  ?>
 			<div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
 				<span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
 				<?php if($Table->status=='occupied'){ ?>
 					<div style="font-size:14px;">
 						<div align="center">
-							<span style="font-size: 14px; color: #3b393a;">Select Steward</span>
+							<span style="font-size: 14px; color: #3b393a;" class="steward">Select Steward</span>
 						</div>
 						<div style="padding:2px 10px;">
 							<table width="100%" style="font-size:12px;line-height: 22px;">
@@ -48,7 +48,7 @@
 								<tr>
 									<td valign="top">
 										<span style="color:#96989A;">Customer Name</span>
-										<span style="color:#373435;margin-left:13px;"><?php echo $Table->c_name; ?></span>
+										<span style="color:#373435;margin-left:13px;"><?php echo @ucwords($Table->c_name); ?> </span>
 									</td>
 								</tr>
 								<tr>
@@ -73,7 +73,7 @@
 									<td valign="Bottom" style="text-align: center;">
 										<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
 										<span style=" margin: 0 10px;color:#96989A; ">|</span>
-										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'new', $Table->id], ['style' => 'color:#fa6775;']) ?>
+										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id], ['style' => 'color:#fa6775;']) ?>
 									</td>
 								</tr>
 							</table>
@@ -154,6 +154,9 @@
 }
 .closeCustomerBox2{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
+.steward:hover{
+	cursor: pointer;color: #FA6775 !important;
 }
 </style>
 
@@ -260,6 +263,32 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.steward').die().live('click',function(event){
+		var table_id=$(this).closest('div.tblBox').attr('table_id');
+		$('#steward_table_id').val(table_id);
+		$('#WaitBox3').show();
+	});
+
+	$('.employee_id').die().live('change',function(event){
+		var steward_name=$(this).find('option:selected').text();
+		var steward_id=$(this).find('option:selected').val();
+		var table_id=$('#steward_table_id').val();
+		$('div.tblBox[table_id='+table_id+']').find('.steward').text(steward_name);
+		$(this).val('');
+		$('#WaitBox3').hide();
+		var url='".$this->Url->build(['controller'=>'Tables','action'=>'saveSteward'])."';
+		url=url+'?table_id='+table_id+'&steward_id='+steward_id;
+		url=encodeURI(url);
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			
+		});
+	});
+
+
+
+
 
 });
 ";
@@ -336,7 +365,19 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 	<div class="modal-backdrop fade in" ></div>
 	<div class="modal-dialog" style="width: 500px !important;">
 		<div class="modal-content">
+			<div class="modal-body"></div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox3" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog" style="width: 500px !important;">
+		<div class="modal-content">
 			<div class="modal-body">
+				<div align="center" style=" font-size: 14px; color: #2D4161; font-weight: bold; "><span>SELECT STEWARD</span></div><br/><br/>
+				<input type="hidden" id="steward_table_id" >
+				<?php echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required']); ?><br/><br/>
 			</div>
 		</div>
 	</div>

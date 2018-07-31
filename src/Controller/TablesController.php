@@ -22,9 +22,21 @@ class TablesController extends AppController
     {
 		$this->viewBuilder()->layout('counter');
         
+        //--
+       /* $q = $this->Tables->Kots->Kotrows->find();
+        $q->select([
+            'total_Likes' => $q->where(['Kotrows.kot_id = Kots.id']),
+            ]);
+pr($q) ;exit;*/
         $Tables=$this->Tables->find();
+        /*$Tables->select([
+            'id',
+            'total_Likes' => $q->where(['PostTravlePackageLikes.post_travle_package_id = PostTravlePackages.id']),
+        ]);*/
 
-        $this->set(compact('Tables'));
+        $Employees = $this->Tables->Employees->find('list');
+
+        $this->set(compact('Tables', 'Employees'));
     }
 
 
@@ -65,6 +77,22 @@ class TablesController extends AppController
         $Table->doa=$this->request->query('doa');
         $Table->email=$this->request->query('c_email');
         $Table->c_address=$this->request->query('c_address');
+        if($this->Tables->save($Table)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+        exit;
+    }
+
+    public function saveSteward()
+    {
+        $this->viewBuilder()->layout('');
+        $table_id=$this->request->query('table_id');
+        $steward_id=$table_id=$this->request->query('steward_id');
+
+        $Table=$this->Tables->get($table_id);
+        $Table->employee_id=$steward_id;
         if($this->Tables->save($Table)){
             echo '1';
         }else{
