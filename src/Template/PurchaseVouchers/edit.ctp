@@ -21,8 +21,7 @@
                 <div class="row">
                     <div class="form-group col-md-2">
                         <label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
-                        <input class="form-control input-sm" type="date" name="transaction_date" required /> 
-
+                        <input class="form-control input-sm" type="date" name="transaction_date" required value="<?php echo date('Y-m-d', strtotime($purchaseVoucher->transaction_date)); ?>" /> 
                     </div>  
                     <div class="form-group col-md-4">
                         <label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
@@ -54,7 +53,56 @@
                                 </tr>
                                 
                             </thead>
-                            <tbody id="main_tbody"></tbody>
+                            <tbody id="main_tbody">
+                                <?php 
+                                $c=0;
+                                foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) { ?>
+                                    <tr class="main_tr">
+                                        <td style="vertical-align: top !important;"><?php echo ++$c; ?></td>
+                                        <td width="15%" align="left">
+                                            <?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 raw_material ','empty' => '--Select Item--','label'=>false,'required'=>'required', 'value' => $purchase_voucher_row->raw_material_id]); ?>
+                                        </td>
+                                        <td width="5%" align="center">
+                                            <?php echo $this->Form->input('quantity', ['label' => false,'placeholder'=>'Qty','class'=>'form-control input-sm quantity rightAligntextClass','required'=>'required', 'value' => $purchase_voucher_row->quantity]); ?>
+                                        </td>
+                                        <td width="5%" align="center"></td>
+
+                                        <td width="8%" align="center">
+                                            <?php echo $this->Form->input('rate',['class'=>'form-control input-sm rate numberOnly rightAligntextClass','placeholder'=>'Rate','label'=>false,'required'=>'required', 'value' => $purchase_voucher_row->rate]); ?>
+                                        </td>       
+                                        <td width="8%" align="center">
+                                            <?php echo $this->Form->input('discount_per',['class'=>' discount_per form-control input-sm discount_per numberOnly rightAligntextClass','label'=>false, 'value' => $purchase_voucher_row->discount_per]); ?>
+                                        </td>
+                                        <td  width="10%" align="center">
+                                            <?php echo $this->Form->input('discount_amt', ['style'=>'text-align:right','label' => false,'class' => 'discount_amt form-control input-sm numberOnly','type'=>'text', 'value' => $purchase_voucher_row->discount_amt]);
+                                            ?>  
+                                        </td>
+                                        <td  width="10%" align="center">
+                                            <?php echo $this->Form->input('taxable_value', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm taxable_value','type'=>'text', 'value' => $purchase_voucher_row->taxable_value]);
+                                            ?>  
+                                        </td>
+                                        <td  width="6%" align="center">
+                                            <?php echo $this->Form->input('tax_per', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_per  numberOnly ','type'=>'text','value'=>0, 'readonly', 'tabindex' => '-1', 'value' => $purchase_voucher_row->tax_per]);
+                                            ?>  
+                                        </td>
+                                        <td  width="10%" align="center">
+                                            <?php echo $this->Form->input('tax_amt', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm  tax_amt numberOnly','type'=>'text','value'=>0, 'readonly', 'tabindex' => '-1', 'value' => $purchase_voucher_row->tax_amt]);
+                                            ?>  
+                                        </td>
+                                        <td  width="7%" align="center">
+                                            <?php echo $this->Form->input('round_off', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm round_off','placeholder'=>'','type'=>'text', 'value' => $purchase_voucher_row->round_off]);
+                                            ?>  
+                                        </td>
+                                        <td  width="15%" align="center">
+                                            <?php echo $this->Form->input('net_amt_total', ['style'=>'text-align:right','label' => false,'class' => 'form-control input-sm net_amt_total','type'=>'text', 'value' => $purchase_voucher_row->net_amt_total]);
+                                            ?>  
+                                        </td>
+                                        <td>
+                                            <?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button', 'value' => $purchaseVoucher->grand_total ]); ?>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="2"><?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']).'Add Row',['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?></td>
@@ -184,7 +232,6 @@
             add_row();
         });
 
-        add_row();
 
         function add_row(){
             var tr=$('#sample tbody tr.main_tr').clone();
@@ -349,6 +396,7 @@
             $(this).closest('tr').find('input.rate').val(round(rate,2));
             calculation();
 
+
         });
         
         
@@ -358,9 +406,12 @@
             {
                 $(this).closest('tr').remove();
                 rename_rows();
+                calculation();
             }
         });
         
+        rename_rows();
+        calculation();
         function rename_rows(){
             var i=0;
             $('#main_table tbody#main_tbody tr.main_tr').each(function(){

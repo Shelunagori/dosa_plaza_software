@@ -12,8 +12,8 @@
 				<div class="caption">
 					Purchase Voucher
 				</div>
-				<div class="row">	
-						<div class="col-md-12 horizontal "></div>
+				<div class="row">
+					<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
 			<?= $this->Form->create($purchaseVoucher, ['id'=>'form_sample_1']) ?>
@@ -180,7 +180,7 @@
 		    required: 'Required.',
 		});
 		    
-		$(document).on('click', '.add_row', function(e){ 
+		$(document).on('click', '.add_row', function(e){
 			add_row();
 		});
 
@@ -358,6 +358,7 @@
 			{
 				$(this).closest('tr').remove();
 				rename_rows();
+				calculation();
 			}
 		});
 		
