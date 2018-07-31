@@ -7,7 +7,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					Purchase Vouchers List
+					Stock In Voucher List
 				</div>
 				<div class="tools"> 
  				</div>
