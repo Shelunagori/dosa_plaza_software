@@ -29,7 +29,20 @@
 		<div class="col-md-12"  align="center">
 			<?php 
 			$i=0;
-			foreach($Tables as $Table){  ?>
+			foreach($Tables as $Table){ 
+				$sum=0;
+				$RatePerPax=0;
+				if(array_key_exists($Table->id, $tableWiseAmount)){
+					foreach($tableWiseAmount[$Table->id] as $item) {
+				 		$sum += $item;
+					}
+				}
+				if($sum>0){
+					$RatePerPax=$sum/$Table->no_of_pax;
+				}
+				
+				 
+			?>
 			<div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
 				<span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
 				<?php if($Table->status=='occupied'){ ?>
@@ -60,13 +73,13 @@
 								<tr>
 									<td valign="top">
 										<span style="color:#96989A;">Pax Per Rate</span>
-										<span style="color:#373435;margin-left:13px;"></span>
+										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){  echo $RatePerPax; } ?></span>
 									</td>
 								</tr>
 								<tr>
 									<td valign="top">
 										<span style="color:#96989A;">Running Billing Amount</span>
-										<span style="color:#373435;margin-left:13px;"></span>
+										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){ echo $sum; } ?></span>
 									</td>
 								</tr>
 								<tr>
