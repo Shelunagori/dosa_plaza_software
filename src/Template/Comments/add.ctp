@@ -28,7 +28,7 @@
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$comment->name."'"; } ?> name="name" class="form-control" Placeholder="Enter Comments Name">
+									<input type="text" <?php if(!empty($id)){ echo "value='".$comment->name."'"; } ?> name="comment" class="form-control" Placeholder="Enter Comments Name">
 									 
 								</div>
 							</div>
