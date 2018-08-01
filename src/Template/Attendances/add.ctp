@@ -9,20 +9,24 @@
 				</div>
 			</div>
 			<br>
-			<div class="row">
-				<div class="col-md-8" >
-					<div class="form-group col-md-5">
-						<label class="control-label" style="padding:0;"> <span class="required"> </span></label>
-						<input class="form-control input-md" type="date" name="Attendance_date" required /> 
-					</div>
-					<div class="col-md-2" style="padding-top: 24px">
-						<button type="button" class="btn btn-circle ">GO</button>
-					</div>
-				</div>
+			<div align="center">
+				<form method="GET">
+					<table>
+						<tr>
+							<td>
+								<input type="date" class="form-control" name="attendance_date" value="<?php echo $attendance_date; ?>"	required />
+							</td>
+							<td>
+								<button type="submit" class="btn" >GO</button>
+							</td>
+						</tr>
+					</table>
+				</form>
 			</div>
 			<div class="portlet-body">
+				<?php if($attendance_date){ ?>
 				<form method="post">
-					<table class="table table-bordered" cellpadding="0" cellspacing="0">
+					<table class="table table-bordered Attendance_list " cellpadding="0" cellspacing="0">
 						<thead>
 							<tr>
 								<th scope="col"><?= ('S.No.') ?></th>
@@ -62,15 +66,34 @@
 					<div class="col-md-12"><hr></hr></div>
 					<div class="form-actions">
 						<div class="row">
-						
 							<div class="col-md-offset-6 col-md-9">
 								<?php echo $this->Form->button('Submit',['class'=>'btn btn-danger']); ?> 
 							</div>
 						</div>
 					</div>
 				</form>
-				
+				<?php } ?>
 			</div>
 		</div>
 	</div>
 </div>
+<!-- BEGIN PAGE LEVEL STYLES -->
+	<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END COMPONENTS DROPDOWNS -->	
+
+<!-- BEGIN VALIDATEION -->
+	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<!-- END VALIDATEION --> 
+<!-- END COMPONENTS DROPDOWNS -->
+<?php
+$js="
+    
+
+";
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>
+	
