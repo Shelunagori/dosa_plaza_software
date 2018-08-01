@@ -18,7 +18,8 @@ class VendorsController extends AppController
 		$this->paginate = [
             'contain' => ['VendorItems'=>['RawMaterials']]
         ];
-        $vendors = $this->paginate($this->Vendors->find()->where(['is_deleted'=>0]));
+        $vendors = $this->paginate($this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]));
+		
 		$this->set(compact('vendors','Items'));
     }
  
@@ -55,6 +56,7 @@ class VendorsController extends AppController
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
  		$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]);
+		
 		
         $this->set(compact('vendor','Items','id'));
     }

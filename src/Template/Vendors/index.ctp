@@ -55,10 +55,10 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php $v=0; foreach ($vendor->vendor_items as $vendorItem): ?>
+														<?php $v=0; foreach ($vendors as $vendorItem): ?>
 														<tr>
 															<td><?= (++$v) ?></td>
-															<td><?= ($vendorItem->item->name); ?></td>
+															<td><?= ($vendorItem->name); ?></td>
 															<td class="actions">
 																<?= $this->Form->postLink(__('<i class="fa fa-trash"></i>'), ['action' => 'delete', $vendorItem->id], ['escape'=>false,'class'=>'btn btn-danger btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $vendorItem->id)]) ?>
 															</td>
