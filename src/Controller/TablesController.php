@@ -32,7 +32,7 @@ class TablesController extends AppController
         $tableArray=array();
         foreach ($Kots as $value) {
           $table_id=$value->table_id;
-          $tableArray['']
+          $tableArray[]=$table_id;
            pr($value); 
         }        
         pr($Kots->toArray()) ;exit; 
