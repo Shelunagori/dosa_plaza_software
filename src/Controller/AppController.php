@@ -69,12 +69,22 @@ class AppController extends Controller
 		
         $coreVariable = [
             'user_name' => $this->Auth->User('name'),
-            'role' => $this->Auth->User('role'),
+            'role' => $this->Auth->User('role'), 
         ];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));
+        
+        $this->loadModel('Bills');
+        $query=$this->Bills->find();  
+        $query  ->select(['TotalSale' => $query->func()->sum('Bills.grand_total')])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59'])
+                ->toArray();
+        $TotalSale=0;
+        foreach ($query as $value) {
+            $TotalSale=$value->TotalSale;
+        }
+        $this->set(compact('TotalSale'));
 
-         
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html

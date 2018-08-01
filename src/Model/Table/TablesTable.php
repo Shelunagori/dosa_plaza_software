@@ -40,6 +40,7 @@ class TablesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Kots');
+        $this->belongsTo('Bills');
     }
 
     /**

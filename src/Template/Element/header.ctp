@@ -18,14 +18,34 @@ $controller = strtolower($this->request->params['controller']);
         	<a class=" tooltips" id="BackToTables" data-container="body" data-placement="bottom" data-original-title="Back to table screen"></a>
         	<?= $this->Html->link(__('<i class="fa fa-arrow-left"></i>'), ['controller' => 'Tables', 'action' => 'index'], ['class' => 'tooltips', 'id' => 'BackToTables', 'escape' => false, 'data-original-title' =>'Back to table screen', 'data-placement' => 'bottom']) ?>
     	<?php } ?>
-        <span class="topBtnActive">Dinner In</span>
-        <span class="topBtn">Delivery</span>
-        <span class="topBtn">Take Away</span>
+        <span class="topBtnActive dinnerNewTab">Dinner In</span>
+        <span class="topBtn deleveryNewTab">Delivery</span>
+        <span class="topBtn takeAwayNewTab">Take Away</span>
     </div>
     <div class="col-md-6" align="right">
-        <span class="topBtn2">Booking</span>
-        <span class="topBtn2">Bills</span>
+        <!--<span class="topBtn2">Booking</span>
+        <span class="topBtn2">Bills</span>-->
         <span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
-        <span style="color: #2FBD9F;font-size: 15px;margin-left: 8px;">₹5000</span>
+        <span style="color: #2FBD9F;font-size: 15px;margin-left: 5px;">&#8377; <?php echo $TotalSale;?></span>
     </div>
 </div>
+<?php
+
+$js="
+$(document).ready(function() {
+    $('.dinnerNewTab').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
+        window.open(url, '_blank'); 
+    });
+    $('.deleveryNewTab').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','takeaway'])."'
+        window.open(url, '_blank'); 
+    });
+    $('.takeAwayNewTab').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','takeaway'])."'
+        window.open(url, '_blank'); 
+    });
+});
+";
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
+?>

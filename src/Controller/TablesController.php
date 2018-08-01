@@ -21,28 +21,21 @@ class TablesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('counter');
- 
         $q = $this->Tables->Kots->KotRows->find();
         $q->select([$q->func()->sum('KotRows.amount')]);
-        
         $Kots = $this->Tables->Kots->find()
                 ->select(['kot_amout' => $q->where(['KotRows.kot_id = Kots.id'])])
                 ->where(['Kots.bill_pending' => 'yes'])
                 ->autoFields(true);
-
         $tableWiseAmount=array(); 
         $tAmount=array(); 
          foreach ($Kots as $value) {
             $table_id=$value->table_id;
             $kot_amout=$value->kot_amout;
              $tableWiseAmount[$table_id][]=$kot_amout;
-            
         } 
-        
-        $Tables=$this->Tables->find();      
-       
+        $Tables=$this->Tables->find();     
         $Employees = $this->Tables->Employees->find('list');
-
         $this->set(compact('Tables', 'Employees','tableWiseAmount'));
     }
 

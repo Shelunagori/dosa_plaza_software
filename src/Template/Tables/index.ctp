@@ -86,7 +86,7 @@
 									<td valign="Bottom" style="text-align: center;">
 										<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
 										<span style=" margin: 0 10px;color:#96989A; ">|</span>
-										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id], ['style' => 'color:#fa6775;']) ?>
+										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id,'dinner'], ['style' => 'color:#fa6775;']) ?>
 									</td>
 								</tr>
 							</table>
@@ -196,7 +196,6 @@ $(document).ready(function() {
 	$('.CloseSteward').die().live('click',function(event){
 		$('#WaitBox3').hide();
 	});
-
 
 	$('.registerCustomer').die().live('click',function(event){
 		var table_id=$('input[name=table_id]').val();
