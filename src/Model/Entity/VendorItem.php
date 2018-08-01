@@ -26,7 +26,7 @@ class VendorItem extends Entity
      * @var array
      */
     protected $_accessible = [
-        'vendor_id' => true,
+        '*' => true,
         'item_id' => true,
         'vendor' => true,
         'item' => true

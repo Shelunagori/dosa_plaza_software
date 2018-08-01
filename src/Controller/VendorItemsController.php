@@ -21,11 +21,11 @@ class VendorItemsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Vendors', 'Items']
+            'contain' => ['Vendors', 'RawMaterials']
         ];
         $vendorItems = $this->paginate($this->VendorItems);
-
-        $this->set(compact('vendorItems'));
+			
+        $this->set(compact('vendorItems','RawMaterials'));
     }
 
     /**
@@ -61,8 +61,11 @@ class VendorItemsController extends AppController
             }
             $this->Flash->error(__('The vendor item could not be saved. Please, try again.'));
         }
-        $vendors = $this->VendorItems->Vendors->find('list', ['limit' => 200]);
-        $items = $this->VendorItems->Items->find('list', ['limit' => 200]);
+        $vendors = $this->VendorItems->Vendors->find('list');
+		
+        $items = $this->VendorItems->RawMaterials->find();
+		
+		
         $this->set(compact('vendorItem', 'vendors', 'items'));
     }
 

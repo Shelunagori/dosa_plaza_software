@@ -41,6 +41,13 @@ class VendorsTable extends Table
             'foreignKey' => 'vendor_id',
 			'saveStrategy'=>'replace'
         ]);
+		$this->belongsTo('RawMaterials', [
+            'foreignKey' => 'raw_material_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		
+		
     }
 
     /**

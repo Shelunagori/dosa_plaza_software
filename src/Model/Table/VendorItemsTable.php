@@ -42,10 +42,10 @@ class VendorItemsTable extends Table
             'foreignKey' => 'vendor_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Items', [
-            'foreignKey' => 'item_id',
+        $this->belongsTo('RawMaterials', [
+            'foreignKey' => 'raw_material_id',
             'joinType' => 'INNER'
-        ]);
+        ]); 
     }
 
     /**
@@ -73,7 +73,7 @@ class VendorItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['vendor_id'], 'Vendors'));
-        $rules->add($rules->existsIn(['item_id'], 'Items'));
+        $rules->add($rules->existsIn(['raw_material_id'], 'RawMaterials'));
 
         return $rules;
     }

@@ -22,12 +22,11 @@ class TablesController extends AppController
     {
 		$this->viewBuilder()->layout('counter');
         
-        //--
-        $q = $this->Tables->Kots->find();
-        $q->select([$q->func()->count('*')]);
-
+        
         $Tables=$this->Tables->find();
+
        
+
 
         $Employees = $this->Tables->Employees->find('list');
 
