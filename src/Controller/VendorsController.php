@@ -18,7 +18,7 @@ class VendorsController extends AppController
 		$this->paginate = [
             'contain' => ['VendorItems'=>['RawMaterials']]
         ];
-        $vendors = $this->paginate($this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]));
+        $vendors = $this->paginate($this->Vendors->find()->where(['is_deleted'=>0]));
 		
 		$this->set(compact('vendors','Items'));
     }
@@ -41,12 +41,14 @@ class VendorsController extends AppController
 			$item_lists=$this->request->getData('item_lists');
 			$x=0;
 			$vendor->vendor_items = [];  
-			foreach($item_lists as $data)
-			{
-				$Items = $this->Vendors->VendorItems->newEntity();
-				$Items->item_id = $data;
-				$vendor->vendor_items[$x]=$Items;
- 				$x++;	
+			if($item_lists){
+				foreach($item_lists as $data)
+				{
+					$Items = $this->Vendors->VendorItems->newEntity();
+					$Items->raw_material_id = $data;
+					$vendor->vendor_items[$x]=$Items;
+	 				$x++;	
+				}
 			}
 			 
             if ($this->Vendors->save($vendor)) {

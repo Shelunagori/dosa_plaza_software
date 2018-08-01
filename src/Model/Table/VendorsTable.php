@@ -41,10 +41,7 @@ class VendorsTable extends Table
             'foreignKey' => 'vendor_id',
 			'saveStrategy'=>'replace'
         ]);
-		$this->belongsTo('RawMaterials', [
-            'foreignKey' => 'raw_material_id',
-            'joinType' => 'INNER'
-        ]);
+		$this->belongsTo('RawMaterials');
 		
 		
 		
@@ -66,26 +63,7 @@ class VendorsTable extends Table
             ->scalar('name')
             ->maxLength('name', 100)
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
-
-        $validator
-            ->scalar('contact_person')
-            ->maxLength('contact_person', 50)
-            ->requirePresence('contact_person', 'create')
-            ->notEmpty('contact_person');
-
-        $validator
-            ->scalar('contact_number')
-            ->maxLength('contact_number', 15)
-            ->requirePresence('contact_number', 'create')
-            ->notEmpty('contact_number');
-
-        $validator
-            ->scalar('address')
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
- 
-
+            ->notEmpty('name'); 
         return $validator;
     }
 }

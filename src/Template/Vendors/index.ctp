@@ -50,20 +50,18 @@
 													<thead>
 														<tr>
 															<th scope="col"><?= ('S.No.') ?></th>
-															<th scope="col"><?= ('Item Name') ?></th> 
-															<th scope="col" class="actions"><?= __('Actions') ?></th>
+															<th scope="col"><?= ('Item Name') ?></th>  
 														</tr>
 													</thead>
 													<tbody>
-														<?php $v=0; foreach ($vendors as $vendorItem): ?>
+														<?php $v=0;  
+														if($vendor->vendor_items){ 
+														foreach ($vendor->vendor_items as $vendorItem): ?>
 														<tr>
 															<td><?= (++$v) ?></td>
-															<td><?= ($vendorItem->name); ?></td>
-															<td class="actions">
-																<?= $this->Form->postLink(__('<i class="fa fa-trash"></i>'), ['action' => 'delete', $vendorItem->id], ['escape'=>false,'class'=>'btn btn-danger btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $vendorItem->id)]) ?>
-															</td>
+															<td><?= ($vendorItem->raw_material->name); ?></td>
 														</tr>
-														<?php endforeach; ?>													
+														<?php endforeach; }?>													
 													</tbody>
 												</table>
 											</div>
