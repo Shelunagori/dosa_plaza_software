@@ -24,23 +24,26 @@ class TablesController extends AppController
  
         $q = $this->Tables->Kots->KotRows->find();
         $q->select([$q->func()->sum('KotRows.amount')]);
-
+        
         $Kots = $this->Tables->Kots->find()
                 ->select(['kot_amout' => $q->where(['KotRows.kot_id = Kots.id'])])
                 ->where(['Kots.bill_pending' => 'yes'])
                 ->autoFields(true);
-        $tableArray=array();
-        foreach ($Kots as $value) {
-          $table_id=$value->table_id;
-          $tableArray[]=$table_id;
-           pr($value); 
-        }        
-        pr($Kots->toArray()) ;exit; 
-        $Tables=$this->Tables->find();
 
+        $tableWiseAmount=array(); 
+        $tAmount=array(); 
+         foreach ($Kots as $value) {
+            $table_id=$value->table_id;
+            $kot_amout=$value->kot_amout;
+             $tableWiseAmount[$table_id][]=$kot_amout;
+            
+        } 
+        
+        $Tables=$this->Tables->find();      
+       
         $Employees = $this->Tables->Employees->find('list');
 
-        $this->set(compact('Tables', 'Employees'));
+        $this->set(compact('Tables', 'Employees','tableWiseAmount'));
     }
 
 
