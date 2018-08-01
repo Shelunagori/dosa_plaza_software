@@ -168,6 +168,37 @@ class BillsController extends AppController
                 $Table->c_address = '';
                 $this->Bills->Tables->save($Table);  
             }
+
+            //Stock Impact Start//
+            foreach ($bill->bill_rows as $bill_row) {
+                $Items = $this->Bills->BillRows->Items->get($bill_row->item_id, [
+                            'contain' => ['ItemRows' => ['RawMaterials']]
+                        ]);
+                foreach ($Items->item_rows as $item_row) {
+                    if($item_row->raw_material->recipe_unit_type=='primary'){
+                        $outQty=$item_row->quantity*$bill_row->quantity;
+                    }else if($item_row->raw_material->recipe_unit_type=='secondary'){
+                        $outQty=($item_row->quantity*$bill_row->quantity)/$item_row->raw_material->formula;
+                    }
+                    $stockLedger = $this->Bills->BillRows->StockLedgers->newEntity();
+                    $stockLedger->raw_material_id = $item_row->raw_material_id;
+                    $stockLedger->quantity = $outQty;
+                    $stockLedger->rate = 0;//To Be Calculate
+                    $stockLedger->status = 'out';
+                    $stockLedger->effected_on = date( "Y-m-d H:i:s" );
+                    $stockLedger->voucher_name = 'Bill';
+                    $stockLedger->adjustment_commant = '';
+                    $stockLedger->wastage_commant = '';
+                    $stockLedger->purchase_voucher_row_id = 0;
+                    $stockLedger->purchase_voucher_id = 0;
+                    $stockLedger->bill_id = $bill->id;
+                    $stockLedger->bill_row_id = $bill_row->id;
+                    $this->Bills->BillRows->StockLedgers->save($stockLedger);
+                }
+                echo '0'; exit;
+
+            }
+            //Stock Impact End//
             
 		}else{
 			echo '0';

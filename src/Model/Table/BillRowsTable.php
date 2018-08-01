@@ -46,6 +46,9 @@ class BillRowsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('StockLedgers', [
+            'foreignKey' => 'bill_row_id'
+        ]);
     }
 
     /**
