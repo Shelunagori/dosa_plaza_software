@@ -5,7 +5,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<a href="javascript:;">
 	<i class="icon-home"></i>
 	<span class="title">Stock In Voucher</span>
-	<span class="arrow "></span>
+	<span class="arrow"></span>
 	</a>
 	<ul class="sub-menu">
 		<?php echo '<li>'.$this->Html->link( $this->Html->tag('i', '', ['class' => 'fa fa-plus']).' &nbsp;Create', '/PurchaseVouchers/add',['escape' => false]).'</li>';?>
@@ -70,6 +70,10 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 </li>
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).' Daily Attendances', '/Attendances/add',['escape' => false]).'</li>';
+?>
+<?php 
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).'Comments', '/Comments/add',['escape' => false]).'</li>';
+
 ?>
 
 
