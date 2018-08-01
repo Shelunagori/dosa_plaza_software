@@ -69,7 +69,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
  	</ul>
 </li>
 <?php 
-echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).' Daily Attendances', '/Attendances/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).' Daily Attendance', '/Attendances/add',['escape' => false]).'</li>';
 ?>
 
 

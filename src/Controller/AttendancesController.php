@@ -73,11 +73,11 @@ class AttendancesController extends AppController
 			}
 			$this->Flash->error(__('The attendance could not be saved. Please, try again.'));	
         }
+
         $employees = $this->Attendances->Employees->find()
-						->contain(['Attendances'=>function($q){
-							return $q->where(['Attendances.attendance_date'=>date('Y-m-d')]);
-						}])
+                        ->contain(['Attendances'])
 						->where(['Employees.is_deleted'=>0]);
+        //pr($employees->toArray()); exit;
         $this->set(compact('attendance', 'employees', 'attendance_date'));
     }
 

@@ -61,8 +61,9 @@
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
 				<div class="page-logo">
-					<a href="#" style="margin-top: 10px;" role="button" style="text-decoration: none !important;">
-						<span style="font-size:20px;color:#FFF;"><b>DOSA PLAZA</b></span>
+					<a href="#" style="margin-top: 1px;" role="button" style="text-decoration: none !important;">
+						<!-- <span style="font-size:20px;color:#FFF;"><b>DOSA PLAZA</b></span> -->
+						<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 43px;']); ?>
 					</a>
 					<div class="menu-toggler sidebar-toggler hide">
 						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->

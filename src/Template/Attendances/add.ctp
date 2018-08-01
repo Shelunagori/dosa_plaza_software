@@ -5,7 +5,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					Attendance
+					Daily Attendance
 				</div>
 			</div>
 			<br>
@@ -36,27 +36,24 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php $d=0; foreach ($employees as $vendor): ?>
-							<?php $employee_id=0; if($vendor->attendances) { $employee_id=$vendor->attendances[0]['employee_id']; }
+							<?php $d=0; foreach ($employees as $employee): ?>
+							<?php $employee_id=0; if($employee->attendances) { $employee_id=$employee->attendances[0]['employee_id']; }
 							if(!$employee_id){
 							?>
 							<tr>
 								<td><?= (++$d) ?></td>
-								<td><?= h($vendor->name) ?></td>
+								<td><?= h($employee->name) ?></td>
 								<td>
-									<input type="hidden" name="employee_id[]" value="<?php echo $vendor->id; ?>"/>
-									<div class="form-group">
-										<div class="radio-list">
-											<label class="radio-inline">
-											<input type="radio" name="attendance[<?php echo $vendor->id; ?>]" value="1" checked> Present </label>
-											<label class="radio-inline">
-											<input type="radio" name="attendance[<?php echo $vendor->id; ?>]" value="3"> Half Day </label>
-											<label class="radio-inline">
-											<input type="radio" name="attendance[<?php echo $vendor->id; ?>]" value="2" > Leave </label>
-											<label class="radio-inline">
-											<input type="radio" name="attendance[<?php echo $vendor->id; ?>]" value="4" > Off </label>
-										</div>
-									</div>
+									<input type="hidden" name="employee_id[]" value="<?php echo $employee->id; ?>"/>
+									<?php echo $this->Form->radio(
+										'attendance['.$employee->id.']',
+										[
+											['value' => '1', 'text' => 'Present'],
+											['value' => '2', 'text' => 'Half Day'],
+											['value' => '3', 'text' => 'Absent'],
+											['value' => '4', 'text' => 'Off']
+										]
+									); ?>
 								</td>
 								<td><input type="text" name="remarks[]" class="form-control" Placeholder="Remarks" /></td> 
 							</tr>
