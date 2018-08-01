@@ -27,10 +27,7 @@ class TablesController extends AppController
         $q->select([$q->func()->count('*')]);
 
         $Tables=$this->Tables->find();
-        $Tables->select([
-                'id',
-                'total_Likes' => $q->where(['PostTravlePackageLikes.post_travle_package_id = PostTravlePackages.id']),
-            ])
+       
 
         $Employees = $this->Tables->Employees->find('list');
 
