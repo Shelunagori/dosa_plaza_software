@@ -21,7 +21,7 @@ class TablesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('counter');
-        
+ 
         $q = $this->Tables->Kots->KotRows->find();
         $q->select([$q->func()->sum('KotRows.amount')]);
 
@@ -35,12 +35,8 @@ class TablesController extends AppController
           $tableArray['']
            pr($value); 
         }        
-        pr($Kots->toArray()) ;exit;
+        pr($Kots->toArray()) ;exit; 
         $Tables=$this->Tables->find();
-        /*$Tables->select([
-            'id',
-            'total_Likes' => $q->where(['PostTravlePackageLikes.post_travle_package_id = PostTravlePackages.id']),
-        ]);*/
 
         $Employees = $this->Tables->Employees->find('list');
 
