@@ -43,7 +43,7 @@ class BillsTable extends Table
         
         $this->belongsTo('Tables', [
             'foreignKey' => 'table_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->belongsTo('Kots', [
             'foreignKey' => 'kot_id',
@@ -92,7 +92,7 @@ class BillsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['table_id'], 'Tables'));
+        
         $rules->add($rules->existsIn(['kot_id'], 'Kots'));
 
         return $rules;

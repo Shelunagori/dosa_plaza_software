@@ -41,7 +41,7 @@ class BillsController extends AppController
 		$bill_id=$this->request->query('bill_id');
 		
         $bill = $this->Bills->get($bill_id, [
-            'contain' => ['BillRows'=>['Items'], 'Customers', 'Taxes', 'Tables']
+            'contain' => ['BillRows'=>['Items'], 'Customers', 'Tables']
         ]);
 
         $this->set('bill', $bill);
@@ -62,7 +62,7 @@ class BillsController extends AppController
         $doa=$this->request->query('doa');
         $c_email=$this->request->query('c_email');
         $c_address=$this->request->query('c_address');
-
+        $order_type=$this->request->query('order_type');
         $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
         if($IsCustomerExist){
             $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
@@ -90,16 +90,13 @@ class BillsController extends AppController
             }else{
                 $Customer->customer_code=2001;
             }
-            
-
             $this->Bills->Customers->save($Customer);
         }
 
 		$myJSON=$this->request->query('myJSON');
 
 		$table_id=$this->request->query('table_id');
-		$total=$this->request->query('total');
-		$tax_id=$this->request->query('tax_id');
+		$total=$this->request->query('total'); 
 		$roundOff=$this->request->query('roundOff');
         $net=$this->request->query('net');
         $customer_id=$Customer->id;
@@ -117,12 +114,11 @@ class BillsController extends AppController
 		}
 		
 		$bill->table_id=$table_id;
-		$bill->total=$total;
-		$bill->tax_id=$tax_id;
+		$bill->total=$total; 
 		$bill->round_off=$roundOff;
         $bill->grand_total=$net;
 		$bill->customer_id=$customer_id;
-		
+		$bill->order_type=$order_type;
         $bill_rows=[];
 		foreach($q as $row){
 			$bill_row = $this->Bills->BillRows->newEntity();
@@ -132,12 +128,17 @@ class BillsController extends AppController
 			$bill_row->amount=$row['amount'];
 			$bill_row->discount_per=$row['discount_per'];
 			$bill_row->net_amount=$row['net_amount'];
+            $bill_row->tax_per=$row['percen'];            
 			$bill_rows[]=$bill_row;
 		}
 		$bill->bill_rows=$bill_rows;
-
-        $Table = $this->Bills->Tables->get($table_id);
-        $bill->occupied_time=$Table->occupied_time;
+        if($table_id>0){
+            $Table = $this->Bills->Tables->get($table_id);
+            $bill->occupied_time=$Table->occupied_time;
+        }
+        else{
+            $bill->occupied_time=date("Y-m-d h:i:s");
+        }
 
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
@@ -155,17 +156,19 @@ class BillsController extends AppController
                     ->execute();
             }
 
+            if($table_id>0){
+                $Table->status = 'vacant';
+                $Table->c_name = '';
+                $Table->c_mobile = '';
+                $Table->no_of_pax = '';
+                $Table->occupied_time = '';
+                $Table->dob = '';
+                $Table->doa = '';
+                $Table->email = '';
+                $Table->c_address = '';
+                $this->Bills->Tables->save($Table);  
+            }
             
-            $Table->status = 'vacant';
-            $Table->c_name = '';
-            $Table->c_mobile = '';
-            $Table->no_of_pax = '';
-            $Table->occupied_time = '';
-            $Table->dob = '';
-            $Table->doa = '';
-            $Table->email = '';
-            $Table->c_address = '';
-            $this->Bills->Tables->save($Table);
 		}else{
 			echo '0';
 		}

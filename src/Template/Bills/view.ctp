@@ -20,7 +20,9 @@
 					<span style="color: #606062;">Bill No.: </span><span style="margin-left: 10px;"> RBL-<?php echo str_pad($bill->voucher_no, 6, "0", STR_PAD_LEFT); ?> </span><br/>
 					<span style="color: #606062;">Bill Date: </span><span style="margin-left: 10px;"> <?php echo date('d-m-Y',strtotime($bill->created_on)); ?> </span><br/>
 					<span style="color: #606062;">Bill Time: <span style="margin-left: 10px;"> <?php echo date('H:i',strtotime($bill->created_on)); ?> </span><br/>
-					<span style="color: #606062;">Table No.: <span style="margin-left: 10px;"> <?php echo $bill->table->name; ?> </span><br/>
+					<?php if($bill->table_id>0 ){?>
+					<span style="color: #606062;">Table No.: <span style="margin-left: 10px;"> <?php echo @$bill->table->name; ?> </span><br/>
+					<?php } ?>
 				</div>				
 
 				<table width="100%" id="billBox" style="line-height: 20px;padding: 0;margin: 0;">
@@ -30,6 +32,7 @@
 							<th style="text-align:left;border-bottom: solid 1px #CCC;">Item Name</th>
 							<th style="text-align:center;border-bottom: solid 1px #CCC;">Qty</th>
 							<th style="text-align:center;border-bottom: solid 1px #CCC;">Rate</th>
+							<th style="text-align:center;border-bottom: solid 1px #CCC;">GST</th>
 							<th style="text-align:center;border-bottom: solid 1px #CCC;">Total</th>
 						</tr>
 					</thead>
@@ -45,6 +48,7 @@
 							<td style="padding-top: 5px;"><?php echo $bill_row->item->name; ?></td>
 							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->quantity; ?></td>
 							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->rate; ?></td>
+							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->tax_per; ?></td>
 							<td style="padding-top: 5px;"></td>
 						</tr>
 						<tr style="">
@@ -53,34 +57,19 @@
 									<span style="margin-left: 40px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
 								<?php } ?>
 							</td>
-							<td colspan="3" style="text-align:right;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;"><?php echo $bill_row->net_amount; ?></td>
+							<td colspan="4" style="text-align:right;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;"><?php echo $bill_row->net_amount; ?></td>
 						</tr>
 					<?php } ?>
 					</tbody>
 					<tfoot>
 						<tr>
 							<th></th>
-							<th colspan="3" style="text-align:left;">Sub Total</th>
+							<th colspan="4" style="text-align:left;">Sub Total</th>
 							<th style="text-align:right;"><?php echo $sub_total; ?></th>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3" style="text-align:left;">Discount</td>
-							<td style="text-align:right;"><?php echo $discountAmount; ?></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3" style="text-align:left;">CGST : <?php echo $bill->tax->tax_per/2; ?>%</td>
-							<td style="text-align:right;"><?php echo round($sub_total*($bill->tax->tax_per/2)/100,2); ?></td>
-						</tr>
-						<tr>
-							<td></td>
-							<td colspan="3" style="text-align:left;">SGST : <?php echo $bill->tax->tax_per/2; ?>%</td>
-							<td style="text-align:right;"><?php echo round($sub_total*($bill->tax->tax_per/2)/100,2); ?></td>
-						</tr>
+						</tr>  
 						<tr>
 							<th style="border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;"></th>
-							<th colspan="3" style="text-align:left;border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;">Total</th>
+							<th colspan="4" style="text-align:left;border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;">Total</th>
 							<th style="text-align:right;border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;"><?php echo $bill->grand_total; ?></th>
 						</tr>
 					<tfoot>

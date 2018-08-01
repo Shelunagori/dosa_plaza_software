@@ -27,17 +27,15 @@ class KotsController extends AppController
         $this->set(compact('kots'));
     }
 
-    public function generate($table_id=null)
+    public function generate($table_id=null,$order_type=null)
     {
         $this->viewBuilder()->layout('counter');
-
-
         $ItemCategories =   $this->Kots->ItemCategories->find()
                             ->contain(['ItemSubCategories'=>['Items']]);
         $Items =    $this->Kots->ItemCategories->ItemSubCategories->Items->find()
                     ->order(['Items.name'=>'ASC']);
         $Comments = $this->Kots->Comments->find('list');
-        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments'));
+        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type'));
     }
 
     /**
@@ -51,9 +49,10 @@ class KotsController extends AppController
     {
         $table_id=$this->request->query('table_id');
 		
-		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
-		
-		$Table=$this->Kots->Tables->get($table_id);
+		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items'=>['Taxes']]]);
+		if($table_id>0){
+    		$Table=$this->Kots->Tables->get($table_id);
+        }
 		$taxes=$this->Kots->Taxes->find();
 		$this->set(compact('Kots', 'Table', 'taxes'));
     }
@@ -67,7 +66,8 @@ class KotsController extends AppController
     {
 		$myJSON=$this->request->query('myJSON');
         $table_id=$this->request->query('table_id');
-		$one_comment=$this->request->query('one_comment');
+        $one_comment=$this->request->query('one_comment');
+        $order_type=$this->request->query('order_type'); 
 		$q = json_decode($myJSON, true);
 		
         $kot = $this->Kots->newEntity();
@@ -81,6 +81,7 @@ class KotsController extends AppController
 			
         $kot->table_id=$table_id;
 		$kot->one_comment=$one_comment;
+        $kot->order_type=$order_type;
 		
 		$kot_rows=[];
 		foreach($q as $row){

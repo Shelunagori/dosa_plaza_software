@@ -97,6 +97,7 @@
 							</div>
 						</div>
 					</td>
+					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'class'=>'form-control','type'=> 'hidden','id'=>'order_type']);?>
 					<td valign="top" width="50%" style=" padding: 0px 15px; ">
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 15px;">
 							<div style="padding-top:12px">
@@ -241,6 +242,11 @@
 		padding:2px;
 	}
 }
+.qty{
+	width: 50px;
+    height: 20px;
+    text-align: center; 
+}
 </style>
 
 <!-- BEGIN PAGE LEVEL STYLES -->
@@ -301,7 +307,7 @@
 	
 	$js="
 	$(document).ready(function() {
-		
+		var order_type=$('#order_type').val();
 		var q=$('.ItemCategoryBox').clone();
 		$('.ItemCategoryBox').remove();
 		$('#CategoryArea').append(q);
@@ -344,7 +350,7 @@
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span>-</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span><input type \"taxt\" class=\"qty\" value=\"1\"></span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
 		
 		 
@@ -387,24 +393,31 @@
 			var postData=[];
 			$('#kotBox tbody tr').each(function(){
 				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
-				var quantity=$(this).find('td:nth-child(3)').text();
-				var rate=$(this).find('td:nth-child(4)').text();
+				var quantity=$(this).find('td input.qty').val();
+ 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
 				var comment=$(this).find('.comment').val();
+				
 				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, comment : comment}); 
 			});
 			var table_id=$('#tableInput').val();
+			var order_type= $('#order_type').val();
 			var one_comment=$('#oneComment').val();
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment+'&order_type='+order_type;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
 				if(response=='1'){
 					$('#kotBox tbody tr').remove();
 					$('#oneComment').val('');
-					$('#WaitBox div.modal-body').html('".$successMessage."');
+					if(order_type=='dinner'){
+						$('#WaitBox div.modal-body').html('".$successMessage."');
+					}
+					else {
+						$('.CreateBill').trigger('click');
+					}					
 				}else{
 					$('#WaitBox div.modal-body').html('".$errorMessage."');
 				}
@@ -460,9 +473,11 @@
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
 				var discount_per=$(this).find('td:nth-child(6) input').val();
-				var net_amount=$(this).find('td:nth-child(7)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount}); 
+				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
+				var net_amount=$(this).find('td:nth-child(8)').text();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount, percen : percen}); 
 			});
+			var order_type=$('#order_type').val();
 			var table_id=$('#tableInput').val();
 			var c_name=$('#c_name').val();
 			var c_mobile_no=$('#c_mobile_no').val();
@@ -473,14 +488,13 @@
 			var c_address=$('#c_address').val();
 			
 			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text();
-			var tax_id=$('#billTable tfoot tr:nth-child(2) td:nth-child(2) select option:selected').attr('tax_id');
-			var roundOff=$('#billTable tfoot tr:nth-child(3) td:nth-child(2)').text();
-			var net=$('#billTable tfoot tr:nth-child(4) td:nth-child(2)').text();
+			var roundOff=$('#billTable tfoot tr:nth-child(2) td:nth-child(2)').text();
+			var net=$('#billTable tfoot tr:nth-child(3) td:nth-child(2)').text();
 			var kot_ids=$('input[name=kot_ids]').val();
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&tax_id='+tax_id+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type;
 			url=encodeURI(url);
 			$.ajax({
 				url: url,
@@ -518,17 +532,22 @@
 				var discount_per=parseFloat($(this).find('td:nth-child(6) input').val());
 				if(!discount_per){ discount_per=0; }
 				var net_amount=round(amount*(100-discount_per)/100,2);
-				$(this).find('td:nth-child(7)').text(net_amount);
-				total=total+net_amount;
+				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
+				
+				var taxamount=round((net_amount*percen)/100,2);
+				var tot=net_amount+taxamount;
+				tot=round(tot,2);
+				$(this).find('td:nth-child(8)').text(tot);
+				total=total+tot;
 			});
 			total=round(total,2);
-			$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text(total);
-			var tax=$('#billTable tfoot tr:nth-child(2) td:nth-child(2) select option:selected').val();
-			var totalAfterTax=total-round(total*tax/100,2);
+			$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text(total); 
+			var totalAfterTax=total-round(total);
 			var totalAfterTaxRound=round(totalAfterTax,0);
 			var roundOff=round(totalAfterTaxRound-totalAfterTax,2);
-			$('#billTable tfoot tr:nth-child(3) td:nth-child(2)').text(roundOff);
-			$('#billTable tfoot tr:nth-child(4) td:nth-child(2)').text(totalAfterTaxRound);
+			$('#billTable tfoot tr:nth-child(2) td:nth-child(2)').text(roundOff);
+			total=round(total);
+			$('#billTable tfoot tr:nth-child(3) td:nth-child(2)').text(total);
 		}
 
 		$('.accordion-toggle').die().live('click',function(event){

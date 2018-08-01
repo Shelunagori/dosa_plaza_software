@@ -8,7 +8,7 @@ $items=[]; $kotIDs=[];
 foreach($Kots as $Kot){
 	$kotIDs[$Kot->id]=$Kot->id;
 	foreach($Kot->kot_rows as $kot_row){
-		$items[$kot_row->item_id]=['quantity'=>@$items[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name];
+		$items[$kot_row->item_id]=['quantity'=>@$items[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name , 'tax_name'=>$kot_row->item->tax->name, 'tax_per'=>$kot_row->item->tax->tax_per];
 	}
 }
 ?>
@@ -61,7 +61,7 @@ foreach($Kots as $Kot){
 							<td style="padding-right: 5px;">
 								<div class="input-icon">
 									<?php
-									if($Table->dob==""){
+									if(@$Table->dob==""){
 										$dob="";
 									}else{
 										$dob=date('Y-m-d',strtotime($Table->dob));
@@ -74,7 +74,7 @@ foreach($Kots as $Kot){
 							<td style="padding-left: 5px;">
 								<div class="input-icon">
 									<?php
-									if($Table->doa==""){
+									if(@$Table->doa==""){
 										$doa="";
 									}else{
 										$doa=date('Y-m-d',strtotime($Table->doa));
@@ -109,6 +109,7 @@ foreach($Kots as $Kot){
 							<th style="text-align:center;" width="10%">Rate</th>
 							<th style="text-align:center;" width="10%">Amount</th>
 							<th width="10%" style="text-align:center;">Dis%</th>
+							<th width="10%" style="text-align:center;">GST</th>
 							<th style="text-align:right;" width="10%">Net</th>
 						</tr>
 					</thead>
@@ -123,38 +124,37 @@ foreach($Kots as $Kot){
 							<td style="text-align:center;"><?php echo $item['rate']; ?></td>
 							<td style="text-align:center;"><?php echo $item['quantity']*$item['rate']; ?></td>
 							<td><input type="text" class="disBox" style="width:20%;text-align:center;width:100%;" placeholder="" /></td>
-							<td style="text-align:right;"><?php echo $item['quantity']*$item['rate']; $total+=$item['quantity']*$item['rate']; ?></td>
+							<td style="text-align:center;"><?php echo $item['tax_name']; ?><span class="percen" style="display:none"><?php echo $item['tax_per']; ?></span></td>
+							<td style="text-align:right;">
+								<?php 
+									$totalamount=$item['quantity']*$item['rate']; 
+									$TaxAmount=($totalamount*$item['tax_per'])/100;
+									echo $ToatlAmounts=round($TaxAmount+$totalamount,2);
+									$total+=$ToatlAmounts; 
+								?>
+							</td>
 						</tr>
 					<?php } ?>
 					</tbody>
 					<tfoot>
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " > 
-							<td colspan="6" style="text-align:right;">Total</td>
+							<td colspan="7" style="text-align:right;">Total</td>
 							<td style="text-align:right;" ><?php echo $total; ?></td>
 						</tr>
+					
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " > 
-							<td colspan="6" style="text-align:right;">GST</td>
-							<td style="text-align:right;">
-								<select>
-								<?php foreach($taxes as $tax){ ?>
-									<option value="<?php echo $tax->tax_per; ?>" tax_id="<?php echo $tax->id; ?>" ><?php echo $tax->name; ?></option>
-								<?php } ?>
-								</select>
-							</td>
-						</tr>
-						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " > 
-							<td colspan="6" style="text-align:right;">Round off</td>
+							<td colspan="7" style="text-align:right;">Round off</td>
 							<td style="text-align:right;" >
 							<?php
-								$totalAfterTax=$total-round($total*($tax->tax_per/100),2);
+								$totalAfterTax=$total-round($total);
 								$totalAfterTaxAfterRound=round($totalAfterTax);
 								echo round($totalAfterTaxAfterRound-$totalAfterTax,2);
 							?>
 							</td>
 						</tr>
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; background-color: #E6E7E8;font-weight: bold;" > 
-							<td colspan="6" style="text-align:right;">NET AMOUNT</td>
-							<td style="text-align:right;" ><?php echo $totalAfterTaxAfterRound; ?></td>
+							<td colspan="7" style="text-align:right;">NET AMOUNT</td>
+							<td style="text-align:right;" ><?php echo round($total); ?></td>
 						</tr>
 					</tfoot>
 				</table>
@@ -167,7 +167,7 @@ foreach($Kots as $Kot){
 		</td>
 	</tr>
 </table>
-<?php }else{ ?>
+<?php  exit; }else{ ?>
 	<div align="center">
 		<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL</span><br/><br/><br/>
 		<div style=" color: #fa6775; font-weight: bold; font-size: 16px; ">Create at-least one KOT.</div><br/>
