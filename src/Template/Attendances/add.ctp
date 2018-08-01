@@ -1,14 +1,12 @@
-<?php $this->set("title", 'Employee'); ?>
-<div class="row">
-	<div class="col-md-12">
-		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet blue box">
+<?php echo $this->Html->css('mystyle'); ?>
+<?php $this->set("title", 'Attendance'); ?>
+<div class="row" style="margin-top:15px;">
+	<div class="col-md-12 main-div">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-book"></i>Attendance
+					Attendance
 				</div>
-				<div class="tools"> 
- 				</div>
 			</div>
 			<div class="portlet-body">
 			<form method="post">
@@ -54,21 +52,12 @@
 						<div class="row">
 						
 							<div class="col-md-offset-6 col-md-9">
-								<?php echo $this->Form->button('Submit',['class'=>'btn btn-primary']); ?> 
+								<?php echo $this->Form->button('Submit',['class'=>'btn btn-danger']); ?> 
 							</div>
 						</div>
 					</div>
 			</form>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->first('<< ' . __('first')) ?>
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-						<?= $this->Paginator->last(__('last') . ' >>') ?>
-					</ul>
-					<p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-				</div>
+				
 			</div>
 		</div>
 	</div>

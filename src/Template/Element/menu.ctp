@@ -74,3 +74,14 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/RawMaterials/index',['escape' => false]).'</li>';?>
  	</ul>
 </li>  
+<li class="start">
+	<a href="javascript:;">
+	<i class="fa fa-gear"></i>
+	<span class="title">Attendances</span>
+	<span class="arrow "></span>
+	</a>
+	<ul class="sub-menu">
+		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Attendances/add',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Attendances/index',['escape' => false]).'</li>';?>
+ 	</ul>
+</li>  
