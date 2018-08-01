@@ -36,15 +36,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php $d=0; foreach ($employees as $employee): ?>
-							<?php $employee_id=0; if($employee->attendances) { $employee_id=$employee->attendances[0]['employee_id']; }
-							if(!$employee_id){
-							?>
+							<?php $d=0; foreach ($employees as $employee){ ?>
+							
 							<tr>
 								<td><?= (++$d) ?></td>
 								<td><?= h($employee->name) ?></td>
 								<td>
-									<input type="hidden" name="employee_id[]" value="<?php echo $employee->id; ?>"/>
+									<input type="hidden" name="employee_ids[]" value="<?php echo $employee->id; ?>"/>
 									<?php echo $this->Form->radio(
 										'attendance['.$employee->id.']',
 										[
@@ -52,12 +50,15 @@
 											['value' => '2', 'text' => 'Half Day'],
 											['value' => '3', 'text' => 'Absent'],
 											['value' => '4', 'text' => 'Off']
-										]
+										],
+										['value' => @$employee->attendances[0]->attendance_status]
 									); ?>
 								</td>
-								<td><input type="text" name="remarks[]" class="form-control" Placeholder="Remarks" /></td> 
+								<td>
+									<?php echo $this->Form->input('remarks['.$employee->id.']',['label' => false,'class'=>'form-control input-sm', 'Placeholder' => 'Remarks', 'value' => @$employee->attendances[0]->remarks]);?>
+								</td> 
 							</tr>
-							<?php } endforeach; ?>
+							<?php } ?>
 						</tbody>
 					</table>
 					<div class="col-md-12"><hr></hr></div>

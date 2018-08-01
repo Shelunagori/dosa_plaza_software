@@ -48,24 +48,23 @@ class AttendancesController extends AppController
         if ($this->request->is('post')) {
 			 
 			$Attendance=$this->request->getData('attendance');
-			$employee_id=$this->request->getData('employee_id');
+			$employee_ids=$this->request->getData('employee_ids');
 			$remarks=$this->request->getData('remarks');
 			 
-			$x=0;
 			$insert=0;
-			$attendance_date=date('Y-m-d');
-			foreach($employee_id as $employee){
+			foreach($employee_ids as $employee_id){
+                //Delete Attendance
+                $this->Attendances->deleteAll(['employee_id' => $employee_id, 'attendance_date' => $attendance_date]);
+
+                //Insert Attendance
 				$attendanceinsert = $this->Attendances->newEntity();
-				$attendanceinsert = $this->Attendances->patchEntity($attendanceinsert, $this->request->getData());
-				$attendanceinsert->employee_id=$employee;
-				$attendanceinsert->attendance_status=$Attendance[$employee];
-				$attendanceinsert->remarks=$remarks[$x];
-				 
+				$attendanceinsert->employee_id=$employee_id;
+				$attendanceinsert->attendance_status=$Attendance[$employee_id];
+				$attendanceinsert->remarks=$remarks[$employee_id];
 				$attendanceinsert->attendance_date=$attendance_date;
 				if ($this->Attendances->save($attendanceinsert)) { 
 					$insert=1;
 				}
-				$x++;
 			}
 			if($insert==1){
 				$this->Flash->success(__('The attendance has been saved.'));
@@ -74,8 +73,10 @@ class AttendancesController extends AppController
 			$this->Flash->error(__('The attendance could not be saved. Please, try again.'));	
         }
 
-        $employees = $this->Attendances->Employees->find()
-                        ->contain(['Attendances'])
+        $employees = $this->Attendances->Employees->find()  
+                        ->contain(['Attendances' => function($q) use($attendance_date){
+                            return $q->where(['Attendances.attendance_date' => $attendance_date]);
+                        }])
 						->where(['Employees.is_deleted'=>0]);
         //pr($employees->toArray()); exit;
         $this->set(compact('attendance', 'employees', 'attendance_date'));
