@@ -8,6 +8,18 @@
 					Attendance
 				</div>
 			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-8" >
+					<div class="form-group col-md-5">
+						<label class="control-label" style="padding:0;"> <span class="required"> </span></label>
+						<input class="form-control input-md" type="date" name="Attendance_date" required /> 
+					</div>
+					<div class="col-md-2" style="padding-top: 24px">
+						<button type="button" class="btn btn-circle ">GO</button>
+					</div>
+				</div>
+			</div>
 			<div class="portlet-body">
 			<form method="post">
 				<table class="table table-bordered" cellpadding="0" cellspacing="0">
