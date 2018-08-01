@@ -24,7 +24,7 @@ class KotsController extends AppController
         $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
 
         
-        $this->set(compact('kots''));
+        $this->set(compact('kots'));
     }
 
     public function generate($table_id=null)
