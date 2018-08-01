@@ -12,53 +12,37 @@ use App\Controller\AppController;
  */
 class CommentsController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
+	public function add($id = null)
     {
-        $comments = $this->paginate($this->Comments);
-
-        $this->set(compact('comments'));
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Comment id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $comment = $this->Comments->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('comment', $comment);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
+		
+		$this->viewBuilder()->layout('admin');
+		if(!$id)
+		{				
+			$comment = $this->Comments->newEntity();
+		}
+		else
+		{
+			$comment = $this->Comments->get($id, [
+				'contain' => []
+			]);
+		} 
         $comment = $this->Comments->newEntity();
-        if ($this->request->is('post')) {
+		
+        if ($this->request->is(['patch','post','put'])) {
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
-            if ($this->Comments->save($comment)) {
+			
+			if ($this->Comments->save($comment)) {
+				
                 $this->Flash->success(__('The comment has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The comment could not be saved. Please, try again.'));
         }
-        $this->set(compact('comment'));
+		
+		$Comments = $this->paginate($this->Comments->find());
+		
+        $this->set(compact('comment','Comments','id'));
     }
 
     /**
@@ -102,6 +86,6 @@ class CommentsController extends AppController
             $this->Flash->error(__('The comment could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add']);
     }
 }
