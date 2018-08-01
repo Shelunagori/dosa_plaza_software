@@ -42,6 +42,8 @@ class AttendancesController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('admin');
+		
+		$attendance_date=$this->request->query('attendance_date');
         
         if ($this->request->is('post')) {
 			 
@@ -58,8 +60,8 @@ class AttendancesController extends AppController
 				$attendanceinsert->employee_id=$employee;
 				$attendanceinsert->attendance_status=$Attendance[$employee];
 				$attendanceinsert->remarks=$remarks[$x];
-				$attendanceinsert->attendance_date=$attendance_date;
 				 
+				$attendanceinsert->attendance_date=$attendance_date;
 				if ($this->Attendances->save($attendanceinsert)) { 
 					$insert=1;
 				}
@@ -71,12 +73,12 @@ class AttendancesController extends AppController
 			}
 			$this->Flash->error(__('The attendance could not be saved. Please, try again.'));	
         }
-        $employees = $this->paginate($this->Attendances->Employees->find()
-			->contain(['Attendances'=>function($q){
-				return $q->where(['Attendances.attendance_date'=>date('Y-m-d')]);
-			}])
-			->where(['Employees.is_deleted'=>0]));
-        $this->set(compact('attendance', 'employees'));
+        $employees = $this->Attendances->Employees->find()
+						->contain(['Attendances'=>function($q){
+							return $q->where(['Attendances.attendance_date'=>date('Y-m-d')]);
+						}])
+						->where(['Employees.is_deleted'=>0]);
+        $this->set(compact('attendance', 'employees', 'attendance_date'));
     }
 
     /**
