@@ -22,12 +22,20 @@ class TablesController extends AppController
     {
 		$this->viewBuilder()->layout('counter');
         
-        //--
-       /* $q = $this->Tables->Kots->Kotrows->find();
-        $q->select([
-            'total_Likes' => $q->where(['Kotrows.kot_id = Kots.id']),
-            ]);
-pr($q) ;exit;*/
+        $q = $this->Tables->Kots->KotRows->find();
+        $q->select([$q->func()->sum('KotRows.amount')]);
+
+        $Kots = $this->Tables->Kots->find()
+                ->select(['kot_amout' => $q->where(['KotRows.kot_id = Kots.id'])])
+                ->where(['Kots.bill_pending' => 'yes'])
+                ->autoFields(true);
+        $tableArray=array();
+        foreach ($Kots as $value) {
+          $table_id=$value->table_id;
+          $tableArray['']
+           pr($value); 
+        }        
+        pr($Kots->toArray()) ;exit;
         $Tables=$this->Tables->find();
         /*$Tables->select([
             'id',
