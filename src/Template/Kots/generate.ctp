@@ -344,10 +344,10 @@
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span>1</span>-</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
 		
-		
+		 
 		
 		$('.AddItemBtn').die().live('click',function(event){
 			var item_id=$('.ItemDropDown option:selected').val();
