@@ -62,11 +62,8 @@ class VendorItemsController extends AppController
             $this->Flash->error(__('The vendor item could not be saved. Please, try again.'));
         }
         $vendors = $this->VendorItems->Vendors->find('list');
-		
-        $items = $this->VendorItems->RawMaterials->find();
-		
-		
-        $this->set(compact('vendorItem', 'vendors', 'items'));
+		$items = $this->VendorItems->RawMaterials->find();
+		$this->set(compact('vendorItem', 'vendors', 'items'));
     }
 
     /**

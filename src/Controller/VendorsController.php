@@ -19,7 +19,7 @@ class VendorsController extends AppController
             'contain' => ['VendorItems'=>['RawMaterials']]
         ];
         $vendors = $this->paginate($this->Vendors->find()->where(['is_deleted'=>0]));
-        $this->set(compact('vendors'));
+		$this->set(compact('vendors','Items'));
     }
  
     public function add($id = null)

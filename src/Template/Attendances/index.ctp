@@ -1,11 +1,12 @@
-<?php $this->set("title", 'Employee'); ?>
-<div class="row">
-	<div class="col-md-12">
+<?php echo $this->Html->css('mystyle'); ?>
+<?php $this->set("title", 'Attendance'); ?>
+<div class="row" style="margin-top:15px;sss">
+	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
-		<div class="portlet blue box">
+		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					<i class="fa fa-book"></i>Attendance
+					Attendance
 				</div>
 				<div class="tools"> 
  				</div>
@@ -48,16 +49,7 @@
 						<?php endforeach; ?>
 					</tbody>
 				</table>
-				<div class="paginator">
-					<ul class="pagination">
-						<?= $this->Paginator->first('<< ' . __('first')) ?>
-						<?= $this->Paginator->prev('< ' . __('previous')) ?>
-						<?= $this->Paginator->numbers() ?>
-						<?= $this->Paginator->next(__('next') . ' >') ?>
-						<?= $this->Paginator->last(__('last') . ' >>') ?>
-					</ul>
-					<p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-				</div>
+				
 			</div>
 		</div>
 	</div>
