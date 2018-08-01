@@ -73,7 +73,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
 				<div class="page-logo">
-					<div style="font-size:20px;color:#FFF;margin-top: 10px;">LOGO</div>
+					<!-- <div style="font-size:20px;color:#FFF;margin-top: 10px;">LOGO</div> -->
+					<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 43px;']); ?>
 					<div class="menu-toggler sidebar-toggler hide">
 						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 					</div>

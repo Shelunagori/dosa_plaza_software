@@ -307,7 +307,7 @@ FormValidation.init();
 				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control select2 ShowUnit','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
 			<td width="30%" align="">
-				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
+				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
 			</td>
 			<td width="15%" class="">
 				<?php echo $this->Form->control('dasd', ['label' => false,'placeholder'=>'Unit','class'=>'form-control unitType','readonly'=>'readonly','tabindex'=>'1']); ?>

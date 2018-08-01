@@ -50,6 +50,7 @@ class CommentsTable extends Table
 
         $validator
             ->scalar('comment')
+            ->maxLength('comment', 255)
             ->requirePresence('comment', 'create')
             ->notEmpty('comment');
 
