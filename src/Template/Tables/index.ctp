@@ -171,6 +171,9 @@
 .steward:hover{
 	cursor: pointer;color: #FA6775 !important;
 }
+.CloseSteward{
+	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
 </style>
 
 
@@ -190,6 +193,10 @@ $(document).ready(function() {
 	$('.closeCustomerBox').die().live('click',function(event){
 		$('#customerRegistrationBox').hide();
 	});
+	$('.CloseSteward').die().live('click',function(event){
+		$('#WaitBox3').hide();
+	});
+
 
 	$('.registerCustomer').die().live('click',function(event){
 		var table_id=$('input[name=table_id]').val();
@@ -391,6 +398,11 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<div align="center" style=" font-size: 14px; color: #2D4161; font-weight: bold; "><span>SELECT STEWARD</span></div><br/><br/>
 				<input type="hidden" id="steward_table_id" >
 				<?php echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required']); ?><br/><br/>
+			</div>
+			<div class="modal-footer"> 
+			<div align="center">
+				<span class="CloseSteward">CLOSE</span> 
+			</div>
 			</div>
 		</div>
 	</div>
