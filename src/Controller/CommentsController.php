@@ -22,11 +22,8 @@ class CommentsController extends AppController
 		}
 		else
 		{
-			$comment = $this->Comments->get($id, [
-				'contain' => []
-			]);
+			$comment = $this->Comments->get($id);
 		} 
-        $comment = $this->Comments->newEntity();
 		
         if ($this->request->is(['patch','post','put'])) {
             $comment = $this->Comments->patchEntity($comment, $this->request->getData());
@@ -78,8 +75,11 @@ class CommentsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $comment = $this->Comments->get($id);
+        $comment = $this->Comments->get($id, [
+            'contain' => []
+        ]);
+		$comment = $this->Comments->patchEntity($comment, $this->request->getData());
+		$comment->is_deleted=1;
         if ($this->Comments->delete($comment)) {
             $this->Flash->success(__('The comment has been deleted.'));
         } else {
@@ -89,3 +89,5 @@ class CommentsController extends AppController
         return $this->redirect(['action' => 'add']);
     }
 }
+ 
+		
