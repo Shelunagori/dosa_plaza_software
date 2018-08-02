@@ -63,7 +63,7 @@
 		<div class=" col-md-2 " style="width: 22%;padding-left: 0;">
 			<div class="dashboard-stat" style="height: 134px;; background-image: linear-gradient(to right, #ed693f, #f05c3f, #f24e41, #f43d45, #f52549);">
 				<div class="visual">
-					<i class="fa fa-birthday-cake" style=" color: #ffffff57; font-size: 80px; padding-top: 29px;"></i>
+					<i class="fa fa-birthday-cake" style=" color: #ffffff57; font-size: 80px; padding-top: 29px;color: #f2744e;"></i>
 				</div>
 				<div class="details">
 					<div style="text-align:center;color:#FFF;font-size:18px;margin: 30px 70px;">
