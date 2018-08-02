@@ -5,3 +5,5 @@ ALTER TABLE `raw_materials` ADD `is_deleted` TINYINT(1) NOT NULL AFTER `recipe_u
 ALTER TABLE `bills` ADD `order_type` VARCHAR(10) NOT NULL AFTER `created_on`;
 ALTER TABLE `kots` ADD `order_type` VARCHAR(20) NOT NULL AFTER `one_comment`;
 ALTER TABLE `bill_rows` ADD `tax_per` DECIMAL(10,2) NOT NULL AFTER `net_amount`;
+
+ALTER TABLE `employees` ADD `designation_id` INT(11) NOT NULL AFTER `id`;
