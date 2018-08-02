@@ -41,6 +41,7 @@ class TablesTable extends Table
         ]);
         $this->belongsTo('Kots');
         $this->belongsTo('Bills');
+        $this->belongsTo('Customers');
     }
 
     /**

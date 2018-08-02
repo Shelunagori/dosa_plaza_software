@@ -48,13 +48,39 @@ class KotsController extends AppController
     public function view()
     {
         $table_id=$this->request->query('table_id');
+        $search_mobile=$this->request->query('search_mobile');
+        $search_code=$this->request->query('search_code');
 		
+        $searchBy=array();
+        $searchbox=0;
+        if(!empty($search_mobile) || !empty($search_code))
+        {
+            $searchBy=$this->Kots->Tables->Customers->find()
+                 ->where(['OR' => array(
+                            array("Customers.mobile_no" => $search_mobile),
+                            array("Customers.customer_code" => $search_code)
+                        )])
+                 ->first();
+            if(!empty($searchBy)){
+                $searchbox=1;  
+            }
+        }
+        //pr($searchBy);exit;
+
 		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items'=>['Taxes']]]);
 		if($table_id>0){
     		$Table=$this->Kots->Tables->get($table_id);
         }
 		$taxes=$this->Kots->Taxes->find();
-		$this->set(compact('Kots', 'Table', 'taxes'));
+		$this->set(compact('Kots', 'Table', 'taxes','searchbox','searchBy'));
+    }
+
+    public function viewkot($kot_id=null)
+    {
+        $this->viewBuilder()->layout('');
+        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables",'KotRows'=>['Items'=>['Taxes']]])->first();
+        //pr($Kots->toArray());exit;
+        $this->set(compact('Kots'));
     }
 
     /**
@@ -94,8 +120,8 @@ class KotsController extends AppController
 			$kot_rows[]=$kot_row;
 		}
 		$kot->kot_rows=$kot_rows;
-		if ($this->Kots->save($kot)) {
-			echo '1';
+		if ($data=$this->Kots->save($kot)) {
+			echo $data->id;
 		}else{
 			echo '0';
 		}

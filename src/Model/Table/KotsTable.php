@@ -40,7 +40,7 @@ class KotsTable extends Table
 
         $this->belongsTo('Tables', [
             'foreignKey' => 'table_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
 
         

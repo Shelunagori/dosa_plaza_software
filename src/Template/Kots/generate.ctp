@@ -1,4 +1,7 @@
-<style>
+<style> 
+.saveCustomersearch{
+	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
+}
 .commentString{
     background-color: #2d4161;
     padding:  5px;
@@ -409,14 +412,20 @@
 			$.ajax({
 				url: url,
 			}).done(function(response) {
-				if(response=='1'){
+				if(response>0){
 					$('#kotBox tbody tr').remove();
 					$('#oneComment').val('');
 					if(order_type=='dinner'){
 						$('#WaitBox div.modal-body').html('".$successMessage."');
+						var url='".$this->Url->build(['controller'=>'Kots','action'=>'viewkot'])."';
+						url=url+'/'+response;
+		        		window.open(url, '_blank'); 
 					}
 					else {
 						$('.CreateBill').trigger('click');
+						var url='".$this->Url->build(['controller'=>'Kots','action'=>'viewkot'])."';
+						url=url+'/'+response;
+		        		window.open(url, '_blank');
 					}					
 				}else{
 					$('#WaitBox div.modal-body').html('".$errorMessage."');
@@ -456,6 +465,25 @@
 			});
 		});
 		
+		$('.searchcustomber').die().live('click',function(event){
+			event.preventDefault();
+			var table_id=$('#tableInput').val();
+			var search_code = $('#search_code').val();
+			var search_mobile = $('#search_mobile').val();
+			if(search_mobile.length==0){search_mobile=0;}
+			if(search_code.length==0){search_code=0;}
+
+			$('#WaitBox3').show();
+			$('#WaitBox3 div.modal-body').html('".$waitingMessage2."');
+			var url='".$this->Url->build(['controller'=>'Kots','action'=>'view'])."';
+			url=url+'?table_id='+table_id+'&search_code='+search_code+'&search_mobile='+search_mobile;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				$('#WaitBox3 div.modal-body').html(response);
+			});
+		});
+		
 		$('.CancelBill').die().live('click',function(event){
 			event.preventDefault();
 			$('#WaitBox3').hide();
@@ -487,7 +515,7 @@
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
 			
-			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text();
+			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(4)').text();
 			var roundOff=$('#billTable tfoot tr:nth-child(2) td:nth-child(2)').text();
 			var net=$('#billTable tfoot tr:nth-child(3) td:nth-child(2)').text();
 			var kot_ids=$('input[name=kot_ids]').val();
@@ -523,6 +551,12 @@
 			calculateBill();
 		});
 		
+		$('.overalldis').die().live('keyup',function(event){
+			var dic = $(this).val();
+			$('.disBox').val(dic);
+			calculateBill();
+		});
+		
 		function calculateBill(){
 			var total=0;
 			$('#billTable tbody tr').each(function(){
@@ -541,7 +575,7 @@
 				total=total+tot;
 			});
 			total=round(total,2);
-			$('#billTable tfoot tr:nth-child(1) td:nth-child(2)').text(total); 
+			$('#billTable tfoot tr:nth-child(1) td:nth-child(4)').text(total); 
 			var totalAfterTax=total-round(total);
 			var totalAfterTaxRound=round(totalAfterTax,0);
 			var roundOff=round(totalAfterTaxRound-totalAfterTax,2);

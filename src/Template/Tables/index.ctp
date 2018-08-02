@@ -1,5 +1,8 @@
 
 <style>
+.saveCustomersearch{
+	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
+}
 .saveCustomer{
 	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
 }
@@ -73,7 +76,7 @@
 								<tr>
 									<td valign="top">
 										<span style="color:#96989A;">Pax Per Rate</span>
-										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){  echo $RatePerPax; } ?></span>
+										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){  echo round($RatePerPax,2); } ?></span>
 									</td>
 								</tr>
 								<tr>
@@ -302,6 +305,22 @@ $(document).ready(function() {
 			url: url,
 		}).done(function(response) {
 			
+		});
+	});
+
+	$('.searchcustomber').die().live('click',function(event){
+		var search_code = $('#search_code').val();
+		var search_mobile = $('#search_mobile').val();
+		if(search_mobile.length==0){search_mobile=0;}
+		if(search_code.length==0){search_code=0;}
+		$('#WaitBox2 div.modal-body').html('".$waitingMessage."');
+		var table_id=$(this).attr('table_id');
+		var url='".$this->Url->build(['controller'=>'Tables','action'=>'customer'])."';
+		url=url+'/'+table_id+'/'+search_code+'/'+search_mobile; 
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('#WaitBox2 div.modal-body').html(response);
 		});
 	});
 

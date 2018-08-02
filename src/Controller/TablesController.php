@@ -164,11 +164,27 @@ class TablesController extends AppController
         $this->set(compact('table'));
     }
 
-    public function customer($id = null)
+    public function customer($id = null,$search_code=null,$search_mobile=null,$searchbox=null)
     {
         $this->viewBuilder()->layout('');
+        $searchBy=array();
+        $searchbox=0;
+        if(!empty($search_mobile) || !empty($search_code))
+        {
+            $searchBy=$this->Tables->Customers->find()
+                 ->where(['OR' => array(
+                            array("Customers.mobile_no" => $search_mobile),
+                            array("Customers.customer_code" => $search_code)
+                        )])
+                 ->first();
+            if(!empty($searchBy)){
+                $searchbox=1;  
+            }
+            
+        }
+         
         $table = $this->Tables->get($id);
-        $this->set(compact('table'));
+        $this->set(compact('table','searchBy','searchbox'));
     }
 
     /**
