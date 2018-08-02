@@ -11,8 +11,9 @@
 			padding: 10px;
 			border-radius:5px!important;
 	}
-	.dashboardback{
-		background: linear-gradient(#F52549, #ED693F );
+	.smalldiv{
+		    height: 135px !important;
+
 		
 	}
 	
