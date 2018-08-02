@@ -23,6 +23,7 @@
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('mobile_no') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('email') ?></th>
+							<th scope="col"><?= ('Designation') ?></th>
 							<th scope="col"><?= ('address') ?></th> 
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -34,6 +35,7 @@
 							<td><?= h($vendor->name) ?></td>
 							<td><?= h($vendor->mobile_no) ?></td>
 							<td><?= h($vendor->email) ?></td>
+							<td><?= h($vendor->designation->name) ?></td>
 							<td><?= h($vendor->address) ?></td>
  							<td class="actions">
 								

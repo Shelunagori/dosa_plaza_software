@@ -8,7 +8,6 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					
 					<?php if(!empty($id)){ ?>
 						Edit Employee
 					<?php }else{ ?>
@@ -26,9 +25,10 @@
 			</div>
 			<div class="portlet-body">
 				<div class="">
-					<?= $this->Form->create($employee,['id'=>'CountryForm']); ?>
+					<?= $this->Form->create($employee,['id'=>'form_sample_1']); ?>
+					<div class="row">
 						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Name <span class="required" aria-required="true">
+							<label class="control-label col-md-12"> Name <span class="required" aria-required="true">*
 							 </span>
 							</label>
 							<div class="col-md-12">
@@ -40,7 +40,7 @@
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Email <span class="required" aria-required="true">
+							<label class="control-label col-md-12"> Email <span class="required" aria-required="true">*
 							 </span>
 							</label>
 							<div class="col-md-12">
@@ -50,20 +50,34 @@
 								</div>
 							</div>
 						</div>
-						
+					</div>
+					<div class="row">	
 						<div class="form-group col-md-6">
 							<label class="control-label col-md-12"> Mobile Number <span class="required" aria-required="true">
-							</span>
+							* </span>
 							</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$employee->mobile_no."'"; } ?> name="mobile_no" class="form-control" Placeholder="Enter Mobile No" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" >
+									<input type="text" <?php if(!empty($id)){ echo "value='".$employee->mobile_no."'"; } ?> name="mobile_no" class="form-control" Placeholder="Enter Mobile No" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10" required >
 								</div>
 							</div>
 						</div>
 						
 						<div class="form-group col-md-6">
+							<label class="control-label col-md-12"> Designation <span class="required" aria-required="true">
+							 *</span>
+							</label>
+							<div class="col-md-12">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<?php echo $this->Form->input('designation_id',['options' =>$Designations,'label' => false,'class'=>'form-control select2me','empty'=> 'Select...','required'=>'required', 'value'=>$employee->designation_id]);?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-10">
 							<label class="control-label col-md-12"> Address 
 							</label>
 							<div class="col-md-12">
@@ -73,17 +87,16 @@
 								</div>
 							</div>
 						</div>
-						
+					</div>	
  						
-						<div class="form-actions ">
-							<div class="row">
-								<div class="col-md-12" style="text-align:center;">
-									<hr>
-									<?php echo $this->Form->button('Submit',['class'=>'btn btn-danger']); ?> 
-								</div>
+					<div class="form-actions ">
+						<div class="row">
+							<div class="col-md-12" style="text-align:center;">
+								<hr>
+								<?php echo $this->Form->button('Submit',['class'=>'btn btn-danger']); ?> 
 							</div>
 						</div>
- 						 
+					</div>	 
 					<?= $this->Form->end() ?>
 				</div> 
 			</div>
@@ -105,73 +118,85 @@
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 	<!-- BEGIN VALIDATEION -->
 	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+
 	<!-- END VALIDATEION --> 
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <?php 
-$js='
+$js="
 $(document).ready(function() {
-	jQuery(".loadingshow").submit(function(){
-		jQuery("#loader-1").show();
-	});
-	$.validator.addMethod("specialChars", function( value, element ) {
-		var regex = new RegExp("^[a-zA-Z ]+$");
-		var key = value;
-
-		if (!regex.test(key)) {
-		   return false;
-		}
-		return true;
-	}, "please use only alphabetic characters");
-	
-	//-- Validation
-	var form2 = $("#CountryForm");
-	var error2 = $(".alert-danger", form2);
-	var success2 = $(".alert-success", form2);
-
-	form2.validate({
-		errorElement: "span", //default input error message container
-		errorClass: "help-block help-block-error", // default input error message class
-		focusInvalid: false, // do not focus the last invalid input
-		ignore: "",  // validate all fields including form hidden input
+	var form3 = $('#form_sample_1');
+	var error3 = $('.alert-danger', form3);
+	var success3 = $('.alert-success', form3);
+	form3.validate({
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
 		rules: {
 			name: { 
-				required: true,specialChars: true
+				required: true 
 			},
 			email: { 
-				required: true,email: true 
+				required: true,
+				email: true 
 			},
 			mobile_no: { 
-				required: true,maxlength:10
+				required: true,
+				maxlength:10,
 			},
+			designation_id:{
+				required: true,
+			}
 			 
 		},
 
-		 
-
 		errorPlacement: function (error, element) { // render error placement for each input type
-			var icon = $(element).parent(".input-icon").children("i");
-			icon.removeClass("fa-check").addClass("fa-warning");  
-			icon.attr("data-original-title", error.text()).tooltip({"container": "body"});
+			if (element.parent('.input-group').size() > 0) {
+				error.insertAfter(element.parent('.input-group'));
+			} else if (element.attr('data-error-container')) { 
+				error.appendTo(element.attr('data-error-container'));
+			} else if (element.parents('.radio-list').size() > 0) { 
+				error.appendTo(element.parents('.radio-list').attr('data-error-container'));
+			} else if (element.parents('.radio-inline').size() > 0) { 
+				error.appendTo(element.parents('.radio-inline').attr('data-error-container'));
+			} else if (element.parents('.checkbox-list').size() > 0) {
+				error.appendTo(element.parents('.checkbox-list').attr('data-error-container'));
+			} else if (element.parents('.checkbox-inline').size() > 0) { 
+				error.appendTo(element.parents('.checkbox-inline').attr('data-error-container'));
+			} else {
+				error.insertAfter(element); // for other inputs, just perform default behavior
+			}
+		},
+
+		invalidHandler: function (event, validator) { //display error alert on form submit   
+			success3.hide();
+			error3.show();
 		},
 
 		highlight: function (element) { // hightlight error inputs
-			$(element)
-				.closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group   
+		   $(element)
+				.closest('.form-group').addClass('has-error'); // set error class to the control group
 		},
-		success: function (label, element) {
-			var icon = $(element).parent(".input-icon").children("i");
-			$(element).closest(".form-group").removeClass("has-error").addClass("has-success"); // set success class to the control group
-			icon.removeClass("fa-warning").addClass("fa-check");
+
+		unhighlight: function (element) { // revert the change done by hightlight
+			$(element)
+				.closest('.form-group').removeClass('has-error'); // set error class to the control group
+		},
+
+		success: function (label) {
+			label
+				.closest('.form-group').removeClass('has-error'); // set success class to the control group
 		},
 
 		submitHandler: function (form) {
-			success2.show();
-			error2.hide();
+			success3.show();
+			error3.hide();
 			form[0].submit(); // submit the form
 		}
-	}); 	
- });';
+	});
+});
+";
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 <style>

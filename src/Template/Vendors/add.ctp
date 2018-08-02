@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item'); ?>
+<?php $this->set("title", 'Vendor'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px;">
@@ -29,7 +29,7 @@
 				<div class="">
 					<?= $this->Form->create($vendor,['id'=>'CountryForm']) ; ?>
 						<div class="form-group">
-							<label class="control-label col-md-4">Name<span class="required" aria-required="true">
+							<label class="control-label col-md-4">Name <span class="required" aria-required="true">*
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -41,8 +41,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Person <span class="required" aria-required="true">
-							 </span>
+							<label class="control-label col-md-4"> Contact Person 
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -53,14 +52,11 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Number <span class="required" aria-required="true">
-							 </span>
+							<label class="control-label col-md-4"> Contact Number  
 							</label>
-							<div class="col-md-8">
-								<div class="input-icon right">
-									<i class="fa"></i>
+							<div class="col-md-8"> 
 									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->contact_number."'"; } ?> name="contact_number" class="form-control input-large" Placeholder="Enter Contact Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" >
-								</div>
+								 
 							</div>
 						</div>
 						<span class="help-block">&nbsp;</span>
@@ -89,7 +85,7 @@
 									if($id){
 										foreach($vendor->vendor_items as $iteml)
 										{ 
-											$catList[]=$iteml->item_id;
+											$catList[]=$iteml->raw_material_id;
 										}
 										$catLists=array_unique($catList);
 									}
@@ -148,19 +144,7 @@
 <?php 
 $js='
 $(document).ready(function() {
-	jQuery(".loadingshow").submit(function(){
-		jQuery("#loader-1").show();
-	});
-	$.validator.addMethod("specialChars", function( value, element ) {
-		var regex = new RegExp("^[a-zA-Z ]+$");
-		var key = value;
-
-		if (!regex.test(key)) {
-		   return false;
-		}
-		return true;
-	}, "please use only alphabetic characters");
-	
+ 
 	//-- Validation
 	var form2 = $("#CountryForm");
 	var error2 = $(".alert-danger", form2);
@@ -173,21 +157,9 @@ $(document).ready(function() {
 		ignore: "",  // validate all fields including form hidden input
 		rules: {
 			name: { 
-				required: true,specialChars: true
-			},
-			contact_person: { 
-				required: true,specialChars: true 
-			},
-			contact_number: { 
-				required: true,maxlength:10
-			},
-			"item_lists[]": { 
-				required: true,maxlength:10
+				required: true,
 			},
 		},
-
-		 
-
 		errorPlacement: function (error, element) { // render error placement for each input type
 			var icon = $(element).parent(".input-icon").children("i");
 			icon.removeClass("fa-check").addClass("fa-warning");  

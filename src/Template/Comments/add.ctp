@@ -22,9 +22,7 @@
 				<div class="">
 					<?= $this->Form->create($comment,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4">Comments Name <span class="required" aria-required="true">
-							</span>
-							</label>
+							<label class="control-label col-md-4"style="padding-left:34px;"><span class="required"> * </span>Comments Name</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -76,14 +74,14 @@
 							<td><?= h($comment->comment) ?></td>
 							<td class="actions">
 								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Comments','action'=>'add',$comment->id]]);?>
-								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$comment->id,'data-toggle'=>'modal']);?>
-								<div id="deletemodal<?php echo $comment->id; ?>" class="modal fade" role="dialog">
+								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$comment->id,'data-toggle'=>'modal','class'=>'pointer']);?>
+								<div id="deletemodal<?php echo $comment->id; ?>" class="modal fade " role="dialog">
 									<div class="modal-dialog modal-md" >
 										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Comments','action'=>'delete',$comment->id)) ?>">
 											<div class="modal-content">
 												<div class="modal-header">
 													<h4 class="modal-title">
-														Are you sure you want to remove this Category?
+														Are you sure you want to Delete this comment?
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">

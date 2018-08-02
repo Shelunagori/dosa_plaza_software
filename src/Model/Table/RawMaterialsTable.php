@@ -55,6 +55,9 @@ class RawMaterialsTable extends Table
 		$this->hasMany('StockLedgers', [
             'foreignKey' => 'raw_material_id'
         ]);
+        $this->hasMany('VendorItems', [
+            'foreignKey' => 'raw_material_id'
+        ]);
     }
 
     /**
