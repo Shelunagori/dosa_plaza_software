@@ -76,7 +76,7 @@ class EmployeesController extends AppController
 	{
 		$this->viewBuilder()->layout('admin');
 		$Employees =	$this->Employees->find();
-		
+		$Designations = $this->Employees->Designations->find();
 		$this->set(compact('Employees')); 
 	}
 }

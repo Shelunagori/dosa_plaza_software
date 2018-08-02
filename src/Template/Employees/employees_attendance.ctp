@@ -29,7 +29,7 @@
 							<tr>
 								<th scope="col"style="width:4%;"><?= ('S.No.') ?></th>
 								<th scope="col"style="width:16%"><?= ('Employees Name') ?></th>
-								<th scope="col"><?= ('Designation') ?></th>
+								<th scope="col"style="width:10%;"><?= ('Designation') ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -38,7 +38,10 @@
 							<tr>
 								<td><?= (++$d) ?></td>
 								<td><?= h($Employee->name) ?></td>
-								<td> 
+								<td><?= h($Employee->$Designations->name) ?></td>
+								<td>
+								    
+								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
