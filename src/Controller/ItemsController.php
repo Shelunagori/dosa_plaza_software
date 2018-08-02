@@ -17,7 +17,7 @@ class ItemsController extends AppController
 		$this->paginate = [
             'contain' => ['ItemSubCategories']
         ];
-        $itemslist = $this->paginate($this->Items->find()->where(['Items.is_deleted'=>0]));
+        $itemslist = $this->paginate($this->Items->find());
 		$this->set(compact('itemslist'));
 	}
 
@@ -47,11 +47,39 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-		
-        $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])->where(['is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']);
+		if($id)
+        {
+            $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])
+                ->where(['is_deleted'=>0])
+                ->orWhere(['ItemSubCategories.id IN' => $item->item_sub_category_id])
+                ->order(['ItemSubCategories.id'=>'ASC']);
+        }
+        else{
+           $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])
+                ->where(['is_deleted'=>0])
+                ->order(['ItemSubCategories.id'=>'ASC']);
+        }
+        
+        
         $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->where(['status'=>'active'])->order(['Taxes.id'=>'ASC']);
-        $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['PrimaryUnits','SecondaryUnits' ])
+        
+        if($id)
+        {  
+            $itemslist=array();
+            foreach($item->item_rows as $raw_materials){
+                $itemslist[]=$raw_materials->raw_material_id;
+            }
+
+            $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['PrimaryUnits','SecondaryUnits' ])
+                            ->where(['RawMaterials.is_deleted'=>0])
+                            ->orWhere(['RawMaterials.id IN' => $itemslist])
                             ->order(['RawMaterials.name'=>'ASC']);;
+        }
+        else{
+            $raw_materials = $this->Items->ItemRows->RawMaterials->find()->contain(['PrimaryUnits','SecondaryUnits' ])
+                            ->where(['RawMaterials.is_deleted'=>0])
+                            ->order(['RawMaterials.name'=>'ASC']);;
+        }
         
         $option=[];
         foreach($raw_materials as $raw_material)
@@ -68,6 +96,7 @@ class ItemsController extends AppController
                             'unit_name'=>$unit_name,
                         ];
         }
+
         
         $this->set(compact('item', 'itemSubCategories','id','Taxes','option'));
 
@@ -81,9 +110,24 @@ class ItemsController extends AppController
 		$item = $this->Items->patchEntity($item, $this->request->getData());
 		$item->is_deleted=1;
 		if ($this->Items->save($item)) {
-            $this->Flash->success(__('The item has been deleted.'));
+            $this->Flash->success(__('The item has been freeze.'));
         } else {
-            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The item could not be freeze. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+    public function undelete($id = null)
+    {
+        $item = $this->Items->get($id, [
+            'contain' => []
+        ]);
+        $item = $this->Items->patchEntity($item, $this->request->getData());
+        $item->is_deleted=0;
+        if ($this->Items->save($item)) {
+            $this->Flash->success(__('The item has been unfreezed.'));
+        } else {
+            $this->Flash->error(__('The item could not be unfreezed. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

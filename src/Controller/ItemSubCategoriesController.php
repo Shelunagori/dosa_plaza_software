@@ -37,9 +37,19 @@ class ItemSubCategoriesController extends AppController
 		$this->paginate = [
             'contain' => ['ItemCategories']
         ];
+		if($id)
+        {
+             $itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200])
+                ->where(['ItemCategories.is_deleted'=>0])
+                ->orWhere(['ItemCategories.id IN' => $itemSubCategory->item_category_id]);
+        }
+        else{
+            $itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200])
+                ->where(['ItemCategories.is_deleted'=>0]);
+        }
+		$ItemSubCategoriesList = $this->paginate($this->ItemSubCategories->find()->order(['ItemSubCategories.id'=>'ASC']));
+
 		
-		$ItemSubCategoriesList = $this->paginate($this->ItemSubCategories->find()->where(['ItemSubCategories.is_deleted'=>0])->order(['ItemSubCategories.id'=>'ASC']));
-		$itemCategories = $this->ItemSubCategories->ItemCategories->find('list', ['limit' => 200]);
         $this->set(compact('itemSubCategory','ItemSubCategoriesList','itemCategories','id'));
     }
  
@@ -52,9 +62,25 @@ class ItemSubCategoriesController extends AppController
 		$itemSubCategory = $this->ItemSubCategories->patchEntity($itemSubCategory, $this->request->getData());
 		$itemSubCategory->is_deleted=1;
 		if ($this->ItemSubCategories->save($itemSubCategory)) {
-            $this->Flash->success(__('The item sub category has been deleted.'));
+            $this->Flash->success(__('The item sub category has been Freezed.'));
         } else {
-            $this->Flash->error(__('The item sub category could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The item sub category could not be Freezed. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'add']);
+    }
+    public function undelete($id = null)
+    {
+        $itemSubCategory = $this->ItemSubCategories->get($id, [
+            'contain' => []
+        ]);
+        
+        $itemSubCategory = $this->ItemSubCategories->patchEntity($itemSubCategory, $this->request->getData());
+        $itemSubCategory->is_deleted=0;
+        if ($this->ItemSubCategories->save($itemSubCategory)) {
+            $this->Flash->success(__('The item sub category has been unfreezed.'));
+        } else {
+            $this->Flash->error(__('The item sub category could not be unfreezed. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'add']);

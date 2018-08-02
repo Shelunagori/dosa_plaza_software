@@ -24,10 +24,7 @@ class RawMaterialsController extends AppController
 		$this->paginate = [
             'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits']
         ];
-        $rawMaterials = $this->paginate(
-        				$this->RawMaterials->find()
-        				->where(['RawMaterials.is_deleted'=>0])
-        			);
+        $rawMaterials = $this->paginate($this->RawMaterials->find());
 
         $this->set(compact('rawMaterials'));
     }
@@ -94,9 +91,24 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
         $rawMaterial->is_deleted=1;
         if ($this->RawMaterials->save($rawMaterial)) {
-            $this->Flash->success(__('The raw material has been deleted.'));
+            $this->Flash->success(__('The raw material has been freezed.'));
         } else {
-            $this->Flash->error(__('The raw material could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The raw material could not be freezed. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+    public function undelete($id = null)
+    {
+       $rawMaterial = $this->RawMaterials->get($id, [
+            'contain' => []
+        ]);
+        $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
+        $rawMaterial->is_deleted=0;
+        if ($this->RawMaterials->save($rawMaterial)) {
+            $this->Flash->success(__('The raw material has been unfreezed.'));
+        } else {
+            $this->Flash->error(__('The raw material could not be unfreezed. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -186,6 +198,7 @@ class RawMaterialsController extends AppController
 			'total_out' => $q2
 		])
 		->contain(['PrimaryUnits'])
+		->where(['RawMaterials.is_deleted'=>0])
 		->autoFields(true);
 		
 		$this->set(compact('RawMaterials'));

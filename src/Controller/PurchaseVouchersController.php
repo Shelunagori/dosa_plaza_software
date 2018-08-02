@@ -155,9 +155,15 @@ class PurchaseVouchersController extends AppController
             }
             $this->Flash->error(__('The purchase voucher could not be saved. Please, try again.'));
         }
-
+         
+        $itemslist=array();
+        foreach($purchaseVoucher->purchase_voucher_rows as $raw_materia){
+            $itemslist[]=$raw_materia->raw_material_id;
+        } 
         $raw_materials = $this->PurchaseVouchers->PurchaseVoucherRows->RawMaterials->find()
                             ->contain(['Taxes', 'PrimaryUnits', 'SecondaryUnits' ])
+                            ->where(['RawMaterials.is_deleted'=>0])
+                            ->orwhere(['RawMaterials.id IN'=>$itemslist])
                             ->order(['RawMaterials.name'=>'ASC']);
         $option=[];
         foreach($raw_materials as $raw_material)
@@ -174,7 +180,10 @@ class PurchaseVouchersController extends AppController
                             'unit_name'=>$unit_name,
                         ];
         }
-        $Vendors = $this->PurchaseVouchers->Vendors->find('list' );
+
+        $Vendors = $this->PurchaseVouchers->Vendors->find('list')
+            ->where(['Vendors.is_deleted'=>0])
+            ->orWhere(['Vendors.id IN'=>$purchaseVoucher->vendor_id]);
         $this->set(compact('purchaseVoucher', 'Vendors','raw_materials','option'));
     }
 

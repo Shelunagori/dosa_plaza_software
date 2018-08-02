@@ -94,6 +94,7 @@
 													<td style="vertical-align: top !important;"></td>
 													<td width="30%" align="left">
 														<?php $v=0;
+														$optionnew=array();
 															foreach($option as $dataopt){ 
 																$inserted=$dataopt['value'];
 																$optionnew[]=$dataopt;

@@ -73,8 +73,15 @@
 								</div>
 							</td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Vendors','action'=>'add',$vendor->id]]);?>
-								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal']);?>
+								<?php
+									if($vendor->is_deleted==0){
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Vendors','action'=>'add',$vendor->id],'class'=>'tooltips','data-original-title'=>'Edit Vendor','data-container'=>'body']);?>
+									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Vendor','data-container'=>'body']);
+									} else { ?>
+										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Vendor','data-container'=>'body']);
+									}
+									?>
+
 								<div id="deletemodal<?php echo $vendor->id;?>" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
 										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Vendors','action'=>'delete',$vendor->id)) ?>">
@@ -82,7 +89,25 @@
 											  <div class="modal-header">
 													
 													<h4 class="modal-title">
-													Are you sure you want to remove this Vendor?
+													Are you sure you want to freeze this Vendor?
+													</h4>
+												</div>
+												<div class="modal-footer" style="border:none;">
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal" style="color:#000000;background-color:#DDDDDD;">Cancel</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+								<div id="undeletemodal<?php echo $vendor->id;?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Vendors','action'=>'undelete',$vendor->id)) ?>">
+											<div class="modal-content">
+											  <div class="modal-header">
+													
+													<h4 class="modal-title">
+													Are you sure you want to unfreeze this Vendor?
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">

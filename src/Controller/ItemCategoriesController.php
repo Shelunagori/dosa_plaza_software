@@ -35,7 +35,7 @@ class ItemCategoriesController extends AppController
             }
             $this->Flash->error(__('The item category could not be saved. Please, try again.'));
         }
-		$itemCategories = $this->paginate($this->ItemCategories->find()->where(['is_deleted'=>0]));
+		$itemCategories = $this->paginate($this->ItemCategories->find());
         $this->set(compact('itemCategory','itemCategories','id'));
     }
  
@@ -47,6 +47,20 @@ class ItemCategoriesController extends AppController
 		$itemCategory = $this->ItemCategories->patchEntity($itemCategory, $this->request->getData());
 		$itemCategory->is_deleted=1;
 		if ($this->ItemCategories->save($itemCategory)) {
+            $this->Flash->success(__('The item category has been deleted.'));
+        }else {
+            $this->Flash->error(__('The item category could not be deleted. Please, try again.'));
+        }
+        return $this->redirect(['action' => 'add']);
+    }
+    public function undelete($id = null)
+    {
+        $itemCategory = $this->ItemCategories->get($id, [
+            'contain' => []
+        ]);
+        $itemCategory = $this->ItemCategories->patchEntity($itemCategory, $this->request->getData());
+        $itemCategory->is_deleted=0;
+        if ($this->ItemCategories->save($itemCategory)) {
             $this->Flash->success(__('The item category has been deleted.'));
         }else {
             $this->Flash->error(__('The item category could not be deleted. Please, try again.'));
