@@ -20,8 +20,10 @@ class BillsController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->layout('admin');
+
         $this->paginate = [
-            'contain' => ['Tables']
+            'contain' => ['Tables', 'Customers']
         ];
         $bills = $this->paginate($this->Bills);
 

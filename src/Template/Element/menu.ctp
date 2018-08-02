@@ -73,6 +73,9 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Comments</span>'
 <?php 
 echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Customers</span>', '/Customers/index',['escape' => false]).'</li>';
 ?>
+<?php 
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '/Bills/index',['escape' => false]).'</li>';
+?>
 
 
 <!-- 
