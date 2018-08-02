@@ -244,10 +244,12 @@ class BillsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $bill = $this->Bills->get($id);
-        if ($this->Bills->delete($bill)) {
-            $this->Flash->success(__('The bill has been deleted.'));
+        $this->Bills->BillRows->StockLedgers->deleteAll(['bill_id' => $bill->id]);
+        $bill->status='canceled';
+        if ($this->Bills->save($bill)) {
+            $this->Flash->success(__('The bill has been canceled.'));
         } else {
-            $this->Flash->error(__('The bill could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The bill could not be canceled. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
