@@ -38,8 +38,6 @@
 							<tr>
 								<td><?= (++$d) ?></td>
 								<td><?= h($Employee->name) ?></td>
-								
-								
 							</tr>
 							<?php } ?>
 						</tbody>
