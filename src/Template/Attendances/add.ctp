@@ -31,7 +31,19 @@
 							<tr>
 								<th scope="col"><?= ('S.No.') ?></th>
 								<th scope="col"><?= ('Name') ?></th>
-								<th scope="col">Attendance</th>
+								<th scope="col">
+									Attendance 
+									<span style=" font-size: 12px; color: #7b7a7a; float: right; "> 
+										Mark All as
+										<select class="MarkAll">
+											<option value="0">None</option>
+											<option value="1">Present</option>
+											<option value="2">Half Day</option>
+											<option value="3">Absent</option>
+											<option value="4">Off</option>
+										</select> 
+									</span>
+								</th>
 								<th scope="col">Remarks</th> 
 							</tr>
 						</thead>
@@ -51,7 +63,7 @@
 											['value' => '3', 'text' => 'Absent'],
 											['value' => '4', 'text' => 'Off']
 										],
-										['value' => @$employee->attendances[0]->attendance_status]
+										['value' => @$employee->attendances[0]->attendance_status, 'class' => 'allCheckbox']
 									); ?>
 								</td>
 								<td>
@@ -89,8 +101,18 @@
 <!-- END COMPONENTS DROPDOWNS -->
 <?php
 $js="
-    
-
+    $(document).ready(function() {
+    	$('.MarkAll').die().live('change',function(event){
+    		var q=$(this).find('option:selected').val();
+    		if(q==0){
+    			$('input.allCheckbox').prop('checked',false);
+				$.uniform.update();
+			}else{
+				$('input.allCheckbox[value='+q+']').prop('checked',true);
+				$.uniform.update();
+			}
+    	});
+    });
 ";
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
