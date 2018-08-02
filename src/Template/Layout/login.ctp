@@ -46,10 +46,10 @@ License: You must have a valid license purchased only from themeforest(the above
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
-	<body class="login">
+	<body class="login" style='background: url("http://localhost/dosa_plaza_software/img/bg3.jpg");''>
 		<!-- BEGIN LOGO -->
 		<div class="logo">
-			<span style="font-size:26px;color:#44b6ae;"><b>DOSA PLAZA</b></span>
+			<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 60px;']); ?>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -57,7 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<!-- END SIDEBAR TOGGLER BUTTON -->
 		<!-- BEGIN LOGIN -->
-		<div class="content">
+		<div class="content" style="background-color: #000000b5;" >
 			<?= $this->fetch('content') ?>
 		</div>
 		<!-- END LOGIN -->
