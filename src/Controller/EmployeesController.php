@@ -15,7 +15,10 @@ class EmployeesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('admin');
-        $employees = $this->paginate($this->Employees->find()->where(['is_deleted'=>0]));
+        $this->paginate = [
+            'contain' => ['Designations']
+        ];
+        $employees = $this->paginate($this->Employees->find()->where(['Employees.is_deleted'=>0]));
         $this->set(compact('employees'));
     }
  
@@ -42,6 +45,7 @@ class EmployeesController extends AppController
 		}
         if ($this->request->is(['patch', 'post', 'put'])) {
             $employee = $this->Employees->patchEntity($employee, $this->request->getData());
+
             if ($this->Employees->save($employee)) {
                 $this->Flash->success(__('The employee has been saved.'));
 
@@ -49,7 +53,8 @@ class EmployeesController extends AppController
             }
             $this->Flash->error(__('The employee could not be saved. Please, try again.'));
         }
-        $this->set(compact('employee','id'));
+        $Designations = $this->Employees->Designations->find('list', ['limit' => 200])->where(['is_deleted'=>0]);
+        $this->set(compact('employee','id','Designations'));
     }
       
     public function delete($id = null)

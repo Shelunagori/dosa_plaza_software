@@ -4,19 +4,13 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Employee Entity
+ * Designation Entity
  *
  * @property int $id
  * @property string $name
- * @property string $mobile_no
- * @property string $email
- * @property string $address
- * @property \Cake\I18n\FrozenTime $created_on
  * @property bool $is_deleted
- *
- * @property \App\Model\Entity\Attendance[] $attendances
  */
-class Employee extends Entity
+class Designation extends Entity
 {
 
     /**
@@ -29,12 +23,7 @@ class Employee extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true,
-        'mobile_no' => true,
-        'email' => true,
-        'address' => true,
-        'created_on' => true,
-        'is_deleted' => true,
-        'attendances' => true
+        'name' => true,
+        'is_deleted' => true
     ];
 }
