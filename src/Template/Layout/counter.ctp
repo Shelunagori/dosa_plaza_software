@@ -54,6 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 		</style>
 		<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">
+		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->

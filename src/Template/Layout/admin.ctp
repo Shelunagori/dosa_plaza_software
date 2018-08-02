@@ -42,6 +42,7 @@
 		.caption{ font-size: 16px !important;}
 		</style>
 		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->

@@ -42,11 +42,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->css('/assets/admin/layout/css/themes/darkblue.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 		<!-- END THEME STYLES -->
-		<link rel="shortcut icon" href="favicon.ico"/>
+		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
-	<body class="login" style='background: url("http://localhost/dosa_plaza_software/img/bg3.jpg");''>
+	<body class="login" style='background: url(<?php echo $this->Url->build(['controller' =>'/img/bg3.jpg', '_full'=>true, '_ssl'=>false]); ?>);''>
 		<!-- BEGIN LOGO -->
 		<div class="logo">
 			<?php echo $this->Html->Image('/img/Dosa-Plaza-Login.png',['style' => 'height: 90px;']); ?>
