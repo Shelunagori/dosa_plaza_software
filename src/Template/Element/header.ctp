@@ -18,9 +18,9 @@ $controller = strtolower($this->request->params['controller']);
         	<a class=" tooltips" id="BackToTables" data-container="body" data-placement="bottom" data-original-title="Back to table screen"></a>
         	<?= $this->Html->link(__('<i class="fa fa-arrow-left"></i>'), ['controller' => 'Tables', 'action' => 'index'], ['class' => 'tooltips', 'id' => 'BackToTables', 'escape' => false, 'data-original-title' =>'Back to table screen', 'data-placement' => 'bottom']) ?>
     	<?php } ?>
-        <span class="topBtnActive dinnerNewTab">Dinner In</span>
-        <span class="topBtn deleveryNewTab">Delivery</span>
-        <span class="topBtn takeAwayNewTab">Take Away</span>
+        <span class="topBtnActive dinnerNewTab pointer">Dinner In</span>
+        <span class="topBtn deleveryNewTab pointer">Delivery</span>
+        <span class="topBtn takeAwayNewTab pointer">Take Away</span>
     </div>
     <div class="col-md-6" align="right">
         <!--<span class="topBtn2">Booking</span>
