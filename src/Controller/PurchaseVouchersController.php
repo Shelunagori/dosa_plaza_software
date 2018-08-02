@@ -82,12 +82,12 @@ class PurchaseVouchersController extends AppController
                     $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->save($stockLedger);
                 }
 				//Stock Impact End//
-                $this->Flash->success(__('The purchase voucher has been saved.'));
+                $this->Flash->success(__('The stock-in voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             
-            $this->Flash->error(__('The purchase voucher could not be saved. Please, try again.'));
+            $this->Flash->error(__('The stock-in voucher could not be saved. Please, try again.'));
         }
 		
 		$raw_materials = $this->PurchaseVouchers->PurchaseVoucherRows->RawMaterials->find()
@@ -149,11 +149,11 @@ class PurchaseVouchersController extends AppController
                     $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->save($stockLedger);
                 }
                 //Stock Impact End//
-                $this->Flash->success(__('The purchase voucher has been saved.'));
+                $this->Flash->success(__('The stock-in voucher has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The purchase voucher could not be saved. Please, try again.'));
+            $this->Flash->error(__('The stock-in voucher could not be saved. Please, try again.'));
         }
          
         $itemslist=array();

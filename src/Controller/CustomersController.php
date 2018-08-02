@@ -27,6 +27,15 @@ class CustomersController extends AppController
         $this->set(compact('customers'));
     }
 
+    public function excel()
+    {
+        $this->viewBuilder()->layout('');
+
+        $customers = $this->Customers->find();
+
+        $this->set(compact('customers'));
+    }
+
     /**
      * View method
      *

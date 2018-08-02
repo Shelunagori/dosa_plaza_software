@@ -1,7 +1,18 @@
 	.portlet.light{
-		padding: 14px 20px 14px 25px !important;
+		padding: 10px !important;
 		margin: 0px 0px 15px !important;
+		float: left;
+		width: 100%;
 	}
+	.light{
+		    float: left !important;
+			width: 100% !important;
+			background: #fff;
+			padding: 10px;
+			border-radius:5px!important;
+	}
+	
+	
 	.horizontal{
 		   
 			border-top: solid 2px  #eee !important;
@@ -37,7 +48,7 @@
 		font-size:15px !important;
 	}
 	.caption{
-			font-size:15px !important;
+			font-size:20px !important;
 	}
 	.actions img{padding-right: 10px; !important}
 	.actions a{

@@ -9,12 +9,19 @@
                 <div class="caption">
                     Customer List
                 </div>
+                <div class="tools">
+                    
+
+                </div>
+                <div class="actions">
+                    <?= $this->Html->link('Export Excel',['action' => 'excel',],['escape'=>false,'target'=>'_blank','class'=>'btn btn-danger btn-sm', 'style' => 'margin-right: 20px;color:#FFF;']);  ?>
+                </div>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
                 </div>
             </div>
             <div class="portlet-body">
-                <?php $page_no=$this->Paginator->current('PurchaseVouchers'); $page_no=($page_no-1)*20; ?>
+                <?php $page_no=$this->Paginator->current('Customers'); $page_no=($page_no-1)*20; ?>
                 <table class="table table-str " cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
