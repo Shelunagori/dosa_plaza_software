@@ -67,4 +67,11 @@ class EmployeesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	 public function EmployeesAttendance()
+	{
+		$this->viewBuilder()->layout('admin');
+		$Employees =	$this->Employees->find();
+		
+		$this->set(compact('Employees')); 
+	}
 }
