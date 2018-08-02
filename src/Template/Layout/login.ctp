@@ -49,7 +49,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<body class="login" style='background: url("http://localhost/dosa_plaza_software/img/bg3.jpg");''>
 		<!-- BEGIN LOGO -->
 		<div class="logo">
-			<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 60px;']); ?>
+			<?php echo $this->Html->Image('/img/Dosa-Plaza-Login.png',['style' => 'height: 90px;']); ?>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -63,7 +63,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!-- END LOGIN -->
 		<!-- BEGIN COPYRIGHT -->
 		<div class="copyright">
-			2017 © PHP Poets IT Solutions Pvt. Ltd.
+			2018 © PHP Poets IT Solutions Pvt. Ltd.
 		</div>
 		<!-- END COPYRIGHT -->
 		<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
