@@ -85,11 +85,11 @@ License: You must have a valid license purchased only from themeforest(the above
 					<ul class="nav navbar-nav pull-right">
 						<!-- BEGIN USER LOGIN DROPDOWN -->
 						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-						<li class="dropdown dropdown-user">
+						<!--<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;">Find Bill</span>
 							</a>
-						</li>
+						</li>-->
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo ucwords($coreVariable['user_name']); ?></span>
