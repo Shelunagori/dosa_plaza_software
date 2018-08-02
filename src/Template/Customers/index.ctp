@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="portlet-body">
-                <?php $page_no=$this->Paginator->current('PurchaseVouchers'); $page_no=($page_no-1)*20; ?>
+                <?php $page_no=$this->Paginator->current('Customers'); $page_no=($page_no-1)*20; ?>
                 <table class="table table-str " cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>

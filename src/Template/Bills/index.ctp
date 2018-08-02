@@ -1,55 +1,71 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Bill[]|\Cake\Collection\CollectionInterface $bills
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Bill'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Tables'), ['controller' => 'Tables', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Table'), ['controller' => 'Tables', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Bill Rows'), ['controller' => 'BillRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Bill Row'), ['controller' => 'BillRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="bills index large-9 medium-8 columns content">
-    <h3><?= __('Bills') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('table_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('kot_id') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($bills as $bill): ?>
-            <tr>
-                <td><?= $this->Number->format($bill->id) ?></td>
-                <td><?= h($bill->voucher_no) ?></td>
-                <td><?= $bill->has('table') ? $this->Html->link($bill->table->name, ['controller' => 'Tables', 'action' => 'view', $bill->table->id]) : '' ?></td>
-                <td><?= $this->Number->format($bill->kot_id) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $bill->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $bill->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+<?php echo $this->Html->css('mystyle'); ?>
+<?php $this->set("title", 'Employee'); ?>
+<div style="height: 15px;" >.</div>
+<div class="row">
+    <div class="col-md-12 main-div">
+        <!-- BEGIN ALERTS PORTLET-->
+        <div class="portlet box blue-hoki">
+            <div class="portlet-title">
+                <div class="caption">
+                    Bills
+                </div>
+                <div class="tools">
+                    
+
+                </div>
+                <div class="actions"></div>
+                <div class="row">   
+                        <div class="col-md-12 horizontal "></div>
+                </div>
+            </div>
+            <div class="portlet-body">
+                 <?php $page_no=$this->Paginator->current('Bills'); $page_no=($page_no-1)*20; ?>
+                <table class="table table-str " cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sr.N.</th>
+                            <th scope="col"><?= $this->Paginator->sort('voucher_no', 'Bill No') ?></th>
+                            <th scope="col" style="text-align: right;"><?= $this->Paginator->sort('grand_total', 'Amount') ?></th>
+                             <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
+                             <th scope="col"><?= $this->Paginator->sort('order_type') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('Customers.name', 'Customer') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('Customers.customer_code', 'Customer Code') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('Customers.mobile_no', 'Mobile') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('table_id') ?></th>
+                            <th scope="col" class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($bills as $bill): ?>
+                        <tr>
+                            <td><?= h(++$page_no) ?></td>
+                            <td><?= h($bill->voucher_no) ?></td>
+                            <td style="text-align: right;"><?= h($bill->grand_total) ?></td>
+                            <td><?= h($bill->created_on->format('d-m-Y H:i')) ?></td>
+                            <td><?= h(ucfirst($bill->order_type)) ?></td>
+                            <td><?= h($bill->customer->name) ?></td>
+                            <td><?= h($bill->customer->customer_code) ?></td>
+                            <td><?= h($bill->customer->mobile_no) ?></td>
+                            <td><?= h($bill->table->name) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?>
+                                <?= $this->Form->postLink(__('Cancel'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $bill->id)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <div class="paginator">
+                    <ul class="pagination">
+                        <?= $this->Paginator->first('<< ' . __('first')) ?>
+                        <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                        <?= $this->Paginator->numbers() ?>
+                        <?= $this->Paginator->next(__('next') . ' >') ?>
+                        <?= $this->Paginator->last(__('last') . ' >>') ?>
+                    </ul>
+                    <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
