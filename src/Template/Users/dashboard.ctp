@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 <?php echo $this->Html->css('mystyle'); ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light" style="border-radius: 0;">
 			<div class="caption top-caption">
-				<span style="color:#67686B;float:left;font-size: 23px;">Total Sales: </span>
-				<h3 style="color:red;float:left;margin:0;padding-left:17px;font-weight: 400;font-size:23px;line-height:2pc;">&#8377;452.00</h3>
+				<span style="color:#67686B;float:left;font-size:19px;">Total Sales: </span>
+				<h3 style="color:red;float:left;margin:0;padding-left:17px;font-weight: 400;font-size:19px;line-height:25px;">&#8377;452.00</h3>
 			</div>
 		</div>
 	</div>
@@ -46,7 +47,7 @@
 		</div>
 		<div class="col-md-3 ">
 			<div class=" light" style="border-radius:5px">
-				<div style="float:left; width:7%; background-image:url(/dosa_plaza_software/img/Delivery.png);background-size:100%;margin:9px 19px;padding: 34px;">
+				<div style="float:left; width:7%; background-image: linear-gradient(to right, #ed693f, #f05c3f, #f24e41, #f43d45, #f52549);">
 					
 				</div>
 				<div style="float:left; width:30%;color: #858789; padding:6px 0px;">
@@ -59,9 +60,19 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-3">
-		
-		
+		<div class=" col-md-2 ">
+			<div class="dashboard-stat" style="height: 107px; background-image: linear-gradient(to right, #f52549, #f43d45, #f24e41, #f05c3f, #ed693f);">
+				<div class="visual">
+					<i class="fa fa-birthday-cake" style=" color: #ffffff57; font-size: 80px; "></i>
+				</div>
+				<div class="details">
+					<div style="text-align:center;color:#FFF;font-size:18px;margin: 15px 23px;">
+						<span>4</span><br/>
+						<span >Upcoming </span><br/>
+						<span >Brithday</span>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 	</div>
