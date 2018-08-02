@@ -167,7 +167,7 @@ foreach($Kots as $Kot){
 		</td>
 	</tr>
 </table>
-<?php  exit; }else{ ?>
+<?php }else{ ?>
 	<div align="center">
 		<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL</span><br/><br/><br/>
 		<div style=" color: #fa6775; font-weight: bold; font-size: 16px; ">Create at-least one KOT.</div><br/>
