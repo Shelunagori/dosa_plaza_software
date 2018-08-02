@@ -75,8 +75,7 @@ class EmployeesController extends AppController
 	 public function EmployeesAttendance()
 	{
 		$this->viewBuilder()->layout('admin');
-		$Employees =	$this->Employees->find();
-		$Designations = $this->Employees->Designations->find();
-		$this->set(compact('Employees')); 
+		$Employees =	$this->Employees->find()->contain(['Designations']);
+ 		$this->set(compact('Employees')); 
 	}
 }
