@@ -12,7 +12,7 @@
 					<i id="filtersubmit" class="fa fa-search"></i>
 				</div>
 				<div class="row">	
-					<div class="col-md-12 horizontal "></div>
+					<div class="col-md-12 horizontal"></div>
 				</div>
 			</div>
 			<div class="portlet-body">
