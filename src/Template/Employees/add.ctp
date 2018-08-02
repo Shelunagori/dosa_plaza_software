@@ -65,7 +65,7 @@
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Designation <span class="required" aria-required="true">
+							<label class="control-label col-md-12"> Designation <span class="required" aria-required="true" >
 							 *</span>
 							</label>
 							<div class="col-md-12">
