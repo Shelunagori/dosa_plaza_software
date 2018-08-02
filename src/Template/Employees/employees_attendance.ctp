@@ -12,7 +12,7 @@
 					<table>
 						<tr>
 							<td>
-								<input type="month"  name="month_date" min="2018-03" value="2018-05" />
+								<input type="month"  name="" min="2018-03" value="2018-05" />
 								<span class="validity"></span>
 							</td>
 							<td>
@@ -23,15 +23,13 @@
 				</form>
 			</div>
 			<div class="portlet-body">
-				<?php if($month_date){ ?>
 				<form method="post">
 					<table class="table table-bordered Attendance_list " cellpadding="0" cellspacing="0">
 						<thead>
 							<tr>
-								<th scope="col"><?= ('S.No.') ?></th>
-								<th scope="col"><?= ('Employees Name') ?></th>
+								<th scope="col"style="width:4%;"><?= ('S.No.') ?></th>
+								<th scope="col"style="width:16%"><?= ('Employees Name') ?></th>
 								<th scope="col"><?= ('Designation') ?></th>
-								<th scope="col">Remarks</th> 
 							</tr>
 						</thead>
 						<tbody>
@@ -55,7 +53,7 @@
 						</div>
 					</div>
 				</form>
-				<?php } ?>
+				
 			</div>
 		</div>
 	</div>
