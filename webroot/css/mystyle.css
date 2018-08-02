@@ -102,6 +102,12 @@
     cursor:pointer;
     width: 0;
 	}	
+	.pointer{
+		
+		cursor: pointer;
+
+		
+	}
 	
 	
 	.table-str>tbody>tr:nth-child(even){background-color: #f2f2f2;!important}}
