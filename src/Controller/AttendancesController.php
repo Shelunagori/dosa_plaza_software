@@ -56,15 +56,18 @@ class AttendancesController extends AppController
                 //Delete Attendance
                 $this->Attendances->deleteAll(['employee_id' => $employee_id, 'attendance_date' => $attendance_date]);
 
-                //Insert Attendance
-				$attendanceinsert = $this->Attendances->newEntity();
-				$attendanceinsert->employee_id=$employee_id;
-				$attendanceinsert->attendance_status=$Attendance[$employee_id];
-				$attendanceinsert->remarks=$remarks[$employee_id];
-				$attendanceinsert->attendance_date=$attendance_date;
-				if ($this->Attendances->save($attendanceinsert)) { 
-					$insert=1;
-				}
+                if($Attendance[$employee_id]){
+                     //Insert Attendance
+                    $attendanceinsert = $this->Attendances->newEntity();
+                    $attendanceinsert->employee_id=$employee_id;
+                    $attendanceinsert->attendance_status=$Attendance[$employee_id];
+                    $attendanceinsert->remarks=$remarks[$employee_id];
+                    $attendanceinsert->attendance_date=$attendance_date;
+                    if ($this->Attendances->save($attendanceinsert)) { 
+                        $insert=1;
+                    }
+                }
+               
 			}
 			if($insert==1){
 				$this->Flash->success(__('The attendance has been saved.'));
