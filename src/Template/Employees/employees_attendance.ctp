@@ -12,16 +12,17 @@
 					<table>
 						<tr>
 							<td>
-								<input type="month"  name="" min="2018-03" value="2018-05" />
+								<input type="month"  name="" min="2018-03" value="2018-05" class="input-sm" />
 								<span class="validity"></span>
 							</td>
 							<td>
-								<button type="submit" class="btn" >GO</button>
+								<button type="submit" class="btn" style="font-size: 10px;" >GO</button>
 							</td>
 						</tr>
 					</table>
 				</form>
 			</div>
+			<br>
 			<div class="portlet-body">
 				<form method="post">
 					<table class="table table-bordered Attendance_list " cellpadding="0" cellspacing="0">
@@ -34,11 +35,10 @@
 						</thead>
 						<tbody>
 							<?php $d=0; foreach ($Employees as $Employee){ ?>
-							
 							<tr>
 								<td><?= (++$d) ?></td>
 								<td><?= h($Employee->name) ?></td>
-								<td><?= h($Employee->$Designations->name) ?></td>
+								<td><?= h($Employee->designation->name) ?></td>
 								<td>
 								    
 								</td>
