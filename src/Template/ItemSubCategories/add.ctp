@@ -89,29 +89,52 @@
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->item_category->name) ?></td>
 							<td class="actions">
-								<?php //echo $this->Html->link('<img src="",height="34",width="38"/>','/ItemSubCategories/add/'.$country->id,array('escape'=>false,));?>
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id]]);?>
-								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
+								 
+								 
 								
-								
-										<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
-											<div class="modal-dialog modal-md" >
-												<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemSubCategories','action'=>'delete',$country->id)) ?>">
-													<div class="modal-content">
-													  <div class="modal-header">
-															<h4 class="modal-title">
-															Are you sure you want to remove this Category?
-															</h4>
-														</div>
-														<div class="modal-footer"style="border:none;">
-															<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-															<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
-														</div>
-													</div>
-												</form>
+								<?php
+									if($country->is_deleted==0){
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
+									} else { ?>
+										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
+									}
+									?>
+								<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemSubCategories','action'=>'delete',$country->id)) ?>">
+											<div class="modal-content">
+											  <div class="modal-header">
+													<h4 class="modal-title">
+													Are you sure you want to freeze this Category?
+													</h4>
+												</div>
+												<div class="modal-footer"style="border:none;">
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
+												</div>
 											</div>
-										</div>
-							   <?php  $this->Form->PostLink('<i class="fa fa-trash"></i>','/Countries/delete/'.$country->id,array('escape'=>false,'class'=>'btn btn-danger btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $country->id)));?>
+										</form>
+									</div>
+								</div>
+								<div id="undeletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'ItemSubCategories','action'=>'undelete',$country->id)) ?>">
+											<div class="modal-content">
+											  <div class="modal-header">
+													<h4 class="modal-title">
+													Are you sure you want to unfreeze this Category?
+													</h4>
+												</div>
+												<div class="modal-footer"style="border:none;">
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							   
 							</td>
 						</tr>
 						<?php endforeach; ?> 

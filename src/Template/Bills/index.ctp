@@ -48,8 +48,13 @@
                             <td><?= h($bill->customer->mobile_no) ?></td>
                             <td><?= h($bill->table->name) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?>
-                                <?= $this->Form->postLink(__('Cancel'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to delete # {0}?', $bill->id)]) ?>
+                                <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?> -->
+                                <?php if($bill->status="canceled"){ ?>
+                                    <span>Canceled</span>
+                                <?php }else{ ?>
+                                    <?= $this->Form->postLink(__('Cancel'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to cancel this bill # {0}?', $bill->voucher_no)]) ?>
+                                <?php } ?>
+                                
                             </td>
                         </tr>
                         <?php endforeach; ?>

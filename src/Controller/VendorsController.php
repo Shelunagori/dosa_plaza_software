@@ -18,7 +18,7 @@ class VendorsController extends AppController
 		$this->paginate = [
             'contain' => ['VendorItems'=>['RawMaterials']]
         ];
-        $vendors = $this->paginate($this->Vendors->find()->where(['is_deleted'=>0]));
+        $vendors = $this->paginate($this->Vendors->find());
 		
 		$this->set(compact('vendors','Items'));
     }
@@ -57,7 +57,17 @@ class VendorsController extends AppController
             }
             $this->Flash->error(__('The vendor could not be saved. Please, try again.'));
         }
- 		$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]);
+        if($id)
+		{
+	        $itemslist=array();
+	        foreach($vendor->vendor_items as $raw_materials){
+	        	$itemslist[]=$raw_materials->raw_material_id;
+	        } 
+	        $Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0])->orWhere(['RawMaterials.id IN' => $itemslist]);
+	    }
+	    else{
+	    	$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]);
+	    }
 		
 		
         $this->set(compact('vendor','Items','id'));
@@ -71,9 +81,24 @@ class VendorsController extends AppController
 		$vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
 		$vendor->is_deleted=1;
 		if ($this->Vendors->save($vendor)) {
-            $this->Flash->success(__('The vendor has been deleted.'));
+            $this->Flash->success(__('The vendor has been unfreeze.'));
         } else {
-            $this->Flash->error(__('The vendor could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The vendor could not be unfreeze. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+    public function undelete($id = null)
+    {
+        $vendor = $this->Vendors->get($id, [
+            'contain' => []
+        ]);
+		$vendor = $this->Vendors->patchEntity($vendor, $this->request->getData());
+		$vendor->is_deleted=0;
+		if ($this->Vendors->save($vendor)) {
+            $this->Flash->success(__('The vendor has been unfreezed.'));
+        } else {
+            $this->Flash->error(__('The vendor could not be unfreezed. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
