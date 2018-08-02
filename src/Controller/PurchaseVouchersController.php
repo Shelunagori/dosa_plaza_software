@@ -86,6 +86,7 @@ class PurchaseVouchersController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
+            
             $this->Flash->error(__('The purchase voucher could not be saved. Please, try again.'));
         }
 		
