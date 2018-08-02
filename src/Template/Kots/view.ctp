@@ -65,7 +65,7 @@ foreach($Kots as $Kot){
 							<td style="padding-left: 5px;">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
-									<?php
+									<?php 
 									$options=[];
 									$options[]=['text' =>1, 'value' => 1];
 									$options[]=['text' =>2, 'value' => 2];
