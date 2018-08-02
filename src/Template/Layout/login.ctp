@@ -42,14 +42,14 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->css('/assets/admin/layout/css/themes/darkblue.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 		<!-- END THEME STYLES -->
-		<link rel="shortcut icon" href="favicon.ico"/>
+		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
-	<body class="login">
+	<body class="login" style='background: url(<?php echo $this->Url->build(['controller' =>'/img/bg3.jpg', '_full'=>true, '_ssl'=>false]); ?>);''>
 		<!-- BEGIN LOGO -->
 		<div class="logo">
-			<span style="font-size:26px;color:#44b6ae;"><b>DOSA PLAZA</b></span>
+			<?php echo $this->Html->Image('/img/Dosa-Plaza-Login.png',['style' => 'height: 90px;']); ?>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
@@ -57,13 +57,13 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<!-- END SIDEBAR TOGGLER BUTTON -->
 		<!-- BEGIN LOGIN -->
-		<div class="content">
+		<div class="content" style="background-color: #000000b5;" >
 			<?= $this->fetch('content') ?>
 		</div>
 		<!-- END LOGIN -->
 		<!-- BEGIN COPYRIGHT -->
 		<div class="copyright">
-			2017 © PHP Poets IT Solutions Pvt. Ltd.
+			2018 © PHP Poets IT Solutions Pvt. Ltd.
 		</div>
 		<!-- END COPYRIGHT -->
 		<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->

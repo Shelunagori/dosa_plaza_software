@@ -524,6 +524,8 @@
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
 			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type;
 			url=encodeURI(url);
+			console.log(url);
+			return;
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {

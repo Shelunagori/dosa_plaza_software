@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'DOSA PLAZA');
+$this->set('title', 'LOGIN | DOSA PLAZA');
 if(!empty($id)){
     @$updateId = @$id;
 }
@@ -20,29 +20,13 @@ if(!empty($id)){
    
     <p class="login-box-msg">  
 		<?= $this->Form->create() ?>  
-		<h3 class="form-title">Login to your account</h3>
-        <div class="alert alert-danger display-hide">
-			<button class="close" data-close="alert"></button>
-			<span>
-			Enter your login ID and password. </span>
+		<div align="center" >
+			<h4 class="form-title" style="color: #FFF;">Login to your account</h4>
 		</div>
-		<?php if(@$number==0){?>
-			<!--<div class="alert alert-danger ">
-				<span>Enter Correct login ID and password. </span>
-			</div>-->
-		<?php } ?>
-         <?php
-		if(!empty(@$wrong))
-		{
-		?>
-        <!--<div class="alert alert-danger">
-			<button class="close" data-close="alert"></button>
-			<span>
-			<?php //echo $wrong; ?> </span>
-		</div>-->
-        <?php
-		}
-		?>
+        <div class="alert alert-danger display-hide" >
+			<span>Enter your login ID and password. </span>
+		</div>
+		
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 			<label class="control-label visible-ie8 visible-ie9">Username</label>
@@ -58,14 +42,11 @@ if(!empty($id)){
 				<?php echo $this->Form->input('password', ['label'=>false,'required'=>'required','class' => 'form-control','placeholder'=>'Password','maxlength'=>'30']); ?>
 			</div>
 		</div>
-        
-		<div class="form-actions">
-			<label class="checkbox">
-			<input type="hidden" name="remember" value="1"/> </label>
-			<button type="submit" name="login_submit" class="btn green-haze pull-right">
-			Login <i class="m-icon-swapright m-icon-white"></i>
+        <div align="center">
+        	<button type="submit" name="login_submit" class="btn" style=" background-color: #f1b11b; color: #FFF; ">
+			Login 
 			</button>
-		</div>
+        </div>
 		<?= $this->Form->end() ?>
 	</form>
   </div>
