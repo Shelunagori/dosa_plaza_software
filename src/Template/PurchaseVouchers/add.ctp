@@ -71,7 +71,7 @@
 			</div>
 			<div class="row">
 				<div class="box-footer"  style="text-align:center;padding-bottom: 18px;">
-					<button type="submit" class="btn btn-primary" id="order_btn" value="submit">SUBMIT</button>
+					<button type="submit" class="btn btn-danger" id="order_btn" value="submit">SUBMIT</button>
 				</div>
 			</div>
 			<?= $this->Form->end() ?>
