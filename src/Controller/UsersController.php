@@ -3,7 +3,9 @@ namespace App\Controller;
 
 use Cake\Event\Event;
 use App\Controller\AppController;
-
+use DateTime;
+use DatePeriod;
+use DateInterval;
 /**
  * Users Controller
  *
@@ -92,25 +94,18 @@ class UsersController extends AppController
         if(empty($TotalOrdeDinner)){$TotalOrdeDinner=0;}
         if(empty($TotalSaleDinner)){$TotalSaleDinner=0;}
         //--
- 
-//             $date = new DateTime();
-//             $date->setTime(0, 0, 1);
-//             $today = $date->getTimestamp();
-//             $week = new DateInterval('P7D');
-//             $date->add($week);
-//             $date->setTime(23, 59, 59);
-//             $nextWeek = $date->getTimestamp();
-//             $select=$this->Users->Customers->find();
-//             $select->where(['Customers.dob > ?' =>$today,'user_dob < ?'=> $nextWeek]);
-// pr($select);exit;
-
-            // $select ->from('users', array('user_name', 'user_dob'))
-            //         ->where('user_dob > ?', $today)
-            //         ->where('user_dob < ?', $nextWeek);
-            // return $select->query()->fetchAll();
- 
-
-        //*---
+            // $date = new DateTime();
+            // $date->setTime(0, 0, 1);
+            // $today = $date->getTimestamp();
+            // $week = new DateInterval('P7D');
+            // $date->add($week);
+            // $date->setTime(23, 59, 59);
+            // $nextWeek = $date->getTimestamp();
+            // $select=$this->Users->Customers->find();
+            // $select->where(['Customers.dob > ?' =>$today])
+            //     ->orWhere(['Customers.dob < ?'=> $nextWeek])
+            //     ->limit(10);
+  
         $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner'));
     }
 	
