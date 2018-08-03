@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Comments'); ?>
+<?php $this->set("title", 'Comments/dosa_plaza_software'); ?>
 
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
