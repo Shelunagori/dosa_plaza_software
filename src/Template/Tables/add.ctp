@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($Tables,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4" style="padding-left:14px;">Table Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4" style="padding-left:14px;">Table Name <span class="required"> * </span></label>
 							</span>
 							</label>
 							<div class="col-md-8">
