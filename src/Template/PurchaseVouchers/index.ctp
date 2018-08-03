@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee'); ?>
+<?php $this->set("title", 'Stock_In_Voucher_List/dosa_plaza_software'); ?>
 <div style="height: 15px;" >.</div>
 <div class="row">
 	<div class="col-md-12 main-div">
@@ -37,7 +37,7 @@
 							<td><?= h($purchaseVoucher->vendor->name) ?></td>
 							<td style="text-align: right;"><?= h($purchaseVoucher->grand_total) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'PurchaseVouchers','action'=>'edit',$purchaseVoucher->id]]);?>
+								<?php echo $this->Html->link($this->Html->image('edit.png'),['controller'=>'purchaseVouchers','action'=>'add',$purchaseVoucher->id], ['escape' => false, 'class' => 'showLoader']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
