@@ -112,7 +112,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal" style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 												</div>
 											</div>
