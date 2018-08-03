@@ -45,7 +45,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			height: 100%;
 			width: 100%;
 			position: fixed;
-			z-index: 4;
+			z-index: 999999;
 			margin-top: 0px;
 			top: 0px;
 			display:none;
