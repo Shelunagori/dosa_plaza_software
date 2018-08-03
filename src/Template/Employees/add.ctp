@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee |dosaplaza'); ?>
+<?php $this->set("title", 'Employee | DOSAPLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-2"></div>
