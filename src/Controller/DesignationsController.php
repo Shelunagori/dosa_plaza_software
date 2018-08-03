@@ -94,7 +94,7 @@ class DesignationsController extends AppController
             if ($this->Designations->save($designation)) {
                 $this->Flash->success(__('The designation has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The designation could not be saved. Please, try again.'));
         }
@@ -118,6 +118,6 @@ class DesignationsController extends AppController
             $this->Flash->error(__('The designation could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add']);
     }
 }

@@ -79,50 +79,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td class="actions">
-								 
-
-								<?php
-									if($country->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
-									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
-									} else { ?>
-										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
-									}
-									?>
-								<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
-									<div class="modal-dialog modal-md" >
-										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'designations','action'=>'delete',$country->id)) ?>">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h4 class="modal-title">
-														Are you sure you want to freeze this Category?
-													</h4>
-												</div>
-												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
-							    <div id="undeletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
-									<div class="modal-dialog modal-md" >
-										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'designations','action'=>'undelete',$country->id)) ?>">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h4 class="modal-title">
-														Are you sure you want to unfreeze this Category?
-													</h4>
-												</div>
-												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
-												</div>
-											</div>
-										</form>
-									</div>
-								</div>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 
