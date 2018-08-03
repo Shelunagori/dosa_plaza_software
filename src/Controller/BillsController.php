@@ -196,8 +196,7 @@ class BillsController extends AppController
                     $stockLedger->bill_id = $bill->id;
                     $stockLedger->bill_row_id = $bill_row->id;
                     $this->Bills->BillRows->StockLedgers->save($stockLedger);
-                }
-                echo '0'; exit;
+                } 
 
             }
             //Stock Impact End//

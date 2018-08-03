@@ -48,7 +48,20 @@ class UsersController extends AppController
 	
 	public function dashboard()
     {
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin'); 
+        $Delevery=$this->Bills->find();  
+        $Delevery  ->select([
+                    'TotalOrdeODelevery' => $Delevery->func()->count('*'),
+                    'TotalSaleDelevery' => $Delevery->func()->sum('Bills.grand_total')
+                    ])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'delivery'])
+                ->toArray();
+        $TotalSale=0;
+        pr($Delevery->toArray());exit;
+        foreach ($Delevery as $value) {
+            $TotalSale=$value->TotalSale;
+        }
+        $this->set(compact('TotalSale'));
     }
 	
 	public function dashboard2()
