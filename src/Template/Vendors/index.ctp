@@ -35,7 +35,8 @@
 							<td><?= h($vendor->contact_person) ?></td>
 							<td><?= h($vendor->contact_number) ?></td>
 							<td> 
-								<a class="btn btn-info btn-xs" data-target="#detailspopup<?php echo $vendor->id; ?>" data-toggle=modal><i class="fa fa-book"></i></a>
+								<a class="btn btn-info btn-xs" data-target="#detailspopup<?php echo $vendor->id; ?>" data-toggle=modal>
+									<i class="fa fa-ellipsis-h" style="color: #BDBFC1; font-size: 18px; cursor: pointer;"></i></a>
 								<div id="detailspopup<?php echo $vendor->id; ?>" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
 										<div class="modal-content">

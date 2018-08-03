@@ -37,6 +37,9 @@ class UsersTable extends Table
 		
 		$this->belongsTo('Tables');
 		$this->belongsTo('ItemCategories');
+        $this->belongsTo('Bills');
+        $this->belongsTo('Customers');
+        
     }
 
     /**

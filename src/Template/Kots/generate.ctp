@@ -529,6 +529,7 @@
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
+				console.log(bill_id);
 				if(bill_id!=0){
 					$('#WaitBox3').hide();
 					$('#WaitBox2').hide();

@@ -49,6 +49,70 @@ class UsersController extends AppController
 	public function dashboard()
     {
         $this->viewBuilder()->layout('admin');
+        //--  Delevery
+        $Delevery=$this->Bills->find();  
+        $Delevery  ->select([
+                    'TotalOrdeODelevery' => $Delevery->func()->count('*'),
+                    'TotalSaleDelevery' => $Delevery->func()->sum('Bills.grand_total')
+                    ])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'delivery'])
+                ->toArray();
+        $TotalOrdeODelevery=0;
+        $TotalSaleDelevery=0;
+        foreach ($Delevery as $value) {
+            $TotalOrdeODelevery=$value->TotalOrdeODelevery;
+            $TotalSaleDelevery=$value->TotalSaleDelevery;
+        }
+        //-- Take Away
+        $TakeAway=$this->Bills->find();  
+        $TakeAway  ->select([
+                    'TotalOrdeTakeAway' => $TakeAway->func()->count('*'),
+                    'TotalSaleTakeAway' => $TakeAway->func()->sum('Bills.grand_total')
+                    ])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'takeaway'])
+                ->toArray();
+        $TotalOrdeTakeAway=0;
+        $TotalSaleTakeAway=0;
+        foreach ($TakeAway as $value) {
+            $TotalOrdeTakeAway=$value->TotalOrdeTakeAway;
+            $TotalSaleTakeAway=$value->TotalSaleTakeAway;
+        }
+        //-- Dinner In
+        $Dinner=$this->Bills->find();  
+        $Dinner  ->select([
+                    'TotalOrdeDinner' => $Dinner->func()->count('*'),
+                    'TotalSaleDinner' => $Dinner->func()->sum('Bills.grand_total')
+                    ])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'dinner'])
+                ->toArray();
+        $TotalOrdeDinner=0;
+        $TotalSaleDinner=0;
+        foreach ($Dinner as $value) {
+            $TotalOrdeDinner=$value->TotalOrdeDinner;
+            $TotalSaleDinner=$value->TotalSaleDinner;
+        }
+
+        // //-- Birth Day
+        // $TotalBirthDay=0;
+        // $Customers=$this->Users->Customers->find();  
+        // $Customers  ->select([
+        //             'TotalBirthDay' => $Customers->func()->count('*'),
+        //             ])
+        //         ->where(['Customers.dob !='=>'0000-00-00','Customers.dob <=' => date('m-d',strtotime('+7 days')),'Customers.dob >=' => date('m-d',strtotime('+7 days'))])
+
+        //         ->toArray();
+        // pr(['Customers.dob >=' => date('m-d',strtotime('+7 days')),'Customers.dob <=' => date('m-d',strtotime('+7 days'))]);       
+        //  pr($Customers->toArray()); exit;
+
+        // $TotalOrdeDinner=0;
+        // $TotalSaleDinner=0;
+        // foreach ($Dinner as $value) {
+        //     $TotalOrdeDinner=$value->TotalOrdeDinner;
+        //     $TotalSaleDinner=$value->TotalSaleDinner;
+        // }
+
+
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner'));
     }
 	
 	public function dashboard2()
