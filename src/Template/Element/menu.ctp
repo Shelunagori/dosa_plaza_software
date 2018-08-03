@@ -82,6 +82,9 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Tables</span>', 
 <?php 
 echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Designations</span>', '/Designations/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
+<?php 
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Tax</span>', '/Taxes/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+?>
 
 
 <!-- 
