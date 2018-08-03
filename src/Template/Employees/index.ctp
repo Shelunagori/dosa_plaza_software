@@ -41,7 +41,7 @@
 								
 								<?php 
 								if($vendor->is_deleted==0){
-									echo $this->Html->image('edit.png',['url'=>['controller'=>'Employees','action'=>'add',$vendor->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);
+									echo $this->Html->image('edit.png',['url'=>['controller'=>'Employees','action'=>'add',$vendor->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);
 									echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Employee','data-container'=>'body']);
 								}
 								else{

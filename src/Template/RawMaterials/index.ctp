@@ -37,7 +37,7 @@
 									
 									<?php
 									if($rawMaterial->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'edit',$rawMaterial->id],'class'=>'tooltips','data-original-title'=>'Edit Raw Material','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'edit',$rawMaterial->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Raw Material','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Raw Material','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Raw Material','data-container'=>'body']);
@@ -54,7 +54,7 @@
 														</h4>
 													</div>
 													<div class="modal-footer" style="border:none;">
-														<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+														<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 														<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 													</div>
 												</div>

@@ -81,7 +81,7 @@
                             <td><?= ++$x; ?></td> 
                             <td><?= h($country->name) ?></td>
                             <td class="actions" style="text-align:center">
-                                <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Units','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Unit','data-container'=>'body']);?>
+                                <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Units','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Unit','data-container'=>'body']);?>
                                 <?php $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
                                 
                                 <div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
