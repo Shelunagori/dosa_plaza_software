@@ -85,8 +85,8 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;">Cancel</button>
 												</div>
 											</div>
 										</form>
@@ -172,6 +172,7 @@ $js="
 		submitHandler: function (form) {
 			success3.show();
 			error3.hide();
+			$('#loading').show();
 			form[0].submit(); // submit the form
 		}
 
