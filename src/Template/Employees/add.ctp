@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item'); ?>
+<?php $this->set("title", 'Employee |dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-2"></div>
@@ -192,6 +192,7 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			success3.show();
 			error3.hide();
+			$('#loading').show();
 			form[0].submit(); // submit the form
 		}
 	});

@@ -37,7 +37,7 @@ class CommentsController extends AppController
             $this->Flash->error(__('The comment could not be saved. Please, try again.'));
         }
 		
-		$Comments = $this->paginate($this->Comments->find());
+		$Comments = $this->Comments->find();
 		
         $this->set(compact('comment','Comments','id'));
     }

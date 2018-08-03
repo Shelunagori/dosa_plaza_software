@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Comments'); ?>
+<?php $this->set("title", 'Comments |dosaplaza'); ?>
 
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -50,7 +50,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Comments List
+					 Comments List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -73,7 +73,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($comment->comment) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Comments','action'=>'add',$comment->id]]);?>
+								<?php echo $this->Html->link($this->Html->image('edit.png'),['controller'=>'Comments','action'=>'add',$comment->id], ['escape' => false, 'class' => 'showLoader']);?>
 								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$comment->id,'data-toggle'=>'modal','class'=>'pointer']);?>
 								<div id="deletemodal<?php echo $comment->id; ?>" class="modal fade " role="dialog">
 									<div class="modal-dialog modal-md" >
@@ -85,8 +85,8 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;">Cancel</button>
 												</div>
 											</div>
 										</form>
@@ -172,6 +172,7 @@ $js="
 		submitHandler: function (form) {
 			success3.show();
 			error3.hide();
+			$('#loading').show();
 			form[0].submit(); // submit the form
 		}
 

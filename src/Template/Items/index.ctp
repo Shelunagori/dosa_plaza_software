@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item'); ?>
+<?php $this->set("title", 'Item | dosaplaza'); ?>
 
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
@@ -7,7 +7,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Item List
+					 Item List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -39,7 +39,7 @@
 							 
 								<?php
 									if($country->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Items','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Item','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Items','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Item','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Item','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Item','data-container'=>'body']);
@@ -56,7 +56,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal" style="color:#000000;background-color:#DDDDDD">Cancel</button>
 												</div>
 											</div>

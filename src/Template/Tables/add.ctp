@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Tables'); ?>
+<?php $this->set("title", 'Tables|dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($Tables,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4" style="padding-left:14px;">Table Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4" style="padding-left:14px;">Table Name <span class="required"> * </span></label>
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -41,7 +41,7 @@
 							<div class="row">
 								<div class="col-md-12" style=" text-align: center;">
 									<hr></hr>
-									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
+									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger showLoader']); ?> 
 								</div>
 							</div>
 						</div>
@@ -79,7 +79,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($table->name) ?></td>
 							<td class="actions">
-								 <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Tables','action'=>'add',$table->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+								 <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Tables','action'=>'add',$table->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 

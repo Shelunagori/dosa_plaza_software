@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee'); ?>
+<?php $this->set("title", 'Employee | dosaplaza '); ?>
 
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
@@ -7,7 +7,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Employee List
+					 Employee List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -41,7 +41,7 @@
 								
 								<?php 
 								if($vendor->is_deleted==0){
-									echo $this->Html->image('edit.png',['url'=>['controller'=>'Employees','action'=>'add',$vendor->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);
+									echo $this->Html->image('edit.png',['url'=>['controller'=>'Employees','action'=>'add',$vendor->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);
 									echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Employee','data-container'=>'body']);
 								}
 								else{

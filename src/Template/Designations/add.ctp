@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Designation'); ?>
+<?php $this->set("title", 'Designation | dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($Designations,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4" style="padding-left:14px;">Designation Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4" style="padding-left:14px;">Designation Name <span class="required"> * </span></label>
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -79,7 +79,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 

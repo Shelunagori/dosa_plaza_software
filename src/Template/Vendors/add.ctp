@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Vendor'); ?>
+<?php $this->set("title", 'Vendor| dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px;">
@@ -41,7 +41,8 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Person 
+							<label class="control-label col-md-4"> Contact Person <span class="required" aria-required="true">*
+							</span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -61,7 +62,8 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Address <span class="required" aria-required="true">
+							<label class="control-label col-md-4"> Address <span class="required" aria-required="true">*
+							</span>
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -73,7 +75,8 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Item <span class="required" aria-required="true">
+							<label class="control-label col-md-4"> Select Item <span class="required" aria-required="true">*
+							</span>
 							 </span>
 							</label>
 							<div class="col-md-8">
@@ -179,6 +182,7 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			success2.show();
 			error2.hide();
+			$("loading").show();
 			form[0].submit(); // submit the form
 		}
 	}); 	

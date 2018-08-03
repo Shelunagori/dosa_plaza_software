@@ -1,4 +1,4 @@
-
+<?php $this->set("title", 'Dashboard|dosaplaza'); ?>
 <style type="text/css">
 .top{
 	margin-top: 5px;
@@ -26,7 +26,7 @@
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
 								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"><?php echo $TotalOrdeDinner; ?></h6>
-								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Diner In</h6>
+								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Dinner In</h6>
 								<div class="w3-light-grey">
 									<div class="w3-orange" style="height:2px;width:50%"></div>
 								</div>

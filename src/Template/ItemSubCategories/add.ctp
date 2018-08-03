@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item Sub Category'); ?>
+<?php $this->set("title", 'ItemSubCategory | dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($itemSubCategory,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Sub Category <span class="required" aria-required="true">
+							<label class="control-label col-md-4"> Sub Category <span class="required" >*
 							 </span>
 							</label>
 							<div class="col-md-8">
@@ -38,7 +38,8 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Category <span class="required" aria-required="true"></span></label>
+							<label class="control-label col-md-4"> Select Category <span class="required" >*
+							 </span></label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -64,7 +65,7 @@
 		<div class="portlet  box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Sub Category List
+					 Sub Category List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -89,12 +90,9 @@
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->item_category->name) ?></td>
 							<td class="actions">
-								 
-								 
-								
-								<?php
+								 <?php
 									if($country->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
@@ -110,7 +108,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer"style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
 												</div>
 											</div>
@@ -127,7 +125,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer"style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
 												</div>
 											</div>
@@ -211,6 +209,7 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			success2.show();
 			error2.hide();
+			$("#loading").show();
 			form[0].submit(); // submit the form
 		}
 	}); 	

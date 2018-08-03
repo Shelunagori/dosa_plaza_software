@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item Category'); ?>
+<?php $this->set("title", 'ItemCategory | dosaplazas'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($itemCategory,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4">Category Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4">Category Name  <span class="required"> * </span>
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -56,7 +56,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Category List
+					 Category List
 				</div>
 				<div class="tools"> 
  				</div>
@@ -83,7 +83,7 @@
 
 								<?php
 									if($country->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemCategories','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemCategories','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
@@ -99,7 +99,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
 												</div>
 											</div>
@@ -194,8 +194,11 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			
 			success2.show();
+			$("#loading").show();
 			error2.hide();
+			
 			form[0].submit(); // submit the form
 		}
 	}); 	

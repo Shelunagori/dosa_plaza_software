@@ -1,6 +1,6 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee'); ?>
-
+ 
+<?php $this->set("title", 'Bills | DOSA PLAZA'); ?> 
 <div style="height: 15px;" >.</div>
 <div class="row">
     <div class="col-md-12 main-div">

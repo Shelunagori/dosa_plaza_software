@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Units'); ?>
+<?php $this->set("title", 'Units |dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
     <div class="col-md-6">
@@ -26,7 +26,7 @@
                 <div class="">
                     <?= $this->Form->create($unit,['id'=>'CountryForm']) ?>
                         <div class="form-group">
-                            <label class="control-label col-md-4">Unit Name <span class="required" aria-required="true">
+                            <label class="control-label col-md-4">Unit Name <span class="required"> * </span></label>
                             </span>
                             </label>
                             <div class="col-md-8">
@@ -58,7 +58,7 @@
         <div class="portlet box blue-hoki">
             <div class="portlet-title">
                 <div class="caption">
-                    View Unit List
+                     Unit List
                 </div>
                 <div class="tools"> 
                 </div>
@@ -81,7 +81,7 @@
                             <td><?= ++$x; ?></td> 
                             <td><?= h($country->name) ?></td>
                             <td class="actions" style="text-align:center">
-                                <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Units','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Unit','data-container'=>'body']);?>
+                                <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Units','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Unit','data-container'=>'body']);?>
                                 <?php $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
                                 
                                 <div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
@@ -175,6 +175,7 @@ $(document).ready(function() {
         submitHandler: function (form) {
             success2.show();
             error2.hide();
+			$("#loading").show();
             form[0].submit(); // submit the form
         }
     });     
