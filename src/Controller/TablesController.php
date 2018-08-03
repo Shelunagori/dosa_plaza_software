@@ -131,7 +131,7 @@ class TablesController extends AppController
 		}
 		else
 		{
-			$Table = $this->Tables->get($id, [
+			$Table = $this->Tables->get($id, [ 
 				'contain' => []
 			]);
 		} 
