@@ -124,19 +124,7 @@
 <?php 
 $js='
 $(document).ready(function() {
-    jQuery(".loadingshow").submit(function(){
-        jQuery("#loader-1").show();
-    });
-    $.validator.addMethod("specialChars", function( value, element ) {
-        var regex = new RegExp("^[a-zA-Z ]+$");
-        var key = value;
-
-        if (!regex.test(key)) {
-           return false;
-        }
-        return true;
-    }, "please use only alphabetic characters");
-    
+     
     //-- Validation
     var form2 = $("#CountryForm");
     var error2 = $(".alert-danger", form2);
@@ -149,8 +137,7 @@ $(document).ready(function() {
         ignore: "",  // validate all fields including form hidden input
         rules: {
             name: { 
-                required: true,
-                specialChars: true
+                required: true, 
             },
         },
 

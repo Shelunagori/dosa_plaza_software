@@ -140,7 +140,7 @@ class TablesController extends AppController
             if ($this->Tables->save($Table)) {
                 $this->Flash->success(__('The Table has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The Table could not be saved. Please, try again.'));
         }
