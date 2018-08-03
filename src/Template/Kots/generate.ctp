@@ -535,7 +535,7 @@
 					$('#WaitBox2').hide();
 					
 					var url='".$this->Url->build(['controller'=>'Bills','action'=>'view'])."';
-					url=url+'?bill_id='+bill_id;
+					url=url+'?bill-id='+bill_id;
 					var win = window.open(url, '_blank');
 					win.focus();
 
