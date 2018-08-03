@@ -20,6 +20,7 @@ class TaxesFixture extends TestFixture
         'id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'name' => ['type' => 'string', 'length' => 20, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'tax_per' => ['type' => 'decimal', 'length' => 5, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
+        'status' => ['type' => 'string', 'length' => 20, 'null' => false, 'default' => null, 'collate' => 'latin1_swedish_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -41,7 +42,8 @@ class TaxesFixture extends TestFixture
             [
                 'id' => 1,
                 'name' => 'Lorem ipsum dolor ',
-                'tax_per' => 1.5
+                'tax_per' => 1.5,
+                'status' => 'Lorem ipsum dolor '
             ],
         ];
         parent::init();

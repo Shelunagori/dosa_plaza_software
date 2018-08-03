@@ -12,16 +12,16 @@
 					<span style="font-size: 14px;font-weight: bold;color: #606062;">100 Feet Road, Near Shobhagpura Circle, Udaipur 0294 6999988</span><br/>
 				</div>
 				<div style="border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
-					<span style="color: #606062;">Name: </span><span style="margin-left: 10px;"> <?= h($bill->customer->name) ?> </span><br/>
-					<span style="color: #606062;">Mobile No: </span><span style="margin-left: 10px;"> <?= h($bill->customer->mobile_no) ?> </span><br/>
-					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h($bill->customer->address) ?> </span>
+					<span style="color: #606062;">Name: </span><span style="margin-left: 10px;"> <?= h(@$bill->customer->name) ?> </span><br/>
+					<span style="color: #606062;">Mobile No: </span><span style="margin-left: 10px;"> <?= h(@$bill->customer->mobile_no) ?> </span><br/>
+					<span style="color: #606062;">Address: </span><span style="margin-left: 10px;"> <?= h(@$bill->customer->address) ?> </span>
 				</div>	
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
 					<span style="color: #606062;">Bill No.: </span><span style="margin-left: 10px;"> RBL-<?php echo str_pad($bill->voucher_no, 6, "0", STR_PAD_LEFT); ?> </span><br/>
 					<span style="color: #606062;">Bill Date: </span><span style="margin-left: 10px;"> <?php echo date('d-m-Y',strtotime($bill->created_on)); ?> </span><br/>
-					<span style="color: #606062;">Bill Time: <span style="margin-left: 10px;"> <?php echo date('H:i',strtotime($bill->created_on)); ?> </span><br/>
+					<span style="color: #606062;">Bill Time: </span><span style="margin-left: 10px;"> <?php echo date('H:i A',strtotime($bill->created_on)); ?> </span><br/>
 					<?php if($bill->table_id>0 ){?>
-					<span style="color: #606062;">Table No.: <span style="margin-left: 10px;"> <?php echo @$bill->table->name; ?> </span><br/>
+					<span style="color: #606062;">Table No.: </span><span style="margin-left: 10px;"> <?php echo @$bill->table->name; ?> </span><br/>
 					<?php } ?>
 				</div>				
 
@@ -48,7 +48,7 @@
 							<td style="padding-top: 5px;"><?php echo $bill_row->item->name; ?></td>
 							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->quantity; ?></td>
 							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->rate; ?></td>
-							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->tax_per; ?></td>
+							<td style="text-align:center;padding-top: 5px;" ><?php echo $bill_row->tax_per; ?>%</td>
 							<td style="padding-top: 5px;"></td>
 						</tr>
 						<tr style="">
@@ -66,6 +66,11 @@
 							<th></th>
 							<th colspan="4" style="text-align:left;">Sub Total</th>
 							<th style="text-align:right;"><?php echo $sub_total; ?></th>
+						</tr> 
+						<tr>
+							<th></th>
+							<td colspan="4" style="text-align:left;">Round off</td>
+							<td style="text-align:right;"><?php echo $bill->round_off; ?></td>
 						</tr>  
 						<tr>
 							<th style="border-bottom: solid 1px #CCC;border-top: solid 1px #CCC;"></th>
