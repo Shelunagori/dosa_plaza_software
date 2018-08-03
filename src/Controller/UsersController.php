@@ -56,13 +56,13 @@ class UsersController extends AppController
                     'TotalSaleDelevery' => $Delevery->func()->sum('Bills.grand_total')
                     ])
                 ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'delivery'])
-                ->toArray();
-        $TotalOrdeODelevery=0;
-        $TotalSaleDelevery=0;
+                ->toArray(); 
         foreach ($Delevery as $value) {
             $TotalOrdeODelevery=$value->TotalOrdeODelevery;
             $TotalSaleDelevery=$value->TotalSaleDelevery;
         }
+        if(empty($TotalOrdeODelevery)){$TotalOrdeODelevery=0;}
+        if(empty($TotalSaleDelevery)){$TotalSaleDelevery=0;}
         //-- Take Away
         $TakeAway=$this->Bills->find();  
         $TakeAway  ->select([
@@ -70,13 +70,13 @@ class UsersController extends AppController
                     'TotalSaleTakeAway' => $TakeAway->func()->sum('Bills.grand_total')
                     ])
                 ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'takeaway'])
-                ->toArray();
-        $TotalOrdeTakeAway=0;
-        $TotalSaleTakeAway=0;
+                ->toArray(); 
         foreach ($TakeAway as $value) {
             $TotalOrdeTakeAway=$value->TotalOrdeTakeAway;
             $TotalSaleTakeAway=$value->TotalSaleTakeAway;
         }
+        if(empty($TotalOrdeTakeAway)){$TotalOrdeTakeAway=0;}
+        if(empty($TotalSaleTakeAway)){$TotalSaleTakeAway=0;}
         //-- Dinner In
         $Dinner=$this->Bills->find();  
         $Dinner  ->select([
@@ -85,35 +85,12 @@ class UsersController extends AppController
                     ])
                 ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59','order_type'=>'dinner'])
                 ->toArray();
-        $TotalOrdeDinner=0;
-        $TotalSaleDinner=0;
         foreach ($Dinner as $value) {
             $TotalOrdeDinner=$value->TotalOrdeDinner;
             $TotalSaleDinner=$value->TotalSaleDinner;
         }
-
-        //-- Birth Day
-       // $TotalBirthDay=0;
-       // $Customers=$this->Users->Customers->find()->where(['Customers.dob !='=>'0000-00-00','Customers.dob LIKE' => "%".date('m',strtotime('+7 days'))."%"]);  
-       //  $Customers  ->select([
-       //              'TotalBirthDay' => $Customers->func()->count('*'),
-       //              ])
-       //          ->where(['Customers.dobs !='=>'0000-00-00','Customers.dob LIKE' => "%".date('m-d',strtotime('+7 days'))."%"])
-       //          ->autoFields(true)
-       //          ->toArray();
-         
-       //  pr($Customers->toArray()); exit;
-
-       //  $TotalOrdeDinner=0;
-       //  $TotalSaleDinner=0;
-       //  foreach ($Dinner as $value) {
-       //      $TotalOrdeDinner=$value->TotalOrdeDinner;
-       //      $TotalSaleDinner=$value->TotalSaleDinner;
-       //  }
-
-       
-            
-
+        if(empty($TotalOrdeDinner)){$TotalOrdeDinner=0;}
+        if(empty($TotalSaleDinner)){$TotalSaleDinner=0;}
 
         $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner'));
     }
