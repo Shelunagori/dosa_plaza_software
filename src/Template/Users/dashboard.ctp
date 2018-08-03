@@ -3,7 +3,6 @@
 .top{
 	margin-top: 5px;
 }
-
 </style>
 <?php echo $this->Html->css('mystyle'); ?>
 	<div class="row">
