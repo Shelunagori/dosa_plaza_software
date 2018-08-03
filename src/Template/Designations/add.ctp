@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Designation/dosa_plaza_software'); ?>
+<?php $this->set("title", 'Designation | dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -79,7 +79,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 

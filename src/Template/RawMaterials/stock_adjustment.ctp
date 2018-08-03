@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'StockAdjustment/dosa_plaza_software'); ?>
+<?php $this->set("title", 'StockAdjustment | dosa_plaza_software'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -88,7 +88,7 @@
 			</div>
 			<div class="row">
 				<div class="box-footer"  style="text-align:center;padding-bottom:18px;padding: 25px;">
-						<button type="submit" class="btn btn-danger" id="order_btn" value="submit">Submit</button>
+						<button type="submit" class="btn btn-danger showLoader" id="order_btn" value="submit">Submit</button>
 				</div>
 			</div>
 			<?= $this->Form->end() ?>
@@ -248,7 +248,7 @@
     			rows.show();
     		}
     	}); 
-	
+		
 		
 	
 	});

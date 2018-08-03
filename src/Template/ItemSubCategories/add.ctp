@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item Sub Category/dosa_plaza_software'); ?>
+<?php $this->set("title", 'ItemSubCategory | dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -92,7 +92,7 @@
 							<td class="actions">
 								 <?php
 									if($country->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'ItemSubCategories','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
@@ -125,7 +125,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer"style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
 												</div>
 											</div>

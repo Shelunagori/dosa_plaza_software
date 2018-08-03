@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Vendor'); ?>
+<?php $this->set("title", 'VendorList | dosaplaza '); ?>
 <div class="row" style="margin-top:15px;">
 
 	<div class="col-md-12 main-div">
@@ -77,7 +77,7 @@
 							<td class="actions">
 								<?php
 									if($vendor->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Vendors','action'=>'add',$vendor->id],'class'=>'tooltips','data-original-title'=>'Edit Vendor','data-container'=>'body']);?>
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Vendors','action'=>'add',$vendor->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Vendor','data-container'=>'body']);?>
 									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Vendor','data-container'=>'body']);
 									} else { ?>
 										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Vendor','data-container'=>'body']);
@@ -94,7 +94,7 @@
 													</h4>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal" style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 												</div>
 											</div>

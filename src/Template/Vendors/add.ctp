@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Vendor/dosa_plaza_software'); ?>
+<?php $this->set("title", 'Vendor| dosaplaza'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px;">

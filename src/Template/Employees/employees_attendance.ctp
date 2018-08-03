@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee/Attendance/dosa_plaza_software'); ?>
+<?php $this->set("title", 'EmployeeAttendance | dosaplaza'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">

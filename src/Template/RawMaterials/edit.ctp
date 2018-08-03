@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'RawMaterials'); ?>
+<?php $this->set("title", 'RawMaterials | dosaplaza'); ?>
  
 <div class="col-md-2">&nbsp;
 </div>  
@@ -125,6 +125,7 @@ $js="
         submitHandler: function (form) {
             success3.show();
             error3.hide();
+			$('#loading').show();
             form[0].submit(); // submit the form
         }
 
