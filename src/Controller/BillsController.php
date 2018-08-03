@@ -76,6 +76,7 @@ class BillsController extends AppController
             $Customer->address=$c_address;
             $this->Bills->Customers->save($Customer);
         }else{
+
             $Customer = $this->Bills->Customers->newEntity();
             $Customer->name=$c_name;
             $Customer->address=$c_address;
@@ -92,7 +93,10 @@ class BillsController extends AppController
             }else{
                 $Customer->customer_code=2001;
             }
-            $this->Bills->Customers->save($Customer);
+            if($Customer->mobile_no){
+                $this->Bills->Customers->save($Customer);
+            }
+            
         }
 
 		$myJSON=$this->request->query('myJSON');
@@ -101,7 +105,7 @@ class BillsController extends AppController
 		$total=$this->request->query('total'); 
 		$roundOff=$this->request->query('roundOff');
         $net=$this->request->query('net');
-        $customer_id=$Customer->id;
+        $customer_id=@$Customer->id;
 		$kot_ids=explode(',', $this->request->query('kot_ids'));
 		$q = json_decode($myJSON, true);
 		
