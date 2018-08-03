@@ -56,7 +56,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Category List
+					 Category List
 				</div>
 				<div class="tools"> 
  				</div>

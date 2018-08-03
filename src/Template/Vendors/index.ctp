@@ -7,7 +7,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Vendor List
+					 Vendor List
 				</div>
 				<div class="tools"> 
  				</div>

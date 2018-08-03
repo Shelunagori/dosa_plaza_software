@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($Taxes,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4" style="padding-left:14px;">Tax Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4" style="padding-left:14px;">Tax Name <span class="required" aria-required="true" required >
 							</span>
 							</label>
 							<div class="col-md-8">

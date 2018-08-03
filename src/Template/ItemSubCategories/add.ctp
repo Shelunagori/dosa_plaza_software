@@ -64,7 +64,7 @@
 		<div class="portlet  box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					View Sub Category List
+					 Sub Category List
 				</div>
 				<div class="tools"> 
  				</div>
