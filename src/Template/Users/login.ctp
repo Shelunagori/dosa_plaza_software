@@ -23,9 +23,12 @@ if(!empty($id)){
 		<div align="center" >
 			<h4 class="form-title" style="color: #FFF;">Login to your account</h4>
 		</div>
-        <div class="alert alert-danger display-hide" >
-			<span>Enter your login ID and password. </span>
-		</div>
+		<div class="alert alert-danger" onclick="this.classList.add('hidden')"><?= $this->Flash->render() ?></div>
+        <style type="text/css">
+        	.toast-error{
+        		background-color: #f2dede;
+        	}
+        </style>
 		
 		<div class="form-group">
 			<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
