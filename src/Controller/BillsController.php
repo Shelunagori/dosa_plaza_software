@@ -40,7 +40,7 @@ class BillsController extends AppController
     public function view()
     {
 		$this->viewBuilder()->layout('');
-		$bill_id=$this->request->query('bill_id');
+		$bill_id=$this->request->query('bill-id');
 		
         $bill = $this->Bills->get($bill_id, [
             'contain' => ['BillRows'=>['Items'], 'Customers', 'Tables']
@@ -120,6 +120,7 @@ class BillsController extends AppController
 		}
 		
 		$bill->table_id=$table_id;
+        $bill->no_of_pax=$c_pax;
 		$bill->total=$total; 
 		$bill->round_off=$roundOff;
         $bill->grand_total=$net;
@@ -256,5 +257,61 @@ class BillsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+    public function customerinfo($bill_id=null){
+        $this->viewBuilder()->layout('admin');
+        $Customer = $this->Bills->Customers->newEntity();
+        $Bills = $this->Bills->find()->where(['id'=>$bill_id])->first();;
+        $customer_id = $Bills->customer_id;
+        $Customers=$this->Bills->Customers->find()->where(['Customers.id'=>$customer_id])->first();
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+           
+
+            $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $this->request->getData('mobile_no')])->first();
+           
+            if($IsCustomerExist){
+                $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
+                $Customer->name=$this->request->getData('name');
+                $Customer->address=$this->request->getData('address');
+                $Customer->dob=$this->request->getData('dob');
+                $Customer->anniversary=$this->request->getData('anniversary');
+                $Customer->email=$this->request->getData('email');
+                $Customer->address=$this->request->getData('address');
+                $Customer->mobile_no=$this->request->getData('mobile_no');
+                $this->Bills->Customers->save($Customer);
+            }else{
+
+                $Customer = $this->Bills->Customers->newEntity();
+                $Customer->name=$this->request->getData('name');
+                $Customer->address=$this->request->getData('address');
+                $Customer->dob=$this->request->getData('dob');
+                $Customer->anniversary=$this->request->getData('anniversary');
+                $Customer->email=$this->request->getData('email');
+                $Customer->address=$this->request->getData('address');
+                $Customer->mobile_no=$this->request->getData('mobile_no');
+                
+                $last_Customer=$this->Bills->Customers->find()
+                                ->order(['customer_code' => 'DESC'])->first();
+                if($last_Customer){
+                    $Customer->customer_code=$last_Customer->customer_code+1;
+                }else{
+                    $Customer->customer_code=2001;
+                }
+                if($Customer->mobile_no){
+                    $IsCustomerExist = $this->Bills->Customers->save($Customer);
+                }                
+            }
+            $BillsData=$this->Bills->get($Bills->id);
+            $BillsData->customer_id=$IsCustomerExist->id;
+            $BillsData->no_of_pax=$this->request->getData('no_of_pax');
+            if ($this->Bills->save($BillsData)) {
+                $this->Flash->success(__('Customer info update successfully'));
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error(__('Customer info could not be updated. Please, try again.'));
+            }
+        }
+        $this->set(compact( 'Customers','Customer','Bills'));
     }
 }
