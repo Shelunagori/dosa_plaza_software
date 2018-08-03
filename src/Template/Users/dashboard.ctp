@@ -26,7 +26,7 @@
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
-								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">10</h6>
+								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"><?php echo $TotalOrdeDinner; ?></h6>
 								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Diner In</h6>
 								<div class="w3-light-grey">
 									<div class="w3-orange" style="height:2px;width:50%"></div>
@@ -35,7 +35,7 @@
 						</td>
 						<td width="40%">
 							<div style="float:left; padding:0px;">
-								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; 2500</h5>
+								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; <?php echo $TotalSaleDinner; ?></h5>
 							</div>
 						</td>
 					</tr>
@@ -51,7 +51,7 @@
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
-								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">10</h6>
+								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"><?php echo $TotalOrdeTakeAway;?></h6>
 								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Take Away</h6>
 								<div class="w3-light-grey">
 									<div class="w3-orange" style="height:2px;width:50%"></div>
@@ -60,7 +60,7 @@
 						</td>
 						<td width="40%">
 							<div style="float:left; padding:0px;">
-								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; 2500</h5>
+								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; <?php echo $TotalSaleTakeAway;?></h5>
 							</div>
 						</td>
 					</tr>
@@ -76,7 +76,7 @@
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
-								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">10</h6>
+								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"><?php echo $TotalOrdeODelevery; ?></h6>
 								<h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Delivery </h6>
 								<div class="w3-light-grey">
 									<div class="w3-orange" style="height:2px;width:50%"></div>
@@ -85,7 +85,7 @@
 						</td>
 						<td width="40%">
 							<div style="float:left; padding:0px;">
-								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; 2500</h5>
+								<h5 style="font-size:18px;font-weight: 500;line-height: 56px;"> &#8377; <?php echo $TotalSaleDelevery; ?></h5>
 							</div>
 						</td>
 					</tr>
