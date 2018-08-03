@@ -23,7 +23,7 @@ class Designation extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
-        'is_deleted' => true
+        'name' => true
+        
     ];
 }

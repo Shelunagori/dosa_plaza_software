@@ -1,5 +1,5 @@
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Dashboard</span>', '/Users/Dashboard',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Dashboard</span>', '/Users/Dashboard',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <li class="start">
 	<a href="javascript:;">
@@ -7,18 +7,18 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Dashboard</span>
 	<span class="arrow"></span>
 	</a>
 	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link('Create', '/PurchaseVouchers/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link('List', '/PurchaseVouchers/index',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('Create', '/PurchaseVouchers/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/PurchaseVouchers/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Stock Adjustment</span>', '/RawMaterials/stock_adjustment',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Stock Adjustment</span>', '/RawMaterials/stock_adjustment',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Category</span>', '/ItemCategories/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Category</span>', '/ItemCategories/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Category</span>', '/ItemSubCategories/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Category</span>', '/ItemSubCategories/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <li class="start">
 	<a href="javascript:;">
@@ -26,8 +26,8 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Categor
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link('Create', '/Items/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link('List', '/Items/index',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('Create', '/Items/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/Items/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li>
 <li class="start">
@@ -36,12 +36,12 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Categor
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link('Create', '/RawMaterials/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link('List', '/RawMaterials/index',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('Create', '/RawMaterials/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li> 
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Units</span>', '/Units/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Units</span>', '/Units/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 
 <li class="start">
@@ -50,8 +50,8 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Units</span>', '
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link('Create', '/Employees/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link('List', '/Employees/index',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('Create', '/Employees/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/Employees/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li>
 <li class="start">
@@ -60,21 +60,21 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Units</span>', '
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link('Create', '/Vendors/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link('List', '/Vendors/index',['escape' => false]).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('Create', '/Vendors/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/Vendors/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Attendance</span>', '/Attendances/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Attendance</span>', '/Attendances/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Comments</span>', '/Comments/add',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Comments</span>', '/Comments/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Customers</span>', '/Customers/index',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Customers</span>', '/Customers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '/Bills/index',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '/Bills/index',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 
 

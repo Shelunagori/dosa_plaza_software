@@ -220,9 +220,9 @@
             },
 
             submitHandler: function (form) {
-                
                 success3.show();
                 error3.hide();
+                $('#loading').show();
                 form[0].submit(); // submit the form
             }
 
