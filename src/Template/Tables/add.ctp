@@ -1,19 +1,14 @@
-<div class="row">
-	<div class="col-md-12">
-		<div class="portlet light">
-			<div class="caption top-caption">
-				<span>Add Tables</span>
-			</div>
-		</div>
-	</div>
-</div>	
-<div class="row">
+<?php echo $this->Html->css('mystyle'); ?>
+<?php $this->set("title", 'Tables'); ?>
+<!-- BEGIN PAGE CONTENT-->
+<div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
+		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
 					<?php if(!empty($id)){ ?>
-						Edit Category
+						Edit Tables
 					<?php }else{ ?>
 						Add Tables
 					<?php } ?>
@@ -29,26 +24,29 @@
 			</div>
 			<div class="portlet-body">
 				<div class="">
-					<?= $this->Form->create($table,['id'=>'CountryForm']) ?>
+					<?= $this->Form->create($Tables,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4" style="padding-left:14px;">Table Name <span class="required" aria-required="true">
 							</span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$itemCategory->name."'"; } ?> name="name" class="form-control" Placeholder="Table Name">
+									<input type="text" <?php if(!empty($id)){ echo "value='".$Table->name."'"; } ?> name="name" class="form-control" Placeholder="Enter Table Name">
+									 
 								</div>
 							</div>
 						</div>
-						<div class="form-actions">
+						<div class="form-actions ">
 							<div class="row">
-								<div class="col-md-offset-6 col-md-9">
+								<div class="col-md-12" style=" text-align: center;">
+									<hr></hr>
 									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
 						</div>
- 					<?= $this->Form->end() ?>
+ 						 
+					<?= $this->Form->end() ?>
 				</div> 
 			</div>
 		</div>
@@ -76,34 +74,55 @@
 						</tr>
 					</thead>
 					<tbody>
-						<?php $x=0; foreach ($tables as $table): ?>
+						<?php $x=0; foreach ($Tables as $table): ?>
 						<tr>
 							<td><?= ++$x; ?></td> 
 							<td><?= h($table->name) ?></td>
 							<td class="actions">
-								<?php //echo $this->Html->link('<img src="",height="34",width="38"/>','/ItemSubCategories/add/'.$country->id,array('escape'=>false,));?>
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'tables','action'=>'add',$table->id]]);?>
-								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$table->id,'data-toggle'=>'modal']);?>
-								
-							
+								 
+
+								<?php
+									if($table->is_deleted==0){
+									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Tables','action'=>'add',$table->id],'class'=>'tooltips','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$table->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Category','data-container'=>'body']);
+									} else { ?>
+										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$table->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
+									}
+									?>
 								<div id="deletemodal<?php echo $table->id; ?>" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
-										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'tables','action'=>'delete',$table->id)) ?>">
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Tables','action'=>'delete',$table->id)) ?>">
 											<div class="modal-content">
-											<div class="modal-header">
+												<div class="modal-header">
 													<h4 class="modal-title">
-													Are you sure you want to remove this Category?
+														Are you sure you want to freeze this Category?
 													</h4>
-											</div>
-												<div class="modal-footer"style="border:none;">
+												</div>
+												<div class="modal-footer" style="border:none;">
 													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
-													<button type="button" class="btn  btn-sm" data-dismiss="modal" style="color:#000000">Cancel</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
 												</div>
 											</div>
 										</form>
 									</div>
 								</div>
-							   <?php  $this->Form->PostLink('<i class="fa fa-trash"></i>','/Countries/delete/'.$table->id,array('escape'=>false,'class'=>'btn btn-danger btn-xs','confirm' => __('Are you sure you want to delete # {0}?', $table->id)));?>
+							    <div id="undeletemodal<?php echo $table->id; ?>" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Tables','action'=>'undelete',$table->id)) ?>">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h4 class="modal-title">
+														Are you sure you want to unfreeze this Category?
+													</h4>
+												</div>
+												<div class="modal-footer" style="border:none;">
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
 							</td>
 						</tr>
 						<?php endforeach; ?> 
@@ -113,34 +132,4 @@
 			</div>
 		</div>
 	</div>
-</div>	
-<style>
-	.portlet.light{
-		padding: 14px 20px 14px 25px !important;
-		margin: 0px 0px 15px !important;
-	}
-	.horizontal{
-		   
-			border-top: solid 2px  #eee !important;
-			border-bottom: 0;
-	}
-	.form-actions{
-		    padding: 71px 71px 18px 71px
-	}
-	.portlet.box.blue-hoki > .portlet-title > .caption {
-		color: #F3565D;
-    }
-	.portlet.box>.portlet-title>.caption {
-		padding: 13px 0 11px 18px;
-	}
-	.portlet.box.blue-hoki > .portlet-title {
-		background-color: #FFFFFF;
-		padding-left:0;
-		padding-right:0;
-	}
-	.table>thead>tr>th{
-		border-bottom: 1px solid #eee;
-		color: black;
-		font-weight:500;
-	}
-</style>
+</div>
