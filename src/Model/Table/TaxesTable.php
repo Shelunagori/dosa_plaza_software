@@ -9,6 +9,10 @@ use Cake\Validation\Validator;
 /**
  * Taxes Model
  *
+ * @property |\Cake\ORM\Association\HasMany $Bills
+ * @property |\Cake\ORM\Association\HasMany $Items
+ * @property \App\Model\Table\RawMaterialsTable|\Cake\ORM\Association\HasMany $RawMaterials
+ *
  * @method \App\Model\Entity\Tax get($primaryKey, $options = [])
  * @method \App\Model\Entity\Tax newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Tax[] newEntities(array $data, array $options = [])
@@ -34,8 +38,14 @@ class TaxesTable extends Table
         $this->setTable('taxes');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-		
-		 $this->hasMany('RawMaterials', [
+
+        $this->hasMany('Bills', [
+            'foreignKey' => 'tax_id'
+        ]);
+        $this->hasMany('Items', [
+            'foreignKey' => 'tax_id'
+        ]);
+        $this->hasMany('RawMaterials', [
             'foreignKey' => 'tax_id'
         ]);
     }
@@ -62,6 +72,8 @@ class TaxesTable extends Table
             ->decimal('tax_per')
             ->requirePresence('tax_per', 'create')
             ->notEmpty('tax_per');
+
+       
 
         return $validator;
     }

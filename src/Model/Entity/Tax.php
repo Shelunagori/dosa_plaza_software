@@ -9,6 +9,9 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property float $tax_per
+ * @property string $status
+ *
+ * @property \App\Model\Entity\RawMaterial[] $raw_materials
  */
 class Tax extends Entity
 {
@@ -24,6 +27,8 @@ class Tax extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'tax_per' => true
+        'tax_per' => true,
+        'status' => true,
+        'raw_materials' => true
     ];
 }
