@@ -80,10 +80,8 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '
 echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Tables</span>', '/Tables/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Designations</span>', '/Designations/index',['escape' => false, 'class' => 'showLoader']).'</li>';
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Designations</span>', '/Designations/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
-
-
 
 
 <!-- 

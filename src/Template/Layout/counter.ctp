@@ -40,6 +40,95 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 		<!-- END THEME STYLES -->
 		<style>
+		#loading{
+			background-color: rgba(0, 0, 0, 0.21);
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			z-index: 4;
+			margin-top: 0px;
+			top: 0px;
+			display:none;
+		}
+		#loading-center{
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+		#loading-center-absolute {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			height: 150px;
+			width: 150px;
+			margin-top: -75px;
+			margin-left: -75px;
+		}
+		.object{
+			width: 20px;
+			height: 20px;
+			background-color: #F15340;
+			float: left;
+			margin-right: 20px;
+			margin-top: 65px;
+			-moz-border-radius: 50% 50% 50% 50% !important;
+			-webkit-border-radius: 50% 50% 50% 50% !important;
+			border-radius: 50% 50% 50% 50% !important;
+		}
+
+		#object_one {	
+			-webkit-animation: object_one 1.5s infinite;
+			animation: object_one 1.5s infinite;
+			}
+		#object_two {
+			-webkit-animation: object_two 1.5s infinite;
+			animation: object_two 1.5s infinite;
+			-webkit-animation-delay: 0.25s; 
+		    animation-delay: 0.25s;
+			}
+		#object_three {
+		    -webkit-animation: object_three 1.5s infinite;
+			animation: object_three 1.5s infinite;
+			-webkit-animation-delay: 0.5s;
+		    animation-delay: 0.5s;
+			
+			}
+		@-webkit-keyframes object_one {
+		75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_one {
+
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform: scale(0);
+		  }
+
+		}
+		@-webkit-keyframes object_two {
+		  75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_two {
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform:  scale(0);
+		  }
+
+		}
+
+		@-webkit-keyframes object_three {
+		  75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_three {
+
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform: scale(0);
+		  }
+		  
+		}
 		span.required{
 			color:red;
 		}
@@ -68,6 +157,15 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
 	<body class="page-header-fixed page-quick-sidebar-over-content page-full-width" style="background:#061c3a !important;font-family: 'Nunito Sans', sans-serif;">
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object" id="object_one"></div>
+					<div class="object" id="object_two"></div>
+					<div class="object" id="object_three"></div>
+				</div>
+			</div>
+		</div>
 		<!-- BEGIN HEADER -->
 		<div class="page-header navbar navbar-fixed-top" style=" background: -webkit-linear-gradient(#2D4161, #2D4161); "> 
 			<!-- BEGIN HEADER INNER -->
@@ -196,7 +294,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		  value = value.toString().split('e');
 		  return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
 		}
-		
+		$('.showLoader').live('click',function(e) {
+			$('#loading').show();
+		});
 		</script>
 		<?= $this->fetch('scriptBottom')?>
 		<!-- END JAVASCRIPTS -->

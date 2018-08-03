@@ -209,6 +209,6 @@
 	
 	<div align="center">
 		<span class="closeCustomerBox2">Close</span>
-		<span class="saveCustomer">UPDATE</span>
+		<span class="saveCustomer ">UPDATE</span>
 	</div>
-</div>
+</div> 

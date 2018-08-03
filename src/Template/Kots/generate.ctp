@@ -490,6 +490,7 @@
 		});
 		
 		$('.SubmitBill').die().live('click',function(event){
+			$('#loading').show();
 			event.preventDefault();
 			$(this).text('Saving...');
 			$('#WaitBox2').show();
@@ -540,9 +541,9 @@
 
 					var url2='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."';
   					window.location.href = url2;
-
   					
 				}else{
+					$('#loading').hide();
 					$('#WaitBox3 div.modal-body').html('".$errorMessage."');
 				}
 				
