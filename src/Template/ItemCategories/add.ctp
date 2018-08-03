@@ -197,7 +197,7 @@ $(document).ready(function() {
 			success2.show();
 			error2.hide();
 			$('#loading').show();
-			form[0].submit(); // submit the form
+			form[0].submit(); 
 		}
 	}); 	
  });';
