@@ -112,7 +112,7 @@
 				</div>
 				<div class="row">
 					<div class="form-group col-md-6 secondery">
-						<label>Purchase Voucher Unit Type</label>
+						<label>Stock-In Voucher Unit Type</label>
 						<div class="radio-list">
 							<label class="radio-inline ">
 							<input type="radio" name="purchase_voucher_unit_type" value="primary" checked> <span class="purchase_voucher_unit_type_primary">primary </span></label>
