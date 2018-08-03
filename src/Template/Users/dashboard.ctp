@@ -1,4 +1,4 @@
-<?php $this->set("title", 'Dashboard/dosa_plaza_software'); ?>
+<?php $this->set("title", 'Dashboard|dosaplaza'); ?>
 <style type="text/css">
 .top{
 	margin-top: 5px;

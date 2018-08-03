@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'RawMaterials_list/dosa_plaza_software'); ?>	
+<?php $this->set("title", 'RawMaterialslist | dosaplaza'); ?>	
 <div class="row" style="margin:15px">
 	<div class="col-md-12">
 		<div class="portlet  box blue-hoki">
