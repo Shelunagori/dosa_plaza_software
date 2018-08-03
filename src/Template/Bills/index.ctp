@@ -43,13 +43,13 @@
                             <td style="text-align: right;"><?= h($bill->grand_total) ?></td>
                             <td><?= h($bill->created_on->format('d-m-Y H:i')) ?></td>
                             <td><?= h(ucfirst($bill->order_type)) ?></td>
-                            <td><?= h($bill->customer->name) ?></td>
-                            <td><?= h($bill->customer->customer_code) ?></td>
-                            <td><?= h($bill->customer->mobile_no) ?></td>
+                            <td><?= h(@$bill->customer->name) ?></td>
+                            <td><?= h(@$bill->customer->customer_code) ?></td>
+                            <td><?= h(@$bill->customer->mobile_no) ?></td>
                             <td><?= h($bill->table->name) ?></td>
                             <td class="actions">
                                 <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?> -->
-                                <?php if($bill->status="canceled"){ ?>
+                                <?php if($bill->status=="canceled"){ ?>
                                     <span>Canceled</span>
                                 <?php }else{ ?>
                                     <?= $this->Form->postLink(__('Cancel'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to cancel this bill # {0}?', $bill->voucher_no)]) ?>
