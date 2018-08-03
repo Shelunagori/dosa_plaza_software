@@ -43,9 +43,9 @@
                             <td style="text-align: right;"><?= h($bill->grand_total) ?></td>
                             <td><?= h($bill->created_on->format('d-m-Y H:i')) ?></td>
                             <td><?= h(ucfirst($bill->order_type)) ?></td>
-                            <td><?= h($bill->customer->name) ?></td>
-                            <td><?= h($bill->customer->customer_code) ?></td>
-                            <td><?= h($bill->customer->mobile_no) ?></td>
+                            <td><?= h(@$bill->customer->name) ?></td>
+                            <td><?= h(@$bill->customer->customer_code) ?></td>
+                            <td><?= h(@$bill->customer->mobile_no) ?></td>
                             <td><?= h($bill->table->name) ?></td>
                             <td class="actions">
                                 <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?> -->
