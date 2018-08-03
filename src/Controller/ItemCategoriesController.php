@@ -35,7 +35,7 @@ class ItemCategoriesController extends AppController
             }
             $this->Flash->error(__('The item category could not be saved. Please, try again.'));
         }
-		$itemCategories = $this->paginate($this->ItemCategories->find());
+		$itemCategories = ($this->ItemCategories->find());
         $this->set(compact('itemCategory','itemCategories','id'));
     }
  

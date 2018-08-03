@@ -26,7 +26,7 @@
 				<div class="">
 					<?= $this->Form->create($itemCategory,['id'=>'CountryForm']) ?>
 						<div class="form-group">
-							<label class="control-label col-md-4">Category Name <span class="required" aria-required="true">
+							<label class="control-label col-md-4">Category Name  <span class="required"> * </span>
 							</span>
 							</label>
 							<div class="col-md-8">
@@ -194,8 +194,11 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			
 			success2.show();
+			$("#loading").show();
 			error2.hide();
+			
 			form[0].submit(); // submit the form
 		}
 	}); 	
