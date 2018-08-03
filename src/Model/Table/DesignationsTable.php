@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Designations Model
  *
+ * @property |\Cake\ORM\Association\HasMany $Employees
+ *
  * @method \App\Model\Entity\Designation get($primaryKey, $options = [])
  * @method \App\Model\Entity\Designation newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Designation[] newEntities(array $data, array $options = [])
@@ -34,6 +36,10 @@ class DesignationsTable extends Table
         $this->setTable('designations');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('Employees', [
+            'foreignKey' => 'designation_id'
+        ]);
     }
 
     /**
@@ -54,7 +60,7 @@ class DesignationsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-        
+       
 
         return $validator;
     }
