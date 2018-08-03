@@ -21,7 +21,7 @@
 					<h6 style="font-size: 22px;font-weight: 500;color: #7E8082;">10</h6>
 					<h6 style="font-size: 18px;font-weight: 500;color: #7E8082;">Diner In</h6>
 					<div class="w3-light-grey">
-						<div class="w3-green" style="height:2px;width:50%"></div>
+						<div class="w3-orange" style="height:2px;width:50%"></div>
 					</div>
 				</div>
 				<div style="float:left; width:30%;padding:0px;">
