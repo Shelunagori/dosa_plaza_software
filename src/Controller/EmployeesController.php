@@ -72,6 +72,21 @@ class EmployeesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    public function undelete($id = null)
+    {
+       $employee = $this->Employees->get($id, [
+            'contain' => []
+        ]);
+        $employee = $this->Employees->patchEntity($employee, $this->request->getData());
+        $employee->is_deleted=0;
+        if ($this->Employees->save($employee)) {
+            $this->Flash->success(__('The employee has been deleted.'));
+        } else {
+            $this->Flash->error(__('The employee could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
 	 public function EmployeesAttendance()
 	{
 		$this->viewBuilder()->layout('admin');
