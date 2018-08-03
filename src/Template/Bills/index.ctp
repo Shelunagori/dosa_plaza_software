@@ -1,5 +1,7 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Bills| dosaplaza'); ?>
+
+<?php $this->set("title", 'Bills| DOSAPLAZA'); ?>
+
 <div style="height: 15px;" >.</div>
 <div class="row">
     <div class="col-md-12 main-div">
@@ -10,8 +12,6 @@
                     Bills
                 </div>
                 <div class="tools">
-                    
-
                 </div>
                 <div class="actions"></div>
                 <div class="row">   
@@ -46,15 +46,36 @@
                             <td><?= h(@$bill->customer->name) ?></td>
                             <td><?= h(@$bill->customer->customer_code) ?></td>
                             <td><?= h(@$bill->customer->mobile_no) ?></td>
-                            <td><?= h($bill->table->name) ?></td>
+                            <td><?= h(@$bill->table->name) ?></td>
                             <td class="actions">
-                                <!-- <?= $this->Html->link(__('View'), ['action' => 'view', $bill->id]) ?> -->
-                                <?php if($bill->status=="canceled"){ ?>
-                                    <span>Canceled</span>
-                                <?php }else{ ?>
-                                    <?= $this->Form->postLink(__('Cancel'), ['action' => 'delete', $bill->id], ['confirm' => __('Are you sure you want to cancel this bill # {0}?', $bill->voucher_no)]) ?>
-                                <?php } ?>
-                                
+                                <?php
+                                    echo $this->Html->image('edit.png',['url'=>['controller'=>'Bills','action'=>'customerinfo',$bill->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Info','data-container'=>'body']);
+                                    echo $this->Html->image('print.png',['url'=>['controller'=>'Bills','action'=>'view?bill_id='.$bill->id],'target'=>'_blank','class'=>'tooltips ','data-original-title'=>'Re-Print','data-container'=>'body']);
+
+                                    if($bill->status=='canceled'){
+                                        echo "<span>Canceled</span>";
+                                    } 
+                                    else{
+                                       echo $this->Html->image('cancel.png',['data-target'=>'#deletemodal'.$bill->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Cancel Bill','data-container'=>'body']);
+                                    }
+                                    ?>
+                                <div id="deletemodal<?php echo $bill->id; ?>" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-md" >
+                                        <form method="post" action="<?php echo $this->Url->build(array('controller'=>'Bills','action'=>'delete',$bill->id)) ?>">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">
+                                                        Are you sure you want to cancel this Bill?
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-footer" style="border:none;">
+                                                    <button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+                                                    <button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color: #000000;    background-color: #DDDDDD;;">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>

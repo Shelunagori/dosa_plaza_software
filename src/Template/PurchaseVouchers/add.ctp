@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock In Voucher | dosaplaza'); ?>
+<?php $this->set("title", 'Stock-In Voucher | DOSAPLAZA'); ?>
 <style>
 	.help-block-error{
 		font-size: 12px; 

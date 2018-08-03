@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Attendance/index/dosa_plaza_software'); ?>
+<?php $this->set("title", 'Attendance-Index | DOSAPLAZA'); ?>
 <div class="row" style="margin-top:15px;sss">
 	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
