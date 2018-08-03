@@ -92,24 +92,27 @@ class UsersController extends AppController
             $TotalSaleDinner=$value->TotalSaleDinner;
         }
 
-        // //-- Birth Day
-        // $TotalBirthDay=0;
-        // $Customers=$this->Users->Customers->find();  
-        // $Customers  ->select([
-        //             'TotalBirthDay' => $Customers->func()->count('*'),
-        //             ])
-        //         ->where(['Customers.dob !='=>'0000-00-00','Customers.dob <=' => date('m-d',strtotime('+7 days')),'Customers.dob >=' => date('m-d',strtotime('+7 days'))])
+        //-- Birth Day
+       // $TotalBirthDay=0;
+       // $Customers=$this->Users->Customers->find()->where(['Customers.dob !='=>'0000-00-00','Customers.dob LIKE' => "%".date('m',strtotime('+7 days'))."%"]);  
+       //  $Customers  ->select([
+       //              'TotalBirthDay' => $Customers->func()->count('*'),
+       //              ])
+       //          ->where(['Customers.dobs !='=>'0000-00-00','Customers.dob LIKE' => "%".date('m-d',strtotime('+7 days'))."%"])
+       //          ->autoFields(true)
+       //          ->toArray();
+         
+       //  pr($Customers->toArray()); exit;
 
-        //         ->toArray();
-        // pr(['Customers.dob >=' => date('m-d',strtotime('+7 days')),'Customers.dob <=' => date('m-d',strtotime('+7 days'))]);       
-        //  pr($Customers->toArray()); exit;
+       //  $TotalOrdeDinner=0;
+       //  $TotalSaleDinner=0;
+       //  foreach ($Dinner as $value) {
+       //      $TotalOrdeDinner=$value->TotalOrdeDinner;
+       //      $TotalSaleDinner=$value->TotalSaleDinner;
+       //  }
 
-        // $TotalOrdeDinner=0;
-        // $TotalSaleDinner=0;
-        // foreach ($Dinner as $value) {
-        //     $TotalOrdeDinner=$value->TotalOrdeDinner;
-        //     $TotalSaleDinner=$value->TotalSaleDinner;
-        // }
+       
+            
 
 
         $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner'));
