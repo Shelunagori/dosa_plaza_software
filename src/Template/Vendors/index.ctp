@@ -35,8 +35,9 @@
 							<td><?= h($vendor->contact_person) ?></td>
 							<td><?= h($vendor->contact_number) ?></td>
 							<td> 
-								<a class="btn btn-info btn-xs" data-target="#detailspopup<?php echo $vendor->id; ?>" data-toggle=modal>
-									<i class="fa fa-ellipsis-h" style="color: #BDBFC1; font-size: 18px; cursor: pointer;"></i></a>
+								<a class="" data-target="#detailspopup<?php echo $vendor->id; ?>" data-toggle=modal>
+									<i class="fa fa-ellipsis-h" style="color: #BDBFC1; font-size: 18px; cursor: pointer;"></i>
+								</a>
 								<div id="detailspopup<?php echo $vendor->id; ?>" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
 										<div class="modal-content">
@@ -88,7 +89,6 @@
 										<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Vendors','action'=>'delete',$vendor->id)) ?>">
 											<div class="modal-content">
 											  <div class="modal-header">
-													
 													<h4 class="modal-title">
 													Are you sure you want to freeze this Vendor?
 													</h4>

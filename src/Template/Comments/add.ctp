@@ -73,7 +73,7 @@
 							<td><?= ++$x; ?></td> 
 							<td><?= h($comment->comment) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Comments','action'=>'add',$comment->id]]);?>
+								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Comments','action'=>'add',$comment->id],['class'=>'jh']]);?>
 								<?php echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$comment->id,'data-toggle'=>'modal','class'=>'pointer']);?>
 								<div id="deletemodal<?php echo $comment->id; ?>" class="modal fade " role="dialog">
 									<div class="modal-dialog modal-md" >
