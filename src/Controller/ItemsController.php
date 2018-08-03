@@ -61,7 +61,7 @@ class ItemsController extends AppController
         }
         
         
-        $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->where(['status'=>'active'])->order(['Taxes.id'=>'ASC']);
+        $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->order(['Taxes.id'=>'ASC']);
         
         if($id)
         {  
