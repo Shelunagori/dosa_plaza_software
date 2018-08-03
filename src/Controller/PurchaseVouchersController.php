@@ -108,7 +108,8 @@ class PurchaseVouchersController extends AppController
                             'unit_name'=>$unit_name,
                         ];
 		}
-		$Vendors = $this->PurchaseVouchers->Vendors->find('list' );
+		$Vendors = $this->PurchaseVouchers->Vendors->find('list')
+            ->where(['Vendors.is_deleted'=>0]);
 		
 		$this->set(compact('purchaseVoucher', 'Vendors','raw_materials','option'));
     }

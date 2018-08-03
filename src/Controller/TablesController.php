@@ -35,10 +35,9 @@ class TablesController extends AppController
              $tableWiseAmount[$table_id][]=$kot_amout;
         } 
         $Tables=$this->Tables->find();     
-        $Employees = $this->Tables->Employees->find('list');
+        $Employees = $this->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
         $this->set(compact('Tables', 'Employees','tableWiseAmount'));
     }
-
 
     public function saveTable()
     {

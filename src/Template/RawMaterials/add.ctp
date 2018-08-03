@@ -80,57 +80,57 @@
 						</div>	
 					</div>
 				</div>
+				<div class="row">
+					<div class="form-group col-md-5 secondery">
+						<label class="">Where <span class="required"> * </span></label>
+						<div class="">
+							<div class="input-group ">
+								
+								<input type="taxt" name="formulas" class="form-control" placeholder="Secondary Unit Equal to Primary Unit" required="required">
+								<span class="input-group-addon second_unit">GM</span>
+							</div>
+						</div>
+					</div>
 
-				<div class="form-group col-md-5 secondery">
-					<label class="">Where <span class="required"> * </span></label>
-					<div class="">
-						<div class="input-group ">
-							
-							<input type="taxt" name="formulas" class="form-control" placeholder="Secondary Unit Equal to Primary Unit" required="required">
-							<span class="input-group-addon second_unit">GM</span>
+					<div class="form-group col-md-1 secondery">
+						<label>&nbsp;</label>
+						<div align="center" style="margin-top: 6px; font-size: 20px;">
+							=
+						</div>
+					</div>
+
+					<div class="form-group col-md-5 secondery">
+						<label for="exampleInputPassword1">Equal To</label>
+						<div class="input-group input-icon right">
+							<i class="fa"></i>
+							<?php echo $this->Form->control('dds',['class'=>'form-control  ','label'=>false,'placeholder'=>'Equal to Primary Unit','value'=>'1','readonly'=>'readonly']); ?>
+							<span class="input-group-addon first_unit">
+							KG
+							</span>
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="form-group col-md-6 secondery">
+						<label>Purchase Voucher Unit Type</label>
+						<div class="radio-list">
+							<label class="radio-inline ">
+							<input type="radio" name="purchase_voucher_unit_type" value="primary" checked> <span class="purchase_voucher_unit_type_primary">primary </span></label>
+							<label class="radio-inline">
+							<input type="radio" name="purchase_voucher_unit_type"  value="secondary"> <span class="purchase_voucher_unit_type_secondary">secondary </span></label> 
+						</div>
+					</div>
 
-				<div class="form-group col-md-1 secondery">
-					<label>&nbsp;</label>
-					<div align="center" style="margin-top: 6px; font-size: 20px;">
-						=
+					<div class="form-group col-md-6 secondery">
+						<label>Recipe Unit Type</label>
+						<div class="radio-list">
+							<label class="radio-inline ">
+							<input type="radio" name="recipe_unit_type" value="primary" checked> <span class="recipe_unit_type_primary">primary </span></label>
+							<label class="radio-inline">
+							<input type="radio" name="recipe_unit_type"  value="secondary"> <span class="recipe_unit_type_secondary">secondary </span></label> 
+						</div>
 					</div>
 				</div>
-
-				<div class="form-group col-md-5 secondery">
-					<label for="exampleInputPassword1">Equal To</label>
-					<div class="input-group input-icon right">
-						<i class="fa"></i>
-						<?php echo $this->Form->control('dds',['class'=>'form-control  ','label'=>false,'placeholder'=>'Equal to Primary Unit','value'=>'1','readonly'=>'readonly']); ?>
-						<span class="input-group-addon first_unit">
-						KG
-						</span>
-					</div>
-				</div>
-				<div class="form-group col-md-6 secondery">
-					<label>Purchase Voucher Unit Type</label>
-					<div class="radio-list">
-						<label class="radio-inline ">
-						<input type="radio" name="purchase_voucher_unit_type" value="primary" checked> <span class="purchase_voucher_unit_type_primary">primary </span></label>
-						<label class="radio-inline">
-						<input type="radio" name="purchase_voucher_unit_type"  value="secondary"> <span class="purchase_voucher_unit_type_secondary">secondary </span></label> 
-					</div>
-				</div>
-
-				<div class="form-group col-md-6 secondery">
-					<label>Recipe Unit Type</label>
-					<div class="radio-list">
-						<label class="radio-inline ">
-						<input type="radio" name="recipe_unit_type" value="primary" checked> <span class="recipe_unit_type_primary">primary </span></label>
-						<label class="radio-inline">
-						<input type="radio" name="recipe_unit_type"  value="secondary"> <span class="recipe_unit_type_secondary">secondary </span></label> 
-					</div>
-				</div>
-
-
-
 
 				<div class="form-actions">
 					<div class="row">
