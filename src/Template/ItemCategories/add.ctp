@@ -194,10 +194,12 @@ $(document).ready(function() {
 		},
 
 		submitHandler: function (form) {
+			
 			success2.show();
+			$("#loading").show();
 			error2.hide();
-			$('#loading').show();
-			form[0].submit(); 
+			
+			form[0].submit(); // submit the form
 		}
 	}); 	
  });';
