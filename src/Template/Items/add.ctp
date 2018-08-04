@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item |DOSA PLAZA'); ?>
+<?php $this->set("title", 'Item | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px">
@@ -131,7 +131,7 @@
 						
 						<div class="form-actions">
 							<div class="row">
-								<div class="col-md-offset-6 col-md-9">
+								<div class=" col-md-12" align="center">
 									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
