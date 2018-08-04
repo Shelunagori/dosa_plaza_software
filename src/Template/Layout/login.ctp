@@ -164,9 +164,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<!-- END LOGIN -->
 		<!-- BEGIN COPYRIGHT -->
-		<div class="copyright">
+		<!-- <div class="copyright">
 			2018 © PHP Poets IT Solutions Pvt. Ltd.
-		</div>
+		</div> -->
 		<!-- END COPYRIGHT -->
 		<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 		<!-- BEGIN CORE PLUGINS -->
