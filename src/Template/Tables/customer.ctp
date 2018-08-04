@@ -1,4 +1,4 @@
-<?php $this->set("title", 'CUSTOMER-INFORMATION| DOSA PLAZA'); ?>
+<?php $this->set("title", 'CUSTOMER-INFORMATION | DOSA PLAZA'); ?>
 <div style=" padding: 5px 25px; ">
 	<div align="center"><span style="color: #2D4161;font-size: 14px;font-weight: bold;">CUSTOMER INFORMATION <br/> TABLE: <?= h($table->name) ?></span></div>
 	<br/>
