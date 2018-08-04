@@ -62,8 +62,14 @@ class VendorsController extends AppController
 	        $itemslist=array();
 	        foreach($vendor->vendor_items as $raw_materials){
 	        	$itemslist[]=$raw_materials->raw_material_id;
-	        } 
-	        $Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0])->orWhere(['RawMaterials.id IN' => $itemslist]);
+	        }
+	        if(!empty($itemslist)){
+	        	$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0])->orWhere(['RawMaterials.id IN' => $itemslist]);
+	        }
+	        else{
+	        	$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]);
+	        }
+	        
 	    }
 	    else{
 	    	$Items = $this->Vendors->RawMaterials->find()->where(['is_deleted'=>0]);

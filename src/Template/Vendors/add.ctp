@@ -92,18 +92,20 @@
 										}
 										$catLists=array_unique($catList);
 									}
+ 	
 									?>
 									<?php 
 									$options=array();
 									foreach($Items as $sts)
 									{
-										if(in_array($sts->id, $catLists)){
+										if(!empty($catLists) && in_array($sts->id, $catLists)){
 											$options[] = ['value'=>$sts->id,'text'=>$sts->name,'selected'=>'selected'];
 										}
 										else{
 											$options[] = ['value'=>$sts->id,'text'=>$sts->name];
 										}
-									};									
+									};
+
 									echo $this->Form->input('item_lists',['options' =>$options,'label' => false,'class'=>'form-control select2 selectState select2me','empty'=> 'Select...','multiple'=>true]);?>
 								</div>
 							</div>
@@ -182,7 +184,7 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			success2.show();
 			error2.hide();
-			$("loading").show();
+			$("#loading").show();
 			form[0].submit(); // submit the form
 		}
 	}); 	

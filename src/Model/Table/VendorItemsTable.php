@@ -44,7 +44,7 @@ class VendorItemsTable extends Table
         ]);
         $this->belongsTo('RawMaterials', [
             'foreignKey' => 'raw_material_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]); 
     }
 

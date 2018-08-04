@@ -35,7 +35,13 @@ class RawMaterialsController extends AppController
         $rawMaterial = $this->RawMaterials->newEntity();
         if ($this->request->is('post')) {
             $rawMaterial = $this->RawMaterials->patchEntity($rawMaterial, $this->request->getData());
-            $rawMaterial->formula=$this->request->getData('formulas');
+            if(!empty($this->request->getData('has_secondary_unit'))){
+            	$rawMaterial->formula=$this->request->getData('formulas');
+            }
+            else{
+            	$rawMaterial->formula=0;	
+            }
+            
 			if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
