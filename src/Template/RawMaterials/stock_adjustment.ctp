@@ -37,7 +37,7 @@
 							</td>
 							<td>
 								<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
-								<?= h($RawMaterial->primary_unit->quantity) ?> 
+								<?= h($RawMaterial->primary_unit->quantity.' '.$RawMaterial->primary_unit->name) ?> 
 							</td>
 							<td>
 								<div class="input-group input-sm ">
