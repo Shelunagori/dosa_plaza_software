@@ -1,4 +1,4 @@
-
+<?php $this->set("title", 'Tables | DOSA PLAZA'); ?>
 <style>
 .saveCustomersearch{
 	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
