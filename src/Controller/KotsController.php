@@ -31,8 +31,10 @@ class KotsController extends AppController
     {
         $this->viewBuilder()->layout('counter');
         $ItemCategories =   $this->Kots->ItemCategories->find()
-                            ->contain(['ItemSubCategories'=>['Items']]);
+                            ->contain(['ItemSubCategories'=>['Items']])
+                            ->where(['ItemCategories.is_deleted'=>0]);
         $Items =    $this->Kots->ItemCategories->ItemSubCategories->Items->find()
+                    ->where(['Items.is_deleted'=>0])
                     ->order(['Items.name'=>'ASC']);
         $Comments = $this->Kots->Comments->find('list');
         $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type'));
