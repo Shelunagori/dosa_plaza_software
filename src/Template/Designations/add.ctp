@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Designation | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Designation | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-6">
@@ -90,3 +90,60 @@
 		</div>
 	</div>
 </div>
+<!-- BEGIN PAGE LEVEL STYLES -->
+    
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- BEGIN VALIDATEION -->
+    <?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+    <!-- END VALIDATEION --> 
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<?php 
+$js='
+$(document).ready(function() {
+     
+    //-- Validation
+    var form2 = $("#CountryForm");
+    var error2 = $(".alert-danger", form2);
+    var success2 = $(".alert-success", form2);
+
+    form2.validate({
+        errorElement: "span", //default input error message container
+        errorClass: "help-block help-block-error", // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+        ignore: "",  // validate all fields including form hidden input
+        rules: {
+            name: { 
+                required: true, 
+            },
+        },
+
+         
+
+        errorPlacement: function (error, element) { // render error placement for each input type
+            var icon = $(element).parent(".input-icon").children("i");
+            icon.removeClass("fa-check").addClass("fa-warning");  
+            icon.attr("data-original-title", error.text()).tooltip({"container": "body"});
+        },
+
+        highlight: function (element) { // hightlight error inputs
+            $(element)
+                .closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group   
+        },
+        success: function (label, element) {
+            var icon = $(element).parent(".input-icon").children("i");
+            $(element).closest(".form-group").removeClass("has-error").addClass("has-success"); // set success class to the control group
+            icon.removeClass("fa-warning").addClass("fa-check");
+        },
+
+        submitHandler: function (form) {
+            success2.show();
+            error2.hide();
+			$("#loading").show();
+            form[0].submit(); // submit the form
+        }
+    });     
+ });';
+?>
+<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

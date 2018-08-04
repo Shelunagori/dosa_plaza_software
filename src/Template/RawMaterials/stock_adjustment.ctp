@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock-Adjustment | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Stock-Adjustment | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -25,7 +25,7 @@
 							<th style="width:15%" ><?= ('Current stock') ?></th>
 							<th style="width:15%"><?= ('Physical stock') ?></th>
 							<th style="width:20%;"><?= ('Adjustment') ?></th> 
-							<th style="width:20%;"><?= ('Commant') ?></th> 
+							<th style="width:20%;"><?= ('comment') ?></th> 
 						</tr>
 					</thead>
 					<tbody id="main_tbody">

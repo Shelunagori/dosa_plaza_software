@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Add-RawMaterials | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Add-RawMaterials | DOSA PLAZA'); ?>
  
 <div class="col-md-2">&nbsp;
 </div>	

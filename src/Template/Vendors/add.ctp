@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Vendor| DOSAPLAZA'); ?>
+<?php $this->set("title", 'Vendor| DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px;">
@@ -41,9 +41,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Person <span class="required" aria-required="true">*
-							</span>
-							</label>
+							<label class="control-label col-md-4"> Contact Person</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -56,15 +54,13 @@
 							<label class="control-label col-md-4"> Contact Number  
 							</label>
 							<div class="col-md-8"> 
-									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->contact_number."'"; } ?> name="contact_number" class="form-control input-large" Placeholder="Enter Contact Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" >
+									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->contact_number."'"; } ?> name="contact_number" class="form-control input-large" Placeholder="Enter Contact Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" style="margin:5px;" >
 								 
 							</div>
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Address <span class="required" aria-required="true">*
-							</span>
-							</span>
+							<label class="control-label col-md-4"> Address </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -75,10 +71,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Item <span class="required" aria-required="true">*
-							</span>
-							 </span>
-							</label>
+							<label class="control-label col-md-4"> Select Item</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>

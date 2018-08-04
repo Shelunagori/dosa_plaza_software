@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Attendance-Index | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Attendance-Index | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;sss">
 	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->

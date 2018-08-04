@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Employee | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-2"></div>
@@ -65,7 +65,7 @@
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Designation <span class="required" aria-required="true" name="dName" >
+							<label class="control-label col-md-12"> Designation <span class="required" name="dName" >
 							 *</span>
 							</label>
 							<div class="col-md-12">

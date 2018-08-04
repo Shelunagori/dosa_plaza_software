@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee-Attendance | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Employee-Attendance | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -32,6 +32,7 @@
 								<th scope="col"style="width:4%;"><?= ('S.No.') ?></th>
 								<th scope="col"style="width:16%"><?= ('Employees Name') ?></th>
 								<th scope="col"style="width:10%;"><?= ('Designation') ?></th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -40,9 +41,7 @@
 								<td><?= (++$d) ?></td>
 								<td><?= h($Employee->name) ?></td>
 								<td><?= h($Employee->designation->name) ?></td>
-								<td>
-								    
-								</td>
+							
 							</tr>
 							<?php } ?>
 						</tbody>
