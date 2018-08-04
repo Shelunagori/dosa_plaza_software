@@ -56,7 +56,7 @@
 							<label class="control-label col-md-4"> Contact Number  
 							</label>
 							<div class="col-md-8"> 
-									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->contact_number."'"; } ?> name="contact_number" class="form-control input-large" Placeholder="Enter Contact Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" >
+									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->contact_number."'"; } ?> name="contact_number" class="form-control input-large" Placeholder="Enter Contact Number" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"maxlength="10" minlength="10" style="margin:5px;" >
 								 
 							</div>
 						</div>

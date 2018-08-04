@@ -32,7 +32,7 @@
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$itemSubCategory->name."'"; } ?> name="name" class="form-control  " Placeholder="Enter Sub Category Name" id="only-text">
+									<input type="text" <?php if(!empty($id)){ echo "value='".$itemSubCategory->name."'"; } ?> name="name" class="form-control  " Placeholder="Enter Sub Category Name">
 								</div>
 							</div>
 						</div>
@@ -158,12 +158,7 @@ $(document).ready(function() {
 	jQuery(".loadingshow").submit(function(){
 		jQuery("#loader-1").show();
 	});
-	$("#only-text").on("keyup", function(e) {
-		var val = $(this).val();
-		if (val.match(/[^a-zA-Z]/g)) {
-		$(this).val(val.replace(/[^a-zA-Z]/g));
-		}
-	});
+	
 	 
 	
 	//-- Validation
