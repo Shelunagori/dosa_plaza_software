@@ -98,7 +98,7 @@
 		</div>
 	</div>
 </div>
-<<<<<<< HEAD
+ 
  
 <!-- BEGIN VALIDATEION -->
 	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
@@ -114,42 +114,12 @@ $js="
 		errorElement: 'span', //default input error message container
 		errorClass: 'help-block help-block-error', // default input error message class
 		focusInvalid: true, // do not focus the last invalid input
-=======
-<!-- BEGIN PAGE LEVEL STYLES -->
-	
-
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-	<!-- BEGIN VALIDATEION -->
-	<?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<!-- END VALIDATEION --> 
-<!-- END PAGE LEVEL SCRIPTS -->
-
-<?php 
-$js='
-$(document).ready(function() {
-	jQuery(".loadingshow").submit(function(){
-		jQuery("#loader-1").show();
-	});
-	
-	 
-	
-	//-- Validation
-	var form2 = $("#CountryForm");
-	var error2 = $(".alert-danger", form2);
-	var success2 = $(".alert-success", form2);
-
-	form2.validate({
-		errorElement: "span", //default input error message container
-		errorClass: "help-block help-block-error", // default input error message class
-		focusInvalid: false, // do not focus the last invalid input
-		ignore: "",  // validate all fields including form hidden input
->>>>>>> ccb13814059cde803f200956e85d7b89ac9b6fd0
 		rules: {
 			name: { 
 				required: true, 
 			},
 			tax_per: { 
-<<<<<<< HEAD
+ 
 				required: true,
 				digits:true, 
 			}, 
@@ -202,43 +172,7 @@ $(document).ready(function() {
 
 	});
  
- 
-	FormValidation.init();
+FormValidation.init();
 ";
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
-=======
-				required: true 
-			},
-		},
-
-		 
-
-		errorPlacement: function (error, element) { // render error placement for each input type
-			var icon = $(element).parent(".input-icon").children("i");
-			icon.removeClass("fa-check").addClass("fa-warning");  
-			icon.attr("data-original-title", error.text()).tooltip({"container": "body"});
-		},
-
-		highlight: function (element) { // hightlight error inputs
-			$(element)
-				.closest(".form-group").removeClass("has-success").addClass("has-error"); // set error class to the control group   
-		},
-		success: function (label, element) {
-			var icon = $(element).parent(".input-icon").children("i");
-			$(element).closest(".form-group").removeClass("has-error").addClass("has-success"); // set success class to the control group
-			icon.removeClass("fa-warning").addClass("fa-check");
-		},
-
-		submitHandler: function (form) {
-			success2.show();
-			error2.hide();
-			$("#loading").show();
-			form[0].submit(); // submit the form
-		}
-		
-	}); 	
- });';
-?>
-<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
->>>>>>> ccb13814059cde803f200956e85d7b89ac9b6fd0
