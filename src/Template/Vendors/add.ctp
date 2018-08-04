@@ -41,9 +41,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Person <span class="required" aria-required="true">*
-							</span>
-							</label>
+							<label class="control-label col-md-4"> Contact Person</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -62,9 +60,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Address <span class="required" aria-required="true">*
-							</span>
-							</span>
+							<label class="control-label col-md-4"> Address </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -75,10 +71,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Item <span class="required" aria-required="true">*
-							</span>
-							 </span>
-							</label>
+							<label class="control-label col-md-4"> Select Item</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>

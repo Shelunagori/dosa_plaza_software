@@ -25,7 +25,7 @@
 							<th style="width:15%" ><?= ('Current stock') ?></th>
 							<th style="width:15%"><?= ('Physical stock') ?></th>
 							<th style="width:20%;"><?= ('Adjustment') ?></th> 
-							<th style="width:20%;"><?= ('Commant') ?></th> 
+							<th style="width:20%;"><?= ('comment') ?></th> 
 						</tr>
 					</thead>
 					<tbody id="main_tbody">
