@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock-In VoucherList|DOSA PLAZA'); ?>
+<?php $this->set("title", 'Stock-In Voucher-List | DOSA PLAZA'); ?>
 <div style="height: 15px;" >.</div>
 <div class="row">
 	<div class="col-md-12 main-div">
@@ -37,7 +37,7 @@
 							<td><?= h($purchaseVoucher->vendor->name) ?></td>
 							<td style="text-align: right;"><?= h($purchaseVoucher->grand_total) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->link($this->Html->image('edit.png'),['controller'=>'purchaseVouchers','action'=>'add',$purchaseVoucher->id], ['escape' => false, 'class' => 'showLoader']);?>
+								<?php echo $this->Html->link($this->Html->image('edit.png'),['controller'=>'purchaseVouchers','action'=>'edit',$purchaseVoucher->id], ['escape' => false, 'class' => 'showLoader']);?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

@@ -178,6 +178,11 @@
 			}
 
 		});
+
+		$('.select2me', form3).change(function () {
+            form3.validate().element($(this));
+        });
+
 		jQuery.extend(jQuery.validator.messages, {
 		    required: 'Required.',
 		});
@@ -209,6 +214,10 @@
 			var Total_amount=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
+				var thissss=$(this).closest('tr').find('select.raw_material');
+				$('#form_sample_1').validate().element(thissss);
+
+
 				var unit_name     = $(this).closest('tr').find('select.raw_material option:selected').attr('unit_name');
 				$(this).closest('tr').find('td:nth-child(4)').html(unit_name);
 
@@ -258,6 +267,8 @@
 			
 			});
 			$('.grand_total').val(round(grand_total,2));
+
+
 		}
 		  
 		$(document).on('keyup','.discount_per',function(e){
