@@ -13,6 +13,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+				<?php $page_no=$this->Paginator->current('RawMaterials'); $page_no=($page_no-1)*20; ?>
 				<table class="table table-str table-hover " cellpadding="0" cellspacing="0">
 					<thead>
 						<tr>
@@ -28,7 +29,7 @@
 					<tbody>
 						<?php $x=0; foreach ($rawMaterials as $rawMaterial): ?>
 							<tr>
-								<td><?= ++$x; ?></td> 
+								<td><?= h(++$page_no) ?></td> 
 								<td><?= h($rawMaterial->name) ?></td>
 								<td><?= h($rawMaterial->tax->name) ?></td>
 								<td><?= h($rawMaterial->primary_unit->name) ?></td>
@@ -84,6 +85,16 @@
 							<?php endforeach; ?> 
 					</tbody>
 				</table>
+				<div class="paginator">
+			        <ul class="pagination">
+			            <?= $this->Paginator->first('<< ' . __('first')) ?>
+			            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+			            <?= $this->Paginator->numbers() ?>
+			            <?= $this->Paginator->next(__('next') . ' >') ?>
+			            <?= $this->Paginator->last(__('last') . ' >>') ?>
+			        </ul>
+			        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+			    </div>
 			</div>
 		</div>
 	</div>	
