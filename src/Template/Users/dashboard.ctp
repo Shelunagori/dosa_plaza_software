@@ -94,18 +94,31 @@
 
 
 		<div class="col-md-3 top">
-			<div class="dashboard-stat" style="height: 120px;; background-image: linear-gradient(to right, #ed693f, #f05c3f, #f24e41, #f43d45, #f52549);">
+			<div class="dashboard-stat goToBrithday" style="height: 120px;; background-image: linear-gradient(to right, #ed693f, #f05c3f, #f24e41, #f43d45, #f52549);cursor: pointer;">
 				<div class="visual">
 					<i class="fa fa-birthday-cake" style=" color: #ffffff57; font-size: 80px; padding-top: 29px;color: #f2744e;"></i>
 				</div>
-				<div class="details">
-					<div style="text-align:center;color:#FFF;font-size:16px;margin: 30px 70px;">
-						<span>4</span><br/>
+				<div class="details" style="right: 25px;padding-right: 0px;">
+					<div style="text-align:center;color:#FFF;font-size:14px;margin: 20px 0px;">
+						<span style="font-size: 16px;"><?= h($upcommingBirthdayAnniversary) ?></span><br/>
 						<span >Upcoming </span><br/>
-						<span >Brithday</span>
+						<span >Brithday & Anniversary</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		
 	</div>
+
+	<?php
+	$js="
+	$(document).ready(function() {
+		$('.goToBrithday').die().live('click',function(event){
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'index'])."';
+			var win = window.open(url, '_blank');
+		});
+	});	
+	";
+
+	echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
+	?>
