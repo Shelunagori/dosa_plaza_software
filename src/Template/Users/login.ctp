@@ -46,7 +46,7 @@ if(!empty($id)){
 			</div>
 		</div>
         <div align="center">
-        	<button type="submit" name="login_submit" class="btn btn-block" style=" background-color: #f1b11b; color: #FFF; ">
+        	<button type="submit" name="login_submit" class="btn btn-block showLoader" style=" background-color: #f1b11b; color: #FFF; ">
 			Login 
 			</button>
         </div>
