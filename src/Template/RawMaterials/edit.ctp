@@ -30,15 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group col-md-4 ">
-                        <label class="control-label col-md-12"> Tax  <span class="required"> * </span></label>
-                        <div class="row">
-                            <div class="col-md-12 input-icon right">
-                                <i class="fa"></i>
-                                <?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2 ','required'=>'required','id'=>'tax_id','empty'=>'Select...']);?>
-                            </div>
-                        </div>  
-                    </div>
+                    
                 </div> 
                 <div class="form-actions">
                     <div class="row">
