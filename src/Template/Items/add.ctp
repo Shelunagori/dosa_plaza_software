@@ -131,7 +131,7 @@
 						
 						<div class="form-actions">
 							<div class="row">
-								<div class="col-md-offset-6 col-md-9">
+								<div class=" col-md-12" align="center">
 									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
 								</div>
 							</div>
