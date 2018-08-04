@@ -21,7 +21,8 @@
 				<table border="0" width="100%">
 					<tr>
 						<td width="20%">
-							<div style="float:left; width:7%; background-image:url(/dosa_plaza_software/img/Dine.png);background-size:100%;padding: 26px;"></div>
+							<div style="float:left; width:7%; background-image:url('<?php echo $this->Url->build(['controller' =>'/img/Dine.png']); ?>');background-size:100%;padding: 30px;"></div>
+							<!-- <div style="float:left; width:7%; background-image:url(/dosa_plaza_software/img/Dine.png);background-size:100%;padding: 26px;"></div> -->
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
@@ -46,7 +47,7 @@
 				<table border="0" width="100%">
 					<tr>
 						<td width="20%">
-							<div style="float:left; width:7%; background-image:url(/dosa_plaza_software/img/Take.png);background-size:100%;padding: 26px;"></div>
+							<div style="float:left; width:7%; background-image:url('<?php echo $this->Url->build(['controller' =>'/img/Take.png']); ?>');background-size:100%;padding: 30px;"></div>
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">
@@ -71,7 +72,7 @@
 				<table border="0" width="100%">
 					<tr>
 						<td width="20%">
-							<div style="float:left; width:7%; background-image:url(/dosa_plaza_software/img/Delivery.png);background-size:100%;padding: 26px;"></div>
+							<div style="float:left; width:7%; background-image:url('<?php echo $this->Url->build(['controller' =>'/img/Delivery.png']); ?>');background-size:100%;padding: 30px;"></div>
 						</td>
 						<td width="40%" style="padding-left: 8px;">
 							<div style="float:left;color: #858789; padding:18px 0px;">

@@ -108,6 +108,7 @@
 									<tr>
 										<td width="70%" style="padding:0 10px 0 0;">
 											<?php
+											$options=array(); 
 											foreach($Items as $Item){
 												$options[]=['text' =>$Item->name, 'value' => $Item->id, 'rate' => $Item->rate];
 											}
