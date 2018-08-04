@@ -9,7 +9,7 @@
 				<td style="padding-right: 5px;" width="40%">
 					<div class="input-icon">
 						<i class="fa fa-mobile" style="font-size: 20px;"></i>
-						<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" maxlength="10" minlength="10">
+						<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 				</td>
 				<td style="padding-right: 5px;" width="10%">
@@ -40,7 +40,7 @@
 				<td style="padding-right: 5px;">
 					<div class="input-icon">
 						<i class="fa fa-mobile" style="font-size: 20px;"></i>
-						<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no" value="<?php echo @$table->c_mobile; ?>" maxlength="10" minlength="10">
+						<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no" value="<?php echo @$table->c_mobile; ?>" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 				</td>
 				<td style="padding-left: 5px;">
@@ -110,7 +110,7 @@
 				<td style="padding-right: 5px;" width="40%">
 					<div class="input-icon">
 						<i class="fa fa-mobile" style="font-size: 20px;"></i>
-						<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10">
+						<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 				</td>
 				<td style="padding-right: 5px;" width="10%">
@@ -141,7 +141,7 @@
 				<td style="padding-right: 5px;">
 					<div class="input-icon">
 						<i class="fa fa-mobile" style="font-size: 20px;"></i>
-						<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="dasdsd" id="asdasd" readonly value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10">
+						<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="dasdsd" id="asdasd" readonly value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 					</div>
 				</td>
 				<td style="padding-left: 5px;">

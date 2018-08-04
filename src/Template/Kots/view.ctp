@@ -8,7 +8,7 @@ $items=[]; $kotIDs=[];
 foreach($Kots as $Kot){
 	$kotIDs[$Kot->id]=$Kot->id;
 	foreach($Kot->kot_rows as $kot_row){
-		$items[$kot_row->item_id]=['quantity'=>@$items[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name , 'tax_name'=>$kot_row->item->tax->name, 'tax_per'=>$kot_row->item->tax->tax_per];
+		$items[$kot_row->item_id]=['quantity'=>@$items[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name , 'tax_name'=>$kot_row->item->tax->name, 'tax_per'=>$kot_row->item->tax->tax_per , 'dis_applicable'=>$kot_row->item->discount_applicable];
 	}
 }
 ?>
@@ -29,7 +29,7 @@ foreach($Kots as $Kot){
 							<td style="padding-right: 5px;" width="40%">
 								<div class="input-icon">
 									<i class="fa fa-mobile" style="font-size: 20px;"></i>
-									<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" maxlength="10" minlength="10">
+									<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" id="search_mobile"  maxlength="10" minlength="10">
 								</div>
 							</td>
 							<td style="padding-right: 5px;" width="10%">
@@ -59,7 +59,7 @@ foreach($Kots as $Kot){
 							<td style="padding-right: 5px;">
 								<div class="input-icon">
 									<i class="fa fa-mobile" style="font-size: 20px;"></i>
-									<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no" value="<?php echo @$Table->c_mobile; ?>" maxlength="10" minlength="10">
+									<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no" value="<?php echo @$Table->c_mobile; ?>" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 								</div>
 							</td>
 							<td style="padding-left: 5px;">
@@ -128,7 +128,7 @@ foreach($Kots as $Kot){
 						<td style="padding-right: 5px;" width="40%">
 							<div class="input-icon">
 								<i class="fa fa-mobile" style="font-size: 20px;"></i>
-								<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10">
+								<input type="text"  class="form-control input-small" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search_mobile" id="search_mobile" value="<?php echo @$searchBy->mobile_no;?>" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10">
 							</div>
 						</td>
 						<td style="padding-right: 5px;" width="10%">
@@ -159,7 +159,7 @@ foreach($Kots as $Kot){
 						<td style="padding-right: 5px;">
 							<div class="input-icon">
 								<i class="fa fa-mobile" style="font-size: 20px;"></i>
-								<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="dasdsd" id="asdasd" readonly value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10">
+								<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="dasdsd" id="asdasd" readonly value="<?php echo @$searchBy->mobile_no;?>" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 							</div>
 						</td>
 						<td style="padding-left: 5px;">
@@ -253,7 +253,9 @@ foreach($Kots as $Kot){
 							<td style="text-align:center;"><?php echo $item['quantity']; ?></td>
 							<td style="text-align:center;"><?php echo $item['rate']; ?></td>
 							<td style="text-align:center;"><?php echo $item['quantity']*$item['rate']; ?></td>
-							<td><input type="text" class="disBox" style="width:20%;text-align:center;width:100%;" placeholder="" /></td>
+							<td><?php if($item['dis_applicable']==1){?>
+									<input type="text" class="disBox" style="width:20%;text-align:center;width:100%;" placeholder="" />
+								<?php } ?></td>
 							<td style="text-align:center;"><?php echo $item['tax_name']; ?><span class="percen" style="display:none"><?php echo $item['tax_per']; ?></span></td>
 							<td style="text-align:right;">
 								<?php 
