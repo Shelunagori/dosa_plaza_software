@@ -84,7 +84,7 @@ class PurchaseVouchersController extends AppController
 				//Stock Impact End//
                 $this->Flash->success(__('The stock-in voucher has been saved.'));
 
-                return $this->redirect(['action' => 'edit']);
+                return $this->redirect(['action' => 'index']);
             }
             
             $this->Flash->error(__('The stock-in voucher could not be saved. Please, try again.'));
