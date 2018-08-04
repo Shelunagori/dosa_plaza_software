@@ -23,7 +23,7 @@ if(!empty($id)){
 		<div align="center" >
 			<h4 class="form-title" style="color: #FFF;">Login to your account</h4>
 		</div>
-		<div class="alert alert-danger" onclick="this.classList.add('hidden')"><?= $this->Flash->render() ?></div>
+		<?= $this->Flash->render() ?>
         <style type="text/css">
         	.toast-error{
         		background-color: #f2dede;

@@ -36,7 +36,7 @@ class UsersController extends AppController
                     return $this->redirect(['controller'=>'tables','action' => 'index']);
                 }				
             }
-            $this->Flash->error(__('Invalid Username or Password'));
+            $this->Flash->error2(__('Invalid Username or Password'));
         }
 		$user = $this->Users->newEntity();
         $this->set(compact('user'));
