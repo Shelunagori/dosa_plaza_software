@@ -41,9 +41,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Contact Person <span class="required" aria-required="true">*
-							</span>
-							</label>
+							<label class="control-label col-md-4"> Contact Person</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -62,9 +60,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Address <span class="required" aria-required="true">*
-							</span>
-							</span>
+							<label class="control-label col-md-4"> Address </span>
 							</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
@@ -75,10 +71,7 @@
 						</div>
 						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
-							<label class="control-label col-md-4"> Select Item <span class="required" aria-required="true">*
-							</span>
-							 </span>
-							</label>
+							<label class="control-label col-md-4"> Select Item</label>
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -92,18 +85,20 @@
 										}
 										$catLists=array_unique($catList);
 									}
+ 	
 									?>
 									<?php 
 									$options=array();
 									foreach($Items as $sts)
 									{
-										if(in_array($sts->id, $catLists)){
+										if(!empty($catLists) && in_array($sts->id, $catLists)){
 											$options[] = ['value'=>$sts->id,'text'=>$sts->name,'selected'=>'selected'];
 										}
 										else{
 											$options[] = ['value'=>$sts->id,'text'=>$sts->name];
 										}
-									};									
+									};
+
 									echo $this->Form->input('item_lists',['options' =>$options,'label' => false,'class'=>'form-control select2 selectState select2me','empty'=> 'Select...','multiple'=>true]);?>
 								</div>
 							</div>
@@ -182,7 +177,7 @@ $(document).ready(function() {
 		submitHandler: function (form) {
 			success2.show();
 			error2.hide();
-			$("loading").show();
+			$("#loading").show();
 			form[0].submit(); // submit the form
 		}
 	}); 	

@@ -39,9 +39,12 @@ class VendorsTable extends Table
 
         $this->hasMany('VendorItems', [
             'foreignKey' => 'vendor_id',
-			'saveStrategy'=>'replace'
+			'saveStrategy'=>'replace',
+            'joinType' => 'LEFT'
         ]);
-		$this->belongsTo('RawMaterials');
+		$this->belongsTo('RawMaterials', [
+            'joinType' => 'LEFT'
+        ]);
 		
 		
 		
