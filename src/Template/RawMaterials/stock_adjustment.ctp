@@ -8,10 +8,13 @@
 				<div class="caption"style="padding:13px; color: red;">
 					Stock Adjustment
 				</div>
-				<div style="text-align:right;padding:12px 51px 18px;">
-					<input id="search3" type="text" placeholder="Search" />
-					<i id="filtersubmit" class="fa fa-search"></i>
+				<div class="row" align="right">
+					<div class="input-group input-medium">
+						<input id="search3"  class="form-control" type="text" placeholder="Search" >
+						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+					</div>
 				</div>
+				<br/>
 				<div class="row">	
 					<div class="col-md-12 horizontal"></div>
 				</div>
@@ -56,14 +59,14 @@
 								</div>
 								<div class="input-group  hiddendiv" style="padding-top:3%;">
 									<div style="width:46%; float:left; margin-right:4%;text-align: left;	">
-										<label style="text-align:left;">No resaon </label>
+										<label style="text-align:left;">No Reason </label>
 										<input  class="form-control input input-sm resaon" name="StockLedgers[<?php echo $x;?>][noresaon]" style ="width:60%"/>
 										<span class="input-group-addon" style="float:left;">
 											<?= h($RawMaterial->primary_unit->name) ?>
 										</span>
 									</div>
 									<div style="width:46%; float:left;text-align: left;">
-										<label style="text-align:left;">wastage</label>
+										<label style="text-align:left;">Wastage</label>
 										<input  class= "form-control input-sm  wastage" name="StockLedgers[<?php echo $x;?>][wastage]" style="width:60%" />
 										<span class="input-group-addon" style="float:left";>
 											<?= h($RawMaterial->primary_unit->name) ?>
@@ -73,7 +76,7 @@
 							</td>
 							<td>
 								<div class="input-group input-sm hiddencommant ">
-									<input class="form-control " autocomplete="off" placeholder="Adjustment commant" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
+									<input class="form-control " autocomplete="off" placeholder="Adjustment comment" name="StockLedgers[<?php echo $x;?>][hiddencommant]">
 								</div>
 								<div>
 									<div class="input-group input-sm  hiddencom ">
