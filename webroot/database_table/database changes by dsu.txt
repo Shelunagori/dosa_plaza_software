@@ -7,3 +7,5 @@ ALTER TABLE `kots` ADD `order_type` VARCHAR(20) NOT NULL AFTER `one_comment`;
 ALTER TABLE `bill_rows` ADD `tax_per` DECIMAL(10,2) NOT NULL AFTER `net_amount`;
 
 ALTER TABLE `employees` ADD `designation_id` INT(11) NOT NULL AFTER `id`;
+
+ALTER TABLE `bills` ADD `no_of_pax` INT(11) NOT NULL AFTER `status`;
