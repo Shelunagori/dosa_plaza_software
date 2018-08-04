@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Item |DOSAPLAZA'); ?>
+<?php $this->set("title", 'Item |DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
 <div class="row" style="margin-top:15px">

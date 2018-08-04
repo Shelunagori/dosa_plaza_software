@@ -1,4 +1,4 @@
-<?php $this->set("title", 'Dashboard | DOSAPLAZA'); ?>
+<?php $this->set("title", 'Dashboard | DOSA PLAZA'); ?>
 <style type="text/css">
 .top{
 	margin-top: 5px;

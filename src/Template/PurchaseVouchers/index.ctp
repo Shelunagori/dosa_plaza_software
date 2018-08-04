@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock-In VoucherList|DOSAPLAZA'); ?>
+<?php $this->set("title", 'Stock-In VoucherList|DOSA PLAZA'); ?>
 <div style="height: 15px;" >.</div>
 <div class="row">
 	<div class="col-md-12 main-div">

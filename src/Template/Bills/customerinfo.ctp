@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Employee'); ?>
+<?php $this->set("title", '  Edit-Customer | DOSA PLAZA'); ?>
 
 <div style="height: 15px;" >.</div>
 <div class="row">
