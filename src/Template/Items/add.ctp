@@ -41,20 +41,15 @@
 								</div>
 							</div>
 							<div class="form-group col-md-4">
-								<label class=""> Tax <span class="required" aria-required="true">*</span></label>
-								<div class="col-md-12"> 
-									<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control','empty'=> 'Select...','required'=>'required']);?>
-								</div>
-							</div>
-						</div>
-
-						<div class="row">  
-							<div class="form-group col-md-4">
 								<label class=""> Select Sub Category <span class="required" aria-required="true">*</span></label>
 								<div class="col-md-12">
 									<?php echo $this->Form->input('item_sub_category_id',['options' =>$itemSubCategories,'label' => false,'class'=>'form-control select2me selectState input-large','empty'=> 'Select...']);?>
 								</div>
 							</div>
+						</div>
+
+						<div class="row">  
+							
 							<div class="form-group col-md-4">
 								<label  class="">Discount Applicable</label>
 								<div class="radio-list col-md-12">
@@ -219,6 +214,7 @@ $js="var form3 = $('#form_sample_1');
 			submitHandler: function (form) {
 				success3.show();
 				error3.hide();
+				$('#loading').show();
 				form[0].submit(); // submit the form
 			}
 
