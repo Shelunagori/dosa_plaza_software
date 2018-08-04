@@ -3,9 +3,7 @@ namespace App\Controller;
 
 use Cake\Event\Event;
 use App\Controller\AppController;
-use DateTime;
-use DatePeriod;
-use DateInterval;
+use Cake\Datasource\ConnectionManager;
 /**
  * Users Controller
  *
@@ -43,6 +41,7 @@ class UsersController extends AppController
 		$user = $this->Users->newEntity();
         $this->set(compact('user'));
     }
+
 	public function logout()
 	{
 		return $this->redirect($this->Auth->logout());
@@ -93,20 +92,24 @@ class UsersController extends AppController
         }
         if(empty($TotalOrdeDinner)){$TotalOrdeDinner=0;}
         if(empty($TotalSaleDinner)){$TotalSaleDinner=0;}
-        //--
-            // $date = new DateTime();
-            // $date->setTime(0, 0, 1);
-            // $today = $date->getTimestamp();
-            // $week = new DateInterval('P7D');
-            // $date->add($week);
-            // $date->setTime(23, 59, 59);
-            // $nextWeek = $date->getTimestamp();
-            // $select=$this->Users->Customers->find();
-            // $select->where(['Customers.dob > ?' =>$today])
-            //     ->orWhere(['Customers.dob < ?'=> $nextWeek])
-            //     ->limit(10);
-  
-        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner'));
+        
+        $conn = ConnectionManager::get('default');
+        $currentDate=date('Y-m-d');
+        $DateAfterSevenDays=date('Y-m-d', strtotime($currentDate. ' + 7 days'));
+       
+        $stmt = $conn->execute("SELECT COUNT(id) FROM customers Customers WHERE (DATE_FORMAT(dob, '%m-%d') >= DATE_FORMAT('".$currentDate."', '%m-%d') and DATE_FORMAT(dob, '%m-%d') <= DATE_FORMAT('".$DateAfterSevenDays."', '%m-%d')) or (DATE_FORMAT(anniversary, '%m-%d') >= DATE_FORMAT('".$currentDate."', '%m-%d') and DATE_FORMAT(anniversary, '%m-%d') <= DATE_FORMAT('".$DateAfterSevenDays."', '%m-%d')) ");
+        $rows = $stmt->fetchAll('assoc');
+        $upcommingBirthdayAnniversary=$rows[0]['COUNT(id)'];
+        
+         // $stmt = $conn->execute("SELECT * FROM customers Customers WHERE DATE_FORMAT(dob, '%m-%d') = DATE_FORMAT('".$currentDate."', '%m-%d') or DATE_FORMAT(anniversary, '%m-%d') = DATE_FORMAT('".$currentDate."', '%m-%d') ");
+        // // Read all rows.
+        // $rows = $stmt->fetchAll('assoc');
+
+        // // Read rows through iteration.
+        // foreach ($rows as $row) {
+        //     pr($row);
+        // }
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary'));
     }
 	
 	public function dashboard2()
