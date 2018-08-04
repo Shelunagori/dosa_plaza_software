@@ -43,10 +43,112 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 		<!-- END THEME STYLES -->
 		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
+		<style type="text/css">
+		#loading{
+			background-color: rgba(0, 0, 0, 0.21);
+			height: 100%;
+			width: 100%;
+			position: fixed;
+			z-index: 999999;
+			margin-top: 0px;
+			top: 0px;
+			display:none;
+		}
+		#loading-center{
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+		#loading-center-absolute {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			height: 150px;
+			width: 150px;
+			margin-top: -75px;
+			margin-left: -75px;
+		}
+		.object{
+			width: 20px;
+			height: 20px;
+			background-color: #F15340;
+			float: left;
+			margin-right: 20px;
+			margin-top: 65px;
+			-moz-border-radius: 50% 50% 50% 50% !important;
+			-webkit-border-radius: 50% 50% 50% 50% !important;
+			border-radius: 50% 50% 50% 50% !important;
+		}
+
+		#object_one {	
+			-webkit-animation: object_one 1.5s infinite;
+			animation: object_one 1.5s infinite;
+			}
+		#object_two {
+			-webkit-animation: object_two 1.5s infinite;
+			animation: object_two 1.5s infinite;
+			-webkit-animation-delay: 0.25s; 
+		    animation-delay: 0.25s;
+			}
+		#object_three {
+		    -webkit-animation: object_three 1.5s infinite;
+			animation: object_three 1.5s infinite;
+			-webkit-animation-delay: 0.5s;
+		    animation-delay: 0.5s;
+			
+			}
+		@-webkit-keyframes object_one {
+		75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_one {
+
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform: scale(0);
+		  }
+
+		}
+		@-webkit-keyframes object_two {
+		  75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_two {
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform:  scale(0);
+		  }
+
+		}
+
+		@-webkit-keyframes object_three {
+		  75% { -webkit-transform: scale(0); }
+		}
+
+		@keyframes object_three {
+
+		  75% { 
+		    transform: scale(0);
+		    -webkit-transform: scale(0);
+		  }
+		  
+		}
+		</style>
 	</head>
 	<!-- END HEAD -->
 	<!-- BEGIN BODY -->
-	<body class="login" style='background: url(<?php echo $this->Url->build(['controller' =>'/img/bg3.jpg', '_full'=>true, '_ssl'=>false]); ?>);''>
+	<body class="login" style="background: url(<?php echo $this->Url->build(['controller' =>'/img/bg3.jpg', '_full'=>true, '_ssl'=>false]); ?>);" >
+
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object" id="object_one"></div>
+					<div class="object" id="object_two"></div>
+					<div class="object" id="object_three"></div>
+				</div>
+			</div>
+		</div>
+
 		<!-- BEGIN LOGO -->
 		<div class="logo">
 			<?php echo $this->Html->Image('/img/Dosa-Plaza-Login.png',['style' => 'height: 90px;']); ?>
@@ -90,7 +192,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?php echo $this->Html->script('/assets/admin/pages/scripts/login.js'); ?>
 		<!-- END PAGE LEVEL SCRIPTS -->
 		<script>
-		jQuery(document).ready(function() {     
+		jQuery(document).ready(function() {    
+			$('.showLoader').live('click',function(e) {
+				$('#loading').show();
+			});
+		 
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
 			Login.init();

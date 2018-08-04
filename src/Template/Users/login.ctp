@@ -23,7 +23,7 @@ if(!empty($id)){
 		<div align="center" >
 			<h4 class="form-title" style="color: #FFF;">Login to your account</h4>
 		</div>
-		<div class="alert alert-danger" onclick="this.classList.add('hidden')"><?= $this->Flash->render() ?></div>
+		<?= $this->Flash->render() ?>
         <style type="text/css">
         	.toast-error{
         		background-color: #f2dede;
@@ -46,7 +46,7 @@ if(!empty($id)){
 			</div>
 		</div>
         <div align="center">
-        	<button type="submit" name="login_submit" class="btn btn-block" style=" background-color: #f1b11b; color: #FFF; ">
+        	<button type="submit" name="login_submit" class="btn btn-block showLoader" style=" background-color: #f1b11b; color: #FFF; ">
 			Login 
 			</button>
         </div>
