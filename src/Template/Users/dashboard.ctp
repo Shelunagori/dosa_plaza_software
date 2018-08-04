@@ -99,7 +99,7 @@
 				<div class="visual">
 					<i class="fa fa-birthday-cake" style=" color: #ffffff57; font-size: 80px; padding-top: 29px;color: #f2744e;"></i>
 				</div>
-				<div class="details" style="right: 25px;padding-right: 0px;">
+				<div class="details" style="right: 50px;padding-right: 0px;">
 					<div style="text-align:center;color:#FFF;font-size:14px;margin: 20px 0px;">
 						<span style="font-size: 16px;"><?= h($upcommingBirthdayAnniversary) ?></span><br/>
 						<span >Upcoming </span><br/>

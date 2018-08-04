@@ -182,9 +182,6 @@
 		$('.select2me', form3).change(function () {
             form3.validate().element($(this));
         });
-        $('.select2', form3).change(function () {
-            form3.validate().element($(this));
-        });
 
 		jQuery.extend(jQuery.validator.messages, {
 		    required: 'Required.',
