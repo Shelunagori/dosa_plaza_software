@@ -41,7 +41,7 @@ class KotsController extends AppController
         $Comments = $this->Kots->Comments->find('list');
         $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type'));
     }
-
+ 
     /**
      * View method
      *
