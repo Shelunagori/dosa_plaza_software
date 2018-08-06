@@ -23,7 +23,6 @@
 					<div class="form-group col-md-2">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
 						<input class="form-control input-sm" type="date" name="transaction_date" required /> 
-
 					</div>	
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>
