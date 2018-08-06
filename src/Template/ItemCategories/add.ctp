@@ -33,7 +33,6 @@
 								<div class="input-icon right">
 									<i class="fa"></i>
 									<input type="text" <?php if(!empty($id)){ echo "value='".$itemCategory->name."'"; } ?> name="name" class="form-control" Placeholder="Enter Category Name">
-									 
 								</div>
 							</div>
 						</div>
