@@ -35,7 +35,7 @@ if(!empty($id)){
 			<label class="control-label visible-ie8 visible-ie9">Username</label>
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
-				<?php echo $this->Form->input('username', ['label'=>false,'required'=>'required','class' => 'form-control','placeholder'=>'Username','maxlength'=>'30']); ?>
+				<?php echo $this->Form->input('username', ['label'=>false,'required'=>'required','class' => 'form-control','placeholder'=>'Username','maxlength'=>'30','autofocus']); ?>
 			</div>
 		</div>
 		<div class="form-group">

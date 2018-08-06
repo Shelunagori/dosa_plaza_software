@@ -114,7 +114,7 @@
 												$options[]=['text' =>$Item->name, 'value' => $Item->id, 'rate' => $Item->rate];
 											}
 											
-											echo $this->Form->input('item_sub_category_id',['options' =>$options,'label' => false,'class'=>'form-control select2me ItemDropDown','empty'=> 'Search Item']);?>
+											echo $this->Form->input('item_sub_category_id',['options' =>$options,'label' => false,'class'=>'form-control select2me ItemDropDown','empty'=> 'Search Item','autofocus']);?>
 										</td>
 										<td width="20%" style="padding:0 10px 0 0;">
 											<input type="text" class="form-control QtyCatcher" placeholder="Quantity">
