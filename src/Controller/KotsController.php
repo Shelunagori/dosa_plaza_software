@@ -203,21 +203,23 @@ class KotsController extends AppController
             $IsCustomerExist=$this->Kots->Bills->Customers->find()->where(['Customers.mobile_no' => $mobile])->first();
           
             if($IsCustomerExist){
-                $customer_id=$IsCustomerExist->id;
+                echo $customer_id=$IsCustomerExist->id;
                 // $Bills=$this->Kots->Bills->find()->contain(['BillRows'])
                 //     ->where(['Bills.customer_id'=>$customer_id]);
 
                 
 
-                $q= $this->Kots->Bills->BillRows->find();
-                $q->select(['total_likes' => $q->func()->count('*')])
-                    ->group(['BillRows.item_id'])
-                    ->matching('Bills', function($q) use($customer_id){
-                        return $q->where(['Bills.customer_id' => $customer_id]);
-                    })
-                    ->autoFields(true);
+                $BillRows= $this->Kots->Bills->BillRows->find();
+                $BillRows->select(['TotalQuantity' => $BillRows->func()->SUM('BillRows.quantity')])
+                            ->group(['BillRows.item_id'])
+                            ->order(['TotalQuantity' => 'DESC'])
+                            ->matching('Bills', function($q) use($customer_id){
+                                return $q->where(['Bills.customer_id' => $customer_id]);
+                            })
+                            ->autoFields(true);
+                pr($BillRows->toArray());
             }
-               pr($q->toArray());; exit;
+            exit;
         }
         
 
