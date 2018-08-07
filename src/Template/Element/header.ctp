@@ -71,7 +71,7 @@ if($controller=='kots'){
         <span style="color: #2FBD9F;font-size: 15px;margin-left: 5px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></span>
     </div>
 </div>
-<?php
+<?php 
 
 $js="
 $(document).ready(function() {
