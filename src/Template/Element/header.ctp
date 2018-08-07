@@ -16,10 +16,19 @@
 <?php //pr($this->request->params);exit;
 $controller = strtolower($this->request->params['controller']); 
 $pass = $this->request->params['pass'];
+$action = $this->request->params['action'];
 $dinneractive='topBtn';
 $deleveryactive='topBtn';
 $takeawayactive='topBtn';
-if($controller=='tables'){ $dinneractive="topBtnActive";}
+$swiftactive='topBtn';
+if($controller=='tables'){ 
+    if($action=='swifttable'){
+        $swiftactive='topBtnActive';
+    }
+    else{
+         $dinneractive="topBtnActive";
+    }
+}
 if($controller=='kots'){ 
     if(!empty($pass)){
         if($pass[1]=='dinner'){
@@ -56,8 +65,8 @@ if($controller=='kots'){
         <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer">Take Away</span>
     </div>
     <div class="col-md-6" align="right">
-        <!--<span class="topBtn2">Booking</span>
-        <span class="topBtn2">Bills</span>-->
+        <span class="topBtn2">Booking</span>
+        <span class="<?php echo $swiftactive ; ?> Swift pointer">Swift Table</span>
         <span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
         <span style="color: #2FBD9F;font-size: 15px;margin-left: 5px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></span>
     </div>
@@ -77,6 +86,11 @@ $(document).ready(function() {
     $('.takeAwayNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','takeaway'])."'
         window.open(url, '_blank'); 
+    });
+
+    $('.Swift').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'Tables','action'=>'swifttable'])."'
+        window.open(url); 
     });
 });
 ";

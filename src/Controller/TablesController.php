@@ -214,4 +214,66 @@ class TablesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function swifttable()
+    {
+        $this->viewBuilder()->layout('counter');
+        $Table = $this->Tables->newEntity();
+        if ($this->request->is(['patch','post','put'])) {
+            $occupiedtable=$this->request->getData('occupiedtable');
+            $vacanttable=$this->request->getData('vacanttable');
+            //$OTables=$this->Tables->find()->where(['id'=>$occupiedtable])->toArray();
+            $OTables = $this->Tables->get($occupiedtable, [
+                'contain' => []
+            ]);
+
+            //**
+            $Updatetable = $this->Tables->get($vacanttable, [
+                'contain' => []
+            ]);
+            $Updatetable->status=$OTables['status'];
+            $Updatetable->c_name=$OTables['c_name'];
+            $Updatetable->c_mobile=$OTables['c_mobile'];
+            $Updatetable->no_of_pax=$OTables['no_of_pax'];
+            $Updatetable->occupied_time=$OTables['occupied_time'];
+            $Updatetable->dob=$OTables['dob'];
+            $Updatetable->doa=$OTables['doa'];
+            $Updatetable->email=$OTables['email'];
+            $Updatetable->c_address=$OTables['c_address']; 
+            $this->Tables->save($Updatetable);
+
+            //**
+            $Oqtable = $this->Tables->get($occupiedtable, [
+                'contain' => []
+            ]);
+            $Oqtable->status = 'vacant';
+            $Oqtable->c_name = '';
+            $Oqtable->c_mobile = '';
+            $Oqtable->no_of_pax = '';
+            $Oqtable->occupied_time = '';
+            $Oqtable->dob = '';
+            $Oqtable->doa = '';
+            $Oqtable->email = '';
+            $Oqtable->c_address = '';
+            $this->Tables->save($Oqtable); 
+
+            //** KOTS
+            $BillData=  $this->Tables->Kots->find()
+                        ->where(['Kots.table_id'=>$occupiedtable,'Kots.bill_pending'=>'yes'])
+                        ->count();
+            if($BillData>0){
+                $query = $this->Tables->Kots->query();
+                $query->update()
+                        ->set(['table_id' => $vacanttable ])
+                        ->where(['Kots.table_id'=>$occupiedtable,'Kots.bill_pending'=>'yes'])
+                        ->execute();
+            }
+            $this->Flash->success(__('Table successfully swifted'));
+
+            return $this->redirect(['action' => 'swifttable']);
+        }
+        $vacantTables =$this->Tables->find()->where(['status'=>'vacant']);
+        $occupiedTables =$this->Tables->find()->where(['status'=>'occupied']);
+        $this->set(compact('vacantTables','occupiedTables','Table'));
+    }
 }
