@@ -52,7 +52,7 @@
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	
-	<div class="row KOTView" style="padding:20px 10px;">
+	<div class="row KOTView" style="padding:9px 1px;">
 		<div class="col-md-12">
 			<table width="100%">
 				<tr>
@@ -125,35 +125,51 @@
 									</tr>
 								</table>
 							</div>
-							<div style="padding-top:12px">
-								<table class="table" id="kotBox">
-									<thead>
-										<tr>
-											<th style="text-align:center;">S.No.</th>
-											<th>Name</th>
-											<th style="text-align:center;">Quantity</th>
-											<th style="text-align:center;">Rate</th>
-											<th style="text-align:center;">Amount</th>
-											<th style="text-align:center;">Comment</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-									
-									</tbody>
-								</table>
+							<div style="max-height:200px;overflow-y:scroll;">
+								<div style="padding-top:12px" >
+									<table class="table" id="kotBox">
+										<thead>
+											<tr>
+												<th style="text-align:center;">S.No.</th>
+												<th>Name</th>
+												<th style="text-align:center;">Quantity</th>
+												<th style="text-align:center;">Rate</th>
+												<th style="text-align:center;">Amount</th>
+												<th style="text-align:center;">Comment</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+										
+										</tbody>
+									</table>
+								</div>
+								<div id="all_kot_data"></div>
 							</div>
-							<div style="padding-top:12px" align="center">
+							<div align="center">
 								<textarea id="oneComment" style="display: none;"></textarea>
 								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
 							</div>
-							<br/><br/>
-							<div style="padding-top:12px" align="right">
-								<span class="CreateBill" >GENERATE BILL </span>
-								<span class="ViewAllKOT" >VIEW ALL KOT</span>
+							<hr style="margin-bottom: 2px; "></hr> 
+							<!--<div style="padding-top:12px" align="right">
+								<span class="CreateBill" >GENERATE BILL </span> 
 							</div>
-							<br/><br/>
+							<br/>--> 
+						</div>
+						<div style="background-color: #FFF; border-radius: 8px !important; padding: 0px 15px; margin-top:10px">
+							<div style="padding-top:12px">
+								<table>
+								<tr>
+									<td width="50%" style="border-right:1px solid #f5f5f5;" id="customer_info">
+
+									</td>
+									<td width="50%">
+									</td>
+								</tr>
+								
+		 
+							</div>
 						</div>
 					</td>
 				</tr>
@@ -347,7 +363,27 @@
 			$('.ItemBox').hide();
 			$('.ItemBox[sub_category_id='+sub_category_id+']').show();
 		});
-		
+
+		//-- View All KOTS
+		var table_id=$('#tableInput').val();
+		var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
+		url=url+'?table_id='+table_id;
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('#all_kot_data').html(response);
+		});
+
+		//-- VIew Customer Info
+		var table_id=$('#tableInput').val();
+		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
+		url=url+'?table_id='+table_id;
+		console.log(url);
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			$('#customer_info').html(response);
+		});
 		
 		$('.ItemBox').die().live('click',function(event){
 			var item_id=$(this).attr('item_id');
@@ -439,20 +475,7 @@
 			$('#WaitBox4').hide();
 		});
 
-		$('.ViewAllKOT').die().live('click',function(event){
-			event.preventDefault();
-			var table_id=$('#tableInput').val();
-			$('#WaitBox4').show();
-			$('#WaitBox4 div.modal-body').html('".$waitingMessage2."');
-			var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
-			url=url+'?table_id='+table_id;
-			$.ajax({
-				url: url,
-			}).done(function(response) {
-				$('#WaitBox4 div.modal-body').html(response);
-			});
-		});
-		
+		 
 		$('.CreateBill').die().live('click',function(event){
 			event.preventDefault();
 			var table_id=$('#tableInput').val();

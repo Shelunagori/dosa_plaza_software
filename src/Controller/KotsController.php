@@ -176,4 +176,51 @@ class KotsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function customer($id = null,$search_code=null,$search_mobile=null,$searchbox=null)
+    {
+        $this->viewBuilder()->layout('');
+        $id=$this->request->query('table_id');
+
+        $searchBy=array();
+        $searchbox=0;
+        if(!empty($search_mobile) || !empty($search_code))
+        {
+            $searchBy=$this->Kots->Customers->find()
+                 ->where(['OR' => array(
+                            array("Customers.mobile_no" => $search_mobile),
+                            array("Customers.customer_code" => $search_code)
+                        )])
+                 ->first();
+            if(!empty($searchBy)){
+                $searchbox=1;  
+            }
+        }
+        $table = $this->Kots->Tables->get($id);
+        $mobile='9680747166';//@$table->c_mobile;
+        $favorite_item=array();
+        if(!empty($mobile)){
+            $IsCustomerExist=$this->Kots->Bills->Customers->find()->where(['Customers.mobile_no' => $mobile])->first();
+          
+            if($IsCustomerExist){
+                $customer_id=$IsCustomerExist->id;
+                // $Bills=$this->Kots->Bills->find()->contain(['BillRows'])
+                //     ->where(['Bills.customer_id'=>$customer_id]);
+
+                
+
+                $q= $this->Kots->Bills->BillRows->find();
+                $q->select(['total_likes' => $q->func()->count('*')])
+                    ->group(['BillRows.item_id'])
+                    ->matching('Bills', function($q) use($customer_id){
+                        return $q->where(['Bills.customer_id' => $customer_id]);
+                    })
+                    ->autoFields(true);
+            }
+               pr($q->toArray());; exit;
+        }
+        
+
+        $this->set(compact('table','searchBy','searchbox'));
+    }
 }
