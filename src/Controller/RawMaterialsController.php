@@ -185,6 +185,7 @@ class RawMaterialsController extends AppController
 						$AdjustData['rate']=0;
 						$AdjustData['status']='out';
 						$AdjustData['voucher_name']='stock adjustment';
+						$AdjustData['is_wastage']=1;
 						$AdjustData['adjustment_commant']=$adjustment_commant;
 						$AdjustData['wastage_commant']=$wastage_commant;
 						$StockLedger = $this->RawMaterials->StockLedgers->patchEntity($StockLedger, $AdjustData);
@@ -245,6 +246,52 @@ class RawMaterialsController extends AppController
 		->autoFields(true);
 
 		$this->set(compact('RawMaterials'));
+	}
+
+
+	public function dailyReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$date=$this->request->query('date');
+		
+		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <' => $date]);
+		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
+		
+		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <' => $date]);
+		$openingOut->select([$openingOut->func()->sum('StockLedgers.quantity')]);
+
+		$inward=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date' => $date, 'StockLedgers.purchase_voucher_id >' => '0']);
+		$inward->select([$inward->func()->sum('StockLedgers.quantity')]);
+
+		$adjustmentIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment']);
+		$adjustmentIn->select([$adjustmentIn->func()->sum('StockLedgers.quantity')]);
+
+		$used=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'Bill']);
+		$used->select([$used->func()->sum('StockLedgers.quantity')]);
+
+		$wastage=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment', 'StockLedgers.is_wastage' => true]);
+		$wastage->select([$wastage->func()->sum('StockLedgers.quantity')]);
+
+		$adjustmentOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment', 'StockLedgers.is_wastage' => false]);
+		$adjustmentOut->select([$adjustmentOut->func()->sum('StockLedgers.quantity')]);
+		
+		
+		$RawMaterials =	$this->RawMaterials->find();
+		$RawMaterials->select([
+			'total_in_opening' => $openingIn,
+			'total_out_opening' => $openingOut,
+			'inward' => $inward,
+			'adjustmentIn' => $adjustmentIn,
+			'used' => $used,
+			'wastage' => $wastage,
+			'adjustmentOut' => $adjustmentOut,
+		])
+		->contain(['PrimaryUnits'])
+		->where(['RawMaterials.is_deleted'=>0])
+		->autoFields(true);
+		//pr($RawMaterials->toArray()); exit;
+		$this->set(compact('RawMaterials', 'date'));
 	}
 
 

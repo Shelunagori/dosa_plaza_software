@@ -12,3 +12,5 @@ purchase_voucher_id	int(10)
 ALTER TABLE `bills` ADD `transaction_date` DATE NOT NULL AFTER `id`;
 
 transaction_date in stock ledger
+
+is_wastage in stock ledger 
