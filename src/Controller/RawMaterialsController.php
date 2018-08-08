@@ -119,6 +119,7 @@ class RawMaterialsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
 	public function stockAdjustment(){
 		$this->viewBuilder()->layout('admin');
 		
@@ -209,4 +210,31 @@ class RawMaterialsController extends AppController
 		
 		$this->set(compact('RawMaterials'));
 	}
+
+
+	public function currentStock()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+	
+		
+		$q=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
+		$q->select([$q->func()->sum('StockLedgers.quantity')]);
+		
+		$q2=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
+		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+		
+		$RawMaterials =	$this->RawMaterials->find();
+		$RawMaterials->select([
+			'total_in' => $q,
+			'total_out' => $q2
+		])
+		->contain(['PrimaryUnits'])
+		->where(['RawMaterials.is_deleted'=>0])
+		->autoFields(true);
+		
+		$this->set(compact('RawMaterials'));
+	}
+
+
 }
