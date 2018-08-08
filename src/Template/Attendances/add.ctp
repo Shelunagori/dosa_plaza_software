@@ -33,7 +33,7 @@
 								<th scope="col"><?= ('Name') ?></th>
 								<th scope="col">
 									Attendance 
-									<span style=" font-size: 12px; color: #7b7a7a; float: right; "> 
+									<span style="font-size: 12px; color: #7b7a7a; float: right; "> 
 										Mark All as
 										<select class="MarkAll">
 											<option value="0">None</option>
