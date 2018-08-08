@@ -3,6 +3,12 @@
 .saveCustomersearch{
 	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
 }
+.saveCustomer{
+	color: #FFF; background-color: #FA6775; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+}
+.closeCustomerBox2{
+	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
+}
 .commentString{
     background-color: #2d4161;
     padding:  5px;
@@ -496,8 +502,42 @@
 			c=c+1;
 			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span><input type \"taxt\" class=\"qty\" value=\"1\"></span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 		});
-		
-		 
+
+		$('.saveCustomersearch').die().live('click',function(event){
+			 //-- VIew Customer Info
+			var table_id=$('#tableInput').val();
+			var search=$('#search').val();
+			var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
+			url=url+'?table_id='+table_id+'&search='+search;
+			$.ajax({
+				url: url,
+			}).done(function(response) { 
+				$('#customer_info').html(response);
+			});
+		});
+		$('.saveCustomer').die().live('click',function(event){
+			$(this).text('Saving...');
+			var c_table_id=$('#c_table_id').val();
+			var c_name=$('#c_name').val();
+			var c_mobile_no=$('#c_mobile_no').val();
+			var c_pax=$('#c_pax').val();
+			var dob='';
+			var doa='';
+			var c_email=$('#c_email').val();
+			var c_address=$('#c_address').val();
+			var url='".$this->Url->build(['controller'=>'Tables','action'=>'saveCustomeronbill'])."';
+			url=url+'?c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&table_id='+c_table_id;
+			url=encodeURI(url);
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				if(response=='1'){
+					 UpdateCustmber();
+				}else{
+					alert('Not saved. Something went wrong.');
+				}
+			});
+		});
 		
 		$('.AddItemBtn').die().live('click',function(event){
 			var item_id=$('.ItemDropDown option:selected').val();
@@ -784,7 +824,18 @@
 
 
 		
-	});	
+	});
+	function UpdateCustmber(){
+		var table_id=$('#tableInput').val();
+		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
+		url=url+'?table_id='+table_id;
+		 
+		$.ajax({
+			url: url,
+		}).done(function(response) { 
+			$('#customer_info').html(response);
+		});
+	}	
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));

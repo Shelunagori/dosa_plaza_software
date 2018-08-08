@@ -69,7 +69,7 @@ class BillsController extends AppController
         if($IsCustomerExist){
             $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
             $Customer->name=$c_name;
-            $Customer->address=$c_address;
+            $Customer->mobile_no=$c_address;
             $Customer->dob=$dob;
             $Customer->anniversary=$doa;
             $Customer->email=$c_email;

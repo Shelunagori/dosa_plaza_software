@@ -191,51 +191,50 @@ class KotsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function customer($id = null,$search_code=null,$search_mobile=null,$searchbox=null)
+    public function customer($id = null,$search=null,$search_mobile=null,$searchbox=null)
     {
         $this->viewBuilder()->layout('');
         $id=$this->request->query('table_id');
-
+        $search=$this->request->query('search');
+        $table = $this->Kots->Tables->get($id);
         $searchBy=array();
         $searchbox=0;
-        if(!empty($search_mobile) || !empty($search_code))
+        if(!empty($search))
         {
-            $searchBy=$this->Kots->Customers->find()
+            $searchBy=$this->Kots->Bills->Customers->find()
                  ->where(['OR' => array(
-                            array("Customers.mobile_no" => $search_mobile),
-                            array("Customers.customer_code" => $search_code)
+                            array("Customers.mobile_no" => $search),
+                            array("Customers.customer_code" => $search)
                         )])
                  ->first();
             if(!empty($searchBy)){
                 $searchbox=1;  
             }
-        }
-        $table = $this->Kots->Tables->get($id);
-        $mobile='9680747166';//@$table->c_mobile;
-        $favorite_item=array();
-        if(!empty($mobile)){
-            $IsCustomerExist=$this->Kots->Bills->Customers->find()->where(['Customers.mobile_no' => $mobile])->first();
-          
-            if($IsCustomerExist){
-                 $customer_id=$IsCustomerExist->id;
-                // $Bills=$this->Kots->Bills->find()->contain(['BillRows'])
-                //     ->where(['Bills.customer_id'=>$customer_id]);
-
-                
-
-                $BillRows= $this->Kots->Bills->BillRows->find();
-                $BillRows->select(['TotalQuantity' => $BillRows->func()->SUM('BillRows.quantity')])
-                            ->group(['BillRows.item_id'])
-                            ->order(['TotalQuantity' => 'DESC'])
-                            ->matching('Bills', function($q) use($customer_id){
-                                return $q->where(['Bills.customer_id' => $customer_id]);
-                            })
-                            ->autoFields(true);
-                //pr($BillRows->toArray());
+            else
+            {
+                $searchbox=2; 
             }
-            //exit;
+            //pr($searchBy);
         }
-        
+        else{
+            $mobile=@$table->c_mobile;
+            $favorite_item=array();
+            if(!empty($mobile)){
+                $IsCustomerExist=$this->Kots->Bills->Customers->find()->where(['Customers.mobile_no' => $mobile])->first();
+              
+                if($IsCustomerExist){
+                    $customer_id=$IsCustomerExist->id;
+                    $BillRows= $this->Kots->Bills->BillRows->find();
+                    $BillRows->select(['TotalQuantity' => $BillRows->func()->SUM('BillRows.quantity')])
+                                ->group(['BillRows.item_id'])
+                                ->order(['TotalQuantity' => 'DESC'])
+                                ->matching('Bills', function($q) use($customer_id){
+                                    return $q->where(['Bills.customer_id' => $customer_id]);
+                                })
+                                ->autoFields(true);
+                }
+            }
+        }     
 
         $this->set(compact('table','searchBy','searchbox'));
     }
