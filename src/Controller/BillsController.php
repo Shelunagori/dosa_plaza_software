@@ -119,6 +119,7 @@ class BillsController extends AppController
 			$bill->voucher_no=1;
 		}
 		
+        $bill->transaction_date=date('Y-m-d');
 		$bill->table_id=$table_id;
         $bill->no_of_pax=$c_pax;
 		$bill->total=$total; 
@@ -188,6 +189,7 @@ class BillsController extends AppController
                         $outQty=($item_row->quantity*$bill_row->quantity)/$item_row->raw_material->formula;
                     }
                     $stockLedger = $this->Bills->BillRows->StockLedgers->newEntity();
+                    $stockLedger->transaction_date = $bill->transaction_date;
                     $stockLedger->raw_material_id = $item_row->raw_material_id;
                     $stockLedger->quantity = $outQty;
                     $stockLedger->rate = 0;//To Be Calculate
