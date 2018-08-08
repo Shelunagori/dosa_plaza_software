@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\Query;
 
 /**
  * RawMaterials Controller
@@ -229,19 +230,20 @@ class RawMaterialsController extends AppController
 
 		$q3=$this->RawMaterials->StockLedgers->find()
 			->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.purchase_voucher_id >' => '0'])
-			->first()
-			->order([]);
-		$q3->select([$q2->func()->sum('StockLedgers.quantity')]);
+			->order(['StockLedgers.transaction_date' => 'DESC'])
+			->limit(1);
+		$q3->select(['StockLedgers.transaction_date']);
 		
 		$RawMaterials =	$this->RawMaterials->find();
 		$RawMaterials->select([
 			'total_in' => $q,
-			'total_out' => $q2
+			'total_out' => $q2,
+			'last_purchase' => $q3
 		])
 		->contain(['PrimaryUnits'])
 		->where(['RawMaterials.is_deleted'=>0])
 		->autoFields(true);
-		
+
 		$this->set(compact('RawMaterials'));
 	}
 
