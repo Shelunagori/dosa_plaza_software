@@ -43,6 +43,9 @@
 	color: #000; background-color: #F5F5F5; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
 }
 .CreateBill{
+	color: #FFF; background-color: #2D4161; padding: 14px 36px;cursor: pointer;font-size:15px;   margin-left: 30px; border-radius: 8px;
+}
+.Taxbutn{
 	color: #FFF; background-color: #2D4161; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
 }
 
@@ -152,23 +155,123 @@
 								<span class="CreateKOT" >CREATE KOT </span>
 							</div>
 							<hr style="margin-bottom: 2px; "></hr> 
-							<!--<div style="padding-top:12px" align="right">
-								<span class="CreateBill" >GENERATE BILL </span> 
-							</div>
-							<br/>--> 
 						</div>
 						<div style="background-color: #FFF; border-radius: 8px !important; padding: 0px 15px; margin-top:10px">
 							<div style="padding-top:12px">
-								<table>
+								
+								<div id="deletemodal" class="modal fade" role="dialog">
+									<div class="modal-dialog modal-md" >
+										<div class="modal-content">
+										  	<div class="modal-header">
+												<h4 class="modal-title">
+												Taxes in Bill
+												</h4>
+											</div>
+											<div class="modal-body">
+												<table class="table table-str">
+													<thead>
+														<tr>
+															<th>Item Name</th>
+															<th>Item Rate</th>
+															<th>Quantity</th>
+															<th>Tax</th>
+															<th>Tax Amount</th>
+															<th>Total</th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php //pr($itemsList);
+														$total_amount_without_tax=0;
+														$total_amount_with_tax=0;
+														$total_tax_amount=0;
+														foreach ($itemsList as $value) {
+															$name=$value['name'];
+															$rate=$value['rate'];
+															$quantity=$value['quantity'];
+															$tax_name=$value['tax_name'];
+															$tax_per=$value['tax_per'];
+															$totamt=$rate*$quantity;
+															$total_amount_without_tax+=$totamt;
+															$taxamt=round(($totamt*$tax_per)/100,2);
+															$total_tax_amount+=$taxamt;
+															$showAmt=round($totamt+$taxamt,2);
+															$total_amount_with_tax+=$showAmt;
+
+															echo '
+															<tr>
+																<td>'.$name.'</td>
+																<td>'.$rate.'</td>
+																<td>'.$quantity.'</td>
+																<td>'.$tax_name.'</td>
+																<td>'.$taxamt.'</td>
+																<td>'.$showAmt.'</td>
+															</tr>';
+														
+														}
+														$shwcgst=$total_tax_amount/2;
+														?>
+													</tbody>
+													<tfoot>
+														<tr>
+															<th align="right" colspan="4">Total CGST</th>
+															<th colspan="2"><?php echo $shwcgst;?></th>
+
+														</tr>
+														<tr>
+															<th align="right" colspan="4">Total SGST</th>
+															<th colspan="2"><?php echo $shwcgst;?></th>
+														</tr>
+														<tr style="color:#000000;background-color:#DDDDDD;">
+															<th align="right" colspan="4">Total</th>
+															<th><?php echo $total_tax_amount;?></th>
+															<th><?php echo $total_amount_with_tax;?></th>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+											<div class="modal-footer" style="border:none;"> 
+												<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<table width="100%" border="0">
 								<tr>
-									<td width="50%" style="border-right:1px solid #f5f5f5;" id="customer_info">
+									<td width="50%" style="border-right:5px solid #f5f5f5;" id="customer_info">
 
 									</td>
 									<td width="50%">
+										<table width="95%" style="margin-left:2%"  border="0">
+											<tr>
+												<td height="35px" width="65%"><b>Total :</b></td>
+												<td width="35%"><b> &#8377; <?php echo $total_amount_without_tax;?> </b></td>
+											</tr>
+											<tr>
+												<td height="35px" width="65%"><b>Tax :</b></td>
+												<td width="35%"><span data-target="#deletemodal" data-toggle='modal' class="Taxbutn"><b> &#8377; <?php echo $total_tax_amount;?> </b></span></td>
+											</tr>
+											<tr style="background:#eee">
+												<td height="35px" width="65%"><b>Net Amount :</b></td>
+												<td width="35%"><b> &#8377; <?php echo $total_amount_with_tax;?> </b></td>
+											</tr>
+											<tr>
+												<td colspan="2" height="35px">
+													<?php echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>$Table_data->employee_id]); ?>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<div style="padding-top:20px;width:100%"  align="center">
+														<span class="CreateBill" align="center"><i class="fa fa-rupee "></i> GENERATE BILL </span>
+														</br></br> 
+													</div>
+												</td>
+											</tr>
+										</table>
 									</td>
-								</tr>
-								
-		 
+								</tr>			
+		   
 							</div>
 						</div>
 					</td>
@@ -177,7 +280,7 @@
 		</div>
 	</div>
 </div>
-<style>
+<style> 
 #kotBox td{
 	padding:12px 0px;
 }
@@ -378,7 +481,7 @@
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 		url=url+'?table_id='+table_id;
-		console.log(url);
+		 
 		$.ajax({
 			url: url,
 		}).done(function(response) { 
@@ -663,6 +766,20 @@
 			var sr_no=0;
 			$('#rowSR').val(sr_no);
 			$('#WaitBox5').show();
+		});
+		
+		$('.employee_id').die().live('change',function(event){
+			var steward_name=$(this).find('option:selected').text();
+			var steward_id=$(this).find('option:selected').val();
+			var table_id=$('#tableInput').val();
+			var url='".$this->Url->build(['controller'=>'Tables','action'=>'saveSteward'])."';
+			url=url+'?table_id='+table_id+'&steward_id='+steward_id;
+			url=encodeURI(url);
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				
+			});
 		});
 
 

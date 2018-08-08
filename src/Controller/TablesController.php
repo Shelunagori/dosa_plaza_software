@@ -88,7 +88,7 @@ class TablesController extends AppController
     {
         $this->viewBuilder()->layout('');
         $table_id=$this->request->query('table_id');
-        $steward_id=$table_id=$this->request->query('steward_id');
+        $steward_id=$this->request->query('steward_id');
 
         $Table=$this->Tables->get($table_id);
         $Table->employee_id=$steward_id;

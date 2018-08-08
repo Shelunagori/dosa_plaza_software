@@ -38,8 +38,22 @@ class KotsController extends AppController
         $Items = $this->Kots->ItemCategories->ItemSubCategories->Items->find()
                     ->where(['Items.is_deleted'=>0])
                     ->order(['Items.name'=>'ASC']);
+
+        $Kots=$this->Kots->find()->where(['Kots.table_id'=>$table_id,'Kots.bill_pending'=>'yes'])
+              ->contain(['KotRows'=>['Items'=>['Taxes']]]);
+        $itemsList=[]; $kotIDs=[];
+        $Table_data=$this->Kots->Tables->get($table_id);
+        foreach($Kots as $Kot){
+           
+            $kotIDs[$Kot->id]=$Kot->id;
+            foreach($Kot->kot_rows as $kot_row){
+                $itemsList[$kot_row->item_id]=['quantity'=>@$itemsList[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name , 'tax_name'=>$kot_row->item->tax->name, 'tax_per'=>$kot_row->item->tax->tax_per , 'dis_applicable'=>$kot_row->item->discount_applicable];
+            }
+        }       
+ 
         $Comments = $this->Kots->Comments->find('list');
-        $this->set(compact('Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type'));
+        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
+        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees'));
     }
  
     /**
@@ -203,7 +217,7 @@ class KotsController extends AppController
             $IsCustomerExist=$this->Kots->Bills->Customers->find()->where(['Customers.mobile_no' => $mobile])->first();
           
             if($IsCustomerExist){
-                echo $customer_id=$IsCustomerExist->id;
+                 $customer_id=$IsCustomerExist->id;
                 // $Bills=$this->Kots->Bills->find()->contain(['BillRows'])
                 //     ->where(['Bills.customer_id'=>$customer_id]);
 
@@ -217,9 +231,9 @@ class KotsController extends AppController
                                 return $q->where(['Bills.customer_id' => $customer_id]);
                             })
                             ->autoFields(true);
-                pr($BillRows->toArray());
+                //pr($BillRows->toArray());
             }
-            exit;
+            //exit;
         }
         
 
