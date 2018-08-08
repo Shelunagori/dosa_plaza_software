@@ -1,4 +1,7 @@
-<?php $this->set("title", 'KOT | DOSA PLAZA'); ?>
+<?php $this->set("title", 'KOT | DOSA PLAZA'); 
+$pass = $this->request->params['pass'];
+$order=$pass[1]; 
+?>
 <style> 
 .saveCustomersearch{
 	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
@@ -155,7 +158,7 @@
 								</div>
 								<div id="all_kot_data"></div>
 							</div>
-							<div align="center">
+							<div align="center" style="margin-top: 10px;">
 								<textarea id="oneComment" style="display: none;"></textarea>
 								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
@@ -474,9 +477,10 @@
 		});
 
 		//-- View All KOTS
+		var order = '".$order."';
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
-		url=url+'?table_id='+table_id;
+		url=url+'?table_id='+table_id+'&order='+order;
 		$.ajax({
 			url: url,
 		}).done(function(response) {
@@ -484,6 +488,7 @@
 		});
 
 		//-- VIew Customer Info
+		
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 		url=url+'?table_id='+table_id;
@@ -514,7 +519,8 @@
 			}).done(function(response) { 
 				$('#customer_info').html(response);
 			});
-		});
+		}); 
+
 		$('.saveCustomer').die().live('click',function(event){
 			$(this).text('Saving...');
 			var c_table_id=$('#c_table_id').val();
@@ -597,10 +603,12 @@
 					$('#kotBox tbody tr').remove();
 					$('#oneComment').val('');
 					if(order_type=='dinner'){
-						$('#WaitBox div.modal-body').html('".$successMessage."');
+						//$('#WaitBox div.modal-body').html('".$successMessage."');
 						var url='".$this->Url->build(['controller'=>'Kots','action'=>'viewkot'])."';
 						url=url+'/'+response;
+						location. reload();
 		        		window.open(url, '_blank'); 
+
 					}
 					else {
 						$('.CreateBill').trigger('click');

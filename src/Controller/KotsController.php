@@ -21,10 +21,12 @@ class KotsController extends AppController
     public function index()
     {
         $table_id=$this->request->query('table_id');
-        $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items']]);
-
-        
-        $this->set(compact('kots'));
+        $order=$this->request->query('order');
+        $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes', 'is_deleted'=>0])
+            ->contain(['KotRows'=>function($q){
+                return $q->where(['KotRows.is_deleted'=>0])->contain(['Items']);
+            }]);
+        $this->set(compact('kots','table_id','order'));
     }
 
     public function generate($table_id=null,$order_type=null)
@@ -39,7 +41,7 @@ class KotsController extends AppController
                     ->where(['Items.is_deleted'=>0])
                     ->order(['Items.name'=>'ASC']);
 
-        $Kots=$this->Kots->find()->where(['Kots.table_id'=>$table_id,'Kots.bill_pending'=>'yes'])
+        $Kots=$this->Kots->find()->where(['Kots.table_id'=>$table_id,'Kots.bill_pending'=>'yes','Kots.is_deleted'=>0])
               ->contain(['KotRows'=>['Items'=>['Taxes']]]);
         $itemsList=[]; $kotIDs=[];
         $Table_data=$this->Kots->Tables->get($table_id);
@@ -237,5 +239,42 @@ class KotsController extends AppController
         }     
 
         $this->set(compact('table','searchBy','searchbox'));
+    }
+
+    public function deletekot($id = null,$Tid = null,$Order = null)
+    {
+        $kot = $this->Kots->get($id, [
+            'contain' => ['KotRows']
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $kot = $this->Kots->patchEntity($kot, $this->request->getData());
+            $kot->is_deleted=1;
+            $kot->delete_time=date('Y-m-d h:i:s');
+            if ($this->Kots->save($kot)) {
+                $this->Flash->success(__('The kot has been deleted.'));
+                $query = $this->Kots->KotRows->query();
+                $query->update()
+                        ->set(['is_deleted' => 1,'delete_time'=>date('Y-m-d h:i:s')])
+                        ->where(['KotRows.kot_id'=>$id])
+                        ->execute();
+                return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
+            }
+            $this->Flash->error(__('The kot could not be deleted. Please, try again.'));
+        }
+    }
+
+    public function deletekotitem($id = null,$Tid = null,$Order = null)
+    {
+        $kot = $this->Kots->KotRows->get($id); 
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $kot = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
+            $kot->is_deleted=1;
+            $kot->delete_time=date('Y-m-d h:i:s');
+            if ($this->Kots->KotRows->save($kot)) {
+                $this->Flash->success(__('The item has been deleted.'));
+                return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
+            }
+            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
+        }
     }
 }
