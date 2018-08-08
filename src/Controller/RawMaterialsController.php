@@ -138,6 +138,7 @@ class RawMaterialsController extends AppController
 					
 					$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 					$AdjustData=array();
+					$AdjustData['transaction_date']=date('Y-m-d');
 					$AdjustData['quantity']=$adjust;
 					$AdjustData['raw_material_id']=$raw_material_id;
 					$AdjustData['rate']=0;
@@ -158,6 +159,7 @@ class RawMaterialsController extends AppController
 						$wastage_commant=$PosteData['hiddencom'];
 						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 						$AdjustData=array();
+						$AdjustData['transaction_date']=date('Y-m-d');
 						$AdjustData['quantity']=$noresaon;
 						$AdjustData['raw_material_id']=$raw_material_id;
 						$AdjustData['rate']=0;
@@ -176,6 +178,7 @@ class RawMaterialsController extends AppController
 						
 						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 						$AdjustData=array();
+						$AdjustData['transaction_date']=date('Y-m-d');
 						$AdjustData['quantity']=$wastage;
 						$AdjustData['raw_material_id']=$raw_material_id;
 						$AdjustData['rate']=0;
@@ -223,6 +226,12 @@ class RawMaterialsController extends AppController
 		
 		$q2=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
 		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+
+		$q3=$this->RawMaterials->StockLedgers->find()
+			->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.purchase_voucher_id >' => '0'])
+			->first()
+			->order([]);
+		$q3->select([$q2->func()->sum('StockLedgers.quantity')]);
 		
 		$RawMaterials =	$this->RawMaterials->find();
 		$RawMaterials->select([
