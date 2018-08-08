@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\Query;
 
 /**
  * RawMaterials Controller
@@ -138,6 +139,7 @@ class RawMaterialsController extends AppController
 					
 					$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 					$AdjustData=array();
+					$AdjustData['transaction_date']=date('Y-m-d');
 					$AdjustData['quantity']=$adjust;
 					$AdjustData['raw_material_id']=$raw_material_id;
 					$AdjustData['rate']=0;
@@ -158,6 +160,7 @@ class RawMaterialsController extends AppController
 						$wastage_commant=$PosteData['hiddencom'];
 						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 						$AdjustData=array();
+						$AdjustData['transaction_date']=date('Y-m-d');
 						$AdjustData['quantity']=$noresaon;
 						$AdjustData['raw_material_id']=$raw_material_id;
 						$AdjustData['rate']=0;
@@ -176,6 +179,7 @@ class RawMaterialsController extends AppController
 						
 						$StockLedger = $this->RawMaterials->StockLedgers->newEntity();
 						$AdjustData=array();
+						$AdjustData['transaction_date']=date('Y-m-d');
 						$AdjustData['quantity']=$wastage;
 						$AdjustData['raw_material_id']=$raw_material_id;
 						$AdjustData['rate']=0;
@@ -223,16 +227,23 @@ class RawMaterialsController extends AppController
 		
 		$q2=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
 		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+
+		$q3=$this->RawMaterials->StockLedgers->find()
+			->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.purchase_voucher_id >' => '0'])
+			->order(['StockLedgers.transaction_date' => 'DESC'])
+			->limit(1);
+		$q3->select(['StockLedgers.transaction_date']);
 		
 		$RawMaterials =	$this->RawMaterials->find();
 		$RawMaterials->select([
 			'total_in' => $q,
-			'total_out' => $q2
+			'total_out' => $q2,
+			'last_purchase' => $q3
 		])
 		->contain(['PrimaryUnits'])
 		->where(['RawMaterials.is_deleted'=>0])
 		->autoFields(true);
-		
+
 		$this->set(compact('RawMaterials'));
 	}
 

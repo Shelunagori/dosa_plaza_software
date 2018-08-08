@@ -7,11 +7,8 @@
 				<div class="caption"style="padding:13px; color: red;">
 					Current-Stock Report
 				</div>
-				<div class="row" align="right">
-					<div class="input-group input-medium">
-						<input id="search3"  class="form-control" type="text" placeholder="Search" >
-						<span class="input-group-addon"><i class="fa fa-search"></i></span>
-					</div>
+				<div class="actions" style="margin-right: 10px;">
+					<input id="search3"  class="form-control" type="text" placeholder="Search" >
 				</div>
 				<br/>
 				<div class="row">	
@@ -38,7 +35,13 @@
 								<?= h($RawMaterial->primary_unit->quantity.' '.$RawMaterial->primary_unit->name) ?> 
 							</td>
 							<td>
-								AS
+								<?php
+									$date1 = $RawMaterial->last_purchase;
+									$date2 = date('Y-m-d');
+									$diff = abs(strtotime($date2) - strtotime($date1));
+									echo $days = floor($diff / (60*60*24)); 
+									echo ' Days Before';
+								?>
 							</td>
 						</tr>
 						<?php $x++; endforeach; ?>
