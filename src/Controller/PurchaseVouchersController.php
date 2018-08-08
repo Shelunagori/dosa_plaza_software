@@ -69,6 +69,7 @@ class PurchaseVouchersController extends AppController
 			if ($this->PurchaseVouchers->save($purchaseVoucher)) {
                 foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) {
                     $stockLedger = $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->newEntity();
+                    $stockLedger->transaction_date = $purchaseVoucher->transaction_date;
                     $stockLedger->raw_material_id = $purchase_voucher_row->raw_material_id;
                     $stockLedger->quantity = $purchase_voucher_row->quantity;
                     $stockLedger->rate = $purchase_voucher_row->taxable_value/$purchase_voucher_row->quantity;
@@ -137,6 +138,7 @@ class PurchaseVouchersController extends AppController
                 //Stock Impact Start//
                 foreach ($purchaseVoucher->purchase_voucher_rows as $purchase_voucher_row) {
                     $stockLedger = $this->PurchaseVouchers->PurchaseVoucherRows->StockLedgers->newEntity();
+                    $stockLedger->transaction_date = $purchaseVoucher->transaction_date;
                     $stockLedger->raw_material_id = $purchase_voucher_row->raw_material_id;
                     $stockLedger->quantity = $purchase_voucher_row->quantity;
                     $stockLedger->rate = $purchase_voucher_row->taxable_value/$purchase_voucher_row->quantity;
