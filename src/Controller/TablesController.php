@@ -83,6 +83,55 @@ class TablesController extends AppController
         }
         exit;
     }
+    public function saveCustomeronbill()
+    {
+        $this->viewBuilder()->layout('');
+
+        $table_id=$this->request->query('table_id');
+        $Table=$this->Tables->get($table_id);
+        $Table->c_name=$this->request->query('c_name');
+        $Table->c_mobile=$this->request->query('c_mobile_no');
+        $Table->no_of_pax=$this->request->query('c_pax');
+        $Table->dob=$this->request->query('dob');
+        $Table->doa=$this->request->query('doa');
+        $Table->email=$this->request->query('c_email');
+        $Table->c_address=$this->request->query('c_address');
+
+        $IsCustomerExist=$this->Tables->Customers->find()->where(['mobile_no' => $this->request->query('c_mobile_no')])->first();
+        if($IsCustomerExist){
+            $Customer=$this->Tables->Customers->get($IsCustomerExist->id);
+            $Customer->name=$this->request->query('c_name');
+            $Customer->mobile_no=$this->request->query('c_mobile_no');
+            $Customer->email=$this->request->query('c_email');
+            $Customer->address=$this->request->query('c_address');
+            $this->Tables->Customers->save($Customer);
+        }else{
+            $Customer = $this->Tables->Customers->newEntity();
+            
+            $Customer->name=$this->request->query('c_name');
+            $Customer->mobile_no=$this->request->query('c_mobile_no');
+            $Customer->email=$this->request->query('c_email');
+            $Customer->address=$this->request->query('c_address');
+            
+            $last_Customer=$this->Tables->Customers->find()
+                            ->order(['customer_code' => 'DESC'])->first();
+            if($last_Customer){
+                $Customer->customer_code=$last_Customer->customer_code+1;
+            }else{
+                $Customer->customer_code=2001;
+            }
+            if($Customer->mobile_no){
+                $this->Tables->Customers->save($Customer);
+            }            
+        }
+        if($this->Tables->save($Table)){
+            echo '1';
+        }else{
+            echo '0';
+        }
+        exit;
+    }
+    
 
     public function saveSteward()
     {
