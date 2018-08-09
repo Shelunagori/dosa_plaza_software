@@ -78,8 +78,15 @@ $order=$pass[1];
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 10px;">
 							<table width="100%">
 								<tr>
-									<td id="ItemArea" style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
-										
+									<td style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
+									<div style="
+									    height:  300px !important;
+									    border: solid 1px;
+									    overflow-x:  scroll;
+									    overflow-y: hidden;
+									" id="ItemArea" >
+
+									</div>	
 									</td>
 								</tr>
 								<tr>
@@ -107,9 +114,9 @@ $order=$pass[1];
 										
 										<div  sub_category_id="<?= h($item_sub_category->id) ?>">
 										<?php foreach($item_sub_category->items as $item){ ?>
-											<div class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
+											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
 												<?= h($item->name) ?>
-											</div>
+											</span>
 										<?php } ?>
 										</div>
 									<?php } ?>
@@ -518,7 +525,6 @@ $order=$pass[1];
 				$(this).closest('td').find('span.qty').html(' '+news+' ');
 				amountcals();
 			}
-			
 		});
 
 		$('.ItemBox').die().live('click',function(event){

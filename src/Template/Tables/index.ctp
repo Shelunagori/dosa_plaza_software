@@ -85,6 +85,14 @@
 										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){ echo $sum; } ?></span>
 									</td>
 								</tr>
+								<?php if($Table->payment_status=="no"){?>
+								<tr>
+									<td valign="Bottom" style="text-align: center;">
+										<a style="color:#fa6775;" class="payment_info" table_id="<?php echo $Table->id; ?>" bill_id="<?php echo $Table->bill_id; ?>" >Payment Type.</a>
+									</td>
+								</tr>
+								<?php }
+								else{ ?>
 								<tr>
 									<td valign="Bottom" style="text-align: center;">
 										<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
@@ -92,6 +100,7 @@
 										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id,'dinner'], ['style' => 'color:#fa6775;','class'=>'showLoader']) ?>
 									</td>
 								</tr>
+								<?php } ?>
 							</table>
 						</div>
 					</div>
@@ -177,6 +186,9 @@
 .CloseSteward{
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
+.ClosePayment{
+	color: #000; background-color: #E6E7E8; padding: 4px 10px 5px 10px;font-size:13px;cursor: pointer;margin-right: 2px; 
+}
 </style>
 
 
@@ -199,6 +211,10 @@ $(document).ready(function() {
 	$('.CloseSteward').die().live('click',function(event){
 		$('#WaitBox3').hide();
 	});
+	$('.ClosePayment').die().live('click',function(event){
+		$('#WaitBox10').hide();
+	});
+
 
 	$('.registerCustomer').die().live('click',function(event){
 		$('#loading').show();
@@ -241,8 +257,15 @@ $(document).ready(function() {
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'new'])."';
 		url=url+'/'+table_id;
 		window.location.href = url;
-	}); 
+	});  
 
+	$('.payment_info').die().live('click',function(event){
+		var table_id=$(this).attr('table_id');
+		var bill_id=$(this).attr('bill_id');
+		$('#payment_table_id').val(table_id);
+		$('#payment_bill_id').val(bill_id);
+		$('#WaitBox10').show();
+	});
 
 	$('.customer_info').die().live('click',function(event){
 		$('#WaitBox2').show();
@@ -292,6 +315,7 @@ $(document).ready(function() {
 		$('#steward_table_id').val(table_id);
 		$('#WaitBox3').show();
 	});
+
 
 	$('.employee_id').die().live('change',function(event){
 		var steward_name=$(this).find('option:selected').text();
@@ -407,6 +431,34 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<div class="modal-content">
 			<div class="modal-body"></div>
 		</div>
+	</div>
+</div>
+ 
+<div id="WaitBox10" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog modal-md" >
+		<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Tables','action'=>'paymentinfo')) ?>">
+			<div class="modal-content">
+				<div class="modal-body">
+					<input type="hidden" name="payment_bill_id" id="payment_bill_id">
+					<input type="hidden" name="payment_table_id" id="payment_table_id">
+					<div align="center" style=" font-size: 14px; color: #2D4161; font-weight: bold; "><span>SELECT PAYMENT MODE</span></div><br/><br/>
+					<select class="form-control" name="payment_type" required>
+						<option value="">Select...</option>
+						<option value="cash">CASH</option>
+						<option value="card">CARD</option>
+						<option value="payment">PAYMENT</option>
+					</select>
+					<br/><br/>
+				</div>
+				<div class="modal-footer"> 
+					<div align="center">
+						<button type="submit" style="border-radius:0px" class="btn  btn-sm btn-danger showLoader">SAVE</button>
+						<span class="ClosePayment">CLOSE</span> 
+					</div>
+				</div>
+			</div> 			 
+		</form>
 	</div>
 </div>
 
