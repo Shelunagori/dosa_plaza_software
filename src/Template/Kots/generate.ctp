@@ -509,12 +509,14 @@ $order=$pass[1];
 			var qty = parseInt($(this).closest('td').find('span.qty').html());
 			var news = qty+parseInt(1);
 			$(this).closest('td').find('span.qty').html(' '+news+' ');
+			amountcals();
 		});
 		$('.minus').die().live('click',function(event){
 			var qty = parseInt($(this).closest('td').find('span.qty').html());
 			if(qty !=1 ){
 				var news = qty-parseInt(1);
 				$(this).closest('td').find('span.qty').html(' '+news+' ');
+				amountcals();
 			}
 			
 		});
@@ -526,6 +528,7 @@ $order=$pass[1];
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
 			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> 1 </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			amountcals();
 		});
 
 		$('.saveCustomersearch').die().live('click',function(event){
@@ -575,6 +578,7 @@ $order=$pass[1];
 				var c=$('#kotBox tbody tr').length;
 				c=c+1; 
 				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				amountcals();
 			}
 			
 		});
@@ -862,6 +866,14 @@ $order=$pass[1];
 			url: url,
 		}).done(function(response) { 
 			$('#customer_info').html(response);
+		});
+	}
+	function amountcals(){
+		$('#kotBox tbody tr').each(function(){
+			var quantity=parseInt($(this).find('td span.qty').html());
+			var rate=parseInt($(this).find('td:nth-child(4)').text());
+			var tot_amount=quantity*rate;
+			$(this).find('td:nth-child(5)').text(tot_amount);
 		});
 	}	
 	";
