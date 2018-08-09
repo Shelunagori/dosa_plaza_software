@@ -27,7 +27,7 @@ class Bill extends Entity
      * @var array
      */
     protected $_accessible = [
-        'voucher_no' => true,
+        '*' => true,
         'table_id' => true,
         'kot_id' => true,
         'table' => true,

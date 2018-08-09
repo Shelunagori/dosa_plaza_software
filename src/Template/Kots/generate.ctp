@@ -1,5 +1,14 @@
-<?php $this->set("title", 'KOT | DOSA PLAZA'); ?>
-<style> 
+<?php $this->set("title", 'KOT | DOSA PLAZA'); 
+$pass = $this->request->params['pass'];
+$order=$pass[1]; 
+?>
+<style>
+.minus{
+	color: #FFF; background-color: #FA6775;padding: 0px 7px;font-size:15px;cursor: pointer; font-weight: bold;
+} 
+.plus{
+	color: #FFF; background-color: #2d4161de;padding: 0px 7px;font-size:15px;cursor: pointer;font-weight: bold;
+}
 .saveCustomersearch{
 	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
 }
@@ -69,8 +78,15 @@
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 10px;">
 							<table width="100%">
 								<tr>
-									<td id="ItemArea" style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
-										
+									<td style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
+									<div style="
+									    height:  300px !important;
+									    border: solid 1px;
+									    overflow-x:  scroll;
+									    overflow-y: hidden;
+									" id="ItemArea" >
+
+									</div>	
 									</td>
 								</tr>
 								<tr>
@@ -98,9 +114,9 @@
 										
 										<div  sub_category_id="<?= h($item_sub_category->id) ?>">
 										<?php foreach($item_sub_category->items as $item){ ?>
-											<div class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
+											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
 												<?= h($item->name) ?>
-											</div>
+											</span>
 										<?php } ?>
 										</div>
 									<?php } ?>
@@ -155,7 +171,7 @@
 								</div>
 								<div id="all_kot_data"></div>
 							</div>
-							<div align="center">
+							<div align="center" style="margin-top: 10px;">
 								<textarea id="oneComment" style="display: none;"></textarea>
 								<span class="KOTComment" >KOT COMMENT</span>
 								<span class="CreateKOT" >CREATE KOT </span>
@@ -474,9 +490,10 @@
 		});
 
 		//-- View All KOTS
+		var order = '".$order."';
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'index'])."';
-		url=url+'?table_id='+table_id;
+		url=url+'?table_id='+table_id+'&order='+order;
 		$.ajax({
 			url: url,
 		}).done(function(response) {
@@ -484,6 +501,7 @@
 		});
 
 		//-- VIew Customer Info
+		
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 		url=url+'?table_id='+table_id;
@@ -493,14 +511,30 @@
 		}).done(function(response) { 
 			$('#customer_info').html(response);
 		});
-		
+		//--
+		$('.plus').die().live('click',function(event){
+			var qty = parseInt($(this).closest('td').find('span.qty').html());
+			var news = qty+parseInt(1);
+			$(this).closest('td').find('span.qty').html(' '+news+' ');
+			amountcals();
+		});
+		$('.minus').die().live('click',function(event){
+			var qty = parseInt($(this).closest('td').find('span.qty').html());
+			if(qty !=1 ){
+				var news = qty-parseInt(1);
+				$(this).closest('td').find('span.qty').html(' '+news+' ');
+				amountcals();
+			}
+		});
+
 		$('.ItemBox').die().live('click',function(event){
 			var item_id=$(this).attr('item_id');
 			var item_name=$(this).attr('item_name');
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span><input type \"taxt\" class=\"qty\" value=\"1\"></span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> 1 </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			amountcals();
 		});
 
 		$('.saveCustomersearch').die().live('click',function(event){
@@ -514,7 +548,8 @@
 			}).done(function(response) { 
 				$('#customer_info').html(response);
 			});
-		});
+		}); 
+
 		$('.saveCustomer').die().live('click',function(event){
 			$(this).text('Saving...');
 			var c_table_id=$('#c_table_id').val();
@@ -548,7 +583,8 @@
 				
 				var c=$('#kotBox tbody tr').length;
 				c=c+1; 
-				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span><input type \"taxt\" class=\"qty\" value=\"'+Qty+'\"></span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				amountcals();
 			}
 			
 		});
@@ -577,7 +613,7 @@
 			var postData=[];
 			$('#kotBox tbody tr').each(function(){
 				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
-				var quantity=$(this).find('td input.qty').val();
+				var quantity=$(this).find('td span.qty').html();
  				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
 				var comment=$(this).find('.comment').val();
@@ -597,10 +633,12 @@
 					$('#kotBox tbody tr').remove();
 					$('#oneComment').val('');
 					if(order_type=='dinner'){
-						$('#WaitBox div.modal-body').html('".$successMessage."');
+						//$('#WaitBox div.modal-body').html('".$successMessage."');
 						var url='".$this->Url->build(['controller'=>'Kots','action'=>'viewkot'])."';
 						url=url+'/'+response;
+						location. reload();
 		        		window.open(url, '_blank'); 
+
 					}
 					else {
 						$('.CreateBill').trigger('click');
@@ -834,6 +872,14 @@
 			url: url,
 		}).done(function(response) { 
 			$('#customer_info').html(response);
+		});
+	}
+	function amountcals(){
+		$('#kotBox tbody tr').each(function(){
+			var quantity=parseInt($(this).find('td span.qty').html());
+			var rate=parseInt($(this).find('td:nth-child(4)').text());
+			var tot_amount=quantity*rate;
+			$(this).find('td:nth-child(5)').text(tot_amount);
 		});
 	}	
 	";

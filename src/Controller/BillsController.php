@@ -147,6 +147,7 @@ class BillsController extends AppController
         else{
             $bill->occupied_time=date("Y-m-d h:i:s");
         }
+        $bill->payment_status='no';
 
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
@@ -165,15 +166,8 @@ class BillsController extends AppController
             }
 
             if($table_id>0){
-                $Table->status = 'vacant';
-                $Table->c_name = '';
-                $Table->c_mobile = '';
-                $Table->no_of_pax = '';
-                $Table->occupied_time = '';
-                $Table->dob = '';
-                $Table->doa = '';
-                $Table->email = '';
-                $Table->c_address = '';
+                $Table->payment_status='no';
+                $Table->bill_id=$bill->id;
                 $this->Bills->Tables->save($Table);  
             }
 

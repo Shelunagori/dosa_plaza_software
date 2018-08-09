@@ -48,8 +48,15 @@
 							</div>
 						</div>
 
-						<div class="row">  
-							
+						<div class="row">
+							<?php if(empty($id)){?>  
+								<div class="form-group col-md-4">
+									<label class=""> Select Tax <span class="required" aria-required="true">*</span></label>
+									<div class="col-md-12">
+										<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2me selectState input-large','empty'=> 'Select...']);?>
+									</div>
+								</div>
+							<?php } ?>
 							<div class="form-group col-md-4">
 								<label  class="">Discount Applicable</label>
 								<div class="radio-list col-md-12">
@@ -167,6 +174,9 @@ $js="var form3 = $('#form_sample_1');
 		            item_sub_category_id: {
 		                required: true,
 		            }, 
+		            tax_id: {
+		                required: true,
+		            },
 		            rate: {
 		                required: true,
 		                number: true

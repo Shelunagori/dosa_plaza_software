@@ -5,6 +5,11 @@
 .top{
 	margin-top: 5px;
 }
+..panel-heading
+{
+	background-color: #2d4161 !important;
+}
+
 </style>
 <?php if($searchbox==0){ ?>
 	<table width="100%" >
@@ -21,7 +26,7 @@
 		</tr>
 	</table>
 	<hr style="margin: 7px;"></hr>
-	<div class="panel-heading" style="background-color: #2d4161de;">
+	<div class="panel-heading" style="background-color: #2d4161 !important;">
 		<span class="panel-title" style="font-size: 12px; color: #FFF;">
 			<i class="fa fa-user font"></i> <?php echo @ucwords($table->c_name);?>
 		</span>

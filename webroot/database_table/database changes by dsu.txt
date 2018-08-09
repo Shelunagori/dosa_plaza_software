@@ -9,3 +9,7 @@ ALTER TABLE `bill_rows` ADD `tax_per` DECIMAL(10,2) NOT NULL AFTER `net_amount`;
 ALTER TABLE `employees` ADD `designation_id` INT(11) NOT NULL AFTER `id`;
 
 ALTER TABLE `bills` ADD `no_of_pax` INT(11) NOT NULL AFTER `status`;
+
+ALTER TABLE `bills` ADD `payment_status` INT(10) NOT NULL AFTER `no_of_pax`, ADD `payment_type` VARCHAR(50) NOT NULL AFTER `payment_status`;
+
+ALTER TABLE `tables` ADD `payment_status` VARCHAR(10) NOT NULL AFTER `employee_id`, ADD `bill_id` INT(11) NOT NULL AFTER `payment_status`;

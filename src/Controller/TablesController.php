@@ -325,4 +325,36 @@ class TablesController extends AppController
         $occupiedTables =$this->Tables->find()->where(['status'=>'occupied']);
         $this->set(compact('vacantTables','occupiedTables','Table'));
     }
+    public function paymentinfo()
+    {
+        $this->viewBuilder()->layout('');
+        $table_id=$this->request->getData('payment_table_id');
+        $bill_id=$this->request->getData('payment_bill_id');
+        $payment_type=$this->request->getData('payment_type');
+
+        if($table_id>0){
+            $Table = $this->Tables->get($table_id);
+            $Table->payment_status='';
+            $Table->bill_id='';
+            $Table->employee_id='';
+            $Table->status = 'vacant';
+            $Table->c_name = '';
+            $Table->c_mobile = '';
+            $Table->no_of_pax = '';
+            $Table->occupied_time = '';
+            $Table->dob = '';
+            $Table->doa = '';
+            $Table->email = '';
+            $Table->c_address = '';
+            $this->Tables->save($Table);  
+        }
+        if($table_id>0){
+            $bills = $this->Tables->Bills->get($bill_id);
+            $bills->payment_status='yes';
+            $bills->payment_type=$payment_type;
+             
+            $this->Tables->Bills->save($bills);  
+        } 
+        return $this->redirect(['action' => 'index']);
+    }
 }
