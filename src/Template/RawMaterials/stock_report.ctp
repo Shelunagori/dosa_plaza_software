@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Consumption-Report | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Stock-Report | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -8,7 +8,7 @@
 					<tr>
 						<td width="20%">
 							<div class="caption"style="padding:13px; color: red;">
-								Consumption-Report
+								Stock-Report
 							</div>
 						</td>
 						<td valign="button">
@@ -50,23 +50,33 @@
 				$stock=[];
 				foreach ($RawMaterials as $RawMaterial){
 					foreach ($RawMaterial->stock_ledgers as $stock_ledger) {
-						$stock[$RawMaterial->id][strtotime($stock_ledger->transaction_date)]=$stock_ledger->Total_quantity;
+						$stock[$RawMaterial->id][$stock_ledger->status][strtotime($stock_ledger->transaction_date)]=$stock_ledger->Total_quantity;
 					}
 				}
 				?>
 
 				<div class="table-scrollable">
-				<table class="table table-str">
+				<table class="table table-bordered table-str">
 					<thead>
 						<tr>
-							<th>S.No.</th>
-							<th>Raw materials</th>
-							<th>Unit</th>
+							<th rowspan="2">S.No.</th>
+							<th rowspan="2">Raw materials</th>
+							<th rowspan="2">Unit</th>
 							<?php 
 							$start_date=$from_date;
 							$end_date=$to_date;
 							while (strtotime($start_date) <= strtotime($end_date)) {
-				                echo '<th style="white-space: nowrap;">'.date('d-m-Y', strtotime($start_date)).'</th>';
+				                echo '<th style="white-space: nowrap;text-align:center;" colspan="2" >'.date('d-m-Y', strtotime($start_date)).'</th>';
+				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
+							} ?>
+						</tr>
+						<tr>
+							<?php 
+							$start_date=$from_date;
+							$end_date=$to_date;
+							while (strtotime($start_date) <= strtotime($end_date)) {
+				                echo '<th style="white-space: nowrap;">Opening</th>';
+				                echo '<th style="white-space: nowrap;">Closing</th>';
 				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
 							} ?>
 						</tr>
@@ -80,8 +90,15 @@
 							<?php 
 							$start_date=$from_date;
 							$end_date=$to_date;
+
+							$opening=$RawMaterial->total_in_opening-$RawMaterial->total_out_opening;
+							$closing=0;
 							while (strtotime($start_date) <= strtotime($end_date)) {
-				                echo '<td>'. @$stock[$RawMaterial->id][strtotime($start_date)] .'</td>';
+								$opening+=(@$stock[$RawMaterial->id]['in'][strtotime('-1 day', strtotime($start_date))]) - (@$stock[$RawMaterial->id]['out'][strtotime('-1 day', strtotime($start_date))]);
+								$closing+=(@$stock[$RawMaterial->id]['in'][strtotime($start_date)]) - (@$stock[$RawMaterial->id]['out'][strtotime($start_date)]); ?>
+				                <td><?php echo ($opening) ? ($opening) : '' ?></td>
+				                <td><?php echo ($closing) ? ($closing) : '' ?></td>
+				                <?php
 				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
 							} ?>
 							

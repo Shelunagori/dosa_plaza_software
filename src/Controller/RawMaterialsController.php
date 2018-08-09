@@ -330,5 +330,52 @@ class RawMaterialsController extends AppController
 
 
 
+	public function stockReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+
+
+		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
+		
+		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingOut->select([$openingOut->func()->sum('StockLedgers.quantity')]);
+
+
+		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
+		$RawMaterials =	$this->RawMaterials->find()
+							->select([
+								'total_in_opening' => $openingIn,
+								'total_out_opening' => $openingOut,
+							])
+							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+								return $q
+								->where([
+									'StockLedgers.transaction_date >=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date))), 
+									'StockLedgers.transaction_date <=' => $to_date
+								])
+								->select([
+									'StockLedgers.raw_material_id', 
+									'StockLedgers.status', 
+									'StockLedgers.transaction_date', 
+									'Total_quantity' => $StockLedgers->func()->sum('StockLedgers.quantity')
+								])
+								->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id', 'StockLedgers.status'])
+								->order(['StockLedgers.transaction_date' => 'ASC']);
+							}])
+							->where(['RawMaterials.is_deleted'=>0])
+							->autoFields(true);
+
+		//pr($RawMaterials->toArray()); exit;
+		
+		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+	}
+
+
+
 
 }
