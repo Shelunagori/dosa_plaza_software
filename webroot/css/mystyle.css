@@ -120,4 +120,12 @@
 	}
 	
 	
-	.table-str>tbody>tr:nth-child(even){background-color: #f2f2f2;!important}}
+	.table-str>tbody>tr:nth-child(even){
+		background-color: #f7f7f7; !important;
+	}
+	.table-str>thead>tr>th{
+		font-size: 13px !important;
+	}
+	.table-str>tbody>tr>td{
+		font-size: 13px !important;
+	}

@@ -295,4 +295,40 @@ class RawMaterialsController extends AppController
 	}
 
 
+
+	public function consumptionReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+
+		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
+		$RawMaterials =	$this->RawMaterials->find()
+							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+								return $q
+								->where([
+									'StockLedgers.transaction_date >=' => $from_date, 
+									'StockLedgers.transaction_date <=' => $to_date, 
+									'StockLedgers.status' => 'out',
+									'StockLedgers.voucher_name' => 'Bill'
+								])
+								->select([
+									'StockLedgers.raw_material_id', 
+									'StockLedgers.transaction_date', 
+									'Total_quantity' => $StockLedgers->func()->sum('StockLedgers.quantity')
+								])
+								->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id'])
+								->order(['StockLedgers.transaction_date' => 'ASC']);
+							}])
+							->where(['RawMaterials.is_deleted'=>0]);
+		
+		
+		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+	}
+
+
+
+
 }
