@@ -708,9 +708,12 @@ $order=$pass[1];
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
 				var discount_per=$(this).find('td:nth-child(6) input').val();
-				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
-				var net_amount=$(this).find('td:nth-child(8)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount, percen : percen}); 
+				if(!discount_per){ discount_per=0;}
+				var discount_amt=$(this).find('td:nth-child(7) input').val();
+				if(!discount_amt){ discount_amt=0;}
+				var percen=parseFloat($(this).find('td:nth-child(8) span.percen').html());
+				var net_amount=$(this).find('td:nth-child(9)').text();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount, percen : percen, discount_amt : discount_amt}); 
 			});
 			var order_type=$('#order_type').val();
 			var table_id=$('#tableInput').val();
@@ -735,7 +738,7 @@ $order=$pass[1];
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
-				console.log(bill_id);
+				 
 				if(bill_id!=0){
 					$('#WaitBox3').hide();
 					$('#WaitBox2').hide();
@@ -757,12 +760,62 @@ $order=$pass[1];
 		});
 		
 		$('.disBox').die().live('keyup',function(event){
+			var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+		    if(isNaN(qty)){ qty=0; }
+			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+			if(isNaN(rate)){ rate=0; }
+			var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+			if(isNaN(discount_per)){ discount_per=0; }
+			var amount   = qty*rate;						
+			if(discount_per)
+			{   
+				var disAmt    = (amount*discount_per)/100;
+				disAmt  = round(disAmt,2);
+			}
+			$(this).closest('tr').find('td:nth-child(7) input').val(disAmt);
+			calculateBill();
+		});
+		
+		$(document).on('keyup','.disBoxamt',function(e){
+			var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+		    if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+			
+			var amount   = qty*rate;
+
+			if(discount_amt && amount>0)
+			{   
+				var dis_per   = (discount_amt*100)/amount;
+				dis_per = round(dis_per,2);
+				
+			}
+			$(this).closest('tr').find('td:nth-child(6) input').val(dis_per);
 			calculateBill();
 		});
 		
 		$('.overalldis').die().live('keyup',function(event){
 			var dic = $(this).val();
 			$('.disBox').val(dic);
+			$('#billTable tbody tr').each(function(){
+				var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+			    if(isNaN(qty)){ qty=0; }
+				var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+				if(isNaN(rate)){ rate=0; }
+				var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+				if(isNaN(discount_per)){ discount_per=0; }
+				var amount   = qty*rate;						
+				if(discount_per)
+				{   
+					var disAmt    = (amount*discount_per)/100;
+					disAmt  = round(disAmt,2);
+				}
+				$(this).closest('tr').find('td:nth-child(7) input').val(disAmt);
+			});
 			calculateBill();
 		});
 		
@@ -772,15 +825,15 @@ $order=$pass[1];
 				var quantity=parseFloat($(this).find('td:nth-child(3)').text());
 				var rate=parseFloat($(this).find('td:nth-child(4)').text());
 				var amount=parseFloat($(this).find('td:nth-child(5)').text());
-				var discount_per=parseFloat($(this).find('td:nth-child(6) input').val());
-				if(!discount_per){ discount_per=0; }
-				var net_amount=round(amount*(100-discount_per)/100,2);
-				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
-				
-				var taxamount=round((net_amount*percen)/100,2);
-				var tot=net_amount+taxamount;
+				var discount_amount=parseFloat($(this).find('td:nth-child(7) input').val());
+				if(discount_amount){ 
+				 	amount=round(amount-discount_amount,2);
+ 				}
+				var percen=parseFloat($(this).find('td:nth-child(8) span.percen').html());
+				var taxamount=round((amount*percen)/100,2);
+				var tot=amount+taxamount;
 				tot=round(tot,2);
-				$(this).find('td:nth-child(8)').text(tot);
+				$(this).find('td:nth-child(9)').text(tot);
 				total=total+tot;
 			});
 			total=round(total,2);

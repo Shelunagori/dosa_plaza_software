@@ -135,6 +135,7 @@ class BillsController extends AppController
 			$bill_row->rate=$row['rate'];
 			$bill_row->amount=$row['amount'];
 			$bill_row->discount_per=$row['discount_per'];
+            $bill_row->discount_amount=$row['discount_amt'];
 			$bill_row->net_amount=$row['net_amount'];
             $bill_row->tax_per=$row['percen'];            
 			$bill_rows[]=$bill_row;

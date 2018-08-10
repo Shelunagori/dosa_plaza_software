@@ -16,10 +16,17 @@
 	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
 }
 .EmptyTbl{
-	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
+	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px; border-radius: 4px;
+}
+.paymentsubmit{
+	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px; border-radius: 4px;
 }
 .EmptyTbl:hover{
 	cursor: pointer;
+}
+.radio-inline{
+	font-size: 10px !important;
+	color:#96989A;
 }
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
@@ -30,7 +37,7 @@
 	<div class="row TableView" style="padding:10px;">
 		<div style=" margin-bottom: 10px; text-align: center; margin-top: 10px; "><span id="TablesHeading" style="font-weight: bold;color:#373435;" > TABLES </span></div>
 		<div class="col-md-12"  align="center">
-			<?php 
+			<?php
 			$i=0;
 			foreach($Tables as $Table){ 
 				$sum=0;
@@ -43,68 +50,102 @@
 				if($sum>0){
 					$RatePerPax=$sum/$Table->no_of_pax;
 				}
-				
-				 
 			?>
 			<div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">
 				<span class="tblLabel" style="background-color:<?php echo $colors[$i++]; ?>" ><?= h($Table->name) ?></span>
-				<?php if($Table->status=='occupied'){ ?>
-					<div style="font-size:14px;">
-						<div align="center">
-							<span style="font-size: 14px; color: #3b393a;" class="steward">Select Steward</span>
+				<?php if($Table->status=='occupied'){
+					if($Table->payment_status=="no"){ ?>
+						<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Tables','action'=>'paymentinfo')) ?>">
+							<div style="font-size:14px;">
+								<input type="hidden" name="payment_bill_id" value="<?php echo $Table->bill_id ?>" id="payment_bill_id">
+								<input type="hidden" name="payment_table_id" value="<?php echo $Table->id ?>" id="payment_table_id">
+								<div align="center">
+									<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> &#8377; 532 </b></span>
+								</div>
+								<div style="padding:2px 10px;">
+									<table width="100%" style="font-size:12px;line-height: 22px;">
+										<tr>
+											<td valign="top">
+												<span style="color:#96989A;">Payment Method</span>
+											</td>
+										</tr>
+										<tr>
+											<td valign="top">
+												<table width="100%"> 
+													<tr>
+														<td>
+															<label class="radio-inline"><input type="radio" name="payment_type" value="cash" checked> Cash  </label>
+														</td>
+														<td>
+															<label class="radio-inline"><input type="radio" name="payment_type" value="card"> Card  </label>
+														</td>
+														<td>
+															<label class="radio-inline"><input type="radio" name="payment_type" value="paytm"> Paytm </label>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+										<tr>
+											<td valign="top" style="padding-top:10px" align="center">
+												<button type="submit" style="padding: 2px 8px 3px 10px;font-size: 12px;" class="btn  btn-sm btn-danger showLoader">Submit</button>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</form>
+					<?php 
+					}
+					else { ?>
+						<div style="font-size:14px;">
+							<div align="center">
+								<span style="font-size: 14px; color: #3b393a;" class="steward">Select Steward</span>
+							</div>
+							<div style="padding:2px 10px;">
+								<table width="100%" style="font-size:12px;line-height: 22px;">
+									<tr>
+										<td valign="top">
+											<span style="color:#96989A;">Time</span>
+											<span style="color:#373435;margin-left:13px;" id="timeLabel_<?php echo $Table->id; ?>" ></span>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											<span style="color:#96989A;">Customer Name</span>
+											<span style="color:#373435;margin-left:13px;"><?php echo @ucwords($Table->c_name); ?> </span>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											<span style="color:#96989A;">No. of Pax</span>
+											<span style="color:#373435;margin-left:13px;"><?php echo $Table->no_of_pax; ?></span>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											<span style="color:#96989A;">Pax Per Rate</span>
+											<span style="color:#373435;margin-left:13px;"><?php if($sum>0){  echo round($RatePerPax,2); } ?></span>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">
+											<span style="color:#96989A;">Running Billing Amount</span>
+											<span style="color:#373435;margin-left:13px;"><?php if($sum>0){ echo $sum; } ?></span>
+										</td>
+									</tr>
+									<tr>
+										<td valign="Bottom" style="text-align: center;">
+											<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
+											<span style=" margin: 0 10px;color:#96989A; ">|</span>
+											<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id,'dinner'], ['style' => 'color:#fa6775;','class'=>'showLoader']) ?>
+										</td>
+									</tr> 
+								</table>
+							</div>
 						</div>
-						<div style="padding:2px 10px;">
-							<table width="100%" style="font-size:12px;line-height: 22px;">
-								<tr>
-									<td valign="top">
-										<span style="color:#96989A;">Time</span>
-										<span style="color:#373435;margin-left:13px;" id="timeLabel_<?php echo $Table->id; ?>" ></span>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top">
-										<span style="color:#96989A;">Customer Name</span>
-										<span style="color:#373435;margin-left:13px;"><?php echo @ucwords($Table->c_name); ?> </span>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top">
-										<span style="color:#96989A;">No. of Pax</span>
-										<span style="color:#373435;margin-left:13px;"><?php echo $Table->no_of_pax; ?></span>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top">
-										<span style="color:#96989A;">Pax Per Rate</span>
-										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){  echo round($RatePerPax,2); } ?></span>
-									</td>
-								</tr>
-								<tr>
-									<td valign="top">
-										<span style="color:#96989A;">Running Billing Amount</span>
-										<span style="color:#373435;margin-left:13px;"><?php if($sum>0){ echo $sum; } ?></span>
-									</td>
-								</tr>
-								<?php if($Table->payment_status=="no"){?>
-								<tr>
-									<td valign="Bottom" style="text-align: center;">
-										<a style="color:#fa6775;" class="payment_info" table_id="<?php echo $Table->id; ?>" bill_id="<?php echo $Table->bill_id; ?>" >Payment Type.</a>
-									</td>
-								</tr>
-								<?php }
-								else{ ?>
-								<tr>
-									<td valign="Bottom" style="text-align: center;">
-										<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
-										<span style=" margin: 0 10px;color:#96989A; ">|</span>
-										<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id,'dinner'], ['style' => 'color:#fa6775;','class'=>'showLoader']) ?>
-									</td>
-								</tr>
-								<?php } ?>
-							</table>
-						</div>
-					</div>
-				<?php }else{ ?>
+				<?php }
+				} else{ ?>
 					<div style="font-size:14px;">
 						<div align="center">
 							<span style="font-size: 14px; color: #3b393a;">.</span>
@@ -210,10 +251,7 @@ $(document).ready(function() {
 	});
 	$('.CloseSteward').die().live('click',function(event){
 		$('#WaitBox3').hide();
-	});
-	$('.ClosePayment').die().live('click',function(event){
-		$('#WaitBox10').hide();
-	});
+	}); 
 
 
 	$('.registerCustomer').die().live('click',function(event){
@@ -258,14 +296,7 @@ $(document).ready(function() {
 		url=url+'/'+table_id;
 		window.location.href = url;
 	});  
-
-	$('.payment_info').die().live('click',function(event){
-		var table_id=$(this).attr('table_id');
-		var bill_id=$(this).attr('bill_id');
-		$('#payment_table_id').val(table_id);
-		$('#payment_bill_id').val(bill_id);
-		$('#WaitBox10').show();
-	});
+ 
 
 	$('.customer_info').die().live('click',function(event){
 		$('#WaitBox2').show();
@@ -431,34 +462,6 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<div class="modal-content">
 			<div class="modal-body"></div>
 		</div>
-	</div>
-</div>
- 
-<div id="WaitBox10" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
-	<div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog modal-md" >
-		<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Tables','action'=>'paymentinfo')) ?>">
-			<div class="modal-content">
-				<div class="modal-body">
-					<input type="hidden" name="payment_bill_id" id="payment_bill_id">
-					<input type="hidden" name="payment_table_id" id="payment_table_id">
-					<div align="center" style=" font-size: 14px; color: #2D4161; font-weight: bold; "><span>SELECT PAYMENT MODE</span></div><br/><br/>
-					<select class="form-control" name="payment_type" required>
-						<option value="">Select...</option>
-						<option value="cash">CASH</option>
-						<option value="card">CARD</option>
-						<option value="payment">PAYMENT</option>
-					</select>
-					<br/><br/>
-				</div>
-				<div class="modal-footer"> 
-					<div align="center">
-						<button type="submit" style="border-radius:0px" class="btn  btn-sm btn-danger showLoader">SAVE</button>
-						<span class="ClosePayment">CLOSE</span> 
-					</div>
-				</div>
-			</div> 			 
-		</form>
 	</div>
 </div>
 
