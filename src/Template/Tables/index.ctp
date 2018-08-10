@@ -257,8 +257,8 @@ $(document).ready(function() {
 	$('.registerCustomer').die().live('click',function(event){
 		$('#loading').show();
 		var table_id=$('input[name=table_id]').val();
-		var c_name=$('input[name=c_name]').val();
-		var c_mobile=$('input[name=c_mobile]').val();
+		var c_name='';//$('input[name=c_name]').val();
+		var c_mobile='';//$('input[name=c_mobile]').val();
 		var c_pax=$('select[name=c_pax] option:selected').val();
 		
 		var url='".$this->Url->build(['controller'=>'Tables','action'=>'save-table'])."';
@@ -420,7 +420,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<div class="modal-body">
 				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">OCCUPY THE TABLE</div>
 				<div align="center">TABLE: <span id="tableLabel"></span><input type="hidden" name="table_id"></div>
-				<div class="input-group">
+				<!--<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
 					<input type="text" name="c_name" class="form-control" placeholder="Name" style="background-color: #F5F5F5;">
 				</div>
@@ -429,7 +429,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 					<span class="input-group-addon"><i class="fa fa-mobile" style=" font-size: 20px; "></i></span>
 					<input type="text" name="c_mobile" class="form-control" placeholder="Mobile No." style="background-color: #F5F5F5;" maxlength="10" minlength="10">
 				</div>
-				<br/>
+				<br/>-->
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
 					<select name="c_pax" class="form-control" style="background-color: #F5F5F5;">

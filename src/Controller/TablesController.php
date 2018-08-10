@@ -300,6 +300,7 @@ class TablesController extends AppController
             $Updatetable->dob=$OTables['dob'];
             $Updatetable->doa=$OTables['doa'];
             $Updatetable->email=$OTables['email'];
+            $Updatetable->employee_id=$OTables['employee_id'];
             $Updatetable->c_address=$OTables['c_address']; 
             $this->Tables->save($Updatetable);
 
@@ -316,6 +317,7 @@ class TablesController extends AppController
             $Oqtable->doa = '';
             $Oqtable->email = '';
             $Oqtable->c_address = '';
+            $Oqtable->employee_id = 0;
             $this->Tables->save($Oqtable); 
 
             //** KOTS
