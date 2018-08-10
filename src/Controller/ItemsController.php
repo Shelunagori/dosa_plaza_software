@@ -132,4 +132,37 @@ class ItemsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function foodCostingReport(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+
+        $BillRows=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
+        $BillRows->matching('Bills', function($q) use($from_date, $to_date){
+            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+        });
+        $BillRows->select([$BillRows->func()->sum('BillRows.quantity')]);
+
+        $BillRows2=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
+        $BillRows2->matching('Bills', function($q) use($from_date, $to_date){
+            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+        });
+        $BillRows2->select([$BillRows2->func()->sum('BillRows.amount')]);
+
+        $Items = $this->Items->find();
+        $Items->select([
+            'selling_quantity' => $BillRows,
+            'selling_amount' => $BillRows2,
+        ])
+        ->where(['Items.is_deleted'=>0])
+        ->autoFields(true);
+
+        //pr($Items->toArray()); exit;
+        $this->set(compact('Items', 'from_date', 'to_date'));
+    }
+
+
 }

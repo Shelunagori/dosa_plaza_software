@@ -375,6 +375,30 @@ class RawMaterialsController extends AppController
 		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
 	}
 
+	public function monthlyReport()
+	{
+		$this->viewBuilder()->layout('admin');
+
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+		$RawMaterials = $this->RawMaterials->StockLedgers->find();
+		$RawMaterials->select([
+			'purchase' => $RawMaterials->func()->sum('quantity*rate')
+		])
+		->where([
+			'StockLedgers.transaction_date >=' => $from_date.'-1', 
+			'StockLedgers.transaction_date <=' => $to_date.'-31', 
+			'StockLedgers.status' => 'in',
+			'StockLedgers.voucher_name' => 'Purchase Voucher'
+		])
+		->group(['MONTH(transaction_date)']);
+
+		pr($RawMaterials->toArray()); exit;
+		$this->set(compact('from_date', 'to_date'));
+
+	}
+
 
 
 
