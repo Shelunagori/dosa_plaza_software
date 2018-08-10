@@ -34,7 +34,19 @@ class TablesController extends AppController
             $kot_amout=$value->kot_amout;
              $tableWiseAmount[$table_id][]=$kot_amout;
         } 
-        $Tables=$this->Tables->find();     
+        $Tables=$this->Tables->find();
+        $BillAmountArray=array();
+        foreach ($Tables as $data) {
+            $table_id=$data['id'];
+            $bill_id=$data['bill_id'];
+            $grand_total=0;
+            if($bill_id>0){
+               $Bills=$this->Tables->Bills->find()->where(['Bills.id'=>$bill_id])->first();
+               $grand_total=$Bills->grand_total;
+            }
+            $BillAmountArray[$table_id]=$grand_total;
+        } 
+         
         $Employees = $this->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
         $this->set(compact('Tables', 'Employees','tableWiseAmount'));
     }
@@ -288,6 +300,7 @@ class TablesController extends AppController
             $Updatetable->dob=$OTables['dob'];
             $Updatetable->doa=$OTables['doa'];
             $Updatetable->email=$OTables['email'];
+            $Updatetable->employee_id=$OTables['employee_id'];
             $Updatetable->c_address=$OTables['c_address']; 
             $this->Tables->save($Updatetable);
 
@@ -304,6 +317,7 @@ class TablesController extends AppController
             $Oqtable->doa = '';
             $Oqtable->email = '';
             $Oqtable->c_address = '';
+            $Oqtable->employee_id = 0;
             $this->Tables->save($Oqtable); 
 
             //** KOTS

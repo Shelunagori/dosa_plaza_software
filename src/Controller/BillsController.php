@@ -65,6 +65,7 @@ class BillsController extends AppController
         $c_email=$this->request->query('c_email');
         $c_address=$this->request->query('c_address');
         $order_type=$this->request->query('order_type');
+
         $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
         if($IsCustomerExist){
             $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
@@ -135,6 +136,7 @@ class BillsController extends AppController
 			$bill_row->rate=$row['rate'];
 			$bill_row->amount=$row['amount'];
 			$bill_row->discount_per=$row['discount_per'];
+            $bill_row->discount_amount=$row['discount_amt'];
 			$bill_row->net_amount=$row['net_amount'];
             $bill_row->tax_per=$row['percen'];            
 			$bill_rows[]=$bill_row;
@@ -148,7 +150,9 @@ class BillsController extends AppController
             $bill->occupied_time=date("Y-m-d h:i:s");
         }
         $bill->payment_status='no';
-
+        
+        $bill->employee_id=@$employee_id=$this->request->query('employee_id');;
+        
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
 			$query->update()

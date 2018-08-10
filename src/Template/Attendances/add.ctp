@@ -40,6 +40,7 @@
 											<option value="1">Present</option>
 											<option value="2">Half Day</option>
 											<option value="3">Absent</option>
+											<option value="5">Full</option>
 											<option value="4">Off</option>
 										</select> 
 									</span>
@@ -61,6 +62,7 @@
 											['value' => '1', 'text' => 'Present'],
 											['value' => '2', 'text' => 'Half Day'],
 											['value' => '3', 'text' => 'Absent'],
+											['value' => '5', 'text' => 'Full'],
 											['value' => '4', 'text' => 'Off']
 										],
 										['value' => @$employee->attendances[0]->attendance_status, 'class' => 'allCheckbox']

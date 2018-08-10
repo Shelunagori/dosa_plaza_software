@@ -279,7 +279,12 @@ $order=$pass[1];
 											</tr>
 											<tr>
 												<td colspan="2" height="35px">
-													<?php echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>$Table_data->employee_id]); ?>
+													<?php if($order_type=='dinner'){
+														echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
+														}
+														else{
+															echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
+														} ?>
 												</td>
 											</tr>
 											<tr>
@@ -450,8 +455,25 @@ $order=$pass[1];
 	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #1AB696; font-weight: bold;"></span><br/><br/><span style="font-size: 18px; color: #727376; font-weight: bold;">KOT Created Successfully.</span><br/></div><div style="text-align:  center;margin-top: 20px;"><span class="closePopup">Close</span></div>';
 	$BillSuccessMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Bill Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$errorMessage='<div align=center><br/><span aria-hidden=true class=icon-close style="font-size:50px;color: #ae0808; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #ae0808; font-weight: bold;">Something went wrong.</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
+	$js='';
+	if($order_type=='dinner'){	 
+		$js.="
+			$(document).ready(function() {
+				//-- VIew Customer Info
+				var table_id=$('#tableInput').val();
+				var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
+				url=url+'?table_id='+table_id;
+				 
+				$.ajax({
+					url: url,
+				}).done(function(response) { 
+					$('#customer_info').html(response);
+				});
+			});
+		";
+	}
 	
-	$js="
+	$js.="
 	$(document).ready(function() {
 		var order_type=$('#order_type').val();
 		var q=$('.ItemCategoryBox').clone();
@@ -500,17 +522,7 @@ $order=$pass[1];
 			$('#all_kot_data').html(response);
 		});
 
-		//-- VIew Customer Info
 		
-		var table_id=$('#tableInput').val();
-		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
-		url=url+'?table_id='+table_id;
-		 
-		$.ajax({
-			url: url,
-		}).done(function(response) { 
-			$('#customer_info').html(response);
-		});
 		//--
 		$('.plus').die().live('click',function(event){
 			var qty = parseInt($(this).closest('td').find('span.qty').html());
@@ -708,9 +720,12 @@ $order=$pass[1];
 				var rate=$(this).find('td:nth-child(4)').text();
 				var amount=$(this).find('td:nth-child(5)').text();
 				var discount_per=$(this).find('td:nth-child(6) input').val();
-				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
-				var net_amount=$(this).find('td:nth-child(8)').text();
-				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount, percen : percen}); 
+				if(!discount_per){ discount_per=0;}
+				var discount_amt=$(this).find('td:nth-child(7) input').val();
+				if(!discount_amt){ discount_amt=0;}
+				var percen=parseFloat($(this).find('td:nth-child(8) span.percen').html());
+				var net_amount=$(this).find('td:nth-child(9)').text();
+				postData.push({item_id : item_id, quantity : quantity, rate : rate, amount : amount, discount_per : discount_per, net_amount : net_amount, percen : percen, discount_amt : discount_amt}); 
 			});
 			var order_type=$('#order_type').val();
 			var table_id=$('#tableInput').val();
@@ -719,6 +734,8 @@ $order=$pass[1];
 			var c_pax=$('#c_pax').val();
 			var dob=$('#dob').val();
 			var doa=$('#doa').val();
+			var employee_id=$('#employee_id option:selected').val();
+			console.log(employee_id);
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
 			
@@ -729,13 +746,13 @@ $order=$pass[1];
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id;
 			url=encodeURI(url);
 			
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
-				console.log(bill_id);
+				 
 				if(bill_id!=0){
 					$('#WaitBox3').hide();
 					$('#WaitBox2').hide();
@@ -757,12 +774,62 @@ $order=$pass[1];
 		});
 		
 		$('.disBox').die().live('keyup',function(event){
+			var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+		    if(isNaN(qty)){ qty=0; }
+			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+			if(isNaN(rate)){ rate=0; }
+			var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+			if(isNaN(discount_per)){ discount_per=0; }
+			var amount   = qty*rate;						
+			if(discount_per)
+			{   
+				var disAmt    = (amount*discount_per)/100;
+				disAmt  = round(disAmt,2);
+			}
+			$(this).closest('tr').find('td:nth-child(7) input').val(disAmt);
+			calculateBill();
+		});
+		
+		$(document).on('keyup','.disBoxamt',function(e){
+			var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+		    if(isNaN(qty)){ qty=0; }
+
+			var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+			if(isNaN(rate)){ rate=0; }
+
+			var discount_amt  = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+			if(isNaN(discount_amt)){ discount_amt=0; }
+			
+			var amount   = qty*rate;
+
+			if(discount_amt && amount>0)
+			{   
+				var dis_per   = (discount_amt*100)/amount;
+				dis_per = round(dis_per,2);
+				
+			}
+			$(this).closest('tr').find('td:nth-child(6) input').val(dis_per);
 			calculateBill();
 		});
 		
 		$('.overalldis').die().live('keyup',function(event){
 			var dic = $(this).val();
 			$('.disBox').val(dic);
+			$('#billTable tbody tr').each(function(){
+				var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+			    if(isNaN(qty)){ qty=0; }
+				var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
+				if(isNaN(rate)){ rate=0; }
+				var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+				if(isNaN(discount_per)){ discount_per=0; }
+				var amount   = qty*rate;						
+				if(discount_per)
+				{   
+					var disAmt    = (amount*discount_per)/100;
+					disAmt  = round(disAmt,2);
+				}
+				$(this).closest('tr').find('td:nth-child(7) input').val(disAmt);
+			});
 			calculateBill();
 		});
 		
@@ -772,15 +839,15 @@ $order=$pass[1];
 				var quantity=parseFloat($(this).find('td:nth-child(3)').text());
 				var rate=parseFloat($(this).find('td:nth-child(4)').text());
 				var amount=parseFloat($(this).find('td:nth-child(5)').text());
-				var discount_per=parseFloat($(this).find('td:nth-child(6) input').val());
-				if(!discount_per){ discount_per=0; }
-				var net_amount=round(amount*(100-discount_per)/100,2);
-				var percen=parseFloat($(this).find('td:nth-child(7) span.percen').html());
-				
-				var taxamount=round((net_amount*percen)/100,2);
-				var tot=net_amount+taxamount;
+				var discount_amount=parseFloat($(this).find('td:nth-child(7) input').val());
+				if(discount_amount){ 
+				 	amount=round(amount-discount_amount,2);
+ 				}
+				var percen=parseFloat($(this).find('td:nth-child(8) span.percen').html());
+				var taxamount=round((amount*percen)/100,2);
+				var tot=amount+taxamount;
 				tot=round(tot,2);
-				$(this).find('td:nth-child(8)').text(tot);
+				$(this).find('td:nth-child(9)').text(tot);
 				total=total+tot;
 			});
 			total=round(total,2);
