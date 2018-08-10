@@ -94,11 +94,11 @@
 							$opening=$RawMaterial->total_in_opening-$RawMaterial->total_out_opening;
 							$closing=0;
 							while (strtotime($start_date) <= strtotime($end_date)) {
-								$opening+=(@$stock[$RawMaterial->id]['in'][strtotime('-1 day', strtotime($start_date))]) - (@$stock[$RawMaterial->id]['out'][strtotime('-1 day', strtotime($start_date))]);
-								$closing+=(@$stock[$RawMaterial->id]['in'][strtotime($start_date)]) - (@$stock[$RawMaterial->id]['out'][strtotime($start_date)]); ?>
+								$closing = $opening + (@$stock[$RawMaterial->id]['in'][strtotime($start_date)]) - (@$stock[$RawMaterial->id]['out'][strtotime($start_date)]); ?>
 				                <td><?php echo ($opening) ? ($opening) : '' ?></td>
 				                <td><?php echo ($closing) ? ($closing) : '' ?></td>
 				                <?php
+				                $opening=$closing;
 				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
 							} ?>
 							

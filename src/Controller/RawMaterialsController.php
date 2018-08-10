@@ -339,10 +339,10 @@ class RawMaterialsController extends AppController
 
 
 
-		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
 		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
 		
-		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
 		$openingOut->select([$openingOut->func()->sum('StockLedgers.quantity')]);
 
 
@@ -355,7 +355,7 @@ class RawMaterialsController extends AppController
 							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
 								return $q
 								->where([
-									'StockLedgers.transaction_date >=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date))), 
+									'StockLedgers.transaction_date >=' => date('Y-m-d', strtotime('0 day', strtotime($from_date))), 
 									'StockLedgers.transaction_date <=' => $to_date
 								])
 								->select([
