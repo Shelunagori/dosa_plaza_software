@@ -44,7 +44,11 @@ class KotsController extends AppController
         $Kots=$this->Kots->find()->where(['Kots.table_id'=>$table_id,'Kots.bill_pending'=>'yes','Kots.is_deleted'=>0])
               ->contain(['KotRows'=>['Items'=>['Taxes']]]);
         $itemsList=[]; $kotIDs=[];
-        $Table_data=$this->Kots->Tables->get($table_id);
+        $Table_data=array();
+        if($table_id){
+            $Table_data=$this->Kots->Tables->get($table_id);  
+        }
+        
         foreach($Kots as $Kot){
            
             $kotIDs[$Kot->id]=$Kot->id;

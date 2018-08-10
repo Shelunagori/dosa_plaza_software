@@ -279,7 +279,12 @@ $order=$pass[1];
 											</tr>
 											<tr>
 												<td colspan="2" height="35px">
-													<?php echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>$Table_data->employee_id]); ?>
+													<?php if($order_type=='dinner'){
+														echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
+														}
+														else{
+															echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
+														} ?>
 												</td>
 											</tr>
 											<tr>
@@ -450,8 +455,25 @@ $order=$pass[1];
 	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #1AB696; font-weight: bold;"></span><br/><br/><span style="font-size: 18px; color: #727376; font-weight: bold;">KOT Created Successfully.</span><br/></div><div style="text-align:  center;margin-top: 20px;"><span class="closePopup">Close</span></div>';
 	$BillSuccessMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Bill Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$errorMessage='<div align=center><br/><span aria-hidden=true class=icon-close style="font-size:50px;color: #ae0808; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #ae0808; font-weight: bold;">Something went wrong.</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
+	$js='';
+	if($order_type=='dinner'){	 
+		$js.="
+			$(document).ready(function() {
+				//-- VIew Customer Info
+				var table_id=$('#tableInput').val();
+				var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
+				url=url+'?table_id='+table_id;
+				 
+				$.ajax({
+					url: url,
+				}).done(function(response) { 
+					$('#customer_info').html(response);
+				});
+			});
+		";
+	}
 	
-	$js="
+	$js.="
 	$(document).ready(function() {
 		var order_type=$('#order_type').val();
 		var q=$('.ItemCategoryBox').clone();
@@ -500,17 +522,7 @@ $order=$pass[1];
 			$('#all_kot_data').html(response);
 		});
 
-		//-- VIew Customer Info
 		
-		var table_id=$('#tableInput').val();
-		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
-		url=url+'?table_id='+table_id;
-		 
-		$.ajax({
-			url: url,
-		}).done(function(response) { 
-			$('#customer_info').html(response);
-		});
 		//--
 		$('.plus').die().live('click',function(event){
 			var qty = parseInt($(this).closest('td').find('span.qty').html());
@@ -722,6 +734,8 @@ $order=$pass[1];
 			var c_pax=$('#c_pax').val();
 			var dob=$('#dob').val();
 			var doa=$('#doa').val();
+			var employee_id=$('#employee_id option:selected').val();
+			console.log(employee_id);
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
 			
@@ -732,7 +746,7 @@ $order=$pass[1];
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id;
 			url=encodeURI(url);
 			
 			$.ajax({
