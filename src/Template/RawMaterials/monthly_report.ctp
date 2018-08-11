@@ -48,15 +48,26 @@
 					<table class="table table-str">
 						<thead>
 							<tr>
-								<th>S.No.</th>
+								<th>Month</th>
+								<th>Total Purchase (₹)</th>
+								<th>Total Sales (₹)</th>
 							</tr>
 						</thead>
 						<tbody id="main_tbody">
-						<?php foreach ($RawMaterials as $RawMaterial): ?>
-							<tr class="main_tr">
-								<td><?= (++$d) ?></td>
-							</tr>
-							<?php  endforeach; ?>
+						<?php 
+						$start    = (new DateTime($from_date))->modify('first day of this month');
+						$end      = (new DateTime($to_date))->modify('first day of next month');
+						$interval = DateInterval::createFromDateString('1 month');
+						$period   = new DatePeriod($start, $interval, $end);
+
+						foreach ($period as $dt) { ?>
+						    <tr>
+						    	<td><?php echo $dt->format("M-Y"); ?></td>
+						    	<td><?php echo @$purchases[$dt->format("Y")][(int)$dt->format("m")]; ?></td>
+						    	<td><?php echo @$sales[$dt->format("Y")][(int)$dt->format("m")]; ?></td>
+						    </tr>
+						    
+						<?php } ?>
 						</tbody>
 					</table>
 				</div>
