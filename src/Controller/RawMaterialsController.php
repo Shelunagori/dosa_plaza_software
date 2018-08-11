@@ -384,7 +384,9 @@ class RawMaterialsController extends AppController
 
 		$RawMaterials = $this->RawMaterials->StockLedgers->find();
 		$RawMaterials->select([
-			'purchase' => $RawMaterials->func()->sum('quantity*rate')
+			'purchase' => $RawMaterials->func()->sum('quantity*rate'),
+			'month' => 'MONTH(transaction_date)',
+			'year' => 'YEAR(transaction_date)',
 		])
 		->where([
 			'StockLedgers.transaction_date >=' => $from_date.'-1', 
@@ -392,10 +394,36 @@ class RawMaterialsController extends AppController
 			'StockLedgers.status' => 'in',
 			'StockLedgers.voucher_name' => 'Purchase Voucher'
 		])
-		->group(['MONTH(transaction_date)']);
+		->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
+		->order(['StockLedgers.transaction_date' => 'ASC']);
 
-		pr($RawMaterials->toArray()); exit;
-		$this->set(compact('from_date', 'to_date'));
+		$purchases=[];
+		foreach ($RawMaterials as $RawMaterial) {
+			$purchases[$RawMaterial->year][$RawMaterial->month]=$RawMaterial->purchase;
+		}
+
+
+		$BillRows = $this->RawMaterials->ItemRows->Items->BillRows->find();
+		$BillRows->select([
+			'sale' => $BillRows->func()->sum('net_amount'),
+			'month' => 'MONTH(transaction_date)',
+			'year' => 'YEAR(transaction_date)',
+		])
+		->matching('Bills', function($q) use($from_date, $to_date){
+			return $q
+			->where([
+				'Bills.transaction_date >=' => $from_date.'-1', 
+				'Bills.transaction_date <=' => $to_date.'-31', 
+			]);
+		})
+		->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
+		->order(['Bills.transaction_date' => 'ASC']);
+		$sales=[];
+		foreach ($BillRows as $BillRow) {
+			$sales[$BillRow->year][$BillRow->month]=$BillRow->sale;
+		}
+
+		$this->set(compact('from_date', 'to_date', 'purchases', 'sales'));
 
 	}
 
