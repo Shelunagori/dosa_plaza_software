@@ -48,7 +48,7 @@
 					<table class="table table-str">
 						<thead>
 							<tr>
-								<th>S.No.</th>
+								<th>Month</th>
 								<th>Total Purchase (₹)</th>
 								<th>Total Sales (₹)</th>
 							</tr>
