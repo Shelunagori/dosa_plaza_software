@@ -14,10 +14,16 @@
 }
 .topBtn2{
 	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
-} 
+}
+.EmptyTbl{
+	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px; border-radius: 4px;
+}
 .paymentsubmit{
 	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px; border-radius: 4px;
-} 
+}
+.EmptyTbl:hover{
+	cursor: pointer;
+}
 .radio-inline{
 	font-size: 10px !important;
 	color:#96989A;
@@ -52,13 +58,16 @@
 							<div style="font-size:14px;">
 								<input type="hidden" name="payment_bill_id" value="<?php echo $Table->bill_id ?>" id="payment_bill_id">
 								<input type="hidden" name="payment_table_id" value="<?php echo $Table->id ?>" id="payment_table_id">
-								<div style="padding:0px 0px;">
-									<table width="100%" style="font-size:12px;line-height: 22px; border: 2px solid #ccc;">
+								<div align="center">
+									<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> &#8377; 532 </b></span>
+								</div>
+								<div style="padding:2px 10px;">
+									<table width="100%" style="font-size:12px;line-height: 22px;">
 										<tr>
-											<td valign="top" align="center">
-												<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> &#8377; 532 </b></span>
+											<td valign="top">
+												<span style="color:#96989A;">Payment Method</span>
 											</td>
-										</tr> 
+										</tr>
 										<tr>
 											<td valign="top">
 												<table width="100%"> 
@@ -77,7 +86,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td valign="top" style="padding-top:10px;padding-bottom: 8px;" align="center">
+											<td valign="top" style="padding-top:10px" align="center">
 												<button type="submit" style="padding: 2px 8px 3px 10px;font-size: 12px;" class="btn  btn-sm btn-danger showLoader">Submit</button>
 											</td>
 										</tr>
@@ -88,69 +97,68 @@
 					<?php 
 					}
 					else { ?>
-						<div style="font-size:14px; border-radius: 7px !important;">
-							<div class="CreateKot" table_id='<?php echo $Table->id; ?>' style="box-shadow: 2px 3px 10px -1px rgb(169, 161, 161);">
-								<table width="100%" style="font-size:12px;line-height: 22px;text-align: center; white-space: nowrap; border:2px solid #DAD6F9" >
+						<div style="font-size:14px;">
+							<div>
+								<table width="100%" style="font-size:12px;line-height: 22px; border:1px solid #334d8f;text-align: center; white-space: nowrap;" class="  table-bordered" >
 									<tr>
-										<td height="30px" width="50%" style="background-color: #DAD6F9;">
- 											<span style="color:#373435;"><?php echo $Table->no_of_pax; if($sum>0){  echo ' (&#8377; '; echo  round($RatePerPax,2);echo ')'; }?></span>
+										<td height="23px" width="50%" style="background-color: #fa6775;color:#fff !important">
+											Table <?= h($Table->name) ?>
 										</td>
-										<td width="50%">
+										<td width="50%" style="background-color: #fa6775;color:#fff !important">
 											<span id="timeLabel_<?php echo $Table->id; ?>" ></span>
 										</td>
 									</tr>
 									<tr>
-										<td height="30px" style="background-color: #DAD6F9;font-size:18px;">
- 											<b> Table <?= h($Table->name) ?></b>
+										<td height="23px" style="">
+ 											<span style="color:#373435;"><?php echo $Table->no_of_pax; if($sum>0){  echo ' (&#8377; '; echo  round($RatePerPax,2);echo ')'; }?></span>
 										</td>
 										<td >
 											<span style="color:#373435;"><?php if($sum>0){ echo '&#8377; '.$sum; } ?></span>
 										</td>
 									</tr>
 									<tr>
-										<td style="background-color: #DAD6F9;"> 
-											<span style="color:#373435;"><?= h(@$Table->employee->name);?> </span>
-										</td>
-										<td height="30px" > 
+										<td height="23px" style="background-color: #eee;"> 
 											<span style="color:#373435;"><?php echo @ucwords($Table->c_name); ?> </span>
 										</td>
+										<td style="background-color: #eee;"> 
+											<span style="color:#373435;"><?= h(@$Table->employee->name);?> </span>
+										</td>
 									</tr>
+									<tr>
+										<td height="23px" valign="Bottom" style="text-align: center;">
+											<a style="color:#fa6775;" class="customer_info" table_id="<?php echo $Table->id; ?>" >Customer Info.</a>
+										</td>
+										<td > 
+											<?= $this->Html->link(__('Create KOT'), ['controller' => 'Kots', 'action' => 'generate', $Table->id,'dinner'], ['style' => 'color:#fa6775;','class'=>'showLoader']) ?>
+										</td>
+									</tr> 
 								</table>
 							</div>
 						</div>
 				<?php }
 				} else{ ?>
-						<div style="font-size:14px; border-radius: 7px !important;">
-							<div class='EmptyTbl' table_id='<?php echo $Table->id; ?>' >
-								<table width="100%" style="font-size:12px;line-height: 22px;text-align: center; white-space: nowrap; border:2px solid #ccc" >
-									<tr>
-										<td height="30px" width="50%" style="background-color: #EBEBE9;">
- 											 
-										</td>
-										<td width="50%">
-											 
-										</td>
-									</tr>
-									<tr>
-										<td height="30px" style="background-color: #EBEBE9;font-size:18px;">
- 											<b> Table <?= h($Table->name) ?></b>
-										</td>
-										<td >
-											 
-										</td>
-									</tr>
-									<tr>
-										<td style="background-color: #EBEBE9;"> 
-											 
-										</td>
-										<td height="30px" > 
-											 
-										</td>
-									</tr>
-								</table>
-							</div>
-						</div>
+					<div style="font-size:14px;">
 						 
+						<div>
+							<table width="100%" style="font-size:12px;line-height: 22px;">
+								<tr>
+									<td align="center" >
+										<span style="font-size: 12px; color: #3b393a;">Table <?= h($Table->name) ?></span>
+									</td>
+								</tr>
+								<tr>
+									<td valign="top">
+										<div align="center" style="margin-bottom: 5px;">
+											<?php echo $this->Html->image('/table-icon.png', ['alt' => 'Empty Table']); ?>
+											<br/>
+											<span class="EmptyTbl" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>">Available Now</span>
+											 <br/>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
 				<?php } ?>
 			</div>
 			<?php 
@@ -164,12 +172,9 @@
 <style>
 .goToKot:hover{
 	cursor: pointer;
-} 
-.EmptyTbl{
-	box-shadow: 2px 3px 10px -1px rgb(169, 161, 161);
 }
-.CreateKot:hover{
-	cursor: pointer;
+.EmptyTbl{
+	color: #FFF; background-color: #4FC777; padding: 7px 14px;font-size:12px;cursor: pointer;margin-left: 2px;
 }
 .EmptyTbl:hover{
 	cursor: pointer;
@@ -180,7 +185,7 @@
 .tblBox{
 	width: 230px; margin: 5px;
 	background-color: #FFF;
-	padding: 0px;
+	padding: 7px;
 	border-radius: 7px !important;
 	position: relative;
 	margin-bottom: 3px;
@@ -226,15 +231,7 @@ $(document).ready(function() {
 	});
 	$('.CloseSteward').die().live('click',function(event){
 		$('#WaitBox3').hide();
-	});
-	$('.CreateKot').die().live('click',function(event){
-		$('#loading').show();
-		var table_id = $(this).attr('table_id');
-		var url='".$this->Url->build(['controller'=>'kots','action'=>'generate'])."';
-		url=url+'/'+table_id+'/dinner';
-		window.location.replace(url);
-	});
-
+	}); 
 
 
 	$('.registerCustomer').die().live('click',function(event){
@@ -251,9 +248,7 @@ $(document).ready(function() {
 		}).done(function(response) {
 			if(response==1){
 				$('#customerRegistrationBox').hide();
-				var url='".$this->Url->build(['controller'=>'kots','action'=>'generate'])."';
-				url=url+'/'+table_id+'/dinner';
-				window.location.replace(url);
+				location.reload();
 			}else{
 				$('#loading').hide();
 				alert('!! Something went wrong. Customer not registered.');
