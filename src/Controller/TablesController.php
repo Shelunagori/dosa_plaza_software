@@ -34,7 +34,19 @@ class TablesController extends AppController
             $kot_amout=$value->kot_amout;
              $tableWiseAmount[$table_id][]=$kot_amout;
         } 
-        $Tables=$this->Tables->find();     
+        $Tables=$this->Tables->find()->contain(['Employees']);
+        $BillAmountArray=array();
+        foreach ($Tables as $data) {
+            $table_id=$data['id'];
+            $bill_id=$data['bill_id'];
+            $grand_total=0;
+            if($bill_id>0){
+               $Bills=$this->Tables->Bills->find()->where(['Bills.id'=>$bill_id])->first();
+               $grand_total=$Bills->grand_total;
+            }
+            $BillAmountArray[$table_id]=$grand_total;
+        } 
+         
         $Employees = $this->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
         $this->set(compact('Tables', 'Employees','tableWiseAmount'));
     }
@@ -288,6 +300,7 @@ class TablesController extends AppController
             $Updatetable->dob=$OTables['dob'];
             $Updatetable->doa=$OTables['doa'];
             $Updatetable->email=$OTables['email'];
+            $Updatetable->employee_id=$OTables['employee_id'];
             $Updatetable->c_address=$OTables['c_address']; 
             $this->Tables->save($Updatetable);
 
@@ -304,6 +317,7 @@ class TablesController extends AppController
             $Oqtable->doa = '';
             $Oqtable->email = '';
             $Oqtable->c_address = '';
+            $Oqtable->employee_id = 0;
             $this->Tables->save($Oqtable); 
 
             //** KOTS
@@ -324,5 +338,37 @@ class TablesController extends AppController
         $vacantTables =$this->Tables->find()->where(['status'=>'vacant']);
         $occupiedTables =$this->Tables->find()->where(['status'=>'occupied']);
         $this->set(compact('vacantTables','occupiedTables','Table'));
+    }
+    public function paymentinfo()
+    {
+        $this->viewBuilder()->layout('');
+        $table_id=$this->request->getData('payment_table_id');
+        $bill_id=$this->request->getData('payment_bill_id');
+        $payment_type=$this->request->getData('payment_type');
+
+        if($table_id>0){
+            $Table = $this->Tables->get($table_id);
+            $Table->payment_status='';
+            $Table->bill_id='';
+            $Table->employee_id='';
+            $Table->status = 'vacant';
+            $Table->c_name = '';
+            $Table->c_mobile = '';
+            $Table->no_of_pax = '';
+            $Table->occupied_time = '';
+            $Table->dob = '';
+            $Table->doa = '';
+            $Table->email = '';
+            $Table->c_address = '';
+            $this->Tables->save($Table);  
+        }
+        if($table_id>0){
+            $bills = $this->Tables->Bills->get($bill_id);
+            $bills->payment_status='yes';
+            $bills->payment_type=$payment_type;
+             
+            $this->Tables->Bills->save($bills);  
+        } 
+        return $this->redirect(['action' => 'index']);
     }
 }

@@ -87,10 +87,26 @@ class EmployeesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
-	 public function EmployeesAttendance()
-	{
+	public function EmployeesAttendance($month=null)
+	{ 
 		$this->viewBuilder()->layout('admin');
-		$Employees =	$this->Employees->find()->contain(['Designations']);
- 		$this->set(compact('Employees')); 
+        $month=$this->request->query('month');
+        $F_date=$month.'-01';
+        $first_date=date('Y-m-d',strtotime($F_date));
+        $last_date=date('Y-m-t',strtotime($F_date));
+        $Employees = $this->Employees->find()->contain(['Designations','Attendances'=>function($q)use($first_date,$last_date){
+            return $q->where(['Attendances.attendance_date >=' => $first_date,'Attendances.attendance_date <=' => $last_date]);
+        }]);
+        $AttendancesArray=array();
+        foreach ($Employees as $employee) {
+            $employee_id=$employee->id;
+            foreach ($employee->attendances as $attendance) {
+                $Date=strtotime($attendance->attendance_date);
+                $attendance_status=$attendance->attendance_status;
+                $AttendancesArray[$employee_id][$Date]=$attendance_status;
+                
+            }
+        }         
+ 		$this->set(compact('Employees','month','AttendancesArray')); 
 	}
 }

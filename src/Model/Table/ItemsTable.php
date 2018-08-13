@@ -53,6 +53,10 @@ class ItemsTable extends Table
             'foreignKey' => 'tax_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->hasMany('BillRows', [
+            'foreignKey' => 'item_id'
+        ]);
 		
 
        

@@ -239,6 +239,7 @@ foreach($Kots as $Kot){
 							<th style="text-align:center;" width="10%">Rate</th>
 							<th style="text-align:center;" width="10%">Amount</th>
 							<th width="10%" style="text-align:center;">Dis%</th>
+							<th width="10%" style="text-align:center;">Dis&#8377;</th>
 							<th width="10%" style="text-align:center;">GST</th>
 							<th style="text-align:right;" width="10%">Net</th>
 						</tr>
@@ -255,7 +256,13 @@ foreach($Kots as $Kot){
 							<td style="text-align:center;"><?php echo $item['quantity']*$item['rate']; ?></td>
 							<td><?php if($item['dis_applicable']==1){?>
 									<input type="text" class="disBox" style="width:20%;text-align:center;width:100%;" placeholder="" />
-								<?php } ?></td>
+								<?php } ?>
+							</td>
+							<td><?php if($item['dis_applicable']==1){?>
+									<input type="text" class="disBoxamt" style="width:20%;text-align:center;width:100%;" placeholder="" />
+								<?php } ?>
+							</td>
+
 							<td style="text-align:center;"><?php echo $item['tax_name']; ?><span class="percen" style="display:none"><?php echo $item['tax_per']; ?></span></td>
 							<td style="text-align:right;">
 								<?php 
@@ -272,12 +279,13 @@ foreach($Kots as $Kot){
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " >
 							<td colspan="5" style="text-align:right;"> Over All Discount</td>
 							<td colspan=""> <input type="text" class="overalldis" style="width:20%;text-align:center;width:100%;" placeholder="" /></td>
-							<td  style="text-align:right;">Total</td>
+							 
+							<td colspan="2" style="text-align:right;">Total</td>
 							<td style="text-align:right;" ><?php echo $total; ?></td>
 						</tr>
 					
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " > 
-							<td colspan="7" style="text-align:right;">Round off</td>
+							<td colspan="8" style="text-align:right;">Round off</td>
 							<td style="text-align:right;" >
 							<?php
 								$totalAfterTax=$total-round($total);
@@ -287,7 +295,7 @@ foreach($Kots as $Kot){
 							</td>
 						</tr>
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; background-color: #E6E7E8;font-weight: bold;" > 
-							<td colspan="7" style="text-align:right;">NET AMOUNT</td>
+							<td colspan="8" style="text-align:right;">NET AMOUNT</td>
 							<td style="text-align:right;" ><?php echo round($total); ?></td>
 						</tr>
 					</tfoot>

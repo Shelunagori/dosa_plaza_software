@@ -185,6 +185,7 @@ class RawMaterialsController extends AppController
 						$AdjustData['rate']=0;
 						$AdjustData['status']='out';
 						$AdjustData['voucher_name']='stock adjustment';
+						$AdjustData['is_wastage']=1;
 						$AdjustData['adjustment_commant']=$adjustment_commant;
 						$AdjustData['wastage_commant']=$wastage_commant;
 						$StockLedger = $this->RawMaterials->StockLedgers->patchEntity($StockLedger, $AdjustData);
@@ -246,6 +247,187 @@ class RawMaterialsController extends AppController
 
 		$this->set(compact('RawMaterials'));
 	}
+
+
+	public function dailyReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$date=$this->request->query('date');
+		
+		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <' => $date]);
+		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
+		
+		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <' => $date]);
+		$openingOut->select([$openingOut->func()->sum('StockLedgers.quantity')]);
+
+		$inward=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date' => $date, 'StockLedgers.purchase_voucher_id >' => '0']);
+		$inward->select([$inward->func()->sum('StockLedgers.quantity')]);
+
+		$adjustmentIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment']);
+		$adjustmentIn->select([$adjustmentIn->func()->sum('StockLedgers.quantity')]);
+
+		$used=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'Bill']);
+		$used->select([$used->func()->sum('StockLedgers.quantity')]);
+
+		$wastage=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment', 'StockLedgers.is_wastage' => true]);
+		$wastage->select([$wastage->func()->sum('StockLedgers.quantity')]);
+
+		$adjustmentOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date' => $date, 'StockLedgers.voucher_name' => 'stock adjustment', 'StockLedgers.is_wastage' => false]);
+		$adjustmentOut->select([$adjustmentOut->func()->sum('StockLedgers.quantity')]);
+		
+		
+		$RawMaterials =	$this->RawMaterials->find();
+		$RawMaterials->select([
+			'total_in_opening' => $openingIn,
+			'total_out_opening' => $openingOut,
+			'inward' => $inward,
+			'adjustmentIn' => $adjustmentIn,
+			'used' => $used,
+			'wastage' => $wastage,
+			'adjustmentOut' => $adjustmentOut,
+		])
+		->contain(['PrimaryUnits'])
+		->where(['RawMaterials.is_deleted'=>0])
+		->autoFields(true);
+		//pr($RawMaterials->toArray()); exit;
+		$this->set(compact('RawMaterials', 'date'));
+	}
+
+
+
+	public function consumptionReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+
+		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
+		$RawMaterials =	$this->RawMaterials->find()
+							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+								return $q
+								->where([
+									'StockLedgers.transaction_date >=' => $from_date, 
+									'StockLedgers.transaction_date <=' => $to_date, 
+									'StockLedgers.status' => 'out',
+									'StockLedgers.voucher_name' => 'Bill'
+								])
+								->select([
+									'StockLedgers.raw_material_id', 
+									'StockLedgers.transaction_date', 
+									'Total_quantity' => $StockLedgers->func()->sum('StockLedgers.quantity')
+								])
+								->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id'])
+								->order(['StockLedgers.transaction_date' => 'ASC']);
+							}])
+							->where(['RawMaterials.is_deleted'=>0]);
+		
+		
+		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+	}
+
+
+
+	public function stockReport()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+
+
+		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
+		
+		$openingOut=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out', 'StockLedgers.transaction_date <=' => date('Y-m-d', strtotime('-1 day', strtotime($from_date)))]);
+		$openingOut->select([$openingOut->func()->sum('StockLedgers.quantity')]);
+
+
+		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
+		$RawMaterials =	$this->RawMaterials->find()
+							->select([
+								'total_in_opening' => $openingIn,
+								'total_out_opening' => $openingOut,
+							])
+							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+								return $q
+								->where([
+									'StockLedgers.transaction_date >=' => date('Y-m-d', strtotime('0 day', strtotime($from_date))), 
+									'StockLedgers.transaction_date <=' => $to_date
+								])
+								->select([
+									'StockLedgers.raw_material_id', 
+									'StockLedgers.status', 
+									'StockLedgers.transaction_date', 
+									'Total_quantity' => $StockLedgers->func()->sum('StockLedgers.quantity')
+								])
+								->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id', 'StockLedgers.status'])
+								->order(['StockLedgers.transaction_date' => 'ASC']);
+							}])
+							->where(['RawMaterials.is_deleted'=>0])
+							->autoFields(true);
+
+		//pr($RawMaterials->toArray()); exit;
+		
+		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+	}
+
+	public function monthlyReport()
+	{
+		$this->viewBuilder()->layout('admin');
+
+		$from_date=$this->request->query('from_date');
+		$to_date=$this->request->query('to_date');
+
+		$RawMaterials = $this->RawMaterials->StockLedgers->find();
+		$RawMaterials->select([
+			'purchase' => $RawMaterials->func()->sum('quantity*rate'),
+			'month' => 'MONTH(transaction_date)',
+			'year' => 'YEAR(transaction_date)',
+		])
+		->where([
+			'StockLedgers.transaction_date >=' => $from_date.'-1', 
+			'StockLedgers.transaction_date <=' => $to_date.'-31', 
+			'StockLedgers.status' => 'in',
+			'StockLedgers.voucher_name' => 'Purchase Voucher'
+		])
+		->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
+		->order(['StockLedgers.transaction_date' => 'ASC']);
+
+		$purchases=[];
+		foreach ($RawMaterials as $RawMaterial) {
+			$purchases[$RawMaterial->year][$RawMaterial->month]=$RawMaterial->purchase;
+		}
+
+
+		$BillRows = $this->RawMaterials->ItemRows->Items->BillRows->find();
+		$BillRows->select([
+			'sale' => $BillRows->func()->sum('net_amount'),
+			'month' => 'MONTH(transaction_date)',
+			'year' => 'YEAR(transaction_date)',
+		])
+		->matching('Bills', function($q) use($from_date, $to_date){
+			return $q
+			->where([
+				'Bills.transaction_date >=' => $from_date.'-1', 
+				'Bills.transaction_date <=' => $to_date.'-31', 
+			]);
+		})
+		->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
+		->order(['Bills.transaction_date' => 'ASC']);
+		$sales=[];
+		foreach ($BillRows as $BillRow) {
+			$sales[$BillRow->year][$BillRow->month]=$BillRow->sale;
+		}
+
+		$this->set(compact('from_date', 'to_date', 'purchases', 'sales'));
+
+	}
+
+
 
 
 }
