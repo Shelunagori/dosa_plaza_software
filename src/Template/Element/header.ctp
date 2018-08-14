@@ -66,7 +66,7 @@ if($controller=='kots'){
     </div>
     <div class="col-md-6" align="right">
         <span class="topBtn2">Booking</span>
-        <span class="<?php echo $swiftactive ; ?> Swift pointer">Swift Table</span>
+        <span class="<?php echo $swiftactive ; ?> Swift pointer">Shift Table</span>
         <span style="color: #96989A;font-size: 15px;margin-left: 8px;">Day Sale</span>
         <span style="color: #2FBD9F;font-size: 15px;margin-left: 5px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></span>
     </div>

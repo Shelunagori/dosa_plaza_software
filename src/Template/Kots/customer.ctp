@@ -53,15 +53,18 @@
 			<td width="65%">
 				<span>favorite Items</span><br/>
 				<?php
-				foreach ($BillRows as $BillRow) {
-                    echo '<span>'.$BillRow->item->name.'</span><br/>';
-                }
+				if(sizeof(@$BillRows)>0){
+					foreach ($BillRows as $BillRow) {
+	                    echo '<span>'.@$BillRow->item->name.'</span><br/>';
+	                }
+				}
+				
 				?>
 			</td>
 			<td width="35%">
-				Total Amount: <?php echo $TotalAmount; ?><br/>
-				Total Amount Month: <?php echo $TotalAmountMonth; ?><br/>
-				Last Bill Amount: <?php echo $LastBillAmount; ?>
+				Total Amount: <?php echo @$TotalAmount; ?><br/>
+				Total Amount Month: <?php echo @$TotalAmountMonth; ?><br/>
+				Last Bill Amount: <?php echo @$LastBillAmount; ?>
 			</td>
 		</tr>
 	</table>

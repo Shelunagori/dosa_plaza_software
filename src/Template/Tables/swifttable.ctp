@@ -1,4 +1,4 @@
-<?php $this->set("title", 'KOT | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Shift Table | DOSA PLAZA'); ?>
  <style> 
 
 .help-block-error{
@@ -15,7 +15,7 @@
 	<div class="row KOTView" style="padding:26px 16px 5px 15px">
 		<div class="col-md-3"></div>
 		<div class="col-md-6" style="background-color: #FFF; border-radius: 8px !important; padding: 10px;">
-			<span class="Title">Swift Table</span>
+			<span class="Title">Shift Table</span>
 			<hr style=" margin-bottom: 0px; margin-top: 3px;"></hr>			 
 			<div style="padding-top:12px">
 				<table width="100%">
@@ -45,7 +45,7 @@
 					<tr>	
 						<td colspan="5" width="10%" align="center" style="padding-top:20px">
 							<!--<span class="AddItemBtn" data-target='#undeletemodal' data-toggle="modal" >Swift</span>-->
-							<?php echo $this->Form->button('Swift',['class'=>'btn btn-danger']); ?> 
+							<?php echo $this->Form->button('Shift Table',['class'=>'btn btn-danger']); ?> 
 							<br><br> 
 						</td>
 					</tr>
