@@ -152,6 +152,13 @@
 				</table>
 			</div> 
 		</div>
+
+		<div class="col-md-6">
+			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
+				asd
+			</div>
+		</div>
+
 	</div>	
 
 	<?php
