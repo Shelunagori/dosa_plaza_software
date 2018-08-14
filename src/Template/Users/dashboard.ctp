@@ -10,7 +10,7 @@
 			<div class="portlet light" style="border-radius: 0;">
 				<div class="caption top-caption">
 					<span style="color:#67686B;float:left;font-size:19px;padding-left:30px;padding-top: 7px;">Total Sales: </span>
-					<h3 style="color:red;float:left;margin:0;padding-left:17px;font-weight: 400;font-size:19px;line-height:25px;padding-top:7px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></h3>
+					<h3 style="color:#ef5f3f;float:left;margin:0;padding-left:17px;font-weight: 400;font-size:19px;line-height:25px;padding-top:7px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></h3>
 				</div>
 			</div> 
 		</div>
@@ -114,40 +114,40 @@
 
 	<div class="row">
 		<div class="col-md-6">
-			<div class="portlet light" style="border-radius: 0;">
+			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
 				<table width="100%">
 					<tr>
 						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Cash</h6></td>
-						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #656363;font-weight: bold;">₹ <?php echo $CashSale; ?></h6></td>
 						<td width="15%"></td>
 						<td width="40%">
 							<div style="width: 100%;background-color: #dedede;">
-								<div style="width: 55%;background-color: #f0b11b;height: 10px;"></div>
+								<div style="width: <?php echo $CashPer; ?>%;background-color: #f0b11b;height: 10px;"></div>
 							</div>
 						</td>
-						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+						<td width="5%"><span style="font-size: 14px;font-weight: 200;color: #7E8082;margin-left: 10px;"> <?php echo $CashPer; ?>%</span></td>
 					</tr>
 					<tr>
 						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Card</h6></td>
-						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #656363;font-weight: bold;">₹ <?php echo $CardSale; ?></h6></td>
 						<td width="15%"></td>
 						<td width="40%">
 							<div style="width: 100%;background-color: #dedede;">
-								<div style="width: 55%;background-color: #f98866;height: 10px;"></div>
+								<div style="width: <?php echo $CardPer; ?>%;background-color: #f98866;height: 10px;"></div>
 							</div>
 						</td>
-						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+						<td width="5%"><span style="font-size: 14px;font-weight: 200;color: #7E8082;margin-left: 10px;"> <?php echo $CardPer; ?>%</span></td>
 					</tr>
 					<tr>
 						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Paytm</h6></td>
-						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #656363;font-weight: bold;">₹ <?php echo $PaytmSale; ?></h6></td>
 						<td width="15%"></td>
 						<td width="40%">
 							<div style="width: 100%;background-color: #dedede;">
-								<div style="width: 55%;background-color: #4f77b7;height: 10px;"></div>
+								<div style="width: <?php echo $PaytmPer; ?>%;background-color: #4f77b7;height: 10px;"></div>
 							</div>
 						</td>
-						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+						<td width="5%"><span style="font-size: 14px;font-weight: 200;color: #7E8082;margin-left: 10px;"> <?php echo $PaytmPer; ?>%</span></td>
 					</tr>
 				</table>
 			</div> 

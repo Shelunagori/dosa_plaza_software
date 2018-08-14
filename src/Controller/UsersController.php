@@ -106,7 +106,34 @@ class UsersController extends AppController
         // foreach ($rows as $row) {
         //     pr($row);
         // }
-        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary'));
+
+        $Bills=$this->Users->Bills->find();
+        $Bills->select([
+            'CashSale' => $Bills->func()->sum('grand_total'),
+        ])
+        ->where(['Bills.transaction_date' => date('Y-m-d'), 'Bills.payment_type' => 'cash']);
+        $CashSale = $Bills->toArray()[0]['CashSale']; 
+
+        $Bills=$this->Users->Bills->find();
+        $Bills->select([
+            'CardSale' => $Bills->func()->sum('grand_total'),
+        ])
+        ->where(['Bills.transaction_date' => date('Y-m-d'), 'Bills.payment_type' => 'card']);
+        $CardSale = $Bills->toArray()[0]['CardSale']; 
+
+        $Bills=$this->Users->Bills->find();
+        $Bills->select([
+            'PaytmSale' => $Bills->func()->sum('grand_total'),
+        ])
+        ->where(['Bills.transaction_date' => date('Y-m-d'), 'Bills.payment_type' => 'paytm']);
+        $PaytmSale = $Bills->toArray()[0]['PaytmSale']; 
+
+
+        $CashPer=round($CashSale*100/($CashSale+$CardSale+$PaytmSale),2);
+        $CardPer=round($CardSale*100/($CashSale+$CardSale+$PaytmSale),2);
+        $PaytmPer=round($PaytmSale*100/($CashSale+$CardSale+$PaytmSale),2);
+
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer'));
     }
 	
 	public function dashboard2()
