@@ -133,7 +133,11 @@ class UsersController extends AppController
         $CardPer=round($CardSale*100/($CashSale+$CardSale+$PaytmSale),2);
         $PaytmPer=round($PaytmSale*100/($CashSale+$CardSale+$PaytmSale),2);
 
-        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer'));
+        $Attendances = $this->Users->Attendances->find()
+                        ->where(['Attendances.attendance_status IN' => [3,4], 'Attendances.attendance_date' => date('Y-m-d')])
+                        ->contain(['Employees']);
+
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances'));
     }
 	
 	public function dashboard2()

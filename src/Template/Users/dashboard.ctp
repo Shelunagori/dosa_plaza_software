@@ -155,7 +155,23 @@
 
 		<div class="col-md-6">
 			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
-				asd
+				<span>Today's off & absent employees</span><br/>
+				<table class="table table-str ">
+					<tr>
+						<th>Sr</th>
+						<th>Employee</th>
+						<th>Attendance</th>
+					</tr>
+					<?php $sr=0; foreach ($Attendances as $Attendance) { ?>
+						<tr>
+							<td><?php echo ++$sr; ?></td>
+							<td><?php echo $Attendance->employee->name; ?></td>
+							<td>
+								<?php echo ($Attendance->attendance_status==3) ? 'Absent' : 'off' ?>
+							</td>
+						</tr>
+					<?php } ?>
+				</table>
 			</div>
 		</div>
 
