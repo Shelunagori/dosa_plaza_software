@@ -60,20 +60,9 @@ class EmployeesTable extends Table
 
         $validator
             ->scalar('name')
-            ->maxLength('name', 50)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-        $validator
-            ->scalar('mobile_no')
-            ->maxLength('mobile_no', 20)
-            ->requirePresence('mobile_no', 'create')
-            ->notEmpty('mobile_no');
-
-        $validator
-            ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
    
         return $validator;
     }
@@ -85,5 +74,6 @@ class EmployeesTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
+
      
 }

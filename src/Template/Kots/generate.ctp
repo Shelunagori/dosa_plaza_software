@@ -926,10 +926,9 @@ $order=$pass[1];
 				
 			});
 		});
-
-
-		
 	});
+
+	
 	function UpdateCustmber(){
 		var table_id=$('#tableInput').val();
 		var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';

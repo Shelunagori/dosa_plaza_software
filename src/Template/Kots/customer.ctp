@@ -50,8 +50,19 @@
 	<hr style="margin-top: -9px; margin-bottom: 4px;"></hr>
 	<table width="100%">
 		<tr>
-			<td width="65%">Favorite Item</td>
-			<td width="35%">Total Amount</td>
+			<td width="65%">
+				<span>favorite Items</span><br/>
+				<?php
+				foreach ($BillRows as $BillRow) {
+                    echo '<span>'.$BillRow->item->name.'</span><br/>';
+                }
+				?>
+			</td>
+			<td width="35%">
+				Total Amount: <?php echo $TotalAmount; ?><br/>
+				Total Amount Month: <?php echo $TotalAmountMonth; ?><br/>
+				Last Bill Amount: <?php echo $LastBillAmount; ?>
+			</td>
 		</tr>
 	</table>
 <?php
@@ -126,7 +137,7 @@ elseif($searchbox==2){
 					<input type="text" class="form-control" placeholder="Name" style="background-color: #f5f5f5 !important" name="c_name" id="c_name" value="">
 				</td>
 				<td width="45%" style="padding-right: 5px;">
-					<input type="text"  class="form-control" placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no"  maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+					<input type="text"  class="form-control" placeholder="Mobile" value="<?php echo $search; ?>"  style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no"  maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 				</td>
 			</tr>
 			<tr><td colspan="2" style="padding-top:5px"> </td></tr>

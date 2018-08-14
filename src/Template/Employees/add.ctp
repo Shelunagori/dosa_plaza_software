@@ -59,7 +59,7 @@
 							<div class="col-md-12">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$employee->mobile_no."'"; } ?> name="mobile_no" class="form-control" Placeholder="Enter Mobile No" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10" required >
+									<input type="text" <?php if(!empty($id)){ echo "value='".$employee->mobile_no."'"; } ?> name="mobile_no" class="form-control" Placeholder="Enter Mobile No" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" minlength="10" >
 								</div>
 							</div>
 						</div>
@@ -136,14 +136,6 @@ $(document).ready(function() {
 		rules: {
 			name: { 
 				required: true 
-			},
-			email: { 
-				required: true,
-				email: true 
-			},
-			mobile_no: { 
-				required: true,
-				maxlength:10,
 			},
 			designation_id:{
 				required: true,

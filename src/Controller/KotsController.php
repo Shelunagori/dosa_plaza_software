@@ -50,7 +50,6 @@ class KotsController extends AppController
         }
         
         foreach($Kots as $Kot){
-           
             $kotIDs[$Kot->id]=$Kot->id;
             foreach($Kot->kot_rows as $kot_row){
                 $itemsList[$kot_row->item_id]=['quantity'=>@$itemsList[$kot_row->item_id]['quantity']+$kot_row->quantity, 'rate'=>$kot_row->rate, 'name'=>$kot_row->item->name , 'tax_name'=>$kot_row->item->tax->name, 'tax_per'=>$kot_row->item->tax->tax_per , 'dis_applicable'=>$kot_row->item->discount_applicable];
@@ -220,7 +219,7 @@ class KotsController extends AppController
             {
                 $searchbox=2; 
             }
-            //pr($searchBy);
+            
         }
         else{
             $mobile=@$table->c_mobile;
@@ -237,12 +236,50 @@ class KotsController extends AppController
                                 ->matching('Bills', function($q) use($customer_id){
                                     return $q->where(['Bills.customer_id' => $customer_id]);
                                 })
+                                ->limit(3)
+                                ->contain(['Items'])
                                 ->autoFields(true);
+
+
+                    $Bills= $this->Kots->Bills->find();
+                    $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+                    ->group(['Bills.customer_id'])
+                    ->where(['Bills.customer_id' => $customer_id])
+                    ->first();
+
+                    $TotalAmount = $Bills->toArray()[0]['TotalAmount'];
+
+
+
+                    $currentDate=date('Y-m');
+                    $lastDate=date("Y-m-t", strtotime($currentDate));
+                    $Bills= $this->Kots->Bills->find();
+                    $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+                    ->group(['Bills.customer_id'])
+                    ->where(['Bills.customer_id' => $customer_id])
+                    ->where([
+                        'Bills.transaction_date >=' => $currentDate.'-1', 
+                        'Bills.transaction_date <=' => $lastDate, 
+                    ])
+                    ->first();
+
+                    $TotalAmountMonth = $Bills->toArray()[0]['TotalAmount'];
+
+
+                    
+
+                    $Bills= $this->Kots->Bills->find();
+                    $Bills->where(['Bills.customer_id' => $customer_id])
+                    ->order(['Bills.voucher_no' => 'DESC'])
+                    ->first();
+
+                    $LastBillAmount = $Bills->toArray()[0]['grand_total'];
+                    
                 }
             }
         }     
 
-        $this->set(compact('table','searchBy','searchbox'));
+        $this->set(compact('table','searchBy','searchbox', 'search', 'BillRows', 'TotalAmount', 'TotalAmountMonth', 'LastBillAmount'));
     }
 
     public function deletekot($id = null,$Tid = null,$Order = null)
