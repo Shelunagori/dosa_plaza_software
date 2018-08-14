@@ -66,7 +66,7 @@ $order=$pass[1];
 
 </style>
 <?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
-<?= $this->element('header'); ?>
+<!-- <?= $this->element('header'); ?> -->
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	
@@ -79,12 +79,7 @@ $order=$pass[1];
 							<table width="100%">
 								<tr>
 									<td style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
-									<div style="
-									    height:  300px !important;
-									    border: solid 1px;
-									    overflow-x:  scroll;
-									    overflow-y: hidden;
-									" id="ItemArea" >
+									<div style="height:  300px !important;" id="ItemArea" >
 
 									</div>	
 									</td>

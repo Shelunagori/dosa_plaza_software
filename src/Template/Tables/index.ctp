@@ -24,7 +24,7 @@
 }
 </style>
  
-<?= $this->element('header'); ?>
+<!-- <?= $this->element('header'); ?> -->
 
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" />
@@ -42,7 +42,12 @@
 					}
 				}
 				if($sum>0){
-					$RatePerPax=$sum/$Table->no_of_pax;
+					if($Table->no_of_pax){
+						$RatePerPax=$sum/$Table->no_of_pax;
+					}else{
+						$RatePerPax=0;
+					}
+					
 				}
 			?>
 			<div class="tblBox <?php if($coreVariable['role']=='steward' && $Table->status=='occupied'){ echo 'goToKot'; } ?>" table_id="<?= h($Table->id) ?>" table_name="<?= h($Table->name) ?>"> 

@@ -189,6 +189,18 @@ License: You must have a valid license purchased only from themeforest(the above
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;">Find Bill</span>
 							</a>
 						</li>-->
+						<!-- <li class="dropdown dropdown-user">
+							<div style="background: #2d4161;padding: 14px 0px 0px 0px;">
+						    	<span class="topBtnActive dinnerNewTab pointer">Dinner In</span>
+						        <span class="topBtn deleveryNewTab pointer">Delivery</span>
+						        <span class="topBtn takeAwayNewTab pointer">Take Away</span>
+						        <span class="topBtn Swift pointer">Shift Table</span>
+							</div>
+						</li> -->
+						<li class="dropdown dropdown-user">
+							<?= $this->element('header'); ?>
+						</li>
+						
 						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo ucwords($coreVariable['user_name']); ?></span>

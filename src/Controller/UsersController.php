@@ -29,12 +29,9 @@ class UsersController extends AppController
 			{
 				$user=$this->Users->get($user['id']);
                 $this->Auth->setUser($user);
-                if($user['role']=='admin'){
-                    return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
-                }
-                else{
-                    return $this->redirect(['controller'=>'tables','action' => 'index']);
-                }				
+               
+                return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
+                			
             }
             $this->Flash->error2(__('Invalid Username or Password'));
         }

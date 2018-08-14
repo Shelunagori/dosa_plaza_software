@@ -9,7 +9,7 @@
 }
 
 </style>
-<?= $this->element('header'); ?>
+<!-- <?= $this->element('header'); ?> -->
 <?= $this->Form->create($Table,['id'=>'form_sample_1']); ?>
 <div style="background: #EBEEF3;"> 
 	<div class="row KOTView" style="padding:26px 16px 5px 15px">

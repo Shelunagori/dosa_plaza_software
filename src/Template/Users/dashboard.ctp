@@ -111,6 +111,49 @@
 		
 	</div>
 
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="portlet light" style="border-radius: 0;">
+				<table width="100%">
+					<tr>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Cash</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="15%"></td>
+						<td width="40%">
+							<div style="width: 100%;background-color: #dedede;">
+								<div style="width: 55%;background-color: #f0b11b;height: 10px;"></div>
+							</div>
+						</td>
+						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+					</tr>
+					<tr>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Card</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="15%"></td>
+						<td width="40%">
+							<div style="width: 100%;background-color: #dedede;">
+								<div style="width: 55%;background-color: #f98866;height: 10px;"></div>
+							</div>
+						</td>
+						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+					</tr>
+					<tr>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">Paytm</h6></td>
+						<td width="20%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;">₹ 126</h6></td>
+						<td width="15%"></td>
+						<td width="40%">
+							<div style="width: 100%;background-color: #dedede;">
+								<div style="width: 55%;background-color: #4f77b7;height: 10px;"></div>
+							</div>
+						</td>
+						<td width="5%"><h6 style="font-size: 15px;font-weight: 200;color: #7E8082;"> 55%</h6></td>
+					</tr>
+				</table>
+			</div> 
+		</div>
+	</div>	
+
 	<?php
 	$js="
 	$(document).ready(function() {

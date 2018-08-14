@@ -180,6 +180,9 @@
 						<!-- BEGIN USER LOGIN DROPDOWN -->
 						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 						<li class="dropdown dropdown-user">
+							<?= $this->element('header_admin'); ?>
+						</li>
+						<li class="dropdown dropdown-user">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 							<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo ucwords($coreVariable['user_name']); ?></span>
 							<i class="fa fa-angle-down"></i>

@@ -221,8 +221,10 @@ class BillsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->viewBuilder()->layout('admin');
+
         $bill = $this->Bills->get($id, [
-            'contain' => []
+            'contain' => [ 'BillRows' => ['Items'] ]
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $bill = $this->Bills->patchEntity($bill, $this->request->getData());
@@ -237,6 +239,72 @@ class BillsController extends AppController
         $this->set(compact('bill', 'tables'));
     }
 
+    public function updateBill(){
+        $this->viewBuilder()->layout('');
+
+        $bill_id = $this->request->query('bill_id');
+        $total = $this->request->query('total');
+        $roundOff = $this->request->query('roundOff');
+        $net = $this->request->query('net');
+        $myJSON=$this->request->query('myJSON');
+
+        $q = json_decode($myJSON, true);
+
+        $bill=$this->Bills->get($bill_id, [
+                    'contain' => ['BillRows']
+                ]);
+        $bill->total=$total;
+        $bill->round_off=$roundOff;
+        $bill->grand_total=$net;
+        $this->Bills->save($bill);
+
+        $this->Bills->BillRows->StockLedgers->deleteAll(['bill_id' => $bill_id]);
+        $this->Bills->BillRows->deleteAll(['bill_id' => $bill_id]);
+        
+        foreach($q as $row){
+            $bill_row = $this->Bills->BillRows->newEntity();
+            $bill_row->item_id=$row['item_id'];
+            $bill_row->quantity=$row['quantity'];
+            $bill_row->rate=$row['rate'];
+            $bill_row->amount=$row['amount'];
+            $bill_row->discount_per=$row['discount_per'];
+            $bill_row->discount_amount=$row['discount_amt'];
+            $bill_row->net_amount=$row['net_amount'];
+            $bill_row->tax_per=$row['percen'];            
+            $bill_row->bill_id=$bill_id;            
+            $this->Bills->BillRows->save($bill_row);
+
+            $Items = $this->Bills->BillRows->Items->get($bill_row->item_id, [
+                        'contain' => ['ItemRows' => ['RawMaterials']]
+                    ]);
+            foreach ($Items->item_rows as $item_row) {
+                if($item_row->raw_material->recipe_unit_type=='primary'){
+                    $outQty=$item_row->quantity*$bill_row->quantity;
+                }else if($item_row->raw_material->recipe_unit_type=='secondary'){
+                    $outQty=($item_row->quantity*$bill_row->quantity)/$item_row->raw_material->formula;
+                }
+                $stockLedger = $this->Bills->BillRows->StockLedgers->newEntity();
+                $stockLedger->transaction_date = $bill->transaction_date;
+                $stockLedger->raw_material_id = $item_row->raw_material_id;
+                $stockLedger->quantity = $outQty;
+                $stockLedger->rate = 0;//To Be Calculate
+                $stockLedger->status = 'out';
+                $stockLedger->effected_on = date( "Y-m-d H:i:s" );
+                $stockLedger->voucher_name = 'Bill';
+                $stockLedger->adjustment_commant = '';
+                $stockLedger->wastage_commant = '';
+                $stockLedger->purchase_voucher_row_id = 0;
+                $stockLedger->purchase_voucher_id = 0;
+                $stockLedger->bill_id = $bill_id;
+                $stockLedger->bill_row_id = $bill_row->id;
+                $this->Bills->BillRows->StockLedgers->save($stockLedger);
+            } 
+        }
+
+        echo 1;
+        exit;
+    }
+
     /**
      * Delete method
      *
@@ -249,8 +317,8 @@ class BillsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $bill = $this->Bills->get($id);
         $this->Bills->BillRows->StockLedgers->deleteAll(['bill_id' => $bill->id]);
-        $bill->status='canceled';
-        if ($this->Bills->save($bill)) {
+        $this->Bills->BillRows->deleteAll(['bill_id' => $bill->id]);
+        if ($this->Bills->delete($bill)) {
             $this->Flash->success(__('The bill has been canceled.'));
         } else {
             $this->Flash->error(__('The bill could not be canceled. Please, try again.'));
@@ -258,6 +326,7 @@ class BillsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+    
     public function customerinfo($bill_id=null){
         $this->viewBuilder()->layout('admin');
         $Customer = $this->Bills->Customers->newEntity();

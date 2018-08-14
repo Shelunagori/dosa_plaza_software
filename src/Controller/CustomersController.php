@@ -118,4 +118,19 @@ class CustomersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function infoBill(){
+        $this->viewBuilder()->layout('');
+        $mobileCode=$this->request->query('mobileCode');
+        $no_of_pax=$this->request->query('no_of_pax');
+
+        $Customer=$this->Customers->find()
+                 ->where(['OR' => array(
+                            array("Customers.mobile_no" => $mobileCode),
+                            array("Customers.customer_code" => $mobileCode)
+                        )])
+                 ->first();
+
+        $this->set(compact('Customer', 'no_of_pax'));
+    }
 }
