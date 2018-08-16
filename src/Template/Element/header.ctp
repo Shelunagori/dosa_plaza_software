@@ -60,6 +60,11 @@ if($controller=='kots'){
         	<a class=" tooltips" id="BackToTables" data-container="body" data-placement="bottom" data-original-title="Back to table screen"></a>
         	<?= $this->Html->link(__('<i class="fa fa-arrow-left"></i>'), ['controller' => 'Tables', 'action' => 'index'], ['class' => 'tooltips', 'id' => 'BackToTables', 'escape' => false, 'data-original-title' =>'Back to table screen', 'data-placement' => 'bottom']) ?>
     	<?php } ?>
+        
+        <?php if($action!='index'){ ?>
+            <span class="counter topBtn pointer">Table Screen</span>
+        <?php } ?>
+        
         <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer">Dinner In</span>
         <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer">Delivery</span>
         <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer">Take Away</span>
@@ -91,6 +96,10 @@ $(document).ready(function() {
 
     $('.dashboard').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Users','action'=>'Dashboard'])."'
+        window.open(url); 
+    });
+    $('.counter').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
         window.open(url); 
     });
 });

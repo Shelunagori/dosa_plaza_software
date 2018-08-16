@@ -201,7 +201,10 @@ class KotsController extends AppController
         $this->viewBuilder()->layout('');
         $id=$this->request->query('table_id');
         $search=$this->request->query('search');
-        $table = $this->Kots->Tables->get($id);
+        if($id){
+            $table = $this->Kots->Tables->get($id);
+        }
+       
         $searchBy=array();
         $searchbox=0;
         if(!empty($search))
@@ -212,7 +215,17 @@ class KotsController extends AppController
                             array("Customers.customer_code" => $search)
                         )])
                  ->first();
-            if(!empty($searchBy)){
+
+
+            if(!empty($searchBy))
+            {
+                $query = $this->Bills->Tables->query();
+                $query->update()
+                    ->set(['c_name' => $searchBy->name, 'c_mobile' => $searchBy->mobile_no, 'email' => $searchBy->email, 'c_address' => $searchBy->address])
+                    ->where(['Tables.id' => $id])
+                    ->execute();
+                $table = $this->Kots->Tables->get($id);
+                
                 $searchbox=1;  
             }
             else
@@ -221,7 +234,6 @@ class KotsController extends AppController
             }
             
         }
-        else{
             $mobile=@$table->c_mobile;
             $favorite_item=array();
             if(!empty($mobile)){
@@ -247,7 +259,7 @@ class KotsController extends AppController
                     ->where(['Bills.customer_id' => $customer_id])
                     ->first();
 
-                    $TotalAmount = $Bills->toArray()[0]['TotalAmount'];
+                    $TotalAmount = @$Bills->toArray()[0]['TotalAmount'];
 
 
 
@@ -263,7 +275,7 @@ class KotsController extends AppController
                     ])
                     ->first();
 
-                    $TotalAmountMonth = $Bills->toArray()[0]['TotalAmount'];
+                    $TotalAmountMonth = @$Bills->toArray()[0]['TotalAmount'];
 
 
                     
@@ -273,11 +285,10 @@ class KotsController extends AppController
                     ->order(['Bills.voucher_no' => 'DESC'])
                     ->first();
 
-                    $LastBillAmount = $Bills->toArray()[0]['grand_total'];
+                    $LastBillAmount = @$Bills->toArray()[0]['grand_total'];
                     
                 }
-            }
-        }     
+            }    
 
         $this->set(compact('table','searchBy','searchbox', 'search', 'BillRows', 'TotalAmount', 'TotalAmountMonth', 'LastBillAmount'));
     }

@@ -15,7 +15,7 @@
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
 					<span style="color: #606062;">KOT No.: </span><span style="margin-left: 10px;"> <?php echo $Kots->id; ?> </span><br/>
 					<span style="color: #606062;">KOT Date: </span><span style="margin-left: 10px;"> <?php echo date('d-m-Y',strtotime($Kots->created_on)); ?> </span><br/>
-					<span style="color: #606062;">KOT Time: <span style="margin-left: 10px;"> <?php echo date('H:i',strtotime($Kots->created_on)); ?> </span><br/>
+					<span style="color: #606062;">KOT Time: <span style="margin-left: 10px;"> <?php echo date('h:i A',strtotime($Kots->created_on)); ?> </span><br/>
 					<?php if($Kots->table_id>0 ){?>
 					<span style="color: #606062;">Table No.: <span style="margin-left: 10px;"> <?php echo @$Kots->table->name; ?> </span><br/>
 					<?php } ?>

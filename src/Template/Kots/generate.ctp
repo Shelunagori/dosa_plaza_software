@@ -70,7 +70,7 @@ $order=$pass[1];
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	
-	<div class="row KOTView" style="padding:9px 1px;">
+	<div class="row KOTView" style="padding:15px 0px;">
 		<div class="col-md-12">
 			<table width="100%">
 				<tr>
@@ -122,7 +122,7 @@ $order=$pass[1];
 						</div>
 					</td>
 					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'class'=>'form-control','type'=> 'hidden','id'=>'order_type']);?>
-					<td valign="top" width="50%" style=" padding: 0px 15px; ">
+					<td valign="top" width="50%" style=" padding: 0px 15px 0px 0px;">
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 15px;">
 							<div style="padding-top:12px">
 								<table width="100%">
@@ -137,7 +137,7 @@ $order=$pass[1];
 											echo $this->Form->input('item_sub_category_id',['options' =>$options,'label' => false,'class'=>'form-control select2me ItemDropDown','empty'=> 'Search Item','autofocus']);?>
 										</td>
 										<td width="20%" style="padding:0 10px 0 0;">
-											<input type="text" class="form-control QtyCatcher" placeholder="Quantity">
+											<input type="text" class="form-control QtyCatcher" placeholder="Quantity" value="1">
 										</td>
 										<td width="10%" >
 											<span class="AddItemBtn">ADD</span>
@@ -150,13 +150,13 @@ $order=$pass[1];
 									<table class="table" id="kotBox">
 										<thead>
 											<tr>
-												<th style="text-align:center;">S.No.</th>
-												<th>Name</th>
-												<th style="text-align:center;">Quantity</th>
-												<th style="text-align:center;">Rate</th>
-												<th style="text-align:center;">Amount</th>
-												<th style="text-align:center;">Comment</th>
-												<th></th>
+												<td style="text-align:center;">S.No.</td>
+												<td>Name</td>
+												<td style="text-align:center;">Quantity</td>
+												<td style="text-align:center;">Rate</td>
+												<td style="text-align:center;">Amount</td>
+												<td style="text-align:center;">Comment</td>
+												<td></td>
 											</tr>
 										</thead>
 										<tbody>
@@ -458,7 +458,7 @@ $order=$pass[1];
 				var table_id=$('#tableInput').val();
 				var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 				url=url+'?table_id='+table_id;
-				 
+				console.log(url);
 				$.ajax({
 					url: url,
 				}).done(function(response) { 
@@ -545,9 +545,15 @@ $order=$pass[1];
 		});
 
 		$('.saveCustomersearch').die().live('click',function(event){
-			 //-- VIew Customer Info
+			//-- VIew Customer Info
 			var table_id=$('#tableInput').val();
 			var search=$('#search').val();
+			if(!search){
+				var search=$('#search_mobile').val();
+				if(!search){
+					var search=$('#search_code').val();
+				}
+			}
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 			url=url+'?table_id='+table_id+'&search='+search;
 			$.ajax({
@@ -730,7 +736,7 @@ $order=$pass[1];
 			var dob=$('#dob').val();
 			var doa=$('#doa').val();
 			var employee_id=$('#employee_id option:selected').val();
-			console.log(employee_id);
+			
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
 			

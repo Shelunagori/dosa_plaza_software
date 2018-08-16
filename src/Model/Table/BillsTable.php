@@ -57,6 +57,10 @@ class BillsTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'LEFT'
         ]);
+        $this->belongsTo('Employees', [
+            'foreignKey' => 'employee_id',
+            'joinType' => 'LEFT'
+        ]);
         $this->hasMany('BillRows', [
             'foreignKey' => 'bill_id'
         ]);

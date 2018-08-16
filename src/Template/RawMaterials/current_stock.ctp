@@ -36,11 +36,13 @@
 							</td>
 							<td>
 								<?php
-									$date1 = $RawMaterial->last_purchase;
-									$date2 = date('Y-m-d');
-									$diff = abs(strtotime($date2) - strtotime($date1));
-									echo $days = floor($diff / (60*60*24)); 
-									echo ' Days Before';
+									if($RawMaterial->last_purchase){
+										$date1 = $RawMaterial->last_purchase;
+										$date2 = date('Y-m-d');
+										$diff = abs(strtotime($date2) - strtotime($date1));
+										echo $days = floor($diff / (60*60*24)); 
+										echo ' Days Before';
+									}
 								?>
 							</td>
 						</tr>

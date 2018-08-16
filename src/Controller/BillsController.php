@@ -70,7 +70,7 @@ class BillsController extends AppController
         if($IsCustomerExist){
             $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
             $Customer->name=$c_name;
-            $Customer->mobile_no=$c_address;
+            $Customer->mobile_no=$c_mobile_no;
             $Customer->dob=$dob;
             $Customer->anniversary=$doa;
             $Customer->email=$c_email;
@@ -382,5 +382,28 @@ class BillsController extends AppController
             }
         }
         $this->set(compact( 'Customers','Customer','Bills'));
+    }
+
+
+
+    public function salesReportSearch(){
+        $this->viewBuilder()->layout('admin');
+
+    }
+
+    public function salesReport(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+
+        $Bills = $this->paginate(
+                    $this->Bills->find()
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ])
+                );
+        //pr($Bills->toArray()); exit;
+        $this->set(compact('from_date', 'to_date', 'Bills'));
     }
 }

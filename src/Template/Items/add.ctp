@@ -76,7 +76,14 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
+						<style>
+						.disabledbutton {
+						    pointer-events: none;
+						    opacity: 0.4;
+						}
+						</style>
+						
+						<div <?php if(!empty($id)){ echo 'class="row disabledbutton"'; }else{ echo 'class="row"'; } ?> >
 							<div class="col-sm-12" style="margin-top:10px;" id="main">
 								<table class="table table-bordered" id="main_table">	
 									<thead class="bg_color">

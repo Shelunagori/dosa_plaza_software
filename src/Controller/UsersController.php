@@ -129,9 +129,16 @@ class UsersController extends AppController
         $PaytmSale = $Bills->toArray()[0]['PaytmSale']; 
 
 
-        $CashPer=round($CashSale*100/($CashSale+$CardSale+$PaytmSale),2);
-        $CardPer=round($CardSale*100/($CashSale+$CardSale+$PaytmSale),2);
-        $PaytmPer=round($PaytmSale*100/($CashSale+$CardSale+$PaytmSale),2);
+        if(($CashSale+$CardSale+$PaytmSale)>0){
+            $CashPer=round($CashSale*100/($CashSale+$CardSale+$PaytmSale),2);
+            $CardPer=round($CardSale*100/($CashSale+$CardSale+$PaytmSale),2);
+            $PaytmPer=round($PaytmSale*100/($CashSale+$CardSale+$PaytmSale),2);
+        }else{
+            $CashPer=0;
+            $CardPer=0;
+            $PaytmPer=0;
+        }
+        
 
         $Attendances = $this->Users->Attendances->find()
                         ->where(['Attendances.attendance_status IN' => [3,4], 'Attendances.attendance_date' => date('Y-m-d')])
