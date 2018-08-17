@@ -49,14 +49,14 @@
 										$interval = $datetime1->diff($datetime2);
 										echo $interval->format(' %i min %s sec');
 									?>
-								 </td>
-								 <td><?= h($Bill->order_type) ?></td>
-								 <td><?= h(@$Bill->table->name) ?></td>
-								 <td><?= h(@$Bill->employee->name) ?></td>
-								 <td><?= h(@$Bill->customer->customer_code) ?></td>
-								 <td><?= h(@$Bill->customer->mobile_no) ?></td>
-								 <td><?= h(@$Bill->customer->name) ?></td>
-								 <td style="padding: 0;">
+								</td>
+								<td><?= h(ucfirst($Bill->order_type)) ?></td>
+								<td><?= h(@$Bill->table->name) ?></td>
+								<td><?= h(@$Bill->employee->name) ?></td>
+								<td><?= h(@$Bill->customer->customer_code) ?></td>
+								<td><?= h(@$Bill->customer->mobile_no) ?></td>
+								<td><?= h(@$Bill->customer->name) ?></td>
+								<td style="padding: 0;">
 								 	<table width="100%" class="table table-bordered" style="margin: 0;">
 								 		<tr>
 								 			<th>Item</th>
@@ -79,7 +79,7 @@
 								 		foreach ($Bill->bill_rows as $bill_row) { 
 								 			$totalAmount+=$bill_row->amount;
 								 			$totalDisAmount+=$bill_row->discount_amount;
-								 			$totalTV+=$bill_row->amount-$bill_row->discount_amount;
+								 			$totalTV+=round($bill_row->amount-$bill_row->discount_amount,2);
 								 			$totalGSTAmount+=round(($bill_row->amount-$bill_row->discount_amount)*($bill_row->tax_per)/100,2);
 								 			$totalNet+=$bill_row->net_amount;
 								 		?>
@@ -90,7 +90,7 @@
 								 			<td><?php echo $bill_row->amount; ?></td>
 								 			<td><?php echo $bill_row->discount_per; ?></td>
 								 			<td><?php echo $bill_row->discount_amount; ?></td>
-								 			<td><?php echo $bill_row->amount-$bill_row->discount_amount; ?></td>
+								 			<td><?php echo round($bill_row->amount-$bill_row->discount_amount,2); ?></td>
 								 			<td><?php echo $bill_row->tax_per; ?></td>
 								 			<td><?php echo round(($bill_row->amount-$bill_row->discount_amount)*($bill_row->tax_per)/100,2); ?></td>
 								 			<td><?php echo $bill_row->net_amount; ?></td>

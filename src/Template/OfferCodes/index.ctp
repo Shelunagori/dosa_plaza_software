@@ -95,7 +95,7 @@
                             <td><?php echo ($offerCode->is_enabled==1)?'Enabled':'Disabled' ?></td>
                             <td class="actions">
                                 <?php if($offerCode->is_enabled==1){ ?>
-                                    <?= $this->Html->link(__('Disable'), ['action' => 'disable', $offerCode->id]) ?>
+                                    <?= $this->Html->link(__('Disable'), ['action' => 'disable', $offerCode->id],['class'=>'showLoader' ]) ?>
                                 <?php } ?>
                             </td>
                         </tr>

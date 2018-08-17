@@ -21,7 +21,7 @@ if($searchbox==1 or $searchbox==0){  ?>
 			<td style="padding-right: 5px;" width="40%">
 				<div class="input-icon">
 					<i class="fa fa-mobile" style="font-size: 20px;"></i>
-					<input type="text"  class="form-control " placeholder="Mobile"  style="background-color: #f5f5f5 !important" name="search" id="search" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
+					<input type="text"  class="form-control " placeholder="Mobile/Customer Code"  style="background-color: #f5f5f5 !important" name="search" id="search" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');">
 				</div>
 			</td> 
 			<td style="padding-right: 0px; text-align: center;" width="10%">
