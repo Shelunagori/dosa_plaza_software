@@ -4,14 +4,15 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * MasterOffer Entity
+ * OfferCode Entity
  *
  * @property int $id
- * @property string $name
- * @property float $percentage
- * @property int $is_deleted
+ * @property string $offer_name
+ * @property string $offer_code
+ * @property bool $is_enabled
+ * @property float $discount_per
  */
-class MasterOffer extends Entity
+class OfferCode extends Entity
 {
 
     /**
@@ -24,8 +25,9 @@ class MasterOffer extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
-        'percentage' => true,
-        'is_deleted' => true
+        'offer_name' => true,
+        'offer_code' => true,
+        'is_enabled' => true,
+        'discount_per' => true
     ];
 }

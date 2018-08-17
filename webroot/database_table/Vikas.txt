@@ -1,2 +1,0 @@
-ALTER TABLE `stock_ledgers` CHANGE `voucher_no` `voucher_name` VARCHAR(50) NOT NULL;
-ALTER TABLE `stock_ledgers` ADD `adjustment_commant` VARCHAR(50) NOT NULL AFTER `voucher_name`, ADD `wastage_commant` VARCHAR(50) NOT NULL AFTER `adjustment_commant`;

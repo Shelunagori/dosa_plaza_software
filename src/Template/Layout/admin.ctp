@@ -8,7 +8,7 @@
 			<?php echo @$title; ?>
 		</title>
 		<!-- BEGIN GLOBAL MANDATORY STYLES -->
-		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+		
 		
 		<?php echo $this->Html->css('/assets/global/plugins/font-awesome/css/font-awesome.min.css'); ?>
 		<?php echo $this->Html->css('/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'); ?>
@@ -131,7 +131,7 @@
 		}
 		.caption{ font-size: 16px !important;}
 		</style>
-		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 		<link rel="shortcut icon" href="<?php echo $this->Url->build(['controller' =>'/img/favicon.ico', '_full'=>true, '_ssl'=>false]); ?>"/>
 	</head>
 	<!-- END HEAD -->
