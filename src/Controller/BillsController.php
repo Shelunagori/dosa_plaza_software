@@ -109,7 +109,6 @@ class BillsController extends AppController
         $customer_id=@$Customer->id;
 		$kot_ids=explode(',', $this->request->query('kot_ids'));
 		$q = json_decode($myJSON, true);
-		
         $bill = $this->Bills->newEntity();
 		
 		$last_voucher_no=$this->Bills->find()
@@ -152,6 +151,7 @@ class BillsController extends AppController
         $bill->payment_status='no';
         
         $bill->employee_id=@$employee_id=$this->request->query('employee_id');;
+        $bill->offer_id=@$offer_id=$this->request->query('offer_id');
         
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();

@@ -714,7 +714,7 @@ $order=$pass[1];
 			$('#WaitBox2').show();
 			$('#WaitBox2 div.modal-body').html('".$waitingMessage."');
 			var postData=[];
-			$('#billTable tbody tr').each(function(){
+			$('#billTable tbody.main tr').each(function(){
 				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
 				var quantity=$(this).find('td:nth-child(3)').text();
 				var rate=$(this).find('td:nth-child(4)').text();
@@ -738,6 +738,8 @@ $order=$pass[1];
 			
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
+
+			var offer_id=$('span.offer_id').text();
 			
 			var total=$('#billTable tfoot tr:nth-child(1) td:nth-child(4)').text();
 			var roundOff=$('#billTable tfoot tr:nth-child(2) td:nth-child(2)').text();
@@ -746,9 +748,9 @@ $order=$pass[1];
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id+'&offer_id='+offer_id;
 			url=encodeURI(url);
-			
+			console.log(url); return;
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
