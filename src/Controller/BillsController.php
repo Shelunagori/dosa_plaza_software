@@ -151,7 +151,7 @@ class BillsController extends AppController
         $bill->payment_status='no';
         
         $bill->employee_id=@$employee_id=$this->request->query('employee_id');;
-        $bill->offer_id=@$offer_id=$this->request->query('offer_id');
+        $bill->offer_id=@$offer_id=@$this->request->query('offer_id');
         
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();

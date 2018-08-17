@@ -56,7 +56,7 @@
 				?>
 
 				<div class="table-scrollable">
-				<table class="table table-str">
+				<table class="table table-bordered table-str">
 					<thead>
 						<tr>
 							<th>S.No.</th>
@@ -75,13 +75,13 @@
 					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
-							<td><?= h($RawMaterial->name) ?></td>
+							<td style="white-space: nowrap;"><?= h($RawMaterial->name) ?></td>
 							<td><?= h($RawMaterial->primary_unit->name) ?></td>
 							<?php 
 							$start_date=$from_date;
 							$end_date=$to_date;
 							while (strtotime($start_date) <= strtotime($end_date)) {
-				                echo '<td>'. @$stock[$RawMaterial->id][strtotime($start_date)] .'</td>';
+				                echo '<td style="text-align: center;">'. @$stock[$RawMaterial->id][strtotime($start_date)] .'</td>';
 				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
 							} ?>
 							

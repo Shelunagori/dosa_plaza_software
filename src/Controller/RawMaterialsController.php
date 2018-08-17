@@ -382,45 +382,81 @@ class RawMaterialsController extends AppController
 		$from_date=$this->request->query('from_date');
 		$to_date=$this->request->query('to_date');
 
-		$RawMaterials = $this->RawMaterials->StockLedgers->find();
-		$RawMaterials->select([
-			'purchase' => $RawMaterials->func()->sum('quantity*rate'),
+		// $RawMaterials = $this->RawMaterials->StockLedgers->find();
+		// $RawMaterials->select([
+		// 	'purchase' => $RawMaterials->func()->sum('quantity*rate'),
+		// 	'month' => 'MONTH(transaction_date)',
+		// 	'year' => 'YEAR(transaction_date)',
+		// ])
+		// ->where([
+		// 	'StockLedgers.transaction_date >=' => $from_date.'-1', 
+		// 	'StockLedgers.transaction_date <=' => $to_date.'-31', 
+		// 	'StockLedgers.status' => 'in',
+		// 	'StockLedgers.voucher_name' => 'Purchase Voucher'
+		// ])
+		// ->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
+		// ->order(['StockLedgers.transaction_date' => 'ASC']);
+
+		// $purchases=[];
+		// foreach ($RawMaterials as $RawMaterial) {
+		// 	$purchases[$RawMaterial->year][$RawMaterial->month]=$RawMaterial->purchase;
+		// }
+
+		$PurchaseVouchers = $this->RawMaterials->PurchaseVoucherRows->PurchaseVouchers->find();
+		$PurchaseVouchers->select([
+			'purchase' => $PurchaseVouchers->func()->sum('grand_total'),
 			'month' => 'MONTH(transaction_date)',
 			'year' => 'YEAR(transaction_date)',
 		])
 		->where([
-			'StockLedgers.transaction_date >=' => $from_date.'-1', 
-			'StockLedgers.transaction_date <=' => $to_date.'-31', 
-			'StockLedgers.status' => 'in',
-			'StockLedgers.voucher_name' => 'Purchase Voucher'
+			'PurchaseVouchers.transaction_date >=' => $from_date.'-1', 
+			'PurchaseVouchers.transaction_date <=' => $to_date.'-31'
 		])
 		->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
-		->order(['StockLedgers.transaction_date' => 'ASC']);
+		->order(['PurchaseVouchers.transaction_date' => 'ASC']);
 
 		$purchases=[];
-		foreach ($RawMaterials as $RawMaterial) {
-			$purchases[$RawMaterial->year][$RawMaterial->month]=$RawMaterial->purchase;
+		foreach ($PurchaseVouchers as $PurchaseVoucher) {
+			$purchases[$PurchaseVoucher->year][$PurchaseVoucher->month]=$PurchaseVoucher->purchase;
 		}
 
 
-		$BillRows = $this->RawMaterials->ItemRows->Items->BillRows->find();
-		$BillRows->select([
-			'sale' => $BillRows->func()->sum('net_amount'),
+		// $BillRows = $this->RawMaterials->ItemRows->Items->BillRows->find();
+		// $BillRows->select([
+		// 	'sale' => $BillRows->func()->sum('net_amount'),
+		// 	'month' => 'MONTH(transaction_date)',
+		// 	'year' => 'YEAR(transaction_date)',
+		// ])
+		// ->matching('Bills', function($q) use($from_date, $to_date){
+		// 	return $q
+		// 	->where([
+		// 		'Bills.transaction_date >=' => $from_date.'-1', 
+		// 		'Bills.transaction_date <=' => $to_date.'-31', 
+		// 	]);
+		// })
+		// ->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
+		// ->order(['Bills.transaction_date' => 'ASC']);
+		// $sales=[];
+		// foreach ($BillRows as $BillRow) {
+		// 	$sales[$BillRow->year][$BillRow->month]=$BillRow->sale;
+		// }
+
+
+		$Bills = $this->RawMaterials->ItemRows->Items->BillRows->Bills->find();
+		$Bills->select([
+			'sale' => $Bills->func()->sum('grand_total'),
 			'month' => 'MONTH(transaction_date)',
 			'year' => 'YEAR(transaction_date)',
 		])
-		->matching('Bills', function($q) use($from_date, $to_date){
-			return $q
-			->where([
-				'Bills.transaction_date >=' => $from_date.'-1', 
-				'Bills.transaction_date <=' => $to_date.'-31', 
-			]);
-		})
+		->where([
+			'Bills.transaction_date >=' => $from_date.'-1', 
+			'Bills.transaction_date <=' => $to_date.'-31', 
+		])
 		->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
 		->order(['Bills.transaction_date' => 'ASC']);
 		$sales=[];
-		foreach ($BillRows as $BillRow) {
-			$sales[$BillRow->year][$BillRow->month]=$BillRow->sale;
+		foreach ($Bills as $Bill) {
+			$sales[$Bill->year][$Bill->month]=$Bill->sale;
 		}
 
 		$this->set(compact('from_date', 'to_date', 'purchases', 'sales'));

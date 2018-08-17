@@ -95,8 +95,8 @@
 							$closing=0;
 							while (strtotime($start_date) <= strtotime($end_date)) {
 								$closing = $opening + (@$stock[$RawMaterial->id]['in'][strtotime($start_date)]) - (@$stock[$RawMaterial->id]['out'][strtotime($start_date)]); ?>
-				                <td><?php echo ($opening) ? ($opening) : '' ?></td>
-				                <td><?php echo ($closing) ? ($closing) : '' ?></td>
+				                <td style="text-align: center;"><?php echo ($opening) ? ($opening) : '' ?></td>
+				                <td style="text-align: center;"><?php echo ($closing) ? ($closing) : '' ?></td>
 				                <?php
 				                $opening=$closing;
 				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
