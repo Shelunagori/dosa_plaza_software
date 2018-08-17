@@ -39,7 +39,10 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Categor
 		<?php echo '<li>'.$this->Html->link('Create', '/RawMaterials/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
 		<?php echo '<li>'.$this->Html->link('List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
-</li> 
+</li>
+<?php
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Offer Codes</span>', '/OfferCodes/index',['escape' => false, 'class' => 'showLoader']).'</li>';
+?>
 
 <li class="start">
 	<a href="javascript:;">

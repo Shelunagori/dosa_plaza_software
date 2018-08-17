@@ -244,7 +244,7 @@ foreach($Kots as $Kot){
 							<th style="text-align:right;" width="10%">Net</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="main">
 					<?php 
 					$i=0; $total=0;
 					foreach($items as $item_id=>$item){ ?>
@@ -277,8 +277,23 @@ foreach($Kots as $Kot){
 					</tbody>
 					<tfoot>
 						<tr style=" border-top: solid 1px #CCC; border-bottom: solid 1px #CCC; " >
-							<td colspan="5" style="text-align:right;"> Over All Discount</td>
-							<td colspan=""> <input type="text" class="overalldis" style="width:20%;text-align:center;width:100%;" placeholder="" /></td>
+							<td colspan="3" style="text-align:right;">
+								<table>
+									<tr>
+										<td>
+											<input type="text" name="offer_code" placeholder="OFFER CODE" style="text-transform:uppercase">
+										</td>
+										<td>
+											<button type="button" class="apply">APPLY</button>
+										</td>
+									</tr>
+								</table>
+								<div id="offerShow"></div>
+							</td>
+							<td colspan="2" style="text-align:right;" class="overAllTd"> Over All Discount</td>
+							<td colspan="" class="overAllTd"> 
+								<input type="text" class="overalldis" style="width:20%;text-align:center;width:100%;" placeholder="" />
+							</td>
 							 
 							<td colspan="2" style="text-align:right;">Total</td>
 							<td style="text-align:right;" ><?php echo $total; ?></td>
@@ -317,3 +332,9 @@ foreach($Kots as $Kot){
 	</div>
 <?php } ?>
 
+<style>
+.disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+}
+</style>

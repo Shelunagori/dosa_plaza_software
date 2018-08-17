@@ -458,7 +458,6 @@ $order=$pass[1];
 				var table_id=$('#tableInput').val();
 				var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
 				url=url+'?table_id='+table_id;
-				console.log(url);
 				$.ajax({
 					url: url,
 				}).done(function(response) { 
@@ -816,12 +815,13 @@ $order=$pass[1];
 		$('.overalldis').die().live('keyup',function(event){
 			var dic = $(this).val();
 			$('.disBox').val(dic);
-			$('#billTable tbody tr').each(function(){
+			$('#billTable tbody.main tr').each(function(){
 				var qty           = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
 			    if(isNaN(qty)){ qty=0; }
 				var rate          = parseFloat($(this).closest('tr').find('td:nth-child(4)').text());
 				if(isNaN(rate)){ rate=0; }
 				var discount_per  = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+				
 				if(isNaN(discount_per)){ discount_per=0; }
 				var amount   = qty*rate;						
 				if(discount_per)
@@ -836,23 +836,30 @@ $order=$pass[1];
 		
 		function calculateBill(){
 			var total=0;
-			$('#billTable tbody tr').each(function(){
+			$('#billTable tbody.main tr').each(function(){
 				var quantity=parseFloat($(this).find('td:nth-child(3)').text());
 				var rate=parseFloat($(this).find('td:nth-child(4)').text());
 				var amount=parseFloat($(this).find('td:nth-child(5)').text());
 				var discount_amount=parseFloat($(this).find('td:nth-child(7) input').val());
+
 				if(discount_amount){ 
-				 	amount=round(amount-discount_amount,2);
+				 	taxable_value=round(amount-discount_amount,2);
+ 				}else{
+ 					taxable_value=amount;
+ 					discount_amount=0;
  				}
+
 				var percen=parseFloat($(this).find('td:nth-child(8) span.percen').html());
-				var taxamount=round((amount*percen)/100,2);
-				var tot=amount+taxamount;
-				tot=round(tot,2);
-				$(this).find('td:nth-child(9)').text(tot);
-				total=total+tot;
+				var taxamount=round((taxable_value*percen)/100,2);
+				var net=taxable_value+taxamount;
+				net=round(net,2);
+				
+				$(this).find('td:nth-child(9)').text(net);
+				total=total+net;
 			});
 			total=round(total,2);
-			$('#billTable tfoot tr:nth-child(1) td:nth-child(4)').text(total); 
+
+			$('#billTable tfoot tr:nth-child(1) td:nth-child(5)').text(total); 
 			var totalAfterTax=total-round(total);
 			var totalAfterTaxRound=round(totalAfterTax,0);
 			var roundOff=round(totalAfterTaxRound-totalAfterTax,2);
@@ -927,8 +934,96 @@ $order=$pass[1];
 				
 			});
 		});
+
+
+
+		
+		$('#removeoffer').die().live('click',function(event){
+			event.preventDefault();
+			$('#offerShow').html('');
+			$('td.overAllTd').removeClass('disabledbutton');
+			$('.disBox').removeAttr('readonly');
+			$('.disBoxamt').removeAttr('readonly');
+
+			var dic = 0;
+			$('.disBox').val(dic);
+			$('#billTable tbody.main tr').each(function(){
+				var qty           = parseFloat($(this).find('td:nth-child(3)').text());
+			    if(isNaN(qty)){ qty=0; }
+				var rate          = parseFloat($(this).find('td:nth-child(4)').text());
+				if(isNaN(rate)){ rate=0; }
+				var discount_per  = parseFloat($(this).find('td:nth-child(6) input').val());
+				if(isNaN(discount_per)){ discount_per=0; }
+				var amount   = qty*rate;						
+				if(discount_per)
+				{   
+					var disAmt    = (amount*discount_per)/100;
+					disAmt  = round(disAmt,2);
+				}
+				$(this).find('td:nth-child(7) input').val(disAmt);
+			});
+			calculateBill();
+		});
+
+		$('.apply').die().live('click',function(event){
+			var offer_code=$('input[name=offer_code]').val();
+			if(!offer_code){
+				alert('Enter a offer code');
+				return;
+			}
+			$(this).text('Appling');
+			var th=$(this);
+
+			var url='".$this->Url->build(['controller'=>'OfferCodes','action'=>'checkOffer'])."';
+			url=url+'?offer_code='+offer_code;
+			 
+			$.ajax({
+				url: url,
+				dataType: 'json',
+			}).done(function(response) {
+				if(response.valid=='yes'){
+					$('td.overAllTd').addClass('disabledbutton');
+					$('.disBox').attr('readonly', 'readonly');
+					$('.disBoxamt').attr('readonly', 'readonly');
+					$('.overalldis').val('');
+
+					var dic = response.per;
+					$('.disBox').val(dic);
+					$('#billTable tbody.main tr').each(function(){
+						var qty           = parseFloat($(this).find('td:nth-child(3)').text());
+					    if(isNaN(qty)){ qty=0; }
+						var rate          = parseFloat($(this).find('td:nth-child(4)').text());
+						if(isNaN(rate)){ rate=0; }
+						var discount_per  = parseFloat($(this).find('td:nth-child(6) input').val());
+						if(isNaN(discount_per)){ discount_per=0; }
+						var amount   = qty*rate;						
+						if(discount_per)
+						{   
+							var disAmt    = (amount*discount_per)/100;
+							disAmt  = round(disAmt,2);
+						}
+						$(this).find('td:nth-child(7) input').val(disAmt);
+					});
+					calculateBill();
+
+					$('#offerShow').html('Offer code applied: '+offer_code+'@'+response.per+'% <span class=offer_id style=\"display:none;\">'+response.offer_id+'</span> <a href=# id=removeoffer >Remove</a> ');
+
+				}else{
+					alert('The offer code is not valid.');
+				}
+				th.text('APPLY');
+				$('input[name=offer_code]').val('');
+			});
+
+
+		});
+
+
+
 	});
 
+
+	
 	
 	function UpdateCustmber(){
 		var table_id=$('#tableInput').val();

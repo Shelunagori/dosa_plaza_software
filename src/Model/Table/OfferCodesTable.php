@@ -60,10 +60,6 @@ class OfferCodesTable extends Table
             ->requirePresence('offer_code', 'create')
             ->notEmpty('offer_code');
 
-        $validator
-            ->boolean('is_enabled')
-            ->requirePresence('is_enabled', 'create')
-            ->notEmpty('is_enabled');
 
         $validator
             ->decimal('discount_per')

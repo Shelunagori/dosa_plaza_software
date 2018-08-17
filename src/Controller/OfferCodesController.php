@@ -18,11 +18,24 @@ class OfferCodesController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function index($id=null)
     {
-        $offerCodes = $this->paginate($this->OfferCodes);
+        $this->viewBuilder()->layout('admin');
+        $offerCode = $this->OfferCodes->newEntity();
+        
+        if ($this->request->is('post')) {
+            $offerCode = $this->OfferCodes->patchEntity($offerCode, $this->request->getData());
+            if ($this->OfferCodes->save($offerCode)) {
+                $this->Flash->success(__('The offer code has been saved.'));
 
-        $this->set(compact('offerCodes'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The offer code could not be saved. Please, try again.'));
+        }
+
+        $offerCodes = $this->OfferCodes->find()->order(['OfferCodes.is_enabled' => 'DESC']);
+
+        $this->set(compact('offerCodes', 'offerCode', 'id'));
     }
 
     /**
@@ -32,12 +45,13 @@ class OfferCodesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function disable($id = null)
     {
-        $offerCode = $this->OfferCodes->get($id, [
-            'contain' => []
-        ]);
-
+        $offerCode = $this->OfferCodes->get($id);
+        $offerCode->is_enabled=0;
+        $this->OfferCodes->save($offerCode);
+        $this->Flash->success(__('The offer code has been disabled.'));
+        return $this->redirect(['action' => 'index']);
         $this->set('offerCode', $offerCode);
     }
 
@@ -92,16 +106,19 @@ class OfferCodesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function checkOffer()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $offerCode = $this->OfferCodes->get($id);
-        if ($this->OfferCodes->delete($offerCode)) {
-            $this->Flash->success(__('The offer code has been deleted.'));
-        } else {
-            $this->Flash->error(__('The offer code could not be deleted. Please, try again.'));
-        }
+        $this->viewBuilder()->layout('');
+        $offer_code=$this->request->query('offer_code');
 
-        return $this->redirect(['action' => 'index']);
+        $OfferCode=$this->OfferCodes->find()->Where(['OfferCodes.offer_code' => $offer_code, 'OfferCodes.is_enabled' => 1])->first();
+        if($OfferCode){
+            $Response=['valid'=>'yes', 'per'=>$OfferCode->discount_per, 'offer_id'=>$OfferCode->id];
+        }else{
+            $Response=['valid'=>'no'];
+        }
+        
+        echo json_encode($Response);
+        exit;
     }
 }
