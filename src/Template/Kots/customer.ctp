@@ -1,6 +1,6 @@
 <style type="text/css">
 .font{
-	font-size: 10px;
+	font-size: 12px;
 }
 .top{
 	margin-top: 5px;
@@ -30,12 +30,12 @@ if($searchbox==1 or $searchbox==0){  ?>
 		</tr>
 	</table>
 	<hr style="margin: 7px;"></hr>
-	<div class="panel-heading" style="background-color: #2d4161 !important;">
+	<div  style="background-color: #2d4161 !important;padding: 5px;border-radius: 3px;">
 		<span class="panel-title" style="font-size: 12px; color: #FFF;">
 			<i class="fa fa-user font"></i> <?php echo @ucwords($table->c_name);?>
 		</span>
 	</div>
-	<div class="panel-body" style="border: none; font-size: 8px; padding:10px !important">
+	<div class="panel-body" style="border: none; font-size: 12px; padding:10px !important">
 		<table width="100%">
 			<tr>
 				<td align="center" width="10%"><i class="fa fa-phone font"></i> </td>
@@ -51,24 +51,29 @@ if($searchbox==1 or $searchbox==0){  ?>
 			</tr>
 		</table>
 	</div>
-	<hr style="margin-top: -9px; margin-bottom: 4px;"></hr>
+	<hr style="margin-top: -2px; margin-bottom: 4px;"></hr>
 	<table width="100%">
 		<tr>
-			<td width="65%">
-				<span>favorite Items</span><br/>
+			<td width="40%" valign="top">
+				<span style="font-size: 12px;color: #8e8e8e;">favorite Items</span><br/>
 				<?php
 				if(sizeof(@$BillRows)>0){
 					foreach ($BillRows as $BillRow) {
-	                    echo '<span>'.@$BillRow->item->name.'</span><br/>';
+	                    echo '<span style="font-size: 12px;color: #464444;margin-left: 4px;">'.@$BillRow->item->name.'</span><br/>';
 	                }
 				}
 				
 				?>
 			</td>
-			<td width="35%">
-				Total Amount: <?php echo @$TotalAmount; ?><br/>
-				Total Amount Month: <?php echo @$TotalAmountMonth; ?><br/>
-				Last Bill Amount: <?php echo @$LastBillAmount; ?>
+			<td width="60%">
+				<span style="font-size: 12px;color: #8e8e8e;">Total Amount (Life Time):</span> 
+				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$TotalAmount; ?></span>
+				<br/>
+				<span style="font-size: 12px;color: #8e8e8e;">Total Amount (This Month):</span> 
+				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$TotalAmountMonth; ?></span>
+				<br/>
+				<span style="font-size: 12px;color: #8e8e8e;">Last Bill Amount:</span> 
+				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$LastBillAmount; ?></span>
 			</td>
 		</tr>
 	</table>
