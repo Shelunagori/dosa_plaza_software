@@ -181,7 +181,7 @@
 	$js="
 	$(document).ready(function() {
 		$('.goToBrithday').die().live('click',function(event){
-			var url='".$this->Url->build(['controller'=>'Customers','action'=>'index'])."';
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'birthdayList'])."';
 			var win = window.open(url, '_blank');
 		});
 	});	

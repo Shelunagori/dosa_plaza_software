@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Customers Controller
@@ -21,10 +22,29 @@ class CustomersController extends AppController
     public function index()
     {
         $this->viewBuilder()->layout('admin');
-        
-        $customers = $this->paginate($this->Customers);
 
-        $this->set(compact('customers'));
+        $where=[];
+
+        $code=$this->request->query('code');
+        if(!empty($code)){
+            $where['Customers.customer_code']=$code;
+        }
+
+        $mobile=$this->request->query('mobile');
+        if(!empty($mobile)){
+            $where['Customers.mobile_no LIKE']='%'.$mobile.'%';
+        }
+        
+        $name=$this->request->query('name');
+        if(!empty($name)){
+            $where['Customers.name LIKE']='%'.$name.'%';
+        }
+        
+        $customers = $this->paginate(
+            $this->Customers->find()->where($where)
+        );
+        
+        $this->set(compact('customers', 'code', 'mobile', 'name'));
     }
 
     public function excel()
@@ -132,5 +152,18 @@ class CustomersController extends AppController
                  ->first();
 
         $this->set(compact('Customer', 'no_of_pax'));
+    }
+
+    public function birthdayList(){
+        $this->viewBuilder()->layout('admin');
+
+        $conn = ConnectionManager::get('default');
+        $currentDate=date('Y-m-d');
+        $DateAfterSevenDays=date('Y-m-d', strtotime($currentDate. ' + 7 days'));
+       
+        $stmt = $conn->execute("SELECT * FROM customers Customers WHERE (DATE_FORMAT(dob, '%m-%d') >= DATE_FORMAT('".$currentDate."', '%m-%d') and DATE_FORMAT(dob, '%m-%d') <= DATE_FORMAT('".$DateAfterSevenDays."', '%m-%d')) or (DATE_FORMAT(anniversary, '%m-%d') >= DATE_FORMAT('".$currentDate."', '%m-%d') and DATE_FORMAT(anniversary, '%m-%d') <= DATE_FORMAT('".$DateAfterSevenDays."', '%m-%d')) ");
+        $customers = $stmt->fetchAll('assoc');
+
+        $this->set(compact('customers'));
     }
 }

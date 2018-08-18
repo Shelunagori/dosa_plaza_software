@@ -150,13 +150,14 @@ class ItemsController extends AppController
         $BillRows2->matching('Bills', function($q) use($from_date, $to_date){
             return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
         });
-        $BillRows2->select([$BillRows2->func()->sum('BillRows.amount')]);
+        $BillRows2->select([$BillRows2->func()->sum('BillRows.net_amount')]);
 
         $Items = $this->Items->find();
         $Items->select([
             'selling_quantity' => $BillRows,
             'selling_amount' => $BillRows2,
         ])
+        ->contain(['ItemRows' => ['RawMaterials']])
         ->where(['Items.is_deleted'=>0])
         ->autoFields(true);
 

@@ -34,6 +34,7 @@ class StockLedger extends Entity
         'status' => true,
         'effected_on' => true,
         'raw_material' => true,
-		'voucher_no' =>  true,
+        'voucher_no' =>  true,
+		'transaction_date' =>  true,
     ];
 }

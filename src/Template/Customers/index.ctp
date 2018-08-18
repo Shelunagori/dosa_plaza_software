@@ -21,6 +21,26 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <form method="GET">
+                    <div align="center">
+                        <table>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Customer Code" name="code" value="<?php echo @$code; ?>">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Mobile" name="mobile" value="<?php echo @$mobile; ?>">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Name" name="name" value="<?php echo @$name; ?>">
+                                </td>
+                                <td>
+                                    <button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;">Filter</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
                 <?php $page_no=$this->Paginator->current('Customers'); $page_no=($page_no-1)*20; ?>
                 <table class="table table-str " cellpadding="0" cellspacing="0">
                     <thead>
@@ -31,8 +51,8 @@
                             <th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('dob') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('anniversary') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('email') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('address') ?></th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Address</th>
                         </tr>
                     </thead>
                     <tbody>

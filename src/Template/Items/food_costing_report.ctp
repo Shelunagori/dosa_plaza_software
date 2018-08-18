@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock-Report | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Food-Costing Report | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -8,7 +8,7 @@
 					<tr>
 						<td width="20%">
 							<div class="caption"style="padding:13px; color: red;">
-								Stock-Report
+								Food-Costing Report
 							</div>
 						</td>
 						<td valign="button">
@@ -55,6 +55,9 @@
 							<th>Selling Quantity</th>
 							<th>Selling Price</th>
 							<th>Selling Amount</th>
+							<th>Purchase Price</th>
+							<th>Purchase Amount</th>
+							<th>Profit Ratio(%)</th>
 						</tr>
 					</thead>
 					<tbody id="main_tbody">
@@ -72,6 +75,24 @@
 								echo ($selling_price) ? ($selling_price) : '' ?>
 							</td>
 							<td><?php echo ($Item->selling_amount) ? ($Item->selling_amount) : '' ?></td>
+							<td>
+								<?php 
+								$PurchasePrice=0;
+								foreach ($Item->item_rows as $item_row) {
+									if($item_row->raw_material->recipe_unit_type=='primary'){
+				                        $Qty=$item_row->quantity;
+				                    }else if($item_row->raw_material->recipe_unit_type=='secondary'){
+				                        $Qty=($item_row->quantity)/$item_row->raw_material->formula;
+				                    }
+
+									$PurchasePrice+=$Qty*10;
+								} 
+								echo $PurchasePrice; ?>
+							</td>
+							<td>
+								<?php echo $Item->selling_quantity*$PurchasePrice; ?>
+							</td>
+							<td></td>
 						</tr>
 						<?php $x++; endforeach; ?>
 					</tbody>

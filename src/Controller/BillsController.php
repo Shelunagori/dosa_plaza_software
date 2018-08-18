@@ -22,12 +22,43 @@ class BillsController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
+        $where=[];
+
+        $bill_no=$this->request->query('bill_no');
+        if(!empty($bill_no)){
+            $where['Bills.voucher_no']=$bill_no;
+        }
+
+        $from_date=$this->request->query('from_date');
+        if(!empty($from_date)){
+            $from_date=date("Y-m-d",strtotime($this->request->query('from_date')));
+            $where['Bills.transaction_date >=']=$from_date;
+        }
+
+        $to_date=$this->request->query('to_date');
+        if(!empty($to_date)){
+            $to_date=date("Y-m-d",strtotime($this->request->query('to_date')));
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+
+        $amount_from=$this->request->query('amount_from');
+        if(!empty($amount_from)){
+            $where['Bills.grand_total >=']=$amount_from;
+        }
+
+        $amount_to=$this->request->query('amount_to');
+        if(!empty($amount_to)){
+            $where['Bills.grand_total <=']=$amount_to;
+        }
+
         $this->paginate = [
             'contain' => ['Tables', 'Customers']
         ];
-        $bills = $this->paginate($this->Bills);
+        $bills = $this->paginate(
+            $this->Bills->find()->where($where)
+        );
 
-        $this->set(compact('bills'));
+        $this->set(compact('bills', 'bill_no', 'from_date', 'to_date', 'amount_from', 'amount_to'));
     }
 
     /**

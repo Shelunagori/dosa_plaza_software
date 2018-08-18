@@ -19,14 +19,44 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <form method="GET">
+                    <div align="center">
+                        <table>
+                            <tr>
+                                <td valign="bottom">
+                                    
+                                    <input type="text" class="form-control" placeholder="Bill No" name="bill_no" value="<?php echo @$bill_no; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <label>From Date</label>
+                                    <input type="date" class="form-control" placeholder="From Date" name="from_date" value="<?php echo @$from_date; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <label>To Date</label>
+                                    <input type="date" class="form-control" placeholder="To Date" name="to_date" value="<?php echo @$to_date; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <input type="text" class="form-control" placeholder="Amount From" name="amount_from" value="<?php echo @$amount_from; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <input type="text" class="form-control" placeholder="Amount to" name="amount_to" value="<?php echo @$amount_to; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;">Filter</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+
                  <?php $page_no=$this->Paginator->current('Bills'); $page_no=($page_no-1)*20; ?>
                 <table class="table table-str " cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
                             <th scope="col">Sr.N.</th>
                             <th scope="col"><?= $this->Paginator->sort('voucher_no', 'Bill No') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('transaction_date', 'Transaction Date') ?></th>
                             <th scope="col" style="text-align: right;"><?= $this->Paginator->sort('grand_total', 'Amount') ?></th>
-                             <th scope="col"><?= $this->Paginator->sort('created_on') ?></th>
                              <th scope="col"><?= $this->Paginator->sort('order_type') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Customers.name', 'Customer') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('Customers.customer_code', 'Customer Code') ?></th>
@@ -40,8 +70,8 @@
                         <tr>
                             <td><?= h(++$page_no) ?></td>
                             <td><?= h($bill->voucher_no) ?></td>
+                            <td><?= h($bill->transaction_date->format('d-m-Y')) ?></td>
                             <td style="text-align: right;"><?= h($bill->grand_total) ?></td>
-                            <td><?= h($bill->created_on->format('d-m-Y H:i')) ?></td>
                             <td><?= h(ucfirst($bill->order_type)) ?></td>
                             <td><?= h(@$bill->customer->name) ?></td>
                             <td><?= h(@$bill->customer->customer_code) ?></td>
