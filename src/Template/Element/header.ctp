@@ -65,7 +65,7 @@ if($controller=='kots'){
             <span class="counter topBtn pointer">Table Screen</span>
         <?php } ?>
         
-        <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer">Dinner In</span>
+        <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer">Dinner In (<?php echo $occupiedTableCount; ?>)</span>
         <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer">Delivery</span>
         <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer">Take Away</span>
         <span class="<?php echo $swiftactive ; ?> Swift pointer">Shift Table</span>

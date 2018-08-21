@@ -90,8 +90,13 @@ $order=$pass[1];
 									</td>
 								</tr>
 								<tr>
-									<td id="CategoryArea" style="padding:10px;padding-top: 5px; " valign="top">
+									<td id="CategoryArea" style="padding:10px;padding-top: 5px;border-bottom: solid 1px #CCC; " valign="top">
 										<span style="color:#373435;font-weight: bold;margin: 3px;">CHOOSE CATEGORY</span><br/>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding:10px;padding-top: 5px; text-align: center;" valign="top"><br/>
+										<a href="javascript:void(0)" class="fvtr" style="margin: 3px; padding: 5px 10px; background-color: #f0b11b; border-radius: 5px; color: #FFF; font-weight: 400;text-decoration: none;">FAVORITES</a>
 									</td>
 								</tr>
 							</table>
@@ -109,7 +114,7 @@ $order=$pass[1];
 										
 										<div  sub_category_id="<?= h($item_sub_category->id) ?>">
 										<?php foreach($item_sub_category->items as $item){ ?>
-											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
+											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" is_favorite="<?php echo (int)$item->is_favorite; ?>" >
 												<?= h($item->name) ?><br/>
 												[<?= h($item->rate) ?>]
 											</span>
@@ -148,7 +153,7 @@ $order=$pass[1];
 							</div>
 							<div style="max-height:280px; height:280px; overflow-y:scroll;">
 								<div style="padding-top:12px" >
-									<table class="table" id="kotBox">
+									<table class="table table-striped" id="kotBox">
 										<thead>
 											<tr>
 												<td style="text-align:center;width: 5%;">S.No.</td>
@@ -495,6 +500,13 @@ $order=$pass[1];
 		$('#SubCategoryArea .ItemSubCategoryBox[category_id='+category_id+']').first().addClass('activeSub');
 		$('.ItemBox[sub_category_id='+sub_category_id+']').show();
 		
+		$('.fvtr').die().live('click',function(event){
+
+			$('.ItemBox[is_favorite=0]').hide();
+			$('.ItemBox[is_favorite=1]').show();
+		});
+
+
 		$('.ItemCategoryBox').die().live('click',function(event){
 			$('.ItemCategoryBox').removeClass('activeMain');
 			$(this).addClass('activeMain');

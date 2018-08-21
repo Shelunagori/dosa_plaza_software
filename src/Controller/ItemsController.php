@@ -17,7 +17,7 @@ class ItemsController extends AppController
 		$this->paginate = [
             'contain' => ['ItemSubCategories']
         ];
-        $itemslist = $this->paginate($this->Items->find());
+        $itemslist = $this->Items->find();
 		$this->set(compact('itemslist'));
 	}
 
@@ -178,5 +178,18 @@ class ItemsController extends AppController
         $this->set(compact('Items', 'from_date', 'to_date'));
     }
 
+    public function favorite($item_id=null){
+        $Item = $this->Items->get($item_id);
+        $Item->is_favorite=1;
+        $this->Items->save($Item);
+        return $this->redirect(['action' => 'index']);
+    }
+
+    public function unfavorite($item_id=null){
+        $Item = $this->Items->get($item_id);
+        $Item->is_favorite=0;
+        $this->Items->save($Item);
+        return $this->redirect(['action' => 'index']);
+    }
 
 }
