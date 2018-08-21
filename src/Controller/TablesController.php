@@ -34,7 +34,7 @@ class TablesController extends AppController
             $kot_amout=$value->kot_amout;
              $tableWiseAmount[$table_id][]=$kot_amout;
         } 
-        $Tables=$this->Tables->find()->contain(['Employees']);
+        $Tables=$this->Tables->find()->order(['Tables.name' => 'ASC'])->contain(['Employees']);
         $BillAmountArray=array();
         foreach ($Tables as $data) {
             $table_id=$data['id'];
@@ -370,5 +370,32 @@ class TablesController extends AppController
             $this->Tables->Bills->save($bills);  
         } 
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function freeTable(){
+        $this->viewBuilder()->layout('');
+        $table_id=$this->request->query('table_id');
+
+        $KotsCount=$this->Tables->Kots->find()->where(['Kots.table_id' => $table_id, 'Kots.is_deleted' => 0, 'Kots.bill_pending' => 'yes'])->count();
+        if($KotsCount==0){
+           $Table = $this->Tables->get($table_id);
+           $Table->status = 'vacant';
+           $Table->c_name = '';
+           $Table->c_mobile = '';
+           $Table->no_of_pax = '';
+           $Table->occupied_time = '';
+           $Table->dob = '';
+           $Table->doa = '';
+           $Table->email = '';
+           $Table->c_address = '';
+           $Table->employee_id = '';
+           $Table->payment_status = '';
+           $Table->bill_id = '';
+           $this->Tables->save($Table);
+           echo 1;
+        }else{
+            echo 0;
+        }
+        exit;
     }
 }

@@ -19,7 +19,8 @@ $js="
 $(document).ready(function() {
     $('.counter').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
-        window.open(url); 
+        $('#loading').show();
+        window.location.href = url;
     });
 });
 ";

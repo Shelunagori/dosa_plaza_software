@@ -152,12 +152,25 @@ class ItemsController extends AppController
         });
         $BillRows2->select([$BillRows2->func()->sum('BillRows.net_amount')]);
 
+        $StockLedger=$this->Items->ItemRows->RawMaterials->StockLedgers->find()->where(['RawMaterials.id = StockLedgers.raw_material_id'])->where(['StockLedgers.voucher_name'=> 'Purchase Voucher']);
+        $StockLedger->select([$StockLedger->func()->sum('StockLedgers.quantity*StockLedgers.rate')]);
+ 
+        $StockLedger2=$this->Items->ItemRows->RawMaterials->StockLedgers->find()->where(['RawMaterials.id = StockLedgers.raw_material_id'])->where(['StockLedgers.voucher_name'=> 'Purchase Voucher']);
+        $StockLedger2->select([$StockLedger2->func()->sum('StockLedgers.quantity*StockLedgers.quantity')]);
+
         $Items = $this->Items->find();
         $Items->select([
             'selling_quantity' => $BillRows,
             'selling_amount' => $BillRows2,
         ])
-        ->contain(['ItemRows' => ['RawMaterials']])
+        ->contain(['ItemRows' => ['RawMaterials' => function($q) use($StockLedger, $StockLedger2){
+            return $q
+            ->select([
+                'total_amount' => $StockLedger,
+                'total_quantity' => $StockLedger2,
+            ])
+            ->autoFields(true);
+        } ]])
         ->where(['Items.is_deleted'=>0])
         ->autoFields(true);
 

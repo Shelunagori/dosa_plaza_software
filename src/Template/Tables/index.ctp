@@ -94,7 +94,7 @@
 					}
 					else { ?>
 						<div style="font-size:14px; border-radius: 7px !important;">
-							<div class="CreateKot" table_id='<?php echo $Table->id; ?>' style="box-shadow: 2px 3px 10px -1px rgb(169, 161, 161);">
+							<div class="CreateKot" table_id='<?php echo $Table->id; ?>' table_name='<?php echo $Table->name; ?>' style="box-shadow: 2px 3px 10px -1px rgb(169, 161, 161);">
 								<table width="100%" style="font-size:12px;line-height: 22px;text-align: center; white-space: nowrap; border:2px solid #DAD6F9" >
 									<tr>
 										<td height="30px" width="50%" style="background-color: #DAD6F9;">
@@ -224,6 +224,7 @@ $(document).ready(function() {
 		$('span#tableLabel').html(table_name);
 		$('input[name=table_id]').val(table_id);
 		$('#customerRegistrationBox').show();
+		$('select[name=c_pax]').focus();
 	});
 
 	$('.closeCustomerBox').die().live('click',function(event){
@@ -373,9 +374,53 @@ $(document).ready(function() {
 
 
 
+});
 
+
+$(document).ready(function(){ 
+	document.oncontextmenu = function() {return false;};
+
+	$('.CreateKot').mousedown(function(e){ 
+	if( e.button == 2 ) {
+		var table_id = $(this).attr('table_id');
+		var table_name = $(this).attr('table_name');
+		$('input#TblID').val(table_id);
+		$('span#TblName').text(table_name);
+	  	$('#WaitBox4').show();
+	  	return false; 
+	}
+	return true; 
+	}); 
+
+
+	$('.CloseMenuBox').mousedown(function(e){
+		$('#WaitBox4').hide();
+	});
+
+	$('.CloseWaitBox5').mousedown(function(e){
+		$('#WaitBox5').hide();
+	});
+
+	$('.FreeTable').die().live('click',function(event){
+		var table_id = $('#TblID').val();
+		
+		var url='".$this->Url->build(['controller'=>'Tables','action'=>'freeTable'])."';
+		url=url+'?table_id='+table_id;
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			console.log(response);
+			if(response==1){
+				location.reload();
+			}else{
+				$('#WaitBox4').hide();
+				$('#WaitBox5').show();
+			}
+		});
+	});
 
 });
+
 ";
 
 foreach($Tables as $Table){
@@ -468,6 +513,42 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<div align="center">
 				<span class="CloseSteward">CLOSE</span> 
 			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="WaitBox4" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog" style="width: 300px !important;">
+		<div class="modal-content">
+			<div class="modal-body" style="padding: 0;">
+				<div style="text-align: center; color: #2D4161; font-weight: bold; font-size: 14px;padding: 10px;">Table: <span id="TblName"></span></div>
+				<input type="hidden" id="TblID">
+				<a href="javascript:void(0)" class="btn btn-default btn-block FreeTable" style="margin: 0;">Free Table</a>
+				<!-- <a href="javascript:void(0)" class="btn btn-default btn-block" style="margin: 0;">Shift Table</a> -->
+			</div>
+			<div class="modal-footer"> 
+			<div align="center">
+				<button type="button" class="CloseMenuBox btn dark">CLOSE</button>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox5" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog" style="width: 300px !important;">
+		<div class="modal-content">
+			<div class="modal-body" style="padding: 15px; font-size: 14px; text-align: center;">
+				Table can't be free.
+			</div>
+			<div class="modal-footer"> 
+				<div align="center">
+					<button type="button" class="CloseWaitBox5 btn dark">CLOSE</button>
+				</div>
 			</div>
 		</div>
 	</div>

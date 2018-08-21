@@ -24,7 +24,6 @@
                         <table>
                             <tr>
                                 <td valign="bottom">
-                                    
                                     <input type="text" class="form-control" placeholder="Bill No" name="bill_no" value="<?php echo @$bill_no; ?>">
                                 </td>
                                 <td valign="bottom">

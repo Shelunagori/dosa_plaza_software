@@ -39,41 +39,46 @@ if($searchbox==1 or $searchbox==0){  ?>
 		<table width="100%">
 			<tr>
 				<td align="center" width="10%"><i class="fa fa-phone font"></i> </td>
-				<td width="90%"><?php echo @$table->c_mobile;?> </td>
-			</tr>
-			<tr>
-				<td align="center"><i class="fa fa-envelope font"></i> </td>
+				<td ><?php echo @$table->c_mobile;?> </td>
+				<td align="center" width="10%"><i class="fa fa-envelope font"></i> </td>
 				<td><?php echo @$table->email;?> </td>
 			</tr>
 			<tr>
-				<td align="center"><i class="fa fa-building font"></i> </td>
-				<td><?php echo @$table->c_address;?> </td>
+			<tr>
+				<td align="center" width="10%"><i class="fa fa-building font"></i> </td>
+				<td colspan="3"><?php echo @$table->c_address;?> </td>
 			</tr>
 		</table>
 	</div>
 	<hr style="margin-top: -2px; margin-bottom: 4px;"></hr>
-	<table width="100%">
+	<table width="100%" >
 		<tr>
-			<td width="40%" valign="top">
+			<td width="60%" valign="top" style="padding: 2px;">
 				<span style="font-size: 12px;color: #8e8e8e;">favorite Items</span><br/>
 				<?php
 				if(sizeof(@$BillRows)>0){
-					foreach ($BillRows as $BillRow) {
-	                    echo '<span style="font-size: 12px;color: #464444;margin-left: 4px;">'.@$BillRow->item->name.'</span><br/>';
+					$i=0;
+					foreach ($BillRows as $BillRow) { $i++;
+	                    echo '<li style="font-size: 12px;color: #464444;margin-left: 4px;">'.@$BillRow->item->name.'</li>';
+	                    if($i==3){ break; }
 	                }
 				}
 				
 				?>
 			</td>
-			<td width="60%">
-				<span style="font-size: 12px;color: #8e8e8e;">Total Amount (Life Time):</span> 
-				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$TotalAmount; ?></span>
-				<br/>
-				<span style="font-size: 12px;color: #8e8e8e;">Total Amount (This Month):</span> 
-				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$TotalAmountMonth; ?></span>
-				<br/>
-				<span style="font-size: 12px;color: #8e8e8e;">Last Bill Amount:</span> 
-				<span style="font-size: 12px;color: #464444;margin-left: 4px;"><?php echo @$LastBillAmount; ?></span>
+			<td width="40%" style="padding: 2px;">
+				<div style="text-align: right;">
+					<span style="font-size: 12px;color: #8e8e8e;">Life Time:</span>
+					<span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ <?php echo @$TotalAmount; ?></span>
+				</div>
+				<div style="text-align: right;">
+					<span style="font-size: 12px;color: #8e8e8e;">This Month:</span>
+					<span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ <?php echo @$TotalAmountMonth; ?></span>
+				</div>
+				<div style="text-align: right;">
+					<span style="font-size: 12px;color: #8e8e8e;">Last Bill:</span>
+					<span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ <?php echo @$LastBillAmount; ?></span>
+				</div>
 			</td>
 		</tr>
 	</table>

@@ -319,10 +319,24 @@ class KotsController extends AppController
     {
         $kot = $this->Kots->KotRows->get($id); 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $kot = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
-            $kot->is_deleted=1;
-            $kot->delete_time=date('Y-m-d h:i:s');
-            if ($this->Kots->KotRows->save($kot)) {
+            $KotRow = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
+            $KotRow->is_deleted=1;
+            $KotRow->delete_time=date('Y-m-d h:i:s');
+            if ($this->Kots->KotRows->save($KotRow)) {
+
+                $kot = $this->Kots->find()->where(['Kots.id' => $KotRow->kot_id])
+                        ->contain(['KotRows' => function($q){
+                            return $q->where(['KotRows.is_deleted' => 0]);
+                        }])
+                        ->first();
+
+                if(sizeof($kot->kot_rows)==0){
+                    $Kot=$this->Kots->get($kot->id);
+                    $Kot->is_deleted=1;
+                    $Kot->delete_time=date('Y-m-d h:i:s');
+                    $this->Kots->save($Kot);
+                }
+
                 $this->Flash->success(__('The item has been deleted.'));
                 return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
             }

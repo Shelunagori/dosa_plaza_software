@@ -227,7 +227,7 @@ foreach($Kots as $Kot){
 				</div>
 			</div>
 		</td>
-		<td width="70%" style="padding-left:20px;">
+		<td width="70%" style="padding-left:20px;" valign="top"><br/>
 			<input type="hidden" name="kot_ids" value="<?php echo implode(',', $kotIDs); ?>">
 			<div>
 				<table width="100%" id="billTable">

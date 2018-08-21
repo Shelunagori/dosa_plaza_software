@@ -70,16 +70,16 @@ $order=$pass[1];
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
 	
-	<div class="row KOTView" style="padding:15px 0px;">
+	<div class="row KOTView" style="padding:1px 0px;">
 		<div class="col-md-12">
 			<table width="100%">
 				<tr>
-					<td valign="top" width="50%" style=" padding: 0px 15px; ">
-						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 10px;">
+					<td valign="top" width="50%" style=" padding: 0px 2px; ">
+						<div style=" background-color: #FFF; border-radius: 8px !important;">
 							<table width="100%">
 								<tr>
-									<td style="padding:10px;padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
-									<div style="height:  300px !important;" id="ItemArea" >
+									<td style="padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
+									<div style="max-height:400px; height:400px; overflow-y:scroll;" id="ItemArea" >
 
 									</div>	
 									</td>
@@ -110,7 +110,8 @@ $order=$pass[1];
 										<div  sub_category_id="<?= h($item_sub_category->id) ?>">
 										<?php foreach($item_sub_category->items as $item){ ?>
 											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" >
-												<?= h($item->name) ?>
+												<?= h($item->name) ?><br/>
+												[<?= h($item->rate) ?>]
 											</span>
 										<?php } ?>
 										</div>
@@ -123,7 +124,7 @@ $order=$pass[1];
 					</td>
 					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'class'=>'form-control','type'=> 'hidden','id'=>'order_type']);?>
 					<td valign="top" width="50%" style=" padding: 0px 15px 0px 0px;">
-						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 15px;">
+						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 5px;">
 							<div style="padding-top:12px">
 								<table width="100%">
 									<tr>
@@ -145,13 +146,13 @@ $order=$pass[1];
 									</tr>
 								</table>
 							</div>
-							<div style="max-height:200px;overflow-y:scroll;">
+							<div style="max-height:280px; height:280px; overflow-y:scroll;">
 								<div style="padding-top:12px" >
 									<table class="table" id="kotBox">
 										<thead>
 											<tr>
-												<td style="text-align:center;">S.No.</td>
-												<td>Name</td>
+												<td style="text-align:center;width: 5%;">S.No.</td>
+												<td style="width: 50%;">Name</td>
 												<td style="text-align:center;">Quantity</td>
 												<td style="text-align:center;">Rate</td>
 												<td style="text-align:center;">Amount</td>
@@ -173,8 +174,8 @@ $order=$pass[1];
 							</div>
 							<hr style="margin-bottom: 2px; "></hr> 
 						</div>
-						<div style="background-color: #FFF; border-radius: 8px !important; padding: 0px 15px; margin-top:10px">
-							<div style="padding-top:12px">
+						<div style="background-color: #FFF; border-radius: 8px !important; padding: 0px 5px; margin-top:3px">
+							<div style="padding-top:4px">
 								
 								<div id="deletemodal" class="modal fade" role="dialog">
 									<div class="modal-dialog modal-md" >
@@ -258,7 +259,7 @@ $order=$pass[1];
 									<td width="50%" style="border-right:5px solid #f5f5f5;" id="customer_info">
 
 									</td>
-									<td width="50%">
+									<td width="50%" valign="top">
 										<table width="95%" style="margin-left:2%"  border="0">
 											<tr>
 												<td height="35px" width="65%"><b>Total :</b></td>
@@ -304,7 +305,7 @@ $order=$pass[1];
 </div>
 <style> 
 #kotBox td{
-	padding:12px 0px;
+	padding:5px 0px;
 }
 .tblBox{
 	width: 240px; margin: 10px;
@@ -331,7 +332,7 @@ $order=$pass[1];
 .ItemCategoryBox{
     border: solid 1px;
     float: left;
-    font-size: 14px;
+    font-size: 12px;
     padding: 5px 20px;
 	margin: 3px;
 	cursor: pointer;
@@ -348,7 +349,7 @@ $order=$pass[1];
 .ItemSubCategoryBox{
     border: solid 1px;
     float: left;
-    font-size: 14px;
+    font-size: 12px;
     padding: 5px 20px;
 	margin: 3px;
 	cursor: pointer;
@@ -364,14 +365,18 @@ $order=$pass[1];
 
 
 .ItemBox{
+    width: 100px;
+    height: 60px;
     float: left;
-    font-size: 14px;
-    padding: 5px 20px;
-	margin: 3px;
-	cursor: pointer;
-	background-color:#F5F5F5;
-	color:#474445;
-	border-radius: 5px !important;
+    font-size: 11px;
+    padding: 2px 2px;
+    margin: 3px;
+    cursor: pointer;
+    border: solid 1px #d6d6d6;
+    background-color: #F5F5F5;
+    color: #474445;
+    border-radius: 5px !important;
+    text-align: center;
 }
 
 #BackToTables{
@@ -535,6 +540,15 @@ $order=$pass[1];
 
 		$('.ItemBox').die().live('click',function(event){
 			var item_id=$(this).attr('item_id');
+
+			var c = $('table#kotBox tbody tr td[item_id='+item_id+']').length;
+			if(c>0){
+				var qt= $('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text();
+
+				$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
+				return;
+			}
+
 			var item_name=$(this).attr('item_name');
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
@@ -544,7 +558,7 @@ $order=$pass[1];
 		});
 
 		$('.saveCustomersearch').die().live('click',function(event){
-			//-- VIew Customer Info
+			//-- View Customer Info
 			var table_id=$('#tableInput').val();
 			var search=$('#search').val();
 			if(!search){
@@ -586,8 +600,54 @@ $order=$pass[1];
 			});
 		});
 		
+		$('.ItemDropDown').die().live('change',function(event){
+			$('.QtyCatcher').focus();
+		});
+
+		$('.QtyCatcher').keypress(function(event){
+		    var keycode = (event.keyCode ? event.keyCode : event.which);
+		    if(keycode == '13'){
+		        var item_id=$('.ItemDropDown option:selected').val();
+
+		        var c = $('table#kotBox tbody tr td[item_id='+item_id+']').length;
+				if(c>0){
+					var qt= $('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text();
+
+					$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
+					$('.ItemDropDown').focus();
+					return;
+				}
+
+
+				var Qty=parseFloat($('.QtyCatcher').val());
+				if(item_id && Qty){
+					var item_name=$('.ItemDropDown option:selected').text();
+					var rate=$('.ItemDropDown option:selected').attr('rate');
+					
+					var c=$('#kotBox tbody tr').length;
+					c=c+1; 
+					$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+					amountcals();
+				}
+
+				$('.ItemDropDown').focus();
+		    }
+		});
+
+
 		$('.AddItemBtn').die().live('click',function(event){
 			var item_id=$('.ItemDropDown option:selected').val();
+
+			var c = $('table#kotBox tbody tr td[item_id='+item_id+']').length;
+			if(c>0){
+				var qt= $('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text();
+
+				$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
+				$('.ItemDropDown').focus();
+				return;
+			}
+
+
 			var Qty=parseFloat($('.QtyCatcher').val());
 			if(item_id && Qty){
 				var item_name=$('.ItemDropDown option:selected').text();

@@ -76,18 +76,24 @@
 							</td>
 							<td><?php echo ($Item->selling_amount) ? ($Item->selling_amount) : '' ?></td>
 							<td>
-								<?php 
+								<?php  pr($Item);
 								$PurchasePrice=0;
-								foreach ($Item->item_rows as $item_row) {
+								foreach ($Item->item_rows as $item_row) { 
 									if($item_row->raw_material->recipe_unit_type=='primary'){
 				                        $Qty=$item_row->quantity;
 				                    }else if($item_row->raw_material->recipe_unit_type=='secondary'){
 				                        $Qty=($item_row->quantity)/$item_row->raw_material->formula;
 				                    }
 
-									$PurchasePrice+=$Qty*10;
-								} 
-								echo $PurchasePrice; ?>
+				                    if($item_row->total_quantity){
+				                    	$avgPrice=($item_row->total_amount/$item_row->total_quantity);
+				                    }else{
+				                    	$avgPrice=0;
+				                    }
+				                    echo 'avgPrice-'.$avgPrice;
+									$PurchasePrice+=$Qty*$avgPrice;
+								}
+								echo $PurchasePrice = round($PurchasePrice,2); ?>
 							</td>
 							<td>
 								<?php echo $Item->selling_quantity*$PurchasePrice; ?>

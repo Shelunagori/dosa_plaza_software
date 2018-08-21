@@ -82,25 +82,29 @@ $(document).ready(function() {
     });
     $('.deleveryNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','delivery'])."'
-        window.open(url, '_blank'); 
+        window.open(url, '_blank');
     });
     $('.takeAwayNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','takeaway'])."'
-        window.open(url, '_blank'); 
+        window.open(url, '_blank');
     });
 
     $('.Swift').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Tables','action'=>'swifttable'])."'
-        window.open(url); 
+        $('#loading').show();
+        window.location.href = url; 
     });
 
     $('.dashboard').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Users','action'=>'Dashboard'])."'
-        window.open(url); 
+        $('#loading').show();
+        window.location.href = url; 
     });
     $('.counter').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
-        window.open(url); 
+        //window.open(url);
+        $('#loading').show();
+        window.location.href = url; 
     });
 });
 ";
