@@ -127,7 +127,7 @@ $order=$pass[1];
 							</div>
 						</div>
 					</td>
-					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'class'=>'form-control','type'=> 'hidden','id'=>'order_type']);?>
+					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'type'=> 'hidden','id'=>'order_type']);?>
 					<td valign="top" width="50%" style=" padding: 0px 15px 0px 0px;">
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 5px;">
 							<div style="padding-top:12px">
@@ -261,10 +261,40 @@ $order=$pass[1];
 
 								<table width="100%" border="0">
 								<tr>
-									<td width="50%" style="border-right:5px solid #f5f5f5;" id="customer_info">
-
+									<td width="60%" style="border-right:5px solid #f5f5f5;" valign="top">
+										<?php if($table_id){ ?>
+											<table width="100%" >
+												<tr>
+													<td style="padding-right: 5px;" width="40%">
+														<div class="input-icon" >
+															<i class="fa fa-mobile" style="font-size: 20px;margin: 7px 0px 0px 7px;"></i>
+															<input type="text" class="form-control input-small input-sm" placeholder="Mobile" style="background-color: #f5f5f5 !important" name="search_mobile" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" id="MobileBox" maxlength="10" minlength="10" >
+														</div>
+													</td>
+													<td style="padding-right: 5px;" width="5%">
+														OR
+													</td>
+													<td style="padding-right: 5px;" width="45%">
+														<div class="input-icon">
+															<i class="fa fa-mobile" style="font-size: 20px;margin: 7px 0px 0px 7px;"></i>
+															<input type="text" class="form-control input-small input-sm" placeholder="Customer Code" style="background-color: #f5f5f5 !important" name="search_code" id="CodeBox">
+														</div>
+													</td>
+													<td style="padding-right: 2px; text-align: center;" width="5%">
+														<button type="button" class="btn btn-danger btn-sm" id="FetchCustomer"><i class="fa fa-search"></i></button>
+													</td>
+													<td style="padding-right: 0px; text-align: center;" width="5%">
+														<button type="button" class="btn btn-danger btn-sm" id="AddCustomer"><i class="fa fa-plus" ></i></button>
+													</td>
+												</tr>
+											</table>
+											<div id="CustomerInfo" style=" padding-top: 4px; ">
+												
+											</div>
+										<?php } ?>
+										
 									</td>
-									<td width="50%" valign="top">
+									<td width="40%" valign="top">
 										<table width="95%" style="margin-left:2%"  border="0">
 											<tr>
 												<td height="35px" width="65%"><b>Total :</b></td>
@@ -460,24 +490,9 @@ $order=$pass[1];
 	$successMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #1AB696; font-weight: bold;"></span><br/><br/><span style="font-size: 18px; color: #727376; font-weight: bold;">KOT Created Successfully.</span><br/></div><div style="text-align:  center;margin-top: 20px;"><span class="closePopup">Close</span></div>';
 	$BillSuccessMessage='<div align=center><br/><span aria-hidden=true class=icon-check style="font-size:50px;color: #096609; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #096609; font-weight: bold;">Bill Created</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
 	$errorMessage='<div align=center><br/><span aria-hidden=true class=icon-close style="font-size:50px;color: #ae0808; font-weight: bold;"></span><br/><span style="font-size: 18px; color: #ae0808; font-weight: bold;">Something went wrong.</span><div><button type="button" class="btn btn-primary closePopup">Close</button></div></div>';
-	$js='';
-	if($order_type=='dinner'){	 
-		$js.="
-			$(document).ready(function() {
-				//-- VIew Customer Info
-				var table_id=$('#tableInput').val();
-				var url='".$this->Url->build(['controller'=>'Kots','action'=>'customer'])."';
-				url=url+'?table_id='+table_id;
-				$.ajax({
-					url: url,
-				}).done(function(response) { 
-					$('#customer_info').html(response);
-				});
-			});
-		";
-	}
 	
-	$js.="
+	
+	$js="
 	$(document).ready(function() {
 		var order_type=$('#order_type').val();
 		var q=$('.ItemCategoryBox').clone();
@@ -807,6 +822,7 @@ $order=$pass[1];
 			var dob=$('#dob').val();
 			var doa=$('#doa').val();
 			var employee_id=$('#employee_id option:selected').val();
+			var qwerty=$('#qwerty').val();
 			
 			var c_email=$('#c_email').val();
 			var c_address=$('#c_address').val();
@@ -820,7 +836,7 @@ $order=$pass[1];
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id+'&offer_id='+offer_id;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id+'&offer_id='+offer_id+'&qwerty='+qwerty;
 			url=encodeURI(url);
 			$.ajax({
 				url: url,
@@ -1092,6 +1108,121 @@ $order=$pass[1];
 		});
 
 
+		$('#closeWaitBox6').die().live('click',function(event){
+			$('#WaitBox6').hide();
+		});
+
+		$('#AddCustomer').die().live('click',function(event){
+			$('#WaitBox6').show();
+		});
+
+		$('#SaveNewCustomer').die().live('click',function(event){
+			var c_name=$('#c_name').val();
+			console.log(c_name);
+			if(!c_name){
+				alert('Enter Name');
+				return;
+			}
+
+			var c_mobile_no=$('#c_mobile_no').val();
+			if(!c_mobile_no){
+				alert('Enter Mobile No.');
+				return;
+			}
+
+			if(c_mobile_no.length!=10){
+				alert('Enter Valid Mobile No.');
+				return;
+			}
+
+			$('form#customerForm').submit();
+		});
+
+		$('#UpdateCustomer').die().live('click',function(event){
+
+			$('form#customerForm').submit();
+		});
+
+		
+
+
+		var table_id=$('#tableInput').val();
+		if(table_id>0){
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'autoFetchCustomer'])."';
+			url=url+'?table_id='+table_id;
+			
+			$.ajax({
+				url: url,
+				dataType: 'json',
+			}).done(function(response) {
+				$('#CustomerInfo').html(response.customer_info);
+			});
+		}
+		
+
+
+
+		$('#closeWaitBox7').die().live('click',function(event){
+			$('#WaitBox7').hide();
+		});
+
+		$('#EditCustomer').die().live('click',function(event){
+			$('#WaitBox7').show();
+			var table_id=$('#tableInput').val();
+			var customer_id = $(this).attr('customer_id');
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'fetchCustomerInfo'])."';
+			url=url+'?customer_id='+customer_id+'&table_id='+table_id;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				$('#WaitBox7 div.modal-body').html(response);
+			});
+		});
+
+		$('#UnlinkCustomer').die().live('click',function(event){
+			var table_id=$('#tableInput').val();
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'unlinkCustomer'])."';
+			url=url+'?table_id='+table_id;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				if(response=='1'){
+					$('#CustomerInfo').html('');
+				}
+			});
+		});
+
+		$('#FetchCustomer').die().live('click',function(event){
+			var mobile=$('#MobileBox').val();
+			var code=$('#CodeBox').val();
+			if(mobile=='' && code==''){
+				return;
+			}
+
+			$('#CustomerInfo').html('<br/><div align=center>Fatching...</div>');
+
+			var table_id=$('#tableInput').val();
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'fetchCustomer'])."';
+			url=url+'?mobile='+mobile+'&code='+code+'&table_id='+table_id;
+			
+			$.ajax({
+				url: url,
+				dataType: 'json',
+			}).done(function(response) {
+				if(response.linked=='yes'){
+					$('#CustomerInfo').html(response.customer_info);
+				}else{
+					$('#WaitBox6').show();
+					$('#CustomerInfo').html('');
+					$('#c_mobile_no').val(mobile);
+				}
+				$('#MobileBox').val('');
+				$('#CodeBox').val('');
+			});
+		});
+
+
+
 
 	});
 
@@ -1187,6 +1318,80 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 					<span class="closeCommentBox">CLOSE</span>
 					<span class="saveComment">SAVE COMMENT</span>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="WaitBox6" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<form method="post" id="customerForm">
+					<input type="hidden" name="table_id" value="<?php echo $table_id; ?> ">
+					<div align="center"><span style=" color: #2D4161; font-weight: bold; font-size: 14px; ">CUSTOMER INFORMATION</span></div>
+					<div>
+						<div style="padding: 5px 25px; ">
+							<br>
+							<table width="100%">
+								<tr>
+									<td style="padding-right: 5px;">
+										<div class="input-icon">
+											<i class="fa fa-user"></i>
+											<input type="text" class="form-control" placeholder="Name" style="background-color: #f5f5f5 !important" name="c_name" id="c_name" value="" required="required">
+										</div><br>
+									</td>
+									<td style="padding-right: 5px;">
+										<div class="input-icon">
+											<i class="fa fa-mobile" style="font-size: 20px;"></i>
+											<input type="text" class="form-control" placeholder="Mobile" style="background-color: #f5f5f5 !important" name="c_mobile_no" id="c_mobile_no" value="" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" required="required" minlength="10">
+										</div><br>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding-right: 5px;">
+										<div class="input-icon">
+											Date of Birth<i class="fa fa-child"></i>
+											<input type="date" class="form-control" placeholder="Date of Birth" style="background-color: #f5f5f5 !important" name="dob" id="dob" value="">
+										</div>
+									</td>
+									<td style="padding-left: 5px;">
+										<div class="input-icon">
+											Date of Anniversary<i class="fa fa-empire"></i>
+											<input type="date" class="form-control" placeholder="Date of Anniversary" style="background-color: #f5f5f5 !important" name="doa" id="doa" value="">
+										</div>
+									</td>
+								</tr>
+							</table>
+							<br>
+							<div class="input-icon">
+								<i class="fa fa-envelope-square" style="font-size: 20px;"></i>
+								<input type="text" class="form-control" placeholder="Email" style="background-color: #f5f5f5 !important" name="c_email" id="c_email" value="">
+							</div>
+							<br>
+							<textarea rows="4" cols="50" placeholder="Address..." name="c_address" id="c_address" style="line-height: 20px; background: whitesmoke;resize: none;" class="form-control"></textarea>
+						</div>
+						<br/>
+						<div align="center">
+							<button type="button" class="btn " id="closeWaitBox6">CLOSE</button>
+							<button type="button" class="btn btn-danger" id="SaveNewCustomer">SAVE</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="WaitBox7" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div align="center">Loading...</div>
 			</div>
 		</div>
 	</div>

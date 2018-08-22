@@ -49,6 +49,7 @@ class KotsTable extends Table
 		$this->belongsTo('Comments');
 
         $this->belongsTo('ItemCategories');
+        $this->belongsTo('Customers');
         
         $this->hasMany('KotRows', [
             'foreignKey' => 'kot_id'

@@ -32,6 +32,58 @@ class KotsController extends AppController
     public function generate($table_id=null,$order_type=null)
     {
         $this->viewBuilder()->layout('counter');
+
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $table_id = $this->request->data()['table_id']; 
+            $c_name = $this->request->data()['c_name']; 
+            $c_mobile_no = $this->request->data()['c_mobile_no']; 
+            $dob = $this->request->data()['dob']; 
+            $anniversary = $this->request->data()['doa']; 
+            $c_email = $this->request->data()['c_email']; 
+            $c_address = $this->request->data()['c_address']; 
+
+            $Customer=$this->Kots->Customers->find()->where(["Customers.mobile_no" => $c_mobile_no])->first();
+            if($Customer){
+                $query = $this->Kots->Tables->query();
+                $query->update()
+                    ->set(['customer_id' => $Customer->id])
+                    ->where(['Tables.id' => $table_id])
+                    ->execute();
+
+                $query = $this->Kots->Customers->query();
+                $query->update()
+                    ->set(['name' => $c_name, 'address' => $c_address, 'mobile_no' => $c_mobile_no, 'dob' => $dob, 'anniversary' => $anniversary, 'email' => $c_email])
+                    ->where(['Customers.id' => $Customer->id])
+                    ->execute();
+            }else{
+                $Customer = $this->Kots->Customers->newEntity();
+                $Customer->name = $c_name;
+                $Customer->address = $c_address;
+                $Customer->mobile_no = $c_mobile_no;
+                $Customer->dob = $dob;
+                $Customer->anniversary = $anniversary;
+                $Customer->email = $c_email;
+                
+
+                $lastCustomer=$this->Kots->Customers->find()->order(['Customers.id' => 'DESC'])->first();
+                if($lastCustomer){
+                    $Customer->customer_code = $lastCustomer->customer_code+1;
+                }else{
+                    $Customer->customer_code = 2001;
+                }
+
+                $this->Kots->Customers->save($Customer);
+
+                $query = $this->Kots->Tables->query();
+                $query->update()
+                    ->set(['customer_id' => $Customer->id])
+                    ->where(['Tables.id' => $table_id])
+                    ->execute();
+            }
+
+        }
+
         $ItemCategories =   $this->Kots->ItemCategories->find()
                             ->contain(['ItemSubCategories'=>['Items'=>function($q){
                                 return $q->where(['Items.is_deleted'=>0]);
@@ -93,9 +145,13 @@ class KotsController extends AppController
 		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items'=>['Taxes']]]);
 		if($table_id>0){
     		$Table=$this->Kots->Tables->get($table_id);
+            if($Table->customer_id){
+                $Customer = $this->Kots->Tables->Customers->get($Table->customer_id);
+            }
+            
         }
 		$taxes=$this->Kots->Taxes->find();
-		$this->set(compact('Kots', 'Table', 'taxes','searchbox','searchBy'));
+		$this->set(compact('Kots', 'Table', 'taxes','searchbox','searchBy', 'Customer'));
     }
 
     public function viewkot($kot_id=null)

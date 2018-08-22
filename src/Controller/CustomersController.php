@@ -47,6 +47,288 @@ class CustomersController extends AppController
         $this->set(compact('customers', 'code', 'mobile', 'name'));
     }
 
+
+    public function autoFetchCustomer(){
+        $table_id = $this->request->query('table_id');
+        $Table = $this->Customers->Tables->get($table_id);
+
+        if($Table->customer_id){
+            $Customer = $this->Customers->get($Table->customer_id);
+        }else{
+            $Response=['customer_info'=>''];
+            echo json_encode($Response);
+            exit;
+        }
+        
+       
+        if($Customer){
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+
+
+
+            $BillRows= $this->Customers->Tables->Bills->BillRows->find();
+            $BillRows->select(['TotalQuantity' => $BillRows->func()->SUM('BillRows.quantity')])
+                        ->group(['BillRows.item_id'])
+                        ->order(['TotalQuantity' => 'DESC'])
+                        ->matching('Bills', function($q) use($Customer){
+                            return $q->where(['Bills.customer_id' => $Customer->id]);
+                        })
+                        ->limit(3)
+                        ->contain(['Items'])
+                        ->autoFields(true);
+
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+            ->group(['Bills.customer_id'])
+            ->where(['Bills.customer_id' => $Customer->id])
+            ->first();
+
+            $TotalAmount = @$Bills->toArray()[0]['TotalAmount'];
+
+
+
+            $currentDate=date('Y-m');
+            $lastDate=date("Y-m-t", strtotime($currentDate));
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+            ->group(['Bills.customer_id'])
+            ->where(['Bills.customer_id' => $Customer->id])
+            ->where([
+                'Bills.transaction_date >=' => $currentDate.'-1', 
+                'Bills.transaction_date <=' => $lastDate, 
+            ])
+            ->first();
+
+            $TotalAmountMonth = @$Bills->toArray()[0]['TotalAmount'];
+
+
+
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->where(['Bills.customer_id' => $Customer->id])
+            ->order(['Bills.voucher_no' => 'DESC'])
+            ->first();
+
+            $LastBillAmount = @$Bills->toArray()[0]['grand_total'];
+
+            $customer_info = '
+                <div class="panel" style="border-color: #2d4161;">
+                    <div style="color: #ffffff;background-color: #2d4161;border-color: #2d4161;padding: 5px;">
+                        <span style="font-size:14px;">'.$Customer->name .' - '.$Customer->customer_code.'</span>
+
+                        <a href="javascript:void(0)" class="btn btn-default btn-xs" style=" float: right; height: 20px; background-color: #2d4161; margin-right: 2px;" id="UnlinkCustomer"><i class="fa fa-times"></i></a>
+
+                        <a href="javascript:void(0)" class="btn btn-default btn-xs" style=" float: right; height: 20px; background-color: #2d4161; margin-right: 2px;" id="EditCustomer" customer_id="'.$Customer->id.'"><i class="fa fa-edit"></i></a>
+                    </div>
+                    <div class="panel-body" style="padding: 5px;">
+                        <table width="100%">
+                            <tr>
+                                <td>Mobile:</td>
+                                <td>'.$Customer->mobile_no .'</td>
+                                <td>Email:</td>
+                                <td>'.$Customer->email .'</td>
+                            </tr>
+                            <tr>
+                                <td>Address:</td>
+                                <td colspan="3">'.$Customer->address .'</td>
+                            </tr>
+                        </table>
+                        <hr style="margin: 5px;" />
+                        <table width="100%">
+                            <tr>
+                                <td><div>Favorites</div>';
+                                    if(sizeof(@$BillRows)>0){
+                                        $i=0;
+                                        foreach ($BillRows as $BillRow) { $i++;
+                                            $customer_info .='<li style="font-size: 12px;color: #464444;margin-left: 4px;">'.@$BillRow->item->name.'</li>';
+                                            if($i==3){ break; }
+                                        }
+                                    }
+                                $customer_info .='</td>
+                                <td width="40%" style="padding: 2px;">
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">Life Time:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$TotalAmount .'</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">This Month:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$TotalAmountMonth .'</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">Last Bill:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$LastBillAmount .'</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            ';
+
+
+
+            $Response=['customer_info'=>$customer_info];
+        }else{
+            $Response=['customer_info'=>''];
+        }
+
+        echo json_encode($Response);
+        exit;
+    }
+
+
+    public function unlinkCustomer(){
+        $table_id = $this->request->query('table_id');
+        $query = $this->Customers->Tables->query();
+        $query->update()
+            ->set(['customer_id' => null])
+            ->where(['Tables.id' => $table_id])
+            ->execute();
+        echo '1'; exit;
+    }
+
+    public function fetchCustomerInfo(){
+        $this->viewBuilder()->layout('');
+        $customer_id = $this->request->query('customer_id');
+        $table_id = $this->request->query('table_id');
+        $Customer = $this->Customers->get($customer_id);
+        $this->set(compact('Customer', 'table_id'));
+    }
+
+
+    public function fetchCustomer(){
+        $mobile = $this->request->query('mobile');
+        $code = $this->request->query('code');
+        $table_id = $this->request->query('table_id');
+
+        $Customer=$this->Customers->find()
+                 ->where(['OR' => array(
+                            array("Customers.mobile_no" => $mobile),
+                            array("Customers.customer_code" => $code)
+                        )])
+                 ->first();
+        if($Customer){
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+
+
+
+            $BillRows= $this->Customers->Tables->Bills->BillRows->find();
+            $BillRows->select(['TotalQuantity' => $BillRows->func()->SUM('BillRows.quantity')])
+                        ->group(['BillRows.item_id'])
+                        ->order(['TotalQuantity' => 'DESC'])
+                        ->matching('Bills', function($q) use($Customer){
+                            return $q->where(['Bills.customer_id' => $Customer->id]);
+                        })
+                        ->limit(3)
+                        ->contain(['Items'])
+                        ->autoFields(true);
+
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+            ->group(['Bills.customer_id'])
+            ->where(['Bills.customer_id' => $Customer->id])
+            ->first();
+
+            $TotalAmount = @$Bills->toArray()[0]['TotalAmount'];
+
+
+
+            $currentDate=date('Y-m');
+            $lastDate=date("Y-m-t", strtotime($currentDate));
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->select(['TotalAmount' => $Bills->func()->SUM('Bills.grand_total')])
+            ->group(['Bills.customer_id'])
+            ->where(['Bills.customer_id' => $Customer->id])
+            ->where([
+                'Bills.transaction_date >=' => $currentDate.'-1', 
+                'Bills.transaction_date <=' => $lastDate, 
+            ])
+            ->first();
+
+            $TotalAmountMonth = @$Bills->toArray()[0]['TotalAmount'];
+
+
+
+            $Bills= $this->Customers->Tables->Bills->find();
+            $Bills->where(['Bills.customer_id' => $Customer->id])
+            ->order(['Bills.voucher_no' => 'DESC'])
+            ->first();
+
+            $LastBillAmount = @$Bills->toArray()[0]['grand_total'];
+
+            $customer_info = '
+                <div class="panel" style="border-color: #2d4161;">
+                    <div style="color: #ffffff;background-color: #2d4161;border-color: #2d4161;padding: 5px;">
+                        <span style="font-size:14px;">'.$Customer->name .' - '.$Customer->customer_code.'</span>
+                        
+                        <a href="javascript:void(0)" class="btn btn-default btn-xs" style=" float: right; height: 20px; background-color: #2d4161; margin-right: 2px;" id="UnlinkCustomer"><i class="fa fa-times"></i></a>
+
+                        <a href="javascript:void(0)" class="btn btn-default btn-xs" style=" float: right; height: 20px; background-color: #2d4161; margin-right: 2px;" id="EditCustomer" customer_id="'.$Customer->id.'"><i class="fa fa-edit"></i></a>
+
+                    </div>
+                    <div class="panel-body" style="padding: 5px;">
+                        <table width="100%">
+                            <tr>
+                                <td>Mobile:</td>
+                                <td>'.$Customer->mobile_no .'</td>
+                                <td>Email:</td>
+                                <td>'.$Customer->email .'</td>
+                            </tr>
+                            <tr>
+                                <td>Address:</td>
+                                <td colspan="3">'.$Customer->address .'</td>
+                            </tr>
+                        </table>
+                        <hr style="margin: 5px;" />
+                        <table width="100%">
+                            <tr>
+                                <td><div>Favorites</div>';
+                                    if(sizeof(@$BillRows)>0){
+                                        $i=0;
+                                        foreach ($BillRows as $BillRow) { $i++;
+                                            $customer_info .='<li style="font-size: 12px;color: #464444;margin-left: 4px;">'.@$BillRow->item->name.'</li>';
+                                            if($i==3){ break; }
+                                        }
+                                    }
+                                $customer_info .='</td>
+                                <td width="40%" style="padding: 2px;">
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">Life Time:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$TotalAmount .'</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">This Month:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$TotalAmountMonth .'</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="font-size: 12px;color: #8e8e8e;">Last Bill:</span>
+                                        <span style="font-size: 12px;color: #464444;margin-left: 4px;">₹ '. @$LastBillAmount .'</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            ';
+
+
+
+            $Response=['linked'=>'yes', 'customer_info'=>$customer_info];
+        }else{
+            $Response=['linked'=>'no'];
+        }
+
+        echo json_encode($Response);
+        exit;
+    }
+
     public function excel()
     {
         $this->viewBuilder()->layout('');

@@ -88,16 +88,30 @@ class BillsController extends AppController
     public function add()
     {
 
-        $c_name=$this->request->query('c_name');
-        $c_mobile_no=$this->request->query('c_mobile_no');
-        $c_pax=$this->request->query('c_pax');
-        $dob=$this->request->query('dob');
-        $doa=$this->request->query('doa');
-        $c_email=$this->request->query('c_email');
-        $c_address=$this->request->query('c_address');
+        $qwerty=$this->request->query('qwerty');
+        if($qwerty==1){
+            $c_mobile_no=$this->request->query('c_mobile_no');
+        }else{
+            $c_name=$this->request->query('c_name');
+            $c_mobile_no=$this->request->query('c_mobile_no');
+            $c_pax=$this->request->query('c_pax');
+            $dob=$this->request->query('dob');
+            $doa=$this->request->query('doa');
+            $c_email=$this->request->query('c_email');
+            $c_address=$this->request->query('c_address');
+        }
         $order_type=$this->request->query('order_type');
 
         $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
+        if($qwerty==1){
+            $c_name=$IsCustomerExist->name;
+            $c_mobile_no=$IsCustomerExist->mobile_no;
+            $dob=$IsCustomerExist->dob;
+            $doa=$IsCustomerExist->anniversary;
+            $c_email=$IsCustomerExist->email;
+            $c_address=$IsCustomerExist->address;
+            
+        }
         if($IsCustomerExist){
             $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
             $Customer->name=$c_name;

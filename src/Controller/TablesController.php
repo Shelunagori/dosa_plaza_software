@@ -34,7 +34,7 @@ class TablesController extends AppController
             $kot_amout=$value->kot_amout;
              $tableWiseAmount[$table_id][]=$kot_amout;
         } 
-        $Tables=$this->Tables->find()->order(['Tables.name' => 'ASC'])->contain(['Employees']);
+        $Tables=$this->Tables->find()->order(['Tables.name' => 'ASC'])->contain(['Employees', 'Customers']);
         $BillAmountArray=array();
         foreach ($Tables as $data) {
             $table_id=$data['id'];

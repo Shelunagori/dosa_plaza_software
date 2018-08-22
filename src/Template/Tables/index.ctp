@@ -117,7 +117,7 @@
 											<span style="color:#373435;"><?= h(@$Table->employee->name);?> </span>
 										</td>
 										<td height="30px" > 
-											<span style="color:#373435;"><?php echo @ucwords($Table->c_name); ?> </span>
+											<span style="color:#373435;"><?php echo @ucwords($Table->customer->name); ?> </span>
 										</td>
 									</tr>
 								</table>
