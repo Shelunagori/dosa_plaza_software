@@ -360,6 +360,7 @@ class TablesController extends AppController
             $Table->doa = '';
             $Table->email = '';
             $Table->c_address = '';
+            $Table->customer_id = '';
             $this->Tables->save($Table);  
         }
         if($table_id>0){
