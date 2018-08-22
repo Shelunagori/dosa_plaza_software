@@ -228,7 +228,7 @@ foreach($Kots as $Kot){
 					</div>
 				</div>
 			<?php }else{ ?>
-				<?php if($Customer){ ?>
+				<?php if(@$Customer){ ?>
 				<div class="panel" style="border-color: #2d4161;">
                     <div style="color: #ffffff;background-color: #2d4161;border-color: #2d4161;padding: 5px;">
                         <span style="font-size:14px;"><?php echo $Customer->name; ?> - <?php echo $Customer->customer_code; ?></span>

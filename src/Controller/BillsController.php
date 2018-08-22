@@ -103,13 +103,13 @@ class BillsController extends AppController
         $order_type=$this->request->query('order_type');
 
         $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
-        if($qwerty==1){
-            $c_name=$IsCustomerExist->name;
-            $c_mobile_no=$IsCustomerExist->mobile_no;
-            $dob=$IsCustomerExist->dob;
-            $doa=$IsCustomerExist->anniversary;
-            $c_email=$IsCustomerExist->email;
-            $c_address=$IsCustomerExist->address;
+        if($qwerty==1 && $IsCustomerExist){
+            $c_name=@$IsCustomerExist->name;
+            $c_mobile_no=@$IsCustomerExist->mobile_no;
+            $dob=@$IsCustomerExist->dob;
+            $doa=@$IsCustomerExist->anniversary;
+            $c_email=@$IsCustomerExist->email;
+            $c_address=@$IsCustomerExist->address;
             
         }
         if($IsCustomerExist){
@@ -166,7 +166,7 @@ class BillsController extends AppController
 		
         $bill->transaction_date=date('Y-m-d');
 		$bill->table_id=$table_id;
-        $bill->no_of_pax=$c_pax;
+        $bill->no_of_pax=@$c_pax;
 		$bill->total=$total; 
 		$bill->round_off=$roundOff;
         $bill->grand_total=$net;
