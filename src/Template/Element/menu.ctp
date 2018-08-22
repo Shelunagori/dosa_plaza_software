@@ -86,7 +86,10 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '
 		?>
  	</ul>
 </li>
-<li class="start">
+<?php 
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Reports</span>', '/Users/Reports',['escape' => false, 'class' => 'showLoader']).'</li>';
+?>
+<!-- <li class="start">
 	<a href="javascript:;">
 	<span class="title" style="margin-left: 15px;">Reports</span>
 	<span class="arrow "></span>
@@ -102,71 +105,5 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bills</span>', '
 		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Attendance-Report</span>', '/Employees/EmployeesAttendance',['escape' => false, 'class' => 'showLoader']).'</li>';
 		?>
  	</ul>
-</li>
+</li> -->
 
-<!-- 
-<li class="start">
-	<a href="javascript:;">
-	<i class="fa fa-gear"></i>
-	<span class="title">Master & Setup</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Item Category', '/ItemCategories/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Item Sub Category', '/ItemSubCategories/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Offers', '/MasterOffers/add',['escape' => false]).'</li>';?>
-		
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Units', '/Units/add',['escape' => false]).'</li>';?>	 
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Stock Adjustment', '/RawMaterials/stock_adjustment',['escape' => false]).'</li>';?>	 
-	</ul>
-</li>
-<li class="start">
-	<a href="javascript:;">
-	<i class="fa fa-gear"></i>
-	<span class="title">Item</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Items/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Items/index',['escape' => false]).'</li>';?>
- 	</ul>
-</li>
-
-<li class="start">
-	<a href="javascript:;">
-	<i class="fa fa-gear"></i>
-	<span class="title">Employee</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Employees/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Employees/index',['escape' => false]).'</li>';?>
- 	</ul>
-</li>
-
-<li class="start">
-	<a href="javascript:;">
-	<i class="fa fa-gear"></i>
-	<span class="title">Vendor</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Vendors/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Vendors/index',['escape' => false]).'</li>';?>
- 	</ul>
-</li>
-
-
- 
-<li class="start">
-	<a href="javascript:;">
-	<i class="fa fa-gear"></i>
-	<span class="title">Attendances</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' Add', '/Attendances/add',['escape' => false]).'</li>';?>
-		<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-book']).' View', '/Attendances/index',['escape' => false]).'</li>';?>
- 	</ul>
-</li>  
- -->

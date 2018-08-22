@@ -138,6 +138,13 @@ class ItemsController extends AppController
 
         $from_date=$this->request->query('from_date');
         $to_date=$this->request->query('to_date');
+        $period=$this->request->query('period');
+        if(!$period){
+            $period = 30;
+        }
+
+        $periodFrom = date('Y-m-d', strtotime('-'.$period.' days', strtotime($to_date)));
+        $periodTo = $to_date;
 
 
         $BillRows=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
@@ -152,11 +159,23 @@ class ItemsController extends AppController
         });
         $BillRows2->select([$BillRows2->func()->sum('BillRows.net_amount')]);
 
-        $StockLedger=$this->Items->ItemRows->RawMaterials->StockLedgers->find()->where(['RawMaterials.id = StockLedgers.raw_material_id'])->where(['StockLedgers.voucher_name'=> 'Purchase Voucher']);
+        $StockLedger=$this->Items->ItemRows->RawMaterials->StockLedgers->find()
+                    ->where([
+                        'RawMaterials.id = StockLedgers.raw_material_id',
+                        'StockLedgers.voucher_name'=> 'Purchase Voucher',
+                        'StockLedgers.transaction_date >=' => $periodFrom, 
+                        'StockLedgers.transaction_date <=' => $periodTo
+                    ]);
         $StockLedger->select([$StockLedger->func()->sum('StockLedgers.quantity*StockLedgers.rate')]);
  
-        $StockLedger2=$this->Items->ItemRows->RawMaterials->StockLedgers->find()->where(['RawMaterials.id = StockLedgers.raw_material_id'])->where(['StockLedgers.voucher_name'=> 'Purchase Voucher']);
-        $StockLedger2->select([$StockLedger2->func()->sum('StockLedgers.quantity*StockLedgers.quantity')]);
+        $StockLedger2=$this->Items->ItemRows->RawMaterials->StockLedgers->find()
+                    ->where([
+                        'RawMaterials.id = StockLedgers.raw_material_id',
+                        'StockLedgers.voucher_name'=> 'Purchase Voucher',
+                        'StockLedgers.transaction_date >=' => $periodFrom, 
+                        'StockLedgers.transaction_date <=' => $periodTo
+                    ]);
+        $StockLedger2->select([$StockLedger2->func()->sum('StockLedgers.quantity')]);
 
         $Items = $this->Items->find();
         $Items->select([
@@ -175,7 +194,7 @@ class ItemsController extends AppController
         ->autoFields(true);
 
         //pr($Items->toArray()); exit;
-        $this->set(compact('Items', 'from_date', 'to_date'));
+        $this->set(compact('Items', 'from_date', 'to_date', 'period'));
     }
 
     public function favorite($item_id=null){

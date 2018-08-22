@@ -23,6 +23,17 @@
 												<input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required />
 											</td>
 											<td>
+												<?php
+												$options=[];
+												$options[]=['text' =>'30 Days', 'value' => 30];
+												$options[]=['text' =>'60 Days', 'value' => 60];
+												$options[]=['text' =>'120 Days', 'value' => 120];
+												$options[]=['text' =>'240 Days', 'value' => 240];
+												$options[]=['text' =>'360 Days', 'value' => 360];
+												echo $this->Form->input('period', ['label' => false,'options' => $options,'class' => 'form-control', 'value' => @$period]);
+												?>
+											</td>
+											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
 											</td>
 										</tr>
@@ -52,12 +63,12 @@
 						<tr>
 							<th>S.No.</th>
 							<th>Item Name</th>
-							<th>Selling Quantity</th>
-							<th>Selling Price</th>
-							<th>Selling Amount</th>
-							<th>Purchase Price</th>
-							<th>Purchase Amount</th>
-							<th>Profit Ratio(%)</th>
+							<th style="text-align: center;">Selling Quantity</th>
+							<th style="text-align: center;">Selling Price</th>
+							<th style="text-align: center;">Selling Amount</th>
+							<th style="text-align: center;">Purchase Price</th>
+							<th style="text-align: center;">Purchase Amount</th>
+							<th style="text-align: center;">Profit Ratio(%)</th>
 						</tr>
 					</thead>
 					<tbody id="main_tbody">
@@ -65,8 +76,8 @@
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td><?= h($Item->name) ?></td>
-							<td><?php echo ($Item->selling_quantity) ? ($Item->selling_quantity) : '' ?></td>
-							<td>
+							<td style="text-align: center;"><?php echo ($Item->selling_quantity) ? ($Item->selling_quantity) : '' ?></td>
+							<td style="text-align: center;">
 								<?php 
 								$selling_price=0;
 								if($Item->selling_quantity){
@@ -74,11 +85,11 @@
 								}
 								echo ($selling_price) ? ($selling_price) : '' ?>
 							</td>
-							<td><?php echo ($Item->selling_amount) ? ($Item->selling_amount) : '' ?></td>
-							<td>
-								<?php  pr($Item);
+							<td style="text-align: center;"><?php echo ($Item->selling_amount) ? ($Item->selling_amount) : '' ?></td>
+							<td style="text-align: center;">
+								<?php 
 								$PurchasePrice=0;
-								foreach ($Item->item_rows as $item_row) { 
+								foreach ($Item->item_rows as $item_row) {
 									if($item_row->raw_material->recipe_unit_type=='primary'){
 				                        $Qty=$item_row->quantity;
 				                    }else if($item_row->raw_material->recipe_unit_type=='secondary'){
@@ -90,15 +101,25 @@
 				                    }else{
 				                    	$avgPrice=0;
 				                    }
-				                    echo 'avgPrice-'.$avgPrice;
 									$PurchasePrice+=$Qty*$avgPrice;
 								}
 								echo $PurchasePrice = round($PurchasePrice,2); ?>
 							</td>
-							<td>
-								<?php echo $Item->selling_quantity*$PurchasePrice; ?>
+							<td style="text-align: center;">
+								<?php 
+								$PurchaseAmount = $Item->selling_quantity*$PurchasePrice;
+								echo ($PurchaseAmount) ? ($PurchaseAmount) : ''
+								?>
 							</td>
-							<td></td>
+							<td style="text-align: center;">
+								<?php
+									$Profit = $Item->selling_amount - $PurchaseAmount;
+									if($PurchaseAmount){
+										$ProfitRatio = round( ($Profit/$PurchaseAmount)*100, 2 );
+									}
+									echo ($ProfitRatio) ? ($ProfitRatio) : ''
+								?>
+							</td>
 						</tr>
 						<?php $x++; endforeach; ?>
 					</tbody>
