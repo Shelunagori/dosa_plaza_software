@@ -434,21 +434,86 @@ class BillsController extends AppController
     public function salesReportSearch(){
         $this->viewBuilder()->layout('admin');
 
+        $Tables = $this->Bills->Tables->find('list');
+        $Employees = $this->Bills->Employees->find('list');
+        $Customers = $this->Bills->Customers->find('list');
+        $this->set(compact( 'Tables', 'Employees', 'Customers'));
     }
 
     public function salesReport(){
         $this->viewBuilder()->layout('admin');
 
+        $where=[];
+
         $from_date=$this->request->query('from_date');
+        if(!empty($from_date)){
+            $where['Bills.transaction_date >=']=$from_date;
+        }
+
         $to_date=$this->request->query('to_date');
+        if(!empty($to_date)){
+            $where['Bills.transaction_date <=']=$to_date;
+        }
 
+        $no_of_pax=$this->request->query('no_of_pax');
+        $no_of_pax_parameter=$this->request->query('no_of_pax_parameter');
+        if(!empty($no_of_pax)){
+            if($no_of_pax_parameter=="Equal-to"){
+                $where['Bills.no_of_pax']=$no_of_pax;
+            }else if($no_of_pax_parameter=="Greater-than"){
+                $where['Bills.no_of_pax >']=$no_of_pax;
+            }else if($no_of_pax_parameter=="Less-than"){
+                $where['Bills.no_of_pax <']=$no_of_pax;
+            }
+        }
 
+        $order_type=$this->request->query('order_type');
+        if(!empty($order_type)){
+            $where['Bills.order_type']=$order_type;
+        }
+
+        $table_id=$this->request->query('table_id');
+        if(!empty($table_id)){
+            $where['Bills.table_id']=$table_id;
+        }
+
+        $employee_id=$this->request->query('employee_id');
+        if(!empty($employee_id)){
+            $where['Bills.employee_id']=$employee_id;
+        }
+
+        $customer_id=$this->request->query('customer_id');
+        if(!empty($customer_id)){
+            $where['Bills.customer_id']=$customer_id;
+        }
+
+        $bill_amount=$this->request->query('bill_amount');
+        $bill_amount_parameter=$this->request->query('bill_amount_parameter');
+        if(!empty($bill_amount)){
+            if($bill_amount_parameter=="Equal-to"){
+                $where['Bills.grand_total']=$bill_amount;
+            }else if($bill_amount_parameter=="Greater-than"){
+                $where['Bills.grand_total >']=$bill_amount;
+            }else if($bill_amount_parameter=="Less-than"){
+                $where['Bills.grand_total <']=$bill_amount;
+            }
+        }
+
+        //pr($where); exit;
         $Bills = $this->paginate(
                     $this->Bills->find()
+                    ->where($where)
                     ->autoFields(true)
                     ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ])
                 );
-        //pr($Bills->toArray()); exit;
-        $this->set(compact('from_date', 'to_date', 'Bills'));
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        
+
+        $this->set(compact('from_date', 'to_date', 'Bills', 'Total_grand_total'));
     }
 }
