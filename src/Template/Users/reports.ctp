@@ -76,7 +76,6 @@
 
 <div class="row" >
 	<div class="col-md-4">
-		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
@@ -90,6 +89,28 @@
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Food Costing Report</span>', '/Items/foodCostingReport',['escape' => false, 'class' => 'showLoader']).'</li>';
+					?>
+			 	</ul>
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<div class="portlet box blue-hoki">
+			<div class="portlet-title">
+				<div class="caption">
+				KOT Reports
+				</div>
+				<div class="row">	
+						<div class="col-md-12 horizontal "></div>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<ul style=" line-height: 23px; ">
+					<?php
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">KOT Detail Report</span>', '/Kots/kotReport',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">KOT Delete Report</span>', '/Kots/deleteReport',['escape' => false, 'class' => 'showLoader']).'</li>';
 					?>
 			 	</ul>
 				

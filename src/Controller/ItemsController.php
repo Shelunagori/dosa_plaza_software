@@ -14,10 +14,8 @@ class ItemsController extends AppController
 {   
 	public function index(){
 		$this->viewBuilder()->layout('admin');
-		$this->paginate = [
-            'contain' => ['ItemSubCategories']
-        ];
-        $itemslist = $this->Items->find();
+		
+        $itemslist = $this->Items->find()->contain(['ItemSubCategories']);
 		$this->set(compact('itemslist'));
 	}
 

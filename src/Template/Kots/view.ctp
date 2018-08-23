@@ -19,7 +19,7 @@ foreach($Kots as $Kot){
 	</tr>
 	<tr>
 		<td width="30%" valign="top">
-			<?php if(!$Table){ ?>
+			<?php if(!@$Table){ ?>
 				<div align="center"><span style=" color: #2D4161; font-weight: bold; font-size: 14px; ">CUSTOMER INFORMATION</span></div>
 				<div>
 					<div style="padding: 5px 25px; ">

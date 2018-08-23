@@ -21,10 +21,12 @@
 			<div class="modal-dialog modal-md" >
 				<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Kots','action'=>'deletekot',$kot->id,$table_id,$order)) ?>">
 					<div class="modal-content">
-					  <div class="modal-header">
+					  <div class="modal-header" align="center">
 							<h4 class="modal-title">
 							Are you sure you want to delete this KOT?
-							</h4>
+							</h4><br/>
+							<label>Delete Comment</label>
+							<textarea class="form-control" name="delete_comment"></textarea>
 						</div>
 						<div class="modal-footer" style="border:none;">
 							<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
@@ -70,7 +72,9 @@
 											  <div class="modal-header">
 													<h4 class="modal-title">
 													Are you sure you want to delete this Item?
-													</h4>
+													</h4><br/>
+													<label>Delete Comment</label>
+													<textarea class="form-control" name="delete_comment"></textarea>
 												</div>
 												<div class="modal-footer" style="border:none;">
 													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>

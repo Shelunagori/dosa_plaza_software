@@ -54,8 +54,9 @@ class KotsTable extends Table
         $this->hasMany('KotRows', [
             'foreignKey' => 'kot_id'
         ]);
-		$this->hasOne('Bills', [
-            'foreignKey' => 'kot_id'
+        $this->belongsTo('Bills', [
+            'foreignKey' => 'bill_id',
+            'joinType' => 'LEFT'
         ]);
     }
 

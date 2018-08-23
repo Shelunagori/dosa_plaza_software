@@ -157,7 +157,7 @@ class KotsController extends AppController
     public function viewkot($kot_id=null)
     {
         $this->viewBuilder()->layout('');
-        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables",'KotRows'=>['Items'=>['Taxes']]])->first();
+        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables" => ['Employees'],'KotRows'=>['Items'=>['Taxes']]])->first();
         //pr($Kots->toArray());exit;
         $this->set(compact('Kots'));
     }
@@ -355,6 +355,7 @@ class KotsController extends AppController
             'contain' => ['KotRows']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $delete_comment = $this->request->getData()['delete_comment'];
             $kot = $this->Kots->patchEntity($kot, $this->request->getData());
             $kot->is_deleted=1;
             $kot->delete_time=date('Y-m-d h:i:s');
@@ -362,7 +363,7 @@ class KotsController extends AppController
                 $this->Flash->success(__('The kot has been deleted.'));
                 $query = $this->Kots->KotRows->query();
                 $query->update()
-                        ->set(['is_deleted' => 1,'delete_time'=>date('Y-m-d h:i:s')])
+                        ->set(['is_deleted' => 1,'delete_time'=>date('Y-m-d h:i:s'), 'delete_comment' => $delete_comment ])
                         ->where(['KotRows.kot_id'=>$id])
                         ->execute();
                 return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
@@ -375,9 +376,12 @@ class KotsController extends AppController
     {
         $kot = $this->Kots->KotRows->get($id); 
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $KotRow = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
             $KotRow->is_deleted=1;
             $KotRow->delete_time=date('Y-m-d h:i:s');
+            $KotRow->delete_comment=$this->request->getData()['delete_comment'];
+
             if ($this->Kots->KotRows->save($KotRow)) {
 
                 $kot = $this->Kots->find()->where(['Kots.id' => $KotRow->kot_id])
@@ -399,4 +403,60 @@ class KotsController extends AppController
             $this->Flash->error(__('The item could not be deleted. Please, try again.'));
         }
     }
+
+    public function deleteReport(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+        $deletedRows=$this->Kots->KotRows->find()
+                    ->where([
+                        'KotRows.kot_id = Kots.id',
+                        'KotRows.is_deleted' => '1'
+                    ]);
+        $deletedRows->select([$deletedRows->func()->count('KotRows.id')]);
+
+        $Kots = $this->Kots->find()
+                ->select([
+                    'deleted_rows' => $deletedRows
+                ])
+                ->where([
+                    'created_on >=' => $from_date.' 00:00:00',
+                    'created_on <=' => $to_date.' 23:59:59'
+                ])
+                ->contain([
+                    'Tables',
+                    'KotRows'=> function($q){
+                        return $q->where(['KotRows.is_deleted' => 1])->contain(['Items']);
+                    } 
+                ])
+                ->autoFields(true);
+        $this->set(compact('Kots', 'from_date', 'to_date'));
+    }
+
+    public function kotReport(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+        $Kots = $this->Kots->find()
+                ->where([
+                    'Kots.created_on >=' => $from_date.' 00:00:00',
+                    'Kots.created_on <=' => $to_date.' 23:59:59',
+                    'Kots.is_deleted' => 0
+                ])
+                ->contain([
+                    'Tables',
+                    'Bills' => ['Employees'],
+                    'KotRows'=> function($q){
+                        return $q->where(['KotRows.is_deleted' => 0])->contain(['Items']);
+                    } 
+                ])
+                ->autoFields(true);
+        $this->set(compact('Kots', 'from_date', 'to_date'));
+    }
+
+
 }
