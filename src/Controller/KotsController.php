@@ -94,7 +94,9 @@ class KotsController extends AppController
                     ->order(['Items.name'=>'ASC']);
 
         $Kots=$this->Kots->find()->where(['Kots.table_id'=>$table_id,'Kots.bill_pending'=>'yes','Kots.is_deleted'=>0])
-              ->contain(['KotRows'=>['Items'=>['Taxes']]]);
+              ->contain(['KotRows'=>function($q){
+                    return $q->where(['KotRows.is_deleted' => 0])->contain(['Items'=>['Taxes']]);
+              }]);
         $itemsList=[]; $kotIDs=[];
         $Table_data=array();
         if($table_id){
@@ -142,7 +144,9 @@ class KotsController extends AppController
         }
         //pr($searchBy);exit;
 
-		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes'])->contain(['KotRows'=>['Items'=>['Taxes']]]);
+		$Kots=$this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes', 'Kots.is_deleted'=>'0'])->contain(['KotRows'=> function($q){
+                    return $q->where(['KotRows.is_deleted'=>'0'])->contain(['Items'=>['Taxes']]);
+                }]);
 		if($table_id>0){
     		$Table=$this->Kots->Tables->get($table_id);
             if($Table->customer_id){

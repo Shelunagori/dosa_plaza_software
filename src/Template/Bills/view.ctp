@@ -46,8 +46,10 @@
 								<?php } ?>
 							</td>
 							<td align="right">
+								<?php if(@$bill->table->employee->name){ ?>
 								<span style="color: #606062;">Steward: </span>
-								<span style="margin-left: 10px;"> <?= h($bill->table->employee->name) ?> </span>
+								<span style="margin-left: 10px;"> <?= h(@$bill->table->employee->name) ?> </span>
+								<?php } ?>
 							</td>
 						</tr>
 					</table>
@@ -84,8 +86,6 @@
 						<?php if($bill_row->discount_amount>0){ ?>
 						<tr style="">
 							<td colspan="2" style="text-align:left;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;">
-								<span style="margin-left: 40px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
-							</td><td colspan="2" style="text-align:left;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;">
 								<span style="margin-left: 40px;">Discount@<?php echo $bill_row->discount_per; ?>%</span>
 							</td>
 							<td colspan="4" style="text-align:right;border-bottom: 1px dashed #D2D2D3;padding-bottom: 5px;"><?php echo $bill_row->discount_amount; ?></td>

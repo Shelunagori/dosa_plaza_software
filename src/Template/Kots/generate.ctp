@@ -65,7 +65,6 @@ $order=$pass[1];
 }
 
 </style>
-<?php $colors=['#1AB696', '#999DAB', '#F3CC6F', '#FA6E58', '#334D8F', '#C8A66A', '#A4BF5B', '#31A8B8', '#91AAC7', '#F24A4A']; ?>
 <!-- <?= $this->element('header'); ?> -->
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" value="<?php echo $table_id; ?>" />
@@ -642,6 +641,7 @@ $order=$pass[1];
 
 					$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
 					$('.ItemDropDown').focus();
+					$('.ItemDropDown').select2('val',''); 
 					return;
 				}
 
@@ -657,12 +657,14 @@ $order=$pass[1];
 					amountcals();
 				}
 
+				$('.ItemDropDown').select2('val',''); 
 				$('.ItemDropDown').focus();
 		    }
 		});
 
 
 		$('.AddItemBtn').die().live('click',function(event){
+			
 			var item_id=$('.ItemDropDown option:selected').val();
 
 			var c = $('table#kotBox tbody tr td[item_id='+item_id+']').length;
@@ -671,6 +673,7 @@ $order=$pass[1];
 
 				$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
 				$('.ItemDropDown').focus();
+				$('.ItemDropDown').select2('val',''); 
 				return;
 			}
 
@@ -685,6 +688,8 @@ $order=$pass[1];
 				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 				amountcals();
 			}
+
+			$('.ItemDropDown').select2('val',''); 
 			
 		});
 		

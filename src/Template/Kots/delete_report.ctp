@@ -61,7 +61,7 @@
 							<tr class="main_tr">
 								<td style="text-align: center;"><?= (++$x) ?></td>
 								<td style="text-align: center;"><?= h($Kot->voucher_no) ?></td>
-								<td style="text-align: center;"><?= h($Kot->table->name) ?></td>
+								<td style="text-align: center;"><?= h(@$Kot->table->name) ?></td>
 								<td style="text-align: center;"><?= h($Kot->created_on->format('d-m-Y h:i A')) ?></td>
 								<td style="padding: 0;">
 									<table class="table table-bordered table-condensed" width="100%" style="margin: 0;">

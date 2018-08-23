@@ -14,7 +14,7 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Report</span>', '/RawMaterials/daily-report',['escape' => false, 'class' => 'showLoader']).'</li>';
@@ -40,7 +40,7 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body"  style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Report</span>', '/Bills/salesReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
@@ -62,7 +62,7 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body"  style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Attendance-Report</span>', '/Employees/EmployeesAttendance',['escape' => false, 'class' => 'showLoader']).'</li>';
@@ -85,7 +85,7 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body"  style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Food Costing Report</span>', '/Items/foodCostingReport',['escape' => false, 'class' => 'showLoader']).'</li>';
@@ -106,7 +106,7 @@
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body"  style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">KOT Detail Report</span>', '/Kots/kotReport',['escape' => false, 'class' => 'showLoader']).'</li>';

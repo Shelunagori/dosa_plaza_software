@@ -24,7 +24,7 @@
 }
 </style>
  
-<!-- <?= $this->element('header'); ?> -->
+
 
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" />
@@ -61,7 +61,7 @@
 									<table width="100%" style="font-size:12px;line-height: 22px; border: 2px solid #ccc;">
 										<tr>
 											<td valign="top" align="center">
-												<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> &#8377; 532 </b></span>
+												<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> &#8377; <?php echo $BillAmountArray[$Table->id]; ?> </b></span>
 											</td>
 										</tr> 
 										<tr>

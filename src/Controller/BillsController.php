@@ -172,6 +172,9 @@ class BillsController extends AppController
         $bill->grand_total=$net;
 		$bill->customer_id=$customer_id;
 		$bill->order_type=$order_type;
+        if($order_type!='dinner'){
+            $bill->payment_type='cash';
+        }
         $bill_rows=[];
 		foreach($q as $row){
 			$bill_row = $this->Bills->BillRows->newEntity();

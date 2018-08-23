@@ -40,7 +40,7 @@
 						<tr>
 							<td>
 								<span style="color: #606062;">Steward: </span>
-								<span style="margin-left: 10px;"> <?= h($Kots->table->employee->name) ?></span>
+								<span style="margin-left: 10px;"> <?= h(@$Kots->table->employee->name) ?></span>
 							</td>
 							<td align="right">
 								<?php if($Kots->table_id>0 ){?>

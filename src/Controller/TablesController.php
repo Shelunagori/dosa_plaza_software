@@ -48,7 +48,7 @@ class TablesController extends AppController
         } 
          
         $Employees = $this->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
-        $this->set(compact('Tables', 'Employees','tableWiseAmount'));
+        $this->set(compact('Tables', 'Employees','tableWiseAmount', 'BillAmountArray'));
     }
 
     public function saveTable()
