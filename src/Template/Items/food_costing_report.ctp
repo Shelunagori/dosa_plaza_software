@@ -103,7 +103,9 @@
 				                    }
 									$PurchasePrice+=$Qty*$avgPrice;
 								}
-								echo $PurchasePrice = round($PurchasePrice,2); ?>
+								$PurchasePrice = round($PurchasePrice,2); 
+
+								echo (@$PurchasePrice) ? (@$PurchasePrice) : '' ?>
 							</td>
 							<td style="text-align: center;">
 								<?php 
@@ -117,7 +119,7 @@
 									if($PurchaseAmount){
 										$ProfitRatio = round( ($Profit/$PurchaseAmount)*100, 2 );
 									}
-									echo ($ProfitRatio) ? ($ProfitRatio) : ''
+									echo (@$ProfitRatio) ? (@$ProfitRatio) : ''
 								?>
 							</td>
 						</tr>

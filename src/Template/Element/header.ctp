@@ -56,20 +56,19 @@ if($controller=='kots'){
 ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
     <div >
-    	<?php if($controller!='tables'){ ?>
-        	<a class=" tooltips" id="BackToTables" data-container="body" data-placement="bottom" data-original-title="Back to table screen"></a>
-        	<?= $this->Html->link(__('<i class="fa fa-arrow-left"></i>'), ['controller' => 'Tables', 'action' => 'index'], ['class' => 'tooltips', 'id' => 'BackToTables', 'escape' => false, 'data-original-title' =>'Back to table screen', 'data-placement' => 'bottom']) ?>
-    	<?php } ?>
-        
+    	<?php if($Table_data->name){ ?>
+            <span style="color: #FFF;margin-right: 10px;border:  solid 1px #949494;padding: 3px 8px;">Table No: <?= h($Table_data->name) ?></span>
+        <?php } ?>
+    
+        <span style="color: #FFF;border:  solid 1px #949494;padding: 3px 8px;">Day Sale: <?= h($TotalSale) ?></span>
         <?php if($action!='index'){ ?>
             <span class="counter topBtn pointer">Table Screen</span>
         <?php } ?>
         
-        <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer">Dinner In (<?php echo $occupiedTableCount; ?>)</span>
-        <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer">Delivery</span>
-        <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer">Take Away</span>
-        <span class="<?php echo $swiftactive ; ?> Swift pointer">Shift Table</span>
-        <span class="dashboard topBtn pointer">Dashboard</span>
+        <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer showLoader">Dine In (<?php echo $occupiedTableCount; ?>)</span>
+        <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer showLoader">Delivery</span>
+        <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer showLoader">Take Away</span>
+        <span class="dashboard topBtn pointer showLoader">Dashboard</span>
     </div>
 </div>
 <?php 
@@ -78,22 +77,18 @@ $js="
 $(document).ready(function() {
     $('.dinnerNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
-        window.open(url, '_blank'); 
+        window.location.href = url; 
     });
     $('.deleveryNewTab').die().live('click',function(event){
-        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','delivery'])."'
-        window.open(url, '_blank');
+        var url='".$this->Url->build(['controller'=>'Bills','action'=>'delivery'])."'
+        window.location.href = url; 
     });
     $('.takeAwayNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','takeaway'])."'
-        window.open(url, '_blank');
-    });
-
-    $('.Swift').die().live('click',function(event){
-        var url='".$this->Url->build(['controller'=>'Tables','action'=>'swifttable'])."'
-        $('#loading').show();
         window.location.href = url; 
     });
+
+    
 
     $('.dashboard').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Users','action'=>'Dashboard'])."'

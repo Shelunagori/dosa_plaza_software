@@ -279,6 +279,8 @@ class TablesController extends AppController
     public function swifttable()
     {
         $this->viewBuilder()->layout('counter');
+
+        $table_id = $this->request->query('table_id');
         $Table = $this->Tables->newEntity();
         if ($this->request->is(['patch','post','put'])) {
             $occupiedtable=$this->request->getData('occupiedtable');
@@ -333,11 +335,12 @@ class TablesController extends AppController
             }
             $this->Flash->success(__('Table successfully swifted'));
 
-            return $this->redirect(['action' => 'swifttable']);
+            return $this->redirect(['action' => 'index']);
         }
+        $TB=$this->Tables->get($table_id);
         $vacantTables =$this->Tables->find()->where(['status'=>'vacant']);
         $occupiedTables =$this->Tables->find()->where(['status'=>'occupied']);
-        $this->set(compact('vacantTables','occupiedTables','Table'));
+        $this->set(compact('vacantTables','occupiedTables','Table', 'table_id', 'TB'));
     }
     public function paymentinfo()
     {
@@ -392,6 +395,7 @@ class TablesController extends AppController
            $Table->employee_id = '';
            $Table->payment_status = '';
            $Table->bill_id = '';
+           $Table->customer_id = null;
            $this->Tables->save($Table);
            echo 1;
         }else{
@@ -399,4 +403,33 @@ class TablesController extends AppController
         }
         exit;
     }
+
+    public function linkCustomer(){
+        $customer_id = $this->request->query('customer_id');
+        $table_id = $this->request->query('table_id');
+
+        $Table = $this->Tables->get($table_id);
+        $Table->customer_id = $customer_id;
+        $this->Tables->save($Table);
+
+        echo 1; exit;
+    }
+
+    public function customerForm($table_id){
+        $this->viewBuilder()->layout('');
+
+        $table = $this->Tables->get($table_id);
+
+        if($table->customer_id){
+            $Customers = $this->Tables->Customers->get($table->customer_id);
+        }else{
+            $Customers = '';
+        }
+
+
+        $this->set(compact('table_id', 'Customers'));
+    }
+
+
+
 }

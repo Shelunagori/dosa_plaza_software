@@ -29,11 +29,10 @@
 <div style="background: #EBEEF3;">
 	<input type="hidden"  id="tableInput" />
 	<div class="row TableView" style="padding:10px;">
-		 
 		<div class="col-md-12"  align="center">
 			<?php
 			$i=0;
-			foreach($Tables as $Table){  
+			foreach($Tables as $Table){
 				$sum=0;
 				$RatePerPax=0;
 				if(array_key_exists($Table->id, $tableWiseAmount)){
@@ -122,6 +121,7 @@
 									</tr>
 								</table>
 							</div>
+							<a href="javascript:void(0)" class="UpdateCustomerInfo" table_id="<?php echo $Table->id; ?>" table_name="<?php echo $Table->name; ?>">CUSTOMER INFO</a>
 						</div>
 				<?php }
 				} else{ ?>
@@ -157,6 +157,7 @@
 						</div>
 						 
 				<?php } ?>
+			
 			</div>
 			<?php 
 			if($i==10){ $i=0; }
@@ -372,6 +373,48 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.UpdateCustomerInfo').die().live('click',function(event){
+		var table_id = $(this).attr('table_id');
+		var table_name = $(this).attr('table_name');
+		$('#tableName').text(table_name);
+		$('#WaitBox6 div#popupContent').html('<div align=center>Loading...</div>');
+		$('#WaitBox6').show();
+
+		var url='".$this->Url->build(['controller'=>'Tables','action'=>'customerForm'])."';
+		url=url+'/'+table_id; 
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('#WaitBox6 div#popupContent').html(response);
+		});
+	});
+
+	$('.closeCustomerPopup').die().live('click',function(event){
+		$('#WaitBox6').hide();
+	});
+
+	$('.saveCommentInfo').die().live('click',function(event){
+		var customer_name = $('#customer_name').val();
+		var customer_mobile = $('#customer_mobile').val();
+		var customer_email = $('#customer_email').val();
+		var customer_dob = $('#customer_dob').val();
+		var customer_anniversary = $('#customer_anniversary').val();
+		var customer_address = $('#customer_address').val();
+		var table_id = $('#table_id').val();
+
+		var url='".$this->Url->build(['controller'=>'Customers','action'=>'saveCommentInfo'])."';
+		url=url+'?customer_name='+customer_name+'&customer_mobile='+customer_mobile+'&customer_email='+customer_email+'&customer_dob='+customer_dob+'&customer_anniversary='+customer_anniversary+'&customer_address='+customer_address+'&table_id='+table_id; 
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('#WaitBox6').hide();
+		});
+	});
+
+	
+
+	
+ 
 
 
 });
@@ -401,6 +444,13 @@ $(document).ready(function(){
 		$('#WaitBox5').hide();
 	});
 
+	$('.ShiftTable').die().live('click',function(event){
+		var table_id = $('#TblID').val();
+		var url='".$this->Url->build(['controller'=>'Tables','action'=>'swifttable'])."';
+		url=url+'?table_id='+table_id;
+		window.location.href = url; 
+	});
+
 	$('.FreeTable').die().live('click',function(event){
 		var table_id = $('#TblID').val();
 		
@@ -418,6 +468,37 @@ $(document).ready(function(){
 			}
 		});
 	});
+
+	$(document).keypress(function(event){
+	    var keycode = (event.keyCode ? event.keyCode : event.which);
+	    if(keycode == '13'){
+	        if($('select[name=c_pax]').is(':focus')){
+	        	$('#loading').show();
+				var table_id=$('input[name=table_id]').val();
+				var c_name='';//$('input[name=c_name]').val();
+				var c_mobile='';//$('input[name=c_mobile]').val();
+				var c_pax=$('select[name=c_pax] option:selected').val();
+				
+				var url='".$this->Url->build(['controller'=>'Tables','action'=>'save-table'])."';
+				url=url+'?c_name='+c_name+'&c_mobile='+c_mobile+'&c_pax='+c_pax+'&table_id='+table_id;
+				$.ajax({
+					url: url,
+				}).done(function(response) {
+					if(response==1){
+						$('#customerRegistrationBox').hide();
+						var url='".$this->Url->build(['controller'=>'kots','action'=>'generate'])."';
+						url=url+'/'+table_id+'/dinner';
+						window.location.replace(url);
+					}else{
+						$('#loading').hide();
+						alert('!! Something went wrong. Customer not registered.');
+						return;
+					}               
+				});
+	        }
+	    }
+	});
+
 
 });
 
@@ -527,7 +608,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<div style="text-align: center; color: #2D4161; font-weight: bold; font-size: 14px;padding: 10px;">Table: <span id="TblName"></span></div>
 				<input type="hidden" id="TblID">
 				<a href="javascript:void(0)" class="btn btn-default btn-block FreeTable" style="margin: 0;">Free Table</a>
-				<!-- <a href="javascript:void(0)" class="btn btn-default btn-block" style="margin: 0;">Shift Table</a> -->
+				<a href="javascript:void(0)" class="btn btn-default btn-block ShiftTable" style="margin: 0;">Shift Table</a>
 			</div>
 			<div class="modal-footer"> 
 			<div align="center">
@@ -550,6 +631,19 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 					<button type="button" class="CloseWaitBox5 btn dark">CLOSE</button>
 				</div>
 			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox6" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog" >
+		<div class="modal-content" style="padding: 10px;">
+			<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">CUSTOMER INFORMATION : TABLE <span id="tableName"></span></div>
+			<div id="popupContent">
+				<div align="center">Loading...</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

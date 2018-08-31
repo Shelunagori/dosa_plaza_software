@@ -9,6 +9,12 @@ $order=$pass[1];
 .plus{
 	color: #FFF; background-color: #2d4161de;padding: 0px 7px;font-size:15px;cursor: pointer;font-weight: bold;
 }
+.minusOld{
+	color: #FFF; background-color: #FA6775;padding: 0px 7px;font-size:15px;cursor: pointer; font-weight: bold;
+} 
+.plusOld{
+	color: #FFF; background-color: #2d4161de;padding: 0px 7px;font-size:15px;cursor: pointer;font-weight: bold;
+}
 .saveCustomersearch{
 	color: #FFF; background-color: #FA6775; padding: 9px 11px;font-size:12px;cursor: pointer;
 }
@@ -19,6 +25,22 @@ $order=$pass[1];
 	color: #000; background-color: #E6E7E8; padding: 7px 14px;font-size:12px;cursor: pointer;margin-right: 2px; 
 }
 .commentString{
+    background-color: #2d4161;
+    padding:  5px;
+    border-radius:  5px;
+    color:  #FFF;
+    margin-right:  5px;
+    cursor:  pointer;
+}
+.commentStringOld{
+    background-color: #2d4161;
+    padding:  5px;
+    border-radius:  5px;
+    color:  #FFF;
+    margin-right:  5px;
+    cursor:  pointer;
+}
+.commentStringKOT{
     background-color: #2d4161;
     padding:  5px;
     border-radius:  5px;
@@ -49,16 +71,16 @@ $order=$pass[1];
 	color: #FFF; background-color: #FA6775; padding: 9px 18px;font-size:12px;cursor: pointer;
 }
 .CreateKOT{
-	color: #FFF; background-color: #FA6775; padding: 7px 14px;cursor: pointer;font-size:12px;
+	color: #FFF; background-color: #FA6775; cursor: pointer;font-size:12px;
 }
 .ViewAllKOT{
 	color: #FFF; background-color: #FA6775; padding: 7px 14px;cursor: pointer;font-size:12px;
 }
 .KOTComment{
-	color: #000; background-color: #F5F5F5; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
+	color: #000; background-color: #F5F5F5; cursor: pointer;margin-right: 8px;font-size:10px;
 }
 .CreateBill{
-	color: #FFF; background-color: #2D4161; padding: 14px 36px;cursor: pointer;font-size:15px;   margin-left: 30px; border-radius: 8px;
+	color: #FFF; background-color: #2D4161; font-size:15px;background-color: #2d4161 !important;
 }
 .Taxbutn{
 	color: #FFF; background-color: #2D4161; padding: 7px 14px;cursor: pointer;margin-right: 8px;font-size:12px;
@@ -73,34 +95,59 @@ $order=$pass[1];
 		<div class="col-md-12">
 			<table width="100%">
 				<tr>
-					<td valign="top" width="50%" style=" padding: 0px 2px; ">
+					<td valign="top" width="60%" style=" padding: 0px 2px; ">
 						<div style=" background-color: #FFF; border-radius: 8px !important;">
+
 							<table width="100%">
 								<tr>
 									<td style="padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
-									<div style="max-height:400px; height:400px; overflow-y:scroll;" id="ItemArea" >
-
-									</div>	
+										<table width="100%">
+											<tr>
+												<td width="5%">
+													<button type="button" class="btn default" style="" id="slideLeft" currentpage="0">  <i class="fa fa-chevron-left" style="color: #2d4161;"></i> </button>
+												</td>
+												<td width="90%">
+													<div style="max-height:300px; height:300px;" id="ItemArea" >
+														
+													</div>	
+												</td>
+												<td width="5%">
+													<button type="button" class="btn default" style="" id="slideRight" currentpage="1">  <i class="fa fa-chevron-right" style="color: #2d4161;"></i> </button>
+												</td>
+											</tr>
+										</table>
+									
 									</td>
 								</tr>
 								<tr>
-									<td id="SubCategoryArea" style="padding:10px;padding-top: 5px;padding-bottom: 5px; border-bottom: solid 1px #CCC;" valign="top">
+									<td style="padding-top: 5px;padding-bottom: 5px; border-bottom: solid 1px #CCC;" valign="top">
 										<span style="color:#373435;font-weight: bold;margin: 3px;">CHOOSE SUB CATEGORY</span><br/>
+										<div id="SubCategoryArea" >
+										</div>
 									</td>
 								</tr>
 								<tr>
-									<td id="CategoryArea" style="padding:10px;padding-top: 5px;border-bottom: solid 1px #CCC; " valign="top">
+									<td style="padding-top: 5px;border-bottom: solid 1px #CCC; " valign="top">
 										<span style="color:#373435;font-weight: bold;margin: 3px;">CHOOSE CATEGORY</span><br/>
+										<div>
+											<div id="CategoryArea" >
+											</div>
+										</div>
 									</td>
 								</tr>
 								<tr>
-									<td style="padding:10px;padding-top: 5px; text-align: center;" valign="top"><br/>
+									<td style="padding:10px;padding-top: 5px; text-align: center;" valign="top">
+										<br/>
 										<a href="javascript:void(0)" class="fvtr" style="margin: 3px; padding: 5px 10px; background-color: #f0b11b; border-radius: 5px; color: #FFF; font-weight: 400;text-decoration: none;">FAVORITES</a>
 									</td>
 								</tr>
 							</table>
-							<div>
-								<?php foreach($ItemCategories as $ItemCategory){ ?>
+							<div style="display: none;">
+								<?php 
+								$fz=1; $fzx=0;
+
+								
+								foreach($ItemCategories as $ItemCategory){ ?>
 									<div class="ItemCategoryBox" category_id="<?= h($ItemCategory->id) ?>" >
 										<?= h($ItemCategory->name) ?>
 									</div>
@@ -112,8 +159,22 @@ $order=$pass[1];
 										</div>
 										
 										<div  sub_category_id="<?= h($item_sub_category->id) ?>">
-										<?php foreach($item_sub_category->items as $item){ ?>
-											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" is_favorite="<?php echo (int)$item->is_favorite; ?>" >
+										<?php 
+										$z=1; $zx=0; 
+										foreach($item_sub_category->items as $item){ 
+											$zx++;
+											if($zx==21){ $zx=1; $z++; }
+
+											if($item->is_favorite==1){
+												$fzx++;
+												if($fzx==21){ $fzx=1; $fz++; }
+												$fav_attr='fav_display_no='.$fz;
+											}else{
+												$fav_attr='';
+											}
+											
+										?>
+											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" is_favorite="<?php echo (int)$item->is_favorite; ?>" display_no="<?php echo $z; ?>" <?php echo $fav_attr; ?>  style="background-color: <?php echo $item->color ?>">
 												<?= h($item->name) ?><br/>
 												[<?= h($item->rate) ?>]
 											</span>
@@ -127,7 +188,7 @@ $order=$pass[1];
 						</div>
 					</td>
 					<?php echo $this->Form->input('dasds',['value' =>$order_type,'label' => false,'type'=> 'hidden','id'=>'order_type']);?>
-					<td valign="top" width="50%" style=" padding: 0px 15px 0px 0px;">
+					<td valign="top" width="40%" style=" padding: 0px 15px 0px 0px;">
 						<div style=" background-color: #FFF; border-radius: 8px !important; padding: 0px 5px;">
 							<div style="padding-top:12px">
 								<table width="100%">
@@ -152,7 +213,7 @@ $order=$pass[1];
 							</div>
 							<div style="max-height:280px; height:280px; overflow-y:scroll;">
 								<div style="padding-top:12px" >
-									<table class="table table-striped" id="kotBox">
+									<table class="table table-striped" id="kotBox" style=" margin: 0; ">
 										<thead>
 											<tr>
 												<td style="text-align:center;width: 5%;">S.No.</td>
@@ -168,14 +229,18 @@ $order=$pass[1];
 										
 										</tbody>
 									</table>
+									<div id="overallComnt" style="text-align: center;"></div>
+									<div align="center" style="margin-top: 10px;">
+										<textarea id="oneComment" style="display: none;"></textarea>
+										<a href="javascript:void(0)" class="KOTComment btn default btn-sm" >KOT COMMENT</a>
+										<a href="javascript:void(0)"  class="CreateKOT btn btn-danger btn-sm" >CREATE KOT </a>
+									</div>
 								</div>
+								
 								<div id="all_kot_data"></div>
 							</div>
-							<div align="center" style="margin-top: 10px;">
-								<textarea id="oneComment" style="display: none;"></textarea>
-								<span class="KOTComment" >KOT COMMENT</span>
-								<span class="CreateKOT" >CREATE KOT </span>
-							</div>
+							
+							
 							<hr style="margin-bottom: 2px; "></hr> 
 						</div>
 						<div style="background-color: #FFF; border-radius: 8px !important; padding: 0px 5px; margin-top:3px">
@@ -265,25 +330,26 @@ $order=$pass[1];
 											<table width="100%" >
 												<tr>
 													<td style="padding-right: 5px;" width="40%">
-														<div class="input-icon" >
-															<i class="fa fa-mobile" style="font-size: 20px;margin: 7px 0px 0px 7px;"></i>
-															<input type="text" class="form-control input-small input-sm" placeholder="Mobile" style="background-color: #f5f5f5 !important" name="search_mobile" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" id="MobileBox" maxlength="10" minlength="10" >
-														</div>
-													</td>
-													<td style="padding-right: 5px;" width="5%">
-														OR
-													</td>
-													<td style="padding-right: 5px;" width="45%">
-														<div class="input-icon">
-															<i class="fa fa-mobile" style="font-size: 20px;margin: 7px 0px 0px 7px;"></i>
-															<input type="text" class="form-control input-small input-sm" placeholder="Customer Code" style="background-color: #f5f5f5 !important" name="search_code" id="CodeBox">
-														</div>
+														<?php echo $this->Form->input('customer_id',['options' =>$Customers,'label' => false,'class'=>'form-control input-medium input-sm select2me ','empty'=> 'Search']);?>
 													</td>
 													<td style="padding-right: 2px; text-align: center;" width="5%">
-														<button type="button" class="btn btn-danger btn-sm" id="FetchCustomer"><i class="fa fa-search"></i></button>
+														<button type="button" class="btn btn-danger btn-sm" id="LinkCustomer"><i class="fa fa-check"></i></button>
 													</td>
 													<td style="padding-right: 0px; text-align: center;" width="5%">
-														<button type="button" class="btn btn-danger btn-sm" id="AddCustomer"><i class="fa fa-plus" ></i></button>
+														<button type="button" class="btn btn-danger btn-sm" id="NewCustomer"><i class="fa fa-plus" ></i></button>
+													</td>
+												</tr>
+											</table>
+											<table width="100%" id="newCustomerTable" style="display: none;">
+												<tr>
+													<td style="padding-right: 5px;width: 40%;" width="40%">
+														<?php echo $this->Form->input('customer_name',['label' => false,'class'=>'form-control  input-sm ', 'placeholder' => 'Name']);?>
+													</td>
+													<td style="padding-right: 5px;width: 40%;" width="40%">
+														<?php echo $this->Form->input('customer_mobile',['label' => false,'class'=>'form-control input-sm ', 'placeholder' => 'Mobile']);?>
+													</td>
+													<td style="padding-right: 0px; text-align: center;" width="10%">
+														<button type="button" class="btn btn-danger btn-sm" id="SaveNewCustomer">Save</button>
 													</td>
 												</tr>
 											</table>
@@ -320,7 +386,7 @@ $order=$pass[1];
 											<tr>
 												<td colspan="2">
 													<div style="padding-top:20px;width:100%"  align="center">
-														<span class="CreateBill" align="center"><i class="fa fa-rupee "></i> GENERATE BILL </span>
+														<a href="javascript:void()" class="CreateBill btn blue-hoki btn-block" align="center"><i class="fa fa-rupee "></i> GENERATE BILL </a>
 														</br></br> 
 													</div>
 												</td>
@@ -364,15 +430,17 @@ $order=$pass[1];
 	cursor: pointer;
 }
 .ItemCategoryBox{
+    text-align: center;
     border: solid 1px;
     float: left;
     font-size: 12px;
-    padding: 5px 20px;
+    padding: 8px 16px;
 	margin: 3px;
 	cursor: pointer;
 	background-color:#2D4161;
 	color:#FFF;
 	border-radius: 5px !important;
+	text-align: center;
 }
 
 .activeMain{
@@ -384,12 +452,13 @@ $order=$pass[1];
     border: solid 1px;
     float: left;
     font-size: 12px;
-    padding: 5px 20px;
+    padding: 8px 16px;
 	margin: 3px;
 	cursor: pointer;
 	background-color:#848688;
 	color:#FFF;
 	border-radius: 5px !important;
+	text-align: center;
 }
 
 .activeSub{
@@ -515,9 +584,65 @@ $order=$pass[1];
 		$('.ItemBox[sub_category_id='+sub_category_id+']').show();
 		
 		$('.fvtr').die().live('click',function(event){
-
+			$('#favStatus').val(1);
+			$('#slideLeft').attr('currentPage',1);
+			$('#slideRight').attr('currentPage',1);
 			$('.ItemBox[is_favorite=0]').hide();
 			$('.ItemBox[is_favorite=1]').show();
+
+			$('.ItemBox').hide();
+			$('.ItemBox[is_favorite=1][fav_display_no=1]').show();
+		});
+
+
+
+		var currentPage=1;
+		var sub_category_id=$('#SubCategoryArea .activeSub').attr('sub_category_id');
+		$('.ItemBox').hide();
+		$('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').show();
+		$('#slideLeft').attr('currentPage',currentPage);
+		$('#slideRight').attr('currentPage',currentPage);
+		
+		$('#slideLeft').die().live('click',function(event){
+			var currentPage=$(this).attr('currentPage');
+			currentPage--;
+			$('.ItemBox').hide();
+			if( $('#favStatus').val() ==1 ){
+				if($('.ItemBox[fav_display_no='+currentPage+']').length==0){
+					var currentPage=1;
+				}
+				$('.ItemBox[is_favorite=1][fav_display_no='+currentPage+']').show();
+			}else{
+				var sub_category_id=$('#SubCategoryArea .activeSub').attr('sub_category_id');
+				if($('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').length==0){
+					var currentPage=1;
+				}
+				$('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').show();
+			}
+
+			$('#slideLeft').attr('currentPage',currentPage);
+			$('#slideRight').attr('currentPage',currentPage);			
+		});
+
+		$('#slideRight').die().live('click',function(event){
+			var currentPage=$(this).attr('currentPage');
+			currentPage++;
+			$('.ItemBox').hide();
+			if( $('#favStatus').val() ==1 ){
+				if($('.ItemBox[fav_display_no='+currentPage+']').length==0){
+					var currentPage=currentPage-1;
+				}
+				$('.ItemBox[is_favorite=1][fav_display_no='+currentPage+']').show();
+			}else{
+				var sub_category_id=$('#SubCategoryArea .activeSub').attr('sub_category_id');
+				if($('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').length==0){
+					var currentPage=currentPage-1;
+				}
+				$('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').show();
+			}
+
+			$('#slideLeft').attr('currentPage',currentPage);
+			$('#slideRight').attr('currentPage',currentPage);			
 		});
 
 
@@ -528,12 +653,16 @@ $order=$pass[1];
 			$('.ItemSubCategoryBox').hide();
 			$('.ItemSubCategoryBox[category_id='+category_id+']').show();
 		});
+
 		$('.ItemSubCategoryBox').die().live('click',function(event){
+			$('#favStatus').val(0);
 			$('.ItemSubCategoryBox').removeClass('activeSub');
 			$(this).addClass('activeSub');
 			var sub_category_id=$(this).attr('sub_category_id');
 			$('.ItemBox').hide();
-			$('.ItemBox[sub_category_id='+sub_category_id+']').show();
+			$('.ItemBox[sub_category_id='+sub_category_id+'][display_no=1]').show();
+			$('#slideLeft').attr('currentPage',1);
+			$('#slideRight').attr('currentPage',1);
 		});
 
 		//-- View All KOTS
@@ -561,6 +690,22 @@ $order=$pass[1];
 				var news = qty-parseInt(1);
 				$(this).closest('td').find('span.qty').html(' '+news+' ');
 				amountcals();
+			}
+		});
+
+		$('.plusOld').die().live('click',function(event){
+			var qty = parseInt($(this).closest('td').find('span.qtyOld').html());
+			var news = qty+parseInt(1);
+			$(this).closest('td').find('span.qtyOld').html(' '+news+' ');
+			amountcalsOld();
+		});
+
+		$('.minusOld').die().live('click',function(event){
+			var qty = parseInt($(this).closest('td').find('span.qtyOld').html());
+			if(qty !=1 ){
+				var news = qty-parseInt(1);
+				$(this).closest('td').find('span.qtyOld').html(' '+news+' ');
+				amountcalsOld();
 			}
 		});
 
@@ -625,8 +770,9 @@ $order=$pass[1];
 				}
 			});
 		});
-		
-		$('.ItemDropDown').die().live('change',function(event){
+		$('.ItemDropDown').select2('open');
+		//$('.ItemDropDown').die().live('change',function(event){
+		$(document).on('change','.ItemDropDown',function(event){
 			$('.QtyCatcher').focus();
 		});
 
@@ -640,8 +786,9 @@ $order=$pass[1];
 					var qt= $('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text();
 
 					$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
-					$('.ItemDropDown').focus();
+					
 					$('.ItemDropDown').select2('val',''); 
+					$('.ItemDropDown').select2('open');
 					return;
 				}
 
@@ -658,7 +805,7 @@ $order=$pass[1];
 				}
 
 				$('.ItemDropDown').select2('val',''); 
-				$('.ItemDropDown').focus();
+				$('.ItemDropDown').select2('open');
 		    }
 		});
 
@@ -772,6 +919,7 @@ $order=$pass[1];
 				url: url,
 			}).done(function(response) {
 				$('#WaitBox3 div.modal-body').html(response);
+				$('input[row_no=1][column_no=1]').focus();
 			});
 		});
 		
@@ -796,6 +944,7 @@ $order=$pass[1];
 		
 		$('.CancelBill').die().live('click',function(event){
 			event.preventDefault();
+			$('#WaitBox').hide();
 			$('#WaitBox3').hide();
 		});
 		
@@ -972,6 +1121,14 @@ $order=$pass[1];
 		});
 
 
+		$('.commentRowOld').die().live('click',function(event){
+			var c=$(this).closest('tr').find('.commentOld').val();
+			$('.commentContainorOld').val(c);
+			var line_no=$(this).closest('tr').attr('line_no');
+			$('#rowSRold').val(line_no);
+			$('#WaitBox8').show();
+		});
+
 		$('.commentRow').die().live('click',function(event){
 			var c=$(this).closest('tr').find('.comment').val();
 			$('.commentContainor').val(c);
@@ -980,8 +1137,36 @@ $order=$pass[1];
 			$('#WaitBox5').show();
 		});
 
+		$('.closeCommentBoxKOT').die().live('click',function(event){
+			$('#WaitBox9').hide();
+		});
+
+		$('.closeCommentBoxOld').die().live('click',function(event){
+			$('#WaitBox8').hide();
+		});
+
 		$('.closeCommentBox').die().live('click',function(event){
 			$('#WaitBox5').hide();
+		});
+
+		$('.commentStringOld').die().live('click',function(event){
+			var s=$(this).text();
+			old_s=$('.commentContainorOld').val();
+			if(old_s!=''){
+				s=old_s+', '+s;
+			}
+			
+			$('.commentContainorOld').val(s);
+		});
+
+		$('.commentStringKOT').die().live('click',function(event){
+			var s=$(this).text();
+			old_s=$('.commentContainorKOT').val();
+			if(old_s!=''){
+				s=old_s+', '+s;
+			}
+			
+			$('.commentContainorKOT').val(s);
 		});
 
 		$('.commentString').die().live('click',function(event){
@@ -998,14 +1183,56 @@ $order=$pass[1];
 			var c=$('.commentContainor').val();
 			var sr_no=$('#rowSR').val();
 			if(sr_no=='0'){
+				if(c){
+					$('#overallComnt').html('<span class=comnt style=\"font-size: 12px;color: #a5a5a5;\">['+c+']</span>');
+				}else{
+					$('#overallComnt').html('<span class=comnt style=\"font-size: 12px;color: #a5a5a5;\"></span>');
+				}
+				
 				$('#oneComment').val(c);
 				$('#WaitBox5').hide();
 			}else{
 				$('tr[row_no='+sr_no+']').find('.comment').val(c);
+				$('tr[row_no='+sr_no+']').find('td:nth-child(2) span.comnt').remove();
+				if(c){
+					$('tr[row_no='+sr_no+']').find('td:nth-child(2)').append('<span class=comnt style=\"font-size: 11px;color: #a5a5a5;\"><br/>['+c+']</span>');
+				}else{
+					$('tr[row_no='+sr_no+']').find('td:nth-child(2)').append('<span class=comnt style=\"font-size: 11px;color: #a5a5a5;\"><br/></span>');
+				}
 				$('#WaitBox5').hide();
 			}
 			
 		});
+
+		$('.saveCommentKOT ').die().live('click',function(event){
+			var c=$('.commentContainorKOT').val();
+			var kot_id=$('#kot_id').val();
+		
+			$('.oneCommentOld_'+kot_id).html(c);
+			if(c){
+				$('span.comntOld_'+kot_id).text('['+c+']');
+			}else{
+				$('span.comntOld_'+kot_id).text('');
+			}
+			
+			$('#WaitBox9').hide();
+		});
+
+		$('.saveCommentOld').die().live('click',function(event){
+			var c=$('.commentContainorOld').val();
+			var sr_no=$('#rowSRold').val();
+			$('tr[line_no='+sr_no+']').find('.commentOld').html(c);
+			$('tr[line_no='+sr_no+']').find('td:nth-child(2) span.comntOld').remove();
+			if(c){
+				$('tr[line_no='+sr_no+']').find('td:nth-child(2)').append('<span class=comntOld style=\"font-size: 11px;color: #a5a5a5;\"><br/>['+c+']</span>');
+			}else{
+				$('tr[line_no='+sr_no+']').find('td:nth-child(2)').append('<span class=comntOld style=\"font-size: 11px;color: #a5a5a5;\"><br/></span>');
+			}
+			
+			$('#WaitBox8').hide();
+			
+		});
+
 
 		$('.KOTComment').die().live('click',function(event){
 			var c=$('#oneComment').val();
@@ -1014,6 +1241,16 @@ $order=$pass[1];
 			$('#rowSR').val(sr_no);
 			$('#WaitBox5').show();
 		});
+
+		$('.KOTCommentOld').die().live('click',function(event){
+			var kot_id = $(this).attr('kot_id');
+			var c=$('.oneCommentOld_'+kot_id).val();
+			$('.commentContainorKOT').val(c);
+			$('#kot_id').val(kot_id);
+			$('#WaitBox9').show();
+		});
+
+
 		
 		$('.employee_id').die().live('change',function(event){
 			var steward_name=$(this).find('option:selected').text();
@@ -1184,6 +1421,38 @@ $order=$pass[1];
 			});
 		});
 
+		$('#SaveNewCustomer').die().live('click',function(event){
+			var customer_name = $('#customer-name').val();
+			var customer_mobile = $('#customer-mobile').val();
+			var table_id=$('#tableInput').val();
+
+			var url='".$this->Url->build(['controller'=>'Customers','action'=>'saveNewCustomer'])."';
+			url=url+'?table_id='+table_id+'&customer_name='+customer_name+'&customer_mobile='+customer_mobile;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				if(response=='1'){
+					if(table_id>0){
+						var url='".$this->Url->build(['controller'=>'Customers','action'=>'autoFetchCustomer'])."';
+						url=url+'?table_id='+table_id;
+						$.ajax({
+							url: url,
+							dataType: 'json',
+						}).done(function(response) {
+							$('#CustomerInfo').html(response.customer_info);
+							$('#customer-name').val('');
+							$('#customer-mobile').val('');
+						});
+					}
+				}
+			});
+		});
+
+		$('#NewCustomer').die().live('click',function(event){
+			$('#newCustomerTable').toggle();
+			$('#customer-name').focus();
+		});
+
 		$('#UnlinkCustomer').die().live('click',function(event){
 			var table_id=$('#tableInput').val();
 			var url='".$this->Url->build(['controller'=>'Customers','action'=>'unlinkCustomer'])."';
@@ -1193,6 +1462,29 @@ $order=$pass[1];
 			}).done(function(response) {
 				if(response=='1'){
 					$('#CustomerInfo').html('');
+				}
+			});
+		});
+
+		$('#LinkCustomer').die().live('click',function(event){
+			var table_id=$('#tableInput').val();
+			var customer_id = $('#customer-id').find('option:selected').val();
+			var url='".$this->Url->build(['controller'=>'Tables','action'=>'linkCustomer'])."';
+			url=url+'?table_id='+table_id+'&customer_id='+customer_id;
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				$('#CustomerInfo').html('<br/><div align=center>Fatching...</div>');
+				if(table_id>0){
+					var url='".$this->Url->build(['controller'=>'Customers','action'=>'autoFetchCustomer'])."';
+					url=url+'?table_id='+table_id;
+					
+					$.ajax({
+						url: url,
+						dataType: 'json',
+					}).done(function(response) {
+						$('#CustomerInfo').html(response.customer_info);
+					});
 				}
 			});
 		});
@@ -1226,6 +1518,43 @@ $order=$pass[1];
 			});
 		});
 
+		$('.saveReprint ').die().live('click',function(event){
+			var kot_id = $(this).attr('kot_id');
+
+			var postData=[];
+			$('table[kot_id='+kot_id+'] tbody tr').each(function(){
+				var kot_row_id=$(this).find('td:nth-child(1)').attr('kot_row_id');
+				var item_id=$(this).find('td:nth-child(2)').attr('item_id');
+				var quantity=$(this).find('td:nth-child(3) span.qtyOld').text();
+				var rate=$(this).find('td:nth-child(4)').text();
+				var amount=$(this).find('td:nth-child(5)').text();
+				var comment=$(this).find('td:nth-child(6) textarea.commentOld').val();
+				
+				postData.push({kot_row_id : kot_row_id, item_id : item_id, quantity : quantity, rate : rate, amount : amount, comment : comment}); 
+			});
+			var myJSON = JSON.stringify(postData);
+			
+			var overallComment = $('textarea.oneCommentOld_'+kot_id).val();
+
+			var url='".$this->Url->build(['controller'=>'Kots','action'=>'updateKot'])."';
+			url=url+'?myJSON='+myJSON+'&overallComment='+overallComment+'&kot_id='+kot_id;
+			url=encodeURI(url);
+			console.log(url);
+			$.ajax({
+				url: url,
+			}).done(function(response) {
+				if(response==1){
+					var url='".$this->Url->build(['controller'=>'kots','action'=>'viewkot'])."';
+					url=url+'/'+kot_id;
+					var win = window.open(url, '_blank');
+					win.focus();
+
+					location.reload();
+				}
+			});
+
+		});
+
 
 
 
@@ -1252,8 +1581,61 @@ $order=$pass[1];
 			var tot_amount=quantity*rate;
 			$(this).find('td:nth-child(5)').text(tot_amount);
 		});
+	}
+
+	function amountcalsOld(){
+		$('#kotTable tbody tr').each(function(){
+			var quantity=parseInt($(this).find('td span.qtyOld').html());
+			var rate=parseInt($(this).find('td:nth-child(4)').text());
+			var tot_amount=quantity*rate;
+			$(this).find('td:nth-child(5)').text(tot_amount);
+		});
 	}	
 	";
+
+
+
+$js.="
+	$(document).keydown(function(e) {
+	    switch(e.which) {
+	        case 37: // left
+	       	var focused = $(':focus');
+			var row_no=focused.attr('row_no');
+			var column_no=focused.attr('column_no');
+			column_no--;
+			$('input[row_no='+row_no+'][column_no='+column_no+']').focus();
+			break;
+
+			case 39: // right
+	       	var focused = $(':focus');
+			var row_no=focused.attr('row_no');
+			var column_no=focused.attr('column_no');
+			column_no++;
+			$('input[row_no='+row_no+'][column_no='+column_no+']').focus();
+			break;
+
+			case 40: // down
+			var focused = $(':focus');
+			var row_no=focused.attr('row_no');
+			var column_no=focused.attr('column_no');
+			row_no++;
+			$('input[row_no='+row_no+'][column_no='+column_no+']').focus();
+			break;
+
+			case 38: // up
+			var focused = $(':focus');
+			var row_no=focused.attr('row_no');
+			var column_no=focused.attr('column_no');
+			row_no--;
+			$('input[row_no='+row_no+'][column_no='+column_no+']').focus();
+			break;
+	       
+
+	        default: return; // exit this handler for other keys
+	    }
+	    e.preventDefault(); // prevent the default action (scroll / move caret)
+	});
+";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>
@@ -1397,6 +1779,68 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<div class="modal-content">
 			<div class="modal-body">
 				<div align="center">Loading...</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<input type="hidden" id="favStatus" value="0">
+
+<div id="WaitBox8" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<input type="hidden" id="rowSRold">
+				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">COMMENT BOX</div>
+				<br/>
+				<div class="form-group">
+					<textarea class="form-control commentContainorOld" rows="3" style="background-color: #F5F5F5;"></textarea>
+				</div>
+				<br/>
+				<div>
+					<label style=" color: #2D4161; font-weight: bold; font-size: 14px; ">Predefined Comments</label>
+					<div>
+						<?php foreach ($Comments as $Comment) { ?>
+							<span class="commentStringOld"><?php echo $Comment; ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<br/><br/>
+				<div align="center">
+					<a href="javascript:void(0)" class="closeCommentBoxOld btn default">CLOSE</a>
+					<a href="javascript:void(0)" class="saveCommentOld btn btn-danger">SAVE COMMENT</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="WaitBox9" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
+	<div class="modal-backdrop fade in" ></div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<input type="hidden" id="kot_id">
+				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">COMMENT BOX</div>
+				<br/>
+				<div class="form-group">
+					<textarea class="form-control commentContainorKOT" rows="3" style="background-color: #F5F5F5;"></textarea>
+				</div>
+				<br/>
+				<div>
+					<label style=" color: #2D4161; font-weight: bold; font-size: 14px; ">Predefined Comments</label>
+					<div>
+						<?php foreach ($Comments as $Comment) { ?>
+							<span class="commentStringKOT"><?php echo $Comment; ?></span>
+						<?php } ?>
+					</div>
+				</div>
+				<br/><br/>
+				<div align="center">
+					<a href="javascript:void(0)" class="closeCommentBoxKOT btn default">CLOSE</a>
+					<a href="javascript:void(0)" class="saveCommentKOT btn btn-danger">SAVE COMMENT</a>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -22,7 +22,7 @@ class KotsController extends AppController
     {
         $table_id=$this->request->query('table_id');
         $order=$this->request->query('order');
-        $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes', 'is_deleted'=>0])
+        $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes', 'is_deleted'=>0, 'order_type'=>$order])
             ->contain(['KotRows'=>function($q){
                 return $q->where(['KotRows.is_deleted'=>0])->contain(['Items']);
             }]);
@@ -112,7 +112,15 @@ class KotsController extends AppController
  
         $Comments = $this->Kots->Comments->find('list');
         $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
-        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees'));
+
+        $Customers = $this->Kots->Customers->find('list', 
+                            [
+                                'keyField' => 'id',
+                                'valueField' => function ($row) {
+                                    return $row['name'] . '  (' . $row['mobile_no'].')';
+                                }
+                            ]);
+        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees', 'Customers'));
     }
  
     /**
@@ -179,9 +187,14 @@ class KotsController extends AppController
         $order_type=$this->request->query('order_type'); 
 		$q = json_decode($myJSON, true);
 		
+        if(!$table_id){
+            $table_id=0;
+        }
         $kot = $this->Kots->newEntity();
 			
-		$last_voucher_no=$this->Kots->find()->select(['voucher_no'])->order(['id' => 'DESC'])->first();
+		$last_voucher_no=$this->Kots->find()->select(['voucher_no'])
+                        ->where(['Kots.table_id' => $table_id, 'Kots.order_type' => $order_type, 'Kots.bill_pending' => 'yes'])
+                        ->order(['id' => 'DESC'])->first();
 		if($last_voucher_no){
 			$kot->voucher_no=$last_voucher_no->voucher_no+1;
 		}else{
@@ -461,6 +474,40 @@ class KotsController extends AppController
                 ->autoFields(true);
         $this->set(compact('Kots', 'from_date', 'to_date'));
     }
+
+    public function updateKot(){
+        $myJSON=$this->request->query('myJSON');
+        $overallComment=$this->request->query('overallComment');
+        $kot_id=$this->request->query('kot_id');
+
+        $q = json_decode($myJSON, true);
+
+        foreach($q as $row){
+            $query = $this->Kots->KotRows->query();
+            $query->update()
+                ->set([
+                    'quantity' => $row['quantity'],
+                    'rate' => $row['rate'],
+                    'amount' => $row['amount'],
+                    'item_comment' => $row['comment'],
+                ])
+                ->where(['KotRows.id' => $row['kot_row_id']])
+                ->execute();
+        }
+
+        $query = $this->Kots->query();
+        $query->update()
+            ->set([
+                'one_comment' => $overallComment,
+            ])
+            ->where(['Kots.id' => $kot_id])
+            ->execute();
+
+        echo 1; exit;
+
+    }
+
+
 
 
 }

@@ -386,6 +386,45 @@ class CustomersController extends AppController
         exit;
     }
 
+    public function saveNewCustomer()
+    {
+        $customer_name=$this->request->query('customer_name');
+        $customer_mobile=$this->request->query('customer_mobile');
+        $table_id=$this->request->query('table_id');
+
+        $Customer = $this->Customers->find()->where(['Customers.mobile_no' => $customer_mobile])->first();
+        if($Customer){
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+        }else{
+            $Customer = $this->Customers->newEntity();
+            $Customer->name=$customer_name;
+            $Customer->mobile_no=$customer_mobile;
+
+            $lastCustomer=$this->Customers->find()->order(['Customers.id' => 'DESC'])->first();
+            if($lastCustomer){
+                $Customer->customer_code = $lastCustomer->customer_code+1;
+            }else{
+                $Customer->customer_code = 2001;
+            }
+
+            $this->Customers->save($Customer);
+
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+        }
+
+        echo 1;
+        
+        exit;
+    }
+
     /**
      * Edit method
      *
@@ -448,4 +487,60 @@ class CustomersController extends AppController
 
         $this->set(compact('customers'));
     }
+
+    public function saveCommentInfo(){
+        $customer_name = $this->request->query('customer_name');
+        $customer_mobile = $this->request->query('customer_mobile');
+        $customer_email = $this->request->query('customer_email');
+        $customer_dob = $this->request->query('customer_dob');
+        $customer_anniversary = $this->request->query('customer_anniversary');
+        $customer_address = $this->request->query('customer_address');
+        $table_id = $this->request->query('table_id');
+
+        $Customer=$this->Customers->find()
+                 ->where(["Customers.mobile_no" => $customer_mobile])
+                 ->first();
+        if($Customer){
+            $Customer = $this->Customers->get($Customer->id);
+            $Customer->name = $customer_name;
+            $Customer->address = $customer_address;
+            $Customer->dob = $customer_dob;
+            $Customer->anniversary = $customer_anniversary;
+            $Customer->email = $customer_email;
+            $this->Customers->save($Customer);
+
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+        }else{
+            $Customer = $this->Customers->newEntity();
+            $Customer->name = $customer_name;
+            $Customer->address = $customer_address;
+            $Customer->dob = $customer_dob;
+            $Customer->anniversary = $customer_anniversary;
+            $Customer->email = $customer_email;
+            $Customer->mobile_no = $customer_mobile;
+
+            $lastCustomer=$this->Customers->find()->order(['Customers.id' => 'DESC'])->first();
+            if($lastCustomer){
+                $Customer->customer_code = $lastCustomer->customer_code+1;
+            }else{
+                $Customer->customer_code = 2001;
+            }
+
+            $this->Customers->save($Customer);
+
+            $query = $this->Customers->Tables->query();
+            $query->update()
+                ->set(['customer_id' => $Customer->id])
+                ->where(['Tables.id' => $table_id])
+                ->execute();
+        }
+
+        echo 1; exit;
+    }
+
+    
 }

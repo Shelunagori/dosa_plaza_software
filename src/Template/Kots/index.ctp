@@ -26,10 +26,10 @@
 							Are you sure you want to delete this KOT?
 							</h4><br/>
 							<label>Delete Comment</label>
-							<textarea class="form-control" name="delete_comment"></textarea>
+							<textarea class="form-control" name="delete_comment" required="required"></textarea>
 						</div>
 						<div class="modal-footer" style="border:none;">
-							<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
+							<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
 							<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 						</div>
 					</div>
@@ -38,14 +38,15 @@
 		</div>
 		<div id="accordion_<?php echo $kot->id; ?>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
 			<div class="panel-body" style="border: none;padding: 5px;">
-				 <table width="100%" id="kotTable">
+				 <table width="100%" id="kotTable" kot_id="<?php echo $kot->id; ?>">
 					<thead>
 						<tr style="border-bottom: solid 1px #F1F1F2;font-size: 12px; " > 
 							<th width="5%">#</th>
-							<th>Item</th>
-							<th style="text-align:center;" width="5%">Qty</th>
+							<th width="50%">Item</th>
+							<th style="text-align:center;" width="15%">Qty</th>
 							<th style="text-align:center;" width="10%">Rate</th>
 							<th style="text-align:center;" width="10%">Amount</th>
+							<th style="text-align:center;" width="10%"></th>
 							<th style="text-align:center;" width="10%">Action</th>
 						</tr>
 					</thead>
@@ -53,12 +54,29 @@
 					<?php 
 					$i=0; $total=0;
 					foreach($kot->kot_rows as $kot_row){ ?>
-						<tr style="border-bottom: solid 1px #F1F1F2;font-size: 12px; ">
-							<td><?php echo ++$i.'.'; ?></td>
-							<td ><?php echo $kot_row->item->name; ?></td>
-							<td style="text-align:center;"><?php echo $kot_row->quantity; ?></td>
+						<tr style="border-bottom: solid 1px #F1F1F2;font-size: 12px; " line_no="<?php echo $kot_row->id; ?>" > 
+							<td kot_row_id="<?php echo $kot_row->id; ?>"><?php echo ++$i.'.'; ?></td>
+							<td item_id="<?php echo $kot_row->item_id; ?>">
+								<?php echo $kot_row->item->name; ?>
+								<?php if($kot_row->item_comment){ ?>
+									<span class="comntOld" style="font-size: 11px;color: #a5a5a5;"><br>
+										[<?php echo $kot_row->item_comment; ?>]
+									</span>
+								<?php }else{ ?>
+									<span class="comntOld" style="font-size: 11px;color: #a5a5a5;"></span>
+								<?php } ?>
+							</td>
+							<td style="text-align:center;">
+								<span class="minusOld">-</span>
+								<span class="qtyOld"> <?php echo $kot_row->quantity; ?> </span>
+								<span class="plusOld">+</span>
+							</td>
 							<td style="text-align:center;"><?php echo $kot_row->rate; ?></td>
 							<td style="text-align:center;"><?php echo $kot_row->amount; ?></td>
+							<td style="text-align:center;">
+								<i class="fa fa-ellipsis-h commentRowOld" style="color: #BDBFC1; font-size: 18px; cursor: pointer;"></i>
+								<textarea style="display:none;" class="commentOld"><?php echo $kot_row->item_comment; ?></textarea>
+							</td>
 							<td style="text-align:center;">
 
 								<?php echo $this->Html->image('delete.png',['data-target'=>'#deleteitem'.$kot_row->id,'data-toggle'=>'modal','class'=>'tooltips ','style'=>'height: 15px;']); ?>
@@ -74,10 +92,10 @@
 													Are you sure you want to delete this Item?
 													</h4><br/>
 													<label>Delete Comment</label>
-													<textarea class="form-control" name="delete_comment"></textarea>
+													<textarea class="form-control" name="delete_comment" required="required"></textarea>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger showLoader">Yes</button>
+													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 												</div>
 											</div>
@@ -89,6 +107,19 @@
 					<?php } ?>
 					</tbody>
 				</table>
+				<div style="text-align: center;">
+					<?php if($kot->one_comment){ ?>
+						<span class="comntOld_<?php echo $kot->id; ?>" style="font-size: 12px;color: #a5a5a5;">[<?php echo $kot->one_comment; ?>]</span>
+					<?php }else{ ?>
+						<span class="comntOld_<?php echo $kot->id; ?>" style="font-size: 12px;color: #a5a5a5;"></span>
+					<?php } ?>
+					
+				</div>
+				<div align="center" style="margin-top: 10px;">
+					<textarea class="oneCommentOld_<?php echo $kot->id; ?>" style="display: none;"><?php echo $kot->one_comment; ?></textarea>
+					<a href="javascript:void(0)" class="KOTCommentOld btn default btn-sm " kot_id="<?php echo $kot->id; ?>" style="font-size: 10px;">KOT COMMENT</a>
+					<a href="javascript:void(0)" class="saveReprint btn btn-danger btn-sm " kot_id="<?php echo $kot->id; ?>" style="font-size: 10px;">SAVE & RE-PRINT </a>
+				</div>
 			</div>
 		</div>
 	</div>

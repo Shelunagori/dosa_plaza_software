@@ -66,6 +66,7 @@
 								<th>Total off</th>
 								<th>Total Full</th>
 								<th>Total Leave</th>
+								<th>Salary</th>
 							</tr>
 						</thead>
 						<tbody id="main_tbody">
@@ -119,6 +120,18 @@
 								<th><?= ($total_O) ?></th>
 								<th><?= ($total_F) ?></th>
 								<th><?= ($total_AB+($total_HD/2)) ?></th>
+								<th>
+									<?php 
+									$salary = $employee->salary;
+									$oneDaySalary = $salary/30;
+									$amountToBeDeduct = ($total_AB+($total_HD/2)) * $oneDaySalary;
+
+									$OneHourSalary = $oneDaySalary/10;
+
+									$ExtraSalary = ($total_F*2) * $OneHourSalary;
+									echo $ActualSalary = $salary - $amountToBeDeduct + $ExtraSalary;
+									?>
+								</th>
 							</tr>
 							<?php } ?>
 						</tbody>

@@ -40,9 +40,7 @@
 						</div>
 						
 						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Email <span class="required" aria-required="true">*
-							 </span>
-							</label>
+							<label class="control-label col-md-12"> Email 	</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
 									<i class="fa"></i>
@@ -52,9 +50,8 @@
 						</div>
 					</div>
 					<div class="row">	
-						<div class="form-group col-md-6">
-							<label class="control-label col-md-12"> Mobile Number <span class="required" aria-required="true">
-							* </span>
+						<div class="form-group col-md-4">
+							<label class="control-label col-md-12"> Mobile Number </span>
 							</label>
 							<div class="col-md-12">
 								<div class="input-icon right">
@@ -63,8 +60,7 @@
 								</div>
 							</div>
 						</div>
-						
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-4">
 							<label class="control-label col-md-12"> Designation <span class="required" name="dName" >
 							 *</span>
 							</label>
@@ -72,6 +68,15 @@
 								<div class="input-icon right">
 									<i class="fa"></i>
 									<?php echo $this->Form->input('designation_id',['options' =>$Designations,'label' => false,'class'=>'form-control select2me','empty'=> 'Select...','required'=>'required', 'value'=>$employee->designation_id]);?>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-md-4">
+							<label class="control-label col-md-12"> Salary	</label>
+							<div class="col-md-12">
+								<div class="input-icon right">
+									<i class="fa"></i>
+									<input type="text" <?php if(!empty($id)){ echo "value='".$employee->salary."'"; } ?> name="salary" class="form-control" Placeholder="Salary" >
 								</div>
 							</div>
 						</div>

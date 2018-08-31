@@ -1,6 +1,6 @@
 <style>
 #billTable tr td{
-	padding: 8px 2px;
+	padding: 1px 1px;
 }
 </style>
 <?php 
@@ -25,7 +25,7 @@ foreach($Kots as $Kot){
 					<div style="padding: 5px 25px; ">
 						<br/>
 						<?php if($searchbox==0){ ?>
-						<table width="100%" border="0">
+						<table width="100%" border="0" >
 							<tr>
 								<td style="padding-right: 5px;" width="40%">
 									<div class="input-icon">
@@ -265,7 +265,7 @@ foreach($Kots as $Kot){
 		<td width="70%" style="padding-left:20px;" valign="top"><br/>
 			<input type="hidden" name="kot_ids" value="<?php echo implode(',', $kotIDs); ?>">
 			<div>
-				<table width="100%" id="billTable">
+				<table width="100%" id="billTable" class="table table-striped">
 					<thead>
 						<tr style="border-bottom: solid 1px #F1F1F2; " > 
 							<th width="5%">#</th>
@@ -281,20 +281,23 @@ foreach($Kots as $Kot){
 					</thead>
 					<tbody class="main">
 					<?php 
-					$i=0; $total=0;
-					foreach($items as $item_id=>$item){ ?>
+					$i=0; $total=0; $row_no=0; 
+					foreach($items as $item_id=>$item){ 
+						$row_no++; $column_no=0; ?>
 						<tr style="border-bottom: solid 1px #F1F1F2; ">
 							<td><?php echo ++$i.'.'; ?></td>
 							<td item_id="<?php echo $item_id; ?>" ><?php echo $item['name']; ?></td>
 							<td style="text-align:center;"><?php echo $item['quantity']; ?></td>
 							<td style="text-align:center;"><?php echo $item['rate']; ?></td>
 							<td style="text-align:center;"><?php echo $item['quantity']*$item['rate']; ?></td>
+							<?php $column_no++; ?>
 							<td><?php if($item['dis_applicable']==1){?>
-									<input type="text" class="disBox" style="width:20%;text-align:center;width:100%;" placeholder="" />
+									<input type="text" class="disBox" style="width:20%;text-align:center;width:100%;"  row_no="<?php echo $row_no; ?>" column_no="<?php echo $column_no; ?>"  />
 								<?php } ?>
 							</td>
+							<?php $column_no++; ?>
 							<td><?php if($item['dis_applicable']==1){?>
-									<input type="text" class="disBoxamt" style="width:20%;text-align:center;width:100%;" placeholder="" />
+									<input type="text" class="disBoxamt" style="width:20%;text-align:center;width:100%;" row_no="<?php echo $row_no ; ?>" column_no="<?php echo $column_no; ?>" />
 								<?php } ?>
 							</td>
 

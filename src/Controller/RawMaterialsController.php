@@ -212,8 +212,14 @@ class RawMaterialsController extends AppController
 		->contain(['PrimaryUnits'])
 		->where(['RawMaterials.is_deleted'=>0])
 		->autoFields(true);
-		
-		$this->set(compact('RawMaterials'));
+
+		$RawMaterialList=[];
+		foreach ($RawMaterials as $RawMaterial) {
+			$RawMaterialList[$RawMaterial->id]=$RawMaterial->name;
+		}
+
+
+		$this->set(compact('RawMaterials', 'RawMaterialList'));
 	}
 
 

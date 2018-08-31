@@ -13,14 +13,14 @@
 <?= $this->Form->create($Table,['id'=>'form_sample_1']); ?>
 <div style="background: #EBEEF3;"> 
 	<div class="row KOTView" style="padding:26px 16px 5px 15px">
-		<div class="col-md-3"></div>
-		<div class="col-md-6" style="background-color: #FFF; border-radius: 8px !important; padding: 10px;">
-			<span class="Title">Shift Table</span>
+		<div class="col-md-4"></div>
+		<div class="col-md-4" style="background-color: #FFF; border-radius: 8px !important; padding: 10px;">
+			<span class="Title">Shift Table - <?php echo $TB->name; ?></span>
 			<hr style=" margin-bottom: 0px; margin-top: 3px;"></hr>			 
 			<div style="padding-top:12px">
 				<table width="100%">
 					<tr>
-						<td width="45%" style="padding:0 10px 0 0;">
+						<td width="45%" style="padding:0 10px 0 0;display: none;">
 							<label>Occupied Table</label>
 							<?php
 							$options=array(); 
@@ -28,9 +28,8 @@
 								$options[]=['text' =>$Table->name, 'value' => $Table->id];
 							}
 							
-							echo $this->Form->input('occupiedtable',['options' =>$options,'label' => false,'class'=>'form-control select2me','empty'=> 'Search Table','autofocus']);?>
+							echo $this->Form->input('occupiedtable',['options' =>$options,'label' => false,'class'=>'form-control select2me','empty'=> 'Search Table', 'value' => $table_id]);?>
 						</td>
-						<td  width="10%" align="center"><label style="visibility:hidden">adasdsas </label>TO</td>
 						<td width="45%" style="padding:0 10px 0 0;">
 							<label>Vacant Table</label>
 							<?php

@@ -173,7 +173,7 @@ class BillsController extends AppController
 		$bill->customer_id=$customer_id;
 		$bill->order_type=$order_type;
         if($order_type!='dinner'){
-            $bill->payment_type='cash';
+            $bill->payment_type='';
         }
         $bill_rows=[];
 		foreach($q as $row){
@@ -519,4 +519,28 @@ class BillsController extends AppController
 
         $this->set(compact('from_date', 'to_date', 'Bills', 'Total_grand_total'));
     }
+
+
+    function delivery(){
+        $this->viewBuilder()->layout('counter');
+        $Bills = $this->Bills->find()
+                    ->where(['Bills.order_type' => 'delivery', 'Bills.payment_type' => ''])
+                    ->contain(['Customers'])
+                    ->order(['Bills.created_on' => 'ASC']);
+        $this->set(compact('Bills'));
+    }
+
+    function paymentinfo(){
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $bill_id = $this->request->data()['bill_id'];
+            $payment_type = $this->request->data()['payment_type'];
+
+            $Bill = $this->Bills->get($bill_id);
+            $Bill->payment_type = $payment_type;
+            $this->Bills->save($Bill);
+            return $this->redirect(['action' => 'delivery']);
+        }
+    }
+
+    
 }

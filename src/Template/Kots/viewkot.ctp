@@ -7,14 +7,18 @@
 		<div style="width: 300px;">
 			<div style=" padding: 5px; " id='DivIdToPrint'>
 				<div align="center" style="line-height: 24px;">
-					<span style="font-size: 14px;font-weight: bold;color: #606062;">KOT</span>
+					<span style="font-size: 14px;font-weight: bold;color: #606062;">KOT</span><br/>
+					<?php if($Kots->table_id>0 ){?>
+						<span style="font-size: 14px;font-weight: bold;color: #606062;">Table No.: <?php echo @$Kots->table->name; ?></span>
+					<?php } ?>
+					
 				</div>
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
 					<table width="100%">
 						<tr>
 							<td>
 								<span style="color: #606062;">KOT No.: </span>
-								<span style="margin-left: 10px;"> <?php echo $Kots->id; ?> </span>
+								<span style="margin-left: 10px;"> <?php echo $Kots->voucher_no; ?> </span>
 							</td>
 							<td align="right">
 								<span style="color: #606062;">KOT Date: </span>
@@ -26,7 +30,7 @@
 								<span style="color: #606062;">Order Type: </span>
 								<span style="margin-left: 10px;"> 
 								<?php 
-								if($Kots->order_type=='dinner'){ echo "Dinner In";} 
+								if($Kots->order_type=='dinner'){ echo "Dine In";} 
 								if($Kots->order_type=='takeaway'){ echo "Take Away";} 
 								if($Kots->order_type=='delivery'){ echo "Delivery";} 
 								?>
@@ -44,8 +48,8 @@
 							</td>
 							<td align="right">
 								<?php if($Kots->table_id>0 ){?>
-								<span style="color: #606062;">Table No.: </span>
-								<span style="margin-left: 10px;"> <?php echo @$Kots->table->name; ?> </span>
+								<!-- <span style="color: #606062;">Table No.: </span>
+								<span style="margin-left: 10px;"> <?php echo @$Kots->table->name; ?> </span> -->
 								<?php } ?>
 							</td>
 						</tr>
@@ -78,7 +82,10 @@
 						<tr>
 							<td></td>
 							<td colspan="3">
-								<?= h($bill_row->item_comment); ?>
+								<?php if($bill_row->item_comment){ ?>
+									[<?= h($bill_row->item_comment); ?>]
+								<?php } ?>
+								
 							</td>
 						</tr>
 						<?php } ?>
@@ -90,7 +97,9 @@
 					</tr>
 					<tr>
 						<td colspan="4">
-							<span style="margin-left: 10px;"> <?= h(@$Kots->one_comment) ?> </span>
+							<?php if(@$Kots->one_comment){ ?>
+								<span style="margin-left: 10px;"> [<?= h(@$Kots->one_comment) ?>] </span>
+							<?php } ?>
 						</td>
 					</tr>
 					</tbody>

@@ -9,10 +9,10 @@
 					Stock Adjustment
 				</div>
 				<div class="row" align="right">
-					<div class="input-group input-medium">
+					<!-- <div class="input-group input-medium">
 						<input id="search3"  class="form-control" type="text" placeholder="Search" >
 						<span class="input-group-addon"><i class="fa fa-search"></i></span>
-					</div>
+					</div> -->
 				</div>
 				<br/>
 				<div class="row">	
@@ -20,10 +20,23 @@
 				</div>
 			</div>
 			<div class="portlet-body">
+				<div>
+					<table>
+						<tr>
+							<td>
+								<?php echo $this->Form->input('raw_material',['options'=>$RawMaterialList, 'label' => false, 'class' => 'form-control select2me input-medium', 'empty' => '--select--']); ?>
+							</td>
+							<td>
+								<button type="button" id="showItem" class="btn btn-danger">GO</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+
 				<table class="table " cellpadding="0" cellspacing="0" id="main_table">
 					<thead>
 						<tr>
-							<th style="width:10%"><?= ('S.No.') ?></th>
+							<th style="width:10%;display: none;"><?= ('S.No.') ?></th>
 							<th style="width:15%"><?= ('Item') ?></th>
 							<th style="width:15%" ><?= ('Current stock') ?></th>
 							<th style="width:15%"><?= ('Physical stock') ?></th>
@@ -33,8 +46,8 @@
 					</thead>
 					<tbody id="main_tbody">
 					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
-						<tr class="main_tr">
-							<td><?= (++$d) ?></td>
+						<tr class="main_tr" raw_material_id="<?php echo $RawMaterial->id; ?>" style="display: none;">
+							<td style="display: none;"><?= (++$d) ?></td>
 							<td><?= h($RawMaterial->name) ?>
 							<?php echo $this->Form->input('StockLedgers['.$x.'][raw_material_id]',array('type'=>'hidden','value'=>$RawMaterial->id)); ?>
 							</td>
@@ -133,6 +146,12 @@
 <?php
 	$js="
 	$(document).ready(function() {	
+
+		$('#showItem ').die().live('click',function(event){
+    		var raw_material_id = $('#raw-material').find('option:selected').val();
+    		$('tr[raw_material_id='+raw_material_id+']').show();
+    	});
+
 		
 		$('.hiddendiv').hide()
 		$('.hiddencommant').show()
@@ -251,6 +270,9 @@
     			rows.show();
     		}
     	}); 
+
+    	 
+    	
 		
 		
 	

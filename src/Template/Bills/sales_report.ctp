@@ -59,7 +59,13 @@
 										echo $interval->format(' %i min %s sec');
 									?>
 								</td>
-								<td><?= h(ucfirst($Bill->order_type)) ?></td>
+								<td>
+									<?php 
+									if($Bill->order_type=='dinner'){ echo "Dine In";} 
+									if($Bill->order_type=='takeaway'){ echo "Take Away";} 
+									if($Bill->order_type=='delivery'){ echo "Delivery";} 
+									?>	
+								</td>
 								<td><?= h(@$Bill->table->name) ?></td>
 								<td><?= h(@$Bill->employee->name) ?></td>
 								<td><?= h(@$Bill->customer->customer_code) ?></td>

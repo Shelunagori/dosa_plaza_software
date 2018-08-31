@@ -66,6 +66,15 @@
 									<input type="radio" name="discount_applicable" value="0" <?php  if(!empty($id)){ if($item->discount_applicable==0){ echo "checked";} } ?>> Not Applicable </label>
 								</div>
 							</div>
+							<div class="form-group col-md-4">
+								<label  class="">Taste</label>
+								<?php
+								$options[]=['text' =>'spicy', 'value' => '#ffb3b3'];
+								$options[]=['text' =>'medium spicy', 'value' => '#ffffaa'];
+								$options[]=['text' =>'non spicy', 'value' => '#9afd9a'];
+
+								echo $this->Form->input('color',['options'=>$options,'class'=>'form-control ','empty' => '--select--','label'=>false, 'value' => @$item->color]); ?>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">

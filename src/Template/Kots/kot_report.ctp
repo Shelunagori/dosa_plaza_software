@@ -79,7 +79,7 @@
 											</td>
 											<td>
 												<span style="color: #606062;">Table: </span>
-												<span style="margin-left: 10px;"> <?= h($Kot->table->name) ?> </span>
+												<span style="margin-left: 10px;"> <?= h(@$Kot->table->name) ?> </span>
 											</td>
 											<td>
 												<span style="color: #606062;">Create on: </span>
@@ -97,7 +97,7 @@
 											</td>
 											<td>
 												<span style="color: #606062;">Steward: </span>
-												<span style="margin-left: 10px;"> <?= h($Kot->bill->employee->name) ?> </span>
+												<span style="margin-left: 10px;"> <?= h(@$Kot->bill->employee->name) ?> </span>
 											</td>
 										</tr>
 									</table>

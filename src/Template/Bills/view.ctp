@@ -31,7 +31,13 @@
 						<tr>
 							<td>
 								<span style="color: #606062;">Order Type: </span>
-								<span style="margin-left: 10px;"> <?= h($bill->order_type) ?> </span>
+								<span style="margin-left: 10px;"> 
+									<?php 
+									if($bill->order_type=='dinner'){ echo "Dine In";} 
+									if($bill->order_type=='takeaway'){ echo "Take Away";} 
+									if($bill->order_type=='delivery'){ echo "Delivery";} 
+									?>
+								</span>
 							</td>
 							<td align="right">
 								<span style="color: #606062;">Bill Time: </span>
