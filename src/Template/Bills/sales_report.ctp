@@ -35,6 +35,7 @@
 								<th scope="col"><?= $this->Paginator->sort('order_type', 'Order Type') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('table_id', 'Table No.') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('employee_id', 'Steward') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('payment_type', 'Payment Mode') ?></th>
 								<th>Customer Code</th>
 								<th>Customer Mobile</th>
 								<th>Customer Name</th>
@@ -68,6 +69,7 @@
 								</td>
 								<td><?= h(@$Bill->table->name) ?></td>
 								<td><?= h(@$Bill->employee->name) ?></td>
+								<td><?= h(@$Bill->payment_type) ?></td>
 								<td><?= h(@$Bill->customer->customer_code) ?></td>
 								<td><?= h(@$Bill->customer->mobile_no) ?></td>
 								<td><?= h(@$Bill->customer->name) ?></td>

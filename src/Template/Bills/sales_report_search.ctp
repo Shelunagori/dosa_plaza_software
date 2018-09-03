@@ -93,6 +93,18 @@
 									<input type="text" class="form-control" name="bill_amount" />
 								</td>
 							</tr>
+							<tr>
+								<td style="vertical-align: middle;">Payment Mode</td>
+								<td>
+									<select class="form-control" name="payment_type">
+										<option value=""></option>
+										<option value="cash">cash</option>
+										<option value="card">card</option>
+										<option value="paytm">paytm</option>
+									</select>
+								</td>
+								<td></td>
+							</tr>
 						</table>
 						<div align="center"><button type="submit" class="btn btn-danger">GO</button></div>
 					</div>

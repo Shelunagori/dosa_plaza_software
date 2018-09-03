@@ -44,6 +44,11 @@
 				<ul style=" line-height: 23px; ">
 					<?php
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Report</span>', '/Bills/salesReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+					
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bill Wise Sales Report</span>', '/Bills/bill-Wise-Sales',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Group + Sub-Group Wise Sales Report</span>', '/ItemCategories/Group-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Hourly Sales Report</span>', '/Bills/hourly-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
 					?>
 			 	</ul>
 				

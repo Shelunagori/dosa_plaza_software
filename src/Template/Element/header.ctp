@@ -56,8 +56,8 @@ if($controller=='kots'){
 ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
     <div >
-    	<?php if($Table_data->name){ ?>
-            <span style="color: #FFF;margin-right: 10px;border:  solid 1px #949494;padding: 3px 8px;">Table No: <?= h($Table_data->name) ?></span>
+    	<?php if(@$Table_data->name){ ?>
+            <span style="color: #FFF;margin-right: 10px;border:  solid 1px #949494;padding: 3px 8px;">Table No: <?= h(@$Table_data->name) ?></span>
         <?php } ?>
     
         <span style="color: #FFF;border:  solid 1px #949494;padding: 3px 8px;">Day Sale: <?= h($TotalSale) ?></span>

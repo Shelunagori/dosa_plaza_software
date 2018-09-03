@@ -98,14 +98,7 @@ class UsersController extends AppController
         $rows = $stmt->fetchAll('assoc');
         $upcommingBirthdayAnniversary=$rows[0]['COUNT(id)'];
         
-         // $stmt = $conn->execute("SELECT * FROM customers Customers WHERE DATE_FORMAT(dob, '%m-%d') = DATE_FORMAT('".$currentDate."', '%m-%d') or DATE_FORMAT(anniversary, '%m-%d') = DATE_FORMAT('".$currentDate."', '%m-%d') ");
-        // // Read all rows.
-        // $rows = $stmt->fetchAll('assoc');
-
-        // // Read rows through iteration.
-        // foreach ($rows as $row) {
-        //     pr($row);
-        // }
+        
 
         $Bills=$this->Users->Bills->find();
         $Bills->select([
@@ -143,6 +136,29 @@ class UsersController extends AppController
         $Attendances = $this->Users->Attendances->find()
                         ->where(['Attendances.attendance_status IN' => [3,4], 'Attendances.attendance_date' => date('Y-m-d')])
                         ->contain(['Employees']);
+
+
+        //Sales Comparison//
+        $CurrentMonth = date('m');
+        $PreviousMonth = $CurrentMonth-1;
+        $NextMonth = $CurrentMonth+1;
+
+        $CurrentYear = date('Y');
+        $PreviousYear = $CurrentYear-1;
+        $NextYear = $CurrentYear+1;
+
+        //last year previous month//
+        $LastYearPreviousMonthSale = $this->Users->Bills->find();
+        $LastYearPreviousMonthSale->where([
+            'Bills.transaction_date >=' => $PreviousYear.'-'.$PreviousMonth.'-1', 
+            'Bills.transaction_date <=' => date("Y-m-t", strtotime($PreviousYear.'-'.$PreviousMonth.'-1'))
+        ])
+        ->select([
+            'Total_sale' => $StockLedgers->func()->sum('StockLedgers.quantity')
+        ])
+        ->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id']);
+        pr($LastYearPreviousMonthSale->toArray());
+        exit;
 
         $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances'));
     }

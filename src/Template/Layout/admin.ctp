@@ -145,7 +145,7 @@
 	<!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
 	<!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
 	<!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
-	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#2D4161 !important;font-family: 'Poppins', sans-serif;">
+	<body class="page-header-fixed page-quick-sidebar-over-content page-container-bg-solid" style="background:#2D4161 !important;font-family: 'Nunito Sans', sans-serif;">
 		<div id="loading">
 			<div id="loading-center">
 				<div id="loading-center-absolute">

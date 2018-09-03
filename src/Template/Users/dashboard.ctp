@@ -150,10 +150,8 @@
 						<td width="5%"><span style="font-size: 14px;font-weight: 200;color: #7E8082;margin-left: 10px;"> <?php echo $PaytmPer; ?>%</span></td>
 					</tr>
 				</table>
-			</div> 
-		</div>
+			</div>
 
-		<div class="col-md-6">
 			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
 				<span>Today's off & absent employees</span><br/>
 				<table class="table table-str ">
@@ -175,6 +173,85 @@
 			</div>
 		</div>
 
+		<div class="col-md-6">
+			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
+				
+				<script src="https://code.highcharts.com/highcharts.js"></script>
+				<script src="https://code.highcharts.com/modules/data.js"></script>
+				<script src="https://code.highcharts.com/modules/exporting.js"></script>
+				<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+				<table id="datatable" style="display: none;">
+				  <thead>
+				    <tr>
+				      <th></th>
+				      <th>2017</th>
+				      <th>2018</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th>Aug</th>
+				      <td>545000</td>
+				      <td>447000</td>
+				    </tr>
+				    <tr>
+				      <th>Sep</th>
+				      <td>400000</td>
+				      <td>612000</td>
+				    </tr>
+				    <tr>
+				      <th>Oct</th>
+				      <td>789000</td>
+				      <td>0</td>
+				    </tr>
+				  </tbody>
+				</table>
+
+				<style type="text/css">
+					.highcharts-button-symbol{
+						display: none;
+					}
+					.highcharts-credits{
+						display: none;
+					}
+				</style>
+				<script type="text/javascript">
+					Highcharts.chart('container', {
+					  data: {
+					    table: 'datatable'
+					  },
+					  chart: {
+					    type: 'column'
+					  },
+					  title: {
+					    text: 'Sales Comparison'
+					  },
+					  yAxis: {
+					    allowDecimals: false,
+					    title: {
+					      text: 'Sales'
+					    }
+					  },
+					  tooltip: {
+					    formatter: function () {
+					      return '<b>' + this.series.name + '</b><br/>' +
+					        this.point.y + ' ' + this.point.name.toLowerCase();
+					    }
+					  }
+					});
+				</script>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			
+		</div>
 	</div>	
 
 	<?php

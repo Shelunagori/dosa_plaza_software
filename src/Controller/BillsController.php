@@ -166,7 +166,8 @@ class BillsController extends AppController
 		
         $bill->transaction_date=date('Y-m-d');
 		$bill->table_id=$table_id;
-        $bill->no_of_pax=@$c_pax;
+
+        
 		$bill->total=$total; 
 		$bill->round_off=$roundOff;
         $bill->grand_total=$net;
@@ -200,6 +201,10 @@ class BillsController extends AppController
         
         $bill->employee_id=@$employee_id=$this->request->query('employee_id');;
         $bill->offer_id=@$offer_id=@$this->request->query('offer_id');
+
+        if($table_id){
+            $bill->no_of_pax=@$Table->no_of_pax;
+        }
         
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
@@ -470,6 +475,11 @@ class BillsController extends AppController
             }
         }
 
+        $payment_type=$this->request->query('payment_type');
+        if(!empty($payment_type)){
+            $where['Bills.payment_type']=$payment_type;
+        }
+
         $order_type=$this->request->query('order_type');
         if(!empty($order_type)){
             $where['Bills.order_type']=$order_type;
@@ -541,6 +551,66 @@ class BillsController extends AppController
             return $this->redirect(['action' => 'delivery']);
         }
     }
+
+    public function billWiseSales(){
+        $this->viewBuilder()->layout('admin');
+
+        $where=[];
+
+        $from_date=$this->request->query('from_date');
+        if(!empty($from_date)){
+            $where['Bills.transaction_date >=']=$from_date;
+        }
+
+        $to_date=$this->request->query('to_date');
+        if(!empty($to_date)){
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+
+       
+        $Bills = $this->Bills->find()
+                    ->where($where)
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ]);
+        
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        
+
+        $this->set(compact('from_date', 'to_date', 'Bills', 'Total_grand_total'));
+    }
+
+    public function hourlyReport(){
+        $this->viewBuilder()->layout('admin');
+        $date=$this->request->query('date');
+
+        $Bills = $this->Bills->find();
+        $Bills->select([
+            'Hourly_sales' => $Bills->func()->sum('grand_total'),
+            'Hourly_pax' => $Bills->func()->sum('no_of_pax'),
+            'Hourly_bill' => $Bills->func()->count('id'),
+            'hour' => 'HOUR(created_on)'
+        ])
+        ->where(['Bills.transaction_date' => $date])
+        ->group(['HOUR(created_on)'])
+        ->order(['Bills.created_on' => 'ASC']);
+
+        $HoyrlySalesData=[];
+        $HoyrlyPaxData=[];
+        $HoyrlyBillData=[];
+        foreach ($Bills as $Bill) {
+            $HoyrlySalesData[$Bill->hour] = $Bill->Hourly_sales;
+            $HoyrlyPaxData[$Bill->hour] = $Bill->Hourly_pax;
+            $HoyrlyBillData[$Bill->hour] = $Bill->Hourly_bill;
+        }
+
+        $this->set(compact('date', 'HoyrlySalesData', 'HoyrlyPaxData', 'HoyrlyBillData'));
+    }
+
 
     
 }
