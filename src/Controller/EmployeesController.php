@@ -109,4 +109,30 @@ class EmployeesController extends AppController
         }         
  		$this->set(compact('Employees','month','AttendancesArray')); 
 	}
+
+    public function comparison(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+        $EmpSales=$this->Employees->Bills->find()->where([
+            'Bills.employee_id = Employees.id', 
+            'Bills.transaction_date >=' => $from_date, 
+            'Bills.transaction_date <=' => $to_date
+        ]);
+        $EmpSales->select([$EmpSales->func()->sum('Bills.grand_total')]);
+
+
+        $Employees = $this->Employees->find();
+        $Employees->select([
+            'id', 'name',
+            'Emp_Sales' => $EmpSales,
+        ])
+        ->order(['Employees.name' => 'ASC']);
+
+
+        $this->set(compact('from_date','to_date', 'Employees'));
+    }
+
 }

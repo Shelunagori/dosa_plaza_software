@@ -40,6 +40,9 @@ class EmployeesTable extends Table
         $this->hasMany('Attendances', [
             'foreignKey' => 'employee_id'
         ]);
+        $this->hasMany('Bills', [
+            'foreignKey' => 'employee_id'
+        ]);
         $this->belongsTo('Designations', [
             'foreignKey' => 'designation_id',
             'joinType' => 'INNER'
