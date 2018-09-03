@@ -19,6 +19,7 @@
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
 							<th scope="col"><?= ('Name') ?></th>
+							<th scope="col"><?= ('Sub Category') ?></th>
 							<th scope="col"><?= ('Tax') ?></th>
 							<th scope="col"><?= ('Primary Unit') ?></th>
 							<th scope="col"><?= ('Secondary Unit') ?></th>
@@ -31,6 +32,7 @@
 							<tr>
 								<td><?= h(++$page_no) ?></td> 
 								<td><?= h($rawMaterial->name) ?></td>
+								<td><?= h($rawMaterial->raw_material_sub_category->name) ?></td>
 								<td><?= h($rawMaterial->tax->name) ?></td>
 								<td><?= h($rawMaterial->primary_unit->name) ?></td>
 								<td><?= h(@$rawMaterial->secondary_unit->name) ?></td>
