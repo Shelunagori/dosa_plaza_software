@@ -138,7 +138,7 @@ class UsersController extends AppController
                         ->contain(['Employees']);
 
 
-        //Sales Comparison//
+        //Sales Comparison Start//
         $CurrentMonth = date('m');
         $PreviousMonth = $CurrentMonth-1;
         $NextMonth = $CurrentMonth+1;
@@ -154,13 +154,69 @@ class UsersController extends AppController
             'Bills.transaction_date <=' => date("Y-m-t", strtotime($PreviousYear.'-'.$PreviousMonth.'-1'))
         ])
         ->select([
-            'Total_sale' => $StockLedgers->func()->sum('StockLedgers.quantity')
+            'Total_sale' => $LastYearPreviousMonthSale->func()->sum('Bills.grand_total')
         ])
-        ->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id']);
-        pr($LastYearPreviousMonthSale->toArray());
-        exit;
+        ->group(['MONTH(transaction_date)']);
+        $LastYearPreviousMonthSale = $LastYearPreviousMonthSale->first()->Total_sale;
 
-        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances'));
+        //last year current month//
+        $LastYearCurrentMonthSale = $this->Users->Bills->find();
+        $LastYearCurrentMonthSale->where([
+            'Bills.transaction_date >=' => $PreviousYear.'-'.$CurrentMonth.'-1', 
+            'Bills.transaction_date <=' => date("Y-m-t", strtotime($PreviousYear.'-'.$CurrentMonth.'-1'))
+        ])
+        ->select([
+            'Total_sale' => $LastYearCurrentMonthSale->func()->sum('Bills.grand_total')
+        ])
+        ->group(['MONTH(transaction_date)']);
+        $LastYearCurrentMonthSale = $LastYearCurrentMonthSale->first()->Total_sale;
+
+        $LastYearFutureMonthSale=0;
+        if($CurrentMonth<12){
+            //last year future month//
+            $LastYearFutureMonthSale = $this->Users->Bills->find();
+            $LastYearFutureMonthSale->where([
+                'Bills.transaction_date >=' => $PreviousYear.'-'.$NextMonth.'-1', 
+                'Bills.transaction_date <=' => date("Y-m-t", strtotime($PreviousYear.'-'.$NextMonth.'-1'))
+            ])
+            ->select([
+                'Total_sale' => $LastYearFutureMonthSale->func()->sum('Bills.grand_total')
+            ])
+            ->group(['MONTH(transaction_date)']);
+            $LastYearFutureMonthSale = $LastYearFutureMonthSale->first()->Total_sale;
+        }
+
+        $CurrentYearLastMonthSale=0;
+        if($CurrentMonth>1){
+            //current year previous month//
+            $CurrentYearLastMonthSale = $this->Users->Bills->find();
+            $CurrentYearLastMonthSale->where([
+                'Bills.transaction_date >=' => $CurrentYear.'-'.$PreviousMonth.'-1', 
+                'Bills.transaction_date <=' => date("Y-m-t", strtotime($CurrentYear.'-'.$PreviousMonth.'-1'))
+            ])
+            ->select([
+                'Total_sale' => $CurrentYearLastMonthSale->func()->sum('Bills.grand_total')
+            ])
+            ->group(['MONTH(transaction_date)']);
+            $CurrentYearLastMonthSale = $CurrentYearLastMonthSale->first()->Total_sale;
+        }
+
+        //current year current month//
+        $CurrentYearCurrentMonthSale = $this->Users->Bills->find();
+        $CurrentYearCurrentMonthSale->where([
+            'Bills.transaction_date >=' => $CurrentYear.'-'.$CurrentMonth.'-1', 
+            'Bills.transaction_date <=' => date("Y-m-t", strtotime($CurrentYear.'-'.$CurrentMonth.'-1'))
+        ])
+        ->select([
+            'Total_sale' => $CurrentYearCurrentMonthSale->func()->sum('Bills.grand_total')
+        ])
+        ->group(['MONTH(transaction_date)']);
+        $CurrentYearCurrentMonthSale = $CurrentYearCurrentMonthSale->first()->Total_sale;
+
+        //Sales Comparison End//
+
+
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances', 'LastYearPreviousMonthSale', 'LastYearCurrentMonthSale', 'LastYearFutureMonthSale', 'CurrentYearLastMonthSale', 'CurrentYearCurrentMonthSale'));
     }
 	
 	public function dashboard2()

@@ -174,7 +174,7 @@
 		</div>
 
 		<div class="col-md-6">
-			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
+			<div class="portlet light" style="border-radius: 0;padding: 5px !important;">
 				
 				<script src="https://code.highcharts.com/highcharts.js"></script>
 				<script src="https://code.highcharts.com/modules/data.js"></script>
@@ -183,28 +183,36 @@
 
 				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
+				<?php
+				$CurrentMonth = date('m');
+		        $PreviousMonth = $CurrentMonth-1;
+		        $NextMonth = $CurrentMonth+1;
+
+		        $CurrentYear = date('Y');
+		        $PreviousYear = $CurrentYear-1;
+				?>
 				<table id="datatable" style="display: none;">
 				  <thead>
 				    <tr>
 				      <th></th>
-				      <th>2017</th>
-				      <th>2018</th>
+				      <th><?php echo $PreviousYear; ?></th>
+				      <th><?php echo $CurrentYear; ?></th>
 				    </tr>
 				  </thead>
 				  <tbody>
 				    <tr>
-				      <th>Aug</th>
-				      <td>545000</td>
-				      <td>447000</td>
+				      <th><?php echo date("F", strtotime('2018-'.$PreviousMonth.'-1')); ?></th>
+				      <td><?php echo $LastYearPreviousMonthSale; ?></td>
+				      <td><?php echo $CurrentYearLastMonthSale; ?></td>
 				    </tr>
 				    <tr>
-				      <th>Sep</th>
-				      <td>400000</td>
-				      <td>612000</td>
+				      <th><?php echo date("F", strtotime('2018-'.$CurrentMonth.'-1')); ?></th>
+				      <td><?php echo $LastYearCurrentMonthSale; ?></td>
+				      <td><?php echo $CurrentYearCurrentMonthSale; ?></td>
 				    </tr>
 				    <tr>
-				      <th>Oct</th>
-				      <td>789000</td>
+				      <th><?php echo date("F", strtotime('2018-'.$NextMonth.'-1')); ?></th>
+				      <td><?php echo $LastYearFutureMonthSale; ?></td>
 				      <td>0</td>
 				    </tr>
 				  </tbody>
