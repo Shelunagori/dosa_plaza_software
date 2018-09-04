@@ -519,6 +519,7 @@ class BillsController extends AppController
                     ->autoFields(true)
                     ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ])
                 );
+        //pr($Bills->toArray()); exit;
 
         $q=$this->Bills->find()->where($where);
         $q->select([$q->func()->sum('Bills.grand_total')]);

@@ -215,8 +215,16 @@ class UsersController extends AppController
 
         //Sales Comparison End//
 
+        //---------------------------------------------------//
+        //          UPCOMING BOOKINGS START
+        //---------------------------------------------------//
+        $Bookings = $this->Users->Bookings->find()->where(['Bookings.booking_date >=' => date('Y-m-d') ])->order(['Bookings.booking_date' => 'ASC'])->limit(3);
+        //---------------------------------------------------//
+        //          UPCOMING BOOKINGS END
+        //---------------------------------------------------//
 
-        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances', 'LastYearPreviousMonthSale', 'LastYearCurrentMonthSale', 'LastYearFutureMonthSale', 'CurrentYearLastMonthSale', 'CurrentYearCurrentMonthSale'));
+
+        $this->set(compact('TotalOrdeDinner','TotalOrdeODelevery','TotalSaleDelevery','TotalOrdeTakeAway','TotalSaleTakeAway','TotalSaleDinner', 'upcommingBirthdayAnniversary', 'CashSale', 'CardSale', 'PaytmSale', 'CashPer', 'CardPer', 'PaytmPer', 'Attendances', 'LastYearPreviousMonthSale', 'LastYearCurrentMonthSale', 'LastYearFutureMonthSale', 'CurrentYearLastMonthSale', 'CurrentYearCurrentMonthSale', 'Bookings'));
     }
 	
 	public function dashboard2()

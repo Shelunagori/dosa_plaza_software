@@ -96,6 +96,17 @@ $target=array("15","16");
 if(!empty(count(array_intersect($userPages, $target)))){?>
 <li class="start">
 	<a href="javascript:;">
+	<span class="title" style="margin-left: 15px;">Bookings</span>
+	<span class="arrow "></span>
+	</a>
+	<ul class="sub-menu">
+		<?php echo '<li>'.$this->Html->link('New', '/Bookings/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/Bookings/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+ 	</ul>
+</li>
+
+<li class="start">
+	<a href="javascript:;">
 	<span class="title" style="margin-left: 15px;">Employees</span>
 	<span class="arrow "></span>
 	</a>
