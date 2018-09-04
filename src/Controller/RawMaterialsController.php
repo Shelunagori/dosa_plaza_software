@@ -23,7 +23,7 @@ class RawMaterialsController extends AppController
     {
 		$this->viewBuilder()->layout('admin');
 		$this->paginate = [
-            'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits']
+            'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories']
         ];
         $rawMaterials = $this->paginate($this->RawMaterials->find());
 
@@ -52,7 +52,9 @@ class RawMaterialsController extends AppController
         }
 		$Taxes = $this->RawMaterials->Taxes->find('list');
         $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
-        $this->set(compact('rawMaterial','Taxes','units'));
+        $rawMaterialCategories = $this->RawMaterials->RawMaterialSubCategories->find('list', ['limit' => 200])
+        	->where(['RawMaterialSubCategories.is_deleted'=>0]);
+        $this->set(compact('rawMaterial','Taxes','units','rawMaterialCategories'));
     }
 
     /**

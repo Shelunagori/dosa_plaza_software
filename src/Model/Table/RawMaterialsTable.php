@@ -35,6 +35,11 @@ class RawMaterialsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 		
+        $this->belongsTo('RawMaterialSubCategories', [
+            'foreignKey' => 'raw_material_sub_category_id',
+            'joinType' => 'INNER'
+        ]);
+        
 		$this->belongsTo('Taxes', [
             'foreignKey' => 'tax_id',
             'joinType' => 'INNER'
@@ -50,7 +55,7 @@ class RawMaterialsTable extends Table
             'className'=>'Units',
             'foreignKey' => 'secondary_unit_id',
             'propertyName' => 'secondary_unit'
-        ]);
+        ]); 
 
 		$this->hasMany('StockLedgers', [
             'foreignKey' => 'raw_material_id'

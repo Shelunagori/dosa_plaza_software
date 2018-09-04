@@ -30,6 +30,12 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Item Sub-Categor
 		<?php echo '<li>'.$this->Html->link('List', '/Items/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
  	</ul>
 </li>
+
+<?php
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Raw Material Category</span>', '/RawMaterialCategories/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Raw Material Sub-Category</span>', '/RawMaterialSubCategories/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+?>
 <li class="start">
 	<a href="javascript:;">
 	<span class="title" style="margin-left: 15px;">Raw Materials</span>
