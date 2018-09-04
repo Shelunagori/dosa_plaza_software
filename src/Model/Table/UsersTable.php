@@ -40,6 +40,7 @@ class UsersTable extends Table
         $this->belongsTo('Bills');
         $this->belongsTo('Customers');
         $this->belongsTo('Attendances');
+        $this->belongsTo('Bookings');
         
     }
 

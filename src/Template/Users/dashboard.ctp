@@ -153,6 +153,32 @@
 			</div>
 
 			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
+				<div style=" font-size: 14px; font-weight: 600; margin-bottom: 5px;">Upcoming Bookings</div>
+
+				<table width="100%">
+					<tr>
+						<?php foreach ($Bookings as $Booking) { ?>
+							<td width="33%">
+								<a href="#" style="text-decoration: none;">
+									<div style="height: 100px; padding: 19px; width: 100px; margin: auto; border: solid 1px #cecece; border-radius: 55px; background-color: #d8d8d8; ">
+										<div style=" border: solid 1px; height: 55px; background-color: #FFF; box-shadow: 3px 3px 3px 3px #a0a0a0; ">
+											<div style="text-align:  center;background-color: #f24e41;color: #FFF;">
+												<?php echo strtoupper( date('M', strtotime($Booking->booking_date)) ) ; ?>
+											</div>
+											<div style="font-size:  20px;font-weight: bold;text-align: center;margin-top: 2px;color: #2d4161;
+											">
+												<?php echo date('d', strtotime($Booking->booking_date)); ?>
+											</div>
+										</div>
+									</div>
+								</a>
+							</td>
+						<?php } ?>
+					</tr>
+				</table>
+			</div>
+
+			<div class="portlet light" style="border-radius: 0;padding: 20px !important;">
 				<span>Today's off & absent employees</span><br/>
 				<table class="table table-str ">
 					<tr>

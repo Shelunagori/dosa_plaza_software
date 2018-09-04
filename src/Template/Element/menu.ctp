@@ -46,6 +46,17 @@ echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Offer Codes</spa
 
 <li class="start">
 	<a href="javascript:;">
+	<span class="title" style="margin-left: 15px;">Bookings</span>
+	<span class="arrow "></span>
+	</a>
+	<ul class="sub-menu">
+		<?php echo '<li>'.$this->Html->link('New', '/Bookings/add',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+		<?php echo '<li>'.$this->Html->link('List', '/Bookings/index',['escape' => false, 'class' => 'showLoader']).'</li>';?>
+ 	</ul>
+</li>
+
+<li class="start">
+	<a href="javascript:;">
 	<span class="title" style="margin-left: 15px;">Employees</span>
 	<span class="arrow "></span>
 	</a>
