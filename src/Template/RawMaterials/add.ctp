@@ -95,7 +95,6 @@
 						<label class="">Where <span class="required"> * </span></label>
 						<div class="">
 							<div class="input-group ">
-								
 								<input type="number" name="formulas" class="form-control" placeholder="Secondary Unit Equal to Primary Unit" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 								<span class="input-group-addon second_unit">GM</span>
 							</div>

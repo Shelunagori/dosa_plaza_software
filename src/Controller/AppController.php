@@ -88,6 +88,31 @@ class AppController extends Controller
         $this->loadModel('Tables');
         $occupiedTableCount=$this->Tables->find()->where(['Tables.status' => 'occupied'])->count();  
         $this->set(compact('occupiedTableCount'));
+
+        $this->loadModel('UserRights');
+        $this->loadModel('Pages');
+        $userid=$this->Auth->User('id');
+        if(!empty($userid)){
+        $userData = $this->UserRights->find()
+                    ->where(['UserRights.user_id'=>$userid])
+                    ->autoFields(true);
+            foreach($userData->toArray() as $data)
+            {
+                $userPages[]=$data->page_id;
+            }
+            $this->set(compact('userPages'));
+        }
+
+        $controller = $this->request->params['controller'];
+        $action = $this->request->params['action']; 
+        $page=$this->Pages->find()->where(['controller_name'=>$controller,'action'=>$action])->first();
+        
+        if(!empty($page->id) and !in_array($page->id,$userPages)){
+            $pages=[];
+            $this->set(compact('pages'));
+            $this->viewBuilder()->layout('admin');
+            $this -> render('/Error/pageNotFound'); 
+        }
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html
