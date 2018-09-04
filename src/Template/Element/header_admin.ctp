@@ -7,12 +7,14 @@
     cursor: pointer;
 }
 </style>
-
+<?php
+if (in_array("21", $userPages)){ ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
     <div >
         <span class="counter topBtn pointer">Table Screen</span>
     </div>
 </div>
+<?php }?>
 <?php 
 
 $js="
