@@ -157,9 +157,11 @@
 
 				<table width="100%">
 					<tr>
-						<?php foreach ($Bookings as $Booking) { ?>
+						<?php 
+						$url=$this->Url->build(['controller'=>'Bookings','action'=>'index']);
+						foreach ($Bookings as $Booking) { ?>
 							<td width="33%">
-								<a href="#" style="text-decoration: none;">
+								<a href="<?php echo $url; ?>" style="text-decoration: none;">
 									<div style="height: 100px; padding: 19px; width: 100px; margin: auto; border: solid 1px #cecece; border-radius: 55px; background-color: #d8d8d8; ">
 										<div style=" border: solid 1px; height: 55px; background-color: #FFF; box-shadow: 3px 3px 3px 3px #a0a0a0; ">
 											<div style="text-align:  center;background-color: #f24e41;color: #FFF;">
