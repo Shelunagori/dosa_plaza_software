@@ -127,8 +127,13 @@
 									$amountToBeDeduct = ($total_AB+($total_HD/2)) * $oneDaySalary;
 
 									$OneHourSalary = $oneDaySalary/10;
-
-									$ExtraSalary = ($total_F*2) * $OneHourSalary;
+									if($employee->designation_id==2){
+										$ExtraSalary = ($total_F*3) * $OneHourSalary;
+									}
+									else{
+										$ExtraSalary = ($total_F*2) * $OneHourSalary;	
+									}
+									
 									echo $ActualSalary = $salary - $amountToBeDeduct + $ExtraSalary;
 									?>
 								</th>
