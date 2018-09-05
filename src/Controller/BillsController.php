@@ -612,6 +612,35 @@ class BillsController extends AppController
         $this->set(compact('date', 'HoyrlySalesData', 'HoyrlyPaxData', 'HoyrlyBillData'));
     }
 
+    public function dateWiseSales(){
+        $this->viewBuilder()->layout('admin');
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+
+
+        // $TotalAmount = $this->Bills->BillRows->find()->Where(['BillRows.bill_id = Bills.id']);
+        // $TotalAmount->select([$TotalAmount->func()->sum('BillRows.amount')]);
+
+        $BillRows   = $this->Bills->BillRows->find();
+        $BillRows->matching('Bills')->group(['Bills.transaction_date']);
+        $BillRows->select([
+            'TotalAmount' => $BillRows->func()->sum('BillRows.amount'),
+            'TotalDiscountAmount' => $BillRows->func()->sum('BillRows.discount_amount'),
+            'TotalNetAmount' => $BillRows->func()->sum('BillRows.net_amount'),
+        ])
+        ->autoFields(true);
+
+        $data = [];
+        foreach ($BillRows as $BillRow) {
+            $data[ strtotime($BillRow->_matchingData['Bills']->transaction_date) ] = ['TotalAmount' => $BillRow->TotalAmount, 'TotalDiscountAmount' => $BillRow->TotalDiscountAmount, 'TotalNetAmount' => $BillRow->TotalNetAmount];
+        } 
+        
+
+       
+
+        $this->set(compact('from_date', 'to_date', 'data'));
+    } 
+
 
     
 }

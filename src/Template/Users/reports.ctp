@@ -47,7 +47,10 @@
 					
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bill Wise Sales Report</span>', '/Bills/bill-Wise-Sales',['escape' => false, 'class' => 'showLoader']).'</li>';
 
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Date Wise Sales Report</span>', '/Bills/Date-Wise-Sales',['escape' => false, 'class' => 'showLoader']).'</li>';
+
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Group + Sub-Group Wise Sales Report</span>', '/ItemCategories/Group-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Group + Item Wise Sales Report</span>', '/ItemCategories/Group-Item-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Hourly Sales Report</span>', '/Bills/hourly-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Steward Comparison Report</span>', '/Employees/comparison',['escape' => false, 'class' => 'showLoader']).'</li>';
 					?>
