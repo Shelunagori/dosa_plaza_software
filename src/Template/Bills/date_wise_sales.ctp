@@ -108,9 +108,6 @@
 
 
 
-
-
-
 <?php
 	$js="
 	$(document).ready(function() {	
