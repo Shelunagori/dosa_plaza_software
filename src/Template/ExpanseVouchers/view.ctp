@@ -60,7 +60,7 @@
                     <?php $d=0;$x=0; 
                     foreach ($ExpanseVoucherRows as $key => $value) {
                         $headName=$value->expanse_head->name;
-                        $amount=$value->total_amount;
+                        $amount=$value->total_amount; 
                         ?>
                         <tr class="main_tr">
                             <td><?= (++$d) ?></td>
