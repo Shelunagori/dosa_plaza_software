@@ -20,8 +20,8 @@ class ExpanseVouchersController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->layout('admin');
         $expanseVouchers = $this->paginate($this->ExpanseVouchers);
-
         $this->set(compact('expanseVouchers'));
     }
 
@@ -32,13 +32,29 @@ class ExpanseVouchersController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view()
     {
-        $expanseVoucher = $this->ExpanseVouchers->get($id, [
-            'contain' => ['ExpanseVoucherRows']
-        ]);
-
-        $this->set('expanseVoucher', $expanseVoucher);
+        $this->viewBuilder()->layout('admin');
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+        $condition=array();
+        if(!empty($from_date) && !empty($to_date))
+        {
+            $condition['ExpanseVouchers.transaction_date >=']=$from_date;
+            $condition['ExpanseVouchers.transaction_date <=']=$to_date;
+        }
+        $ExpanseVoucherRows=$this->ExpanseVouchers->ExpanseVoucherRows->find();
+        $ExpanseVoucherRows->matching('ExpanseVouchers',function($q)use($condition){
+            return $q->where($condition);
+        })
+        ->group('ExpanseVoucherRows.expanse_head_id')
+        ->select([
+            'total_amount'=>$ExpanseVoucherRows->func()->sum('ExpanseVoucherRows.amount')
+        ])
+        ->contain(['ExpanseHeads'])
+        ->autoFields(true);;
+        //pr($ExpanseVoucherRows->toArray());   exit;
+        $this->set(compact('ExpanseVoucherRows','from_date','to_date'));
     }
 
     /**
@@ -52,9 +68,24 @@ class ExpanseVouchersController extends AppController
         $expanseVoucher = $this->ExpanseVouchers->newEntity();
         if ($this->request->is('post')) {
             $expanseVoucher = $this->ExpanseVouchers->patchEntity($expanseVoucher, $this->request->getData());
+            $transaction_date=$this->request->getData('transaction_date');
+            $expanseVoucher->transaction_date=date('Y-m-d',strtotime($transaction_date));
+
+            //Voucher Number Increment
+            $last_voucher_no=$this->ExpanseVouchers->find()->select(['voucher_no'])->order(['voucher_no' => 'DESC'])->first();
+            if($last_voucher_no){
+                $expanseVoucher->voucher_no=$last_voucher_no->voucher_no+1;
+            }else{
+                $expanseVoucher->voucher_no=1;
+            }
+            $expanse_voucher_rows=$this->request->getData('expanse_voucher_rows');
+            $total_amount=0;
+            foreach ($expanse_voucher_rows as $key => $value) {
+                $total_amount+=$value['amount'];
+            }
+            $expanseVoucher->total_amount=$total_amount; 
             if ($this->ExpanseVouchers->save($expanseVoucher)) {
                 $this->Flash->success(__('The expanse voucher has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The expanse voucher could not be saved. Please, try again.'));
@@ -73,19 +104,31 @@ class ExpanseVouchersController extends AppController
      */
     public function edit($id = null)
     {
+        $this->viewBuilder()->layout('admin');
         $expanseVoucher = $this->ExpanseVouchers->get($id, [
-            'contain' => []
+            'contain' => ['ExpanseVoucherRows']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $expanseVoucher = $this->ExpanseVouchers->patchEntity($expanseVoucher, $this->request->getData());
+            //pr($expanseVoucher);exit;
+            $transaction_date=$this->request->getData('transaction_date');
+            $expanseVoucher->transaction_date=date('Y-m-d',strtotime($transaction_date));
+             
+            $expanse_voucher_rows=$this->request->getData('expanse_voucher_rows');
+            $total_amount=0;
+            foreach ($expanse_voucher_rows as $key => $value) {
+                $total_amount+=$value['amount'];
+            }
+            $expanseVoucher->total_amount=$total_amount;
             if ($this->ExpanseVouchers->save($expanseVoucher)) {
-                $this->Flash->success(__('The expanse voucher has been saved.'));
+                $this->Flash->success(__('The expanse voucher has been updated.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The expanse voucher could not be saved. Please, try again.'));
+            $this->Flash->error(__('The expanse voucher could not be updated. Please, try again.'));
         }
-        $this->set(compact('expanseVoucher'));
+        $ExpanseHeads = $this->ExpanseVouchers->ExpanseVoucherRows->ExpanseHeads->find('list');
+        $this->set(compact('expanseVoucher', 'ExpanseHeads'));
     }
 
     /**

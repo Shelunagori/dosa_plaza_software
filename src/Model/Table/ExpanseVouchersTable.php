@@ -38,7 +38,8 @@ class ExpanseVouchersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('ExpanseVoucherRows', [
-            'foreignKey' => 'expanse_voucher_id'
+            'foreignKey' => 'expanse_voucher_id',
+            'saveStrategy'=>'replace'
         ]);
     }
 

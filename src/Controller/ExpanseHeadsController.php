@@ -18,7 +18,7 @@ class ExpanseHeadsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index($id)
+    public function index($id=null)
     {
         $this->viewBuilder()->layout('admin');
         if(!$id)

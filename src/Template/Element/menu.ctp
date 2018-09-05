@@ -183,10 +183,29 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 </li>
 <?php
 }
-if (in_array("26", $userPages)){
-	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Reports</span>', '/Users/Reports',['escape' => false, 'class' => 'showLoader']).'</li>';
-}
+?>
+<li class="start">
+	<a href="javascript:;">
+	<span class="title" style="margin-left: 15px;">Expanse Voucher</span>
+	<span class="arrow "></span>
+	</a>
+	<ul class="sub-menu">
+		<?php 
+			echo '<li>'.$this->Html->link('Create', '/ExpanseVouchers/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+		 
+			echo '<li>'.$this->Html->link('List', '/ExpanseVouchers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+			echo '<li>'.$this->Html->link('Report', '/ExpanseVouchers/view',['escape' => false, 'class' => 'showLoader']).'</li>';
+		 ?>
+ 	</ul>
+</li>
+
+<?php
 if (in_array("28", $userPages)){
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">User Rights</span>', '/UserRights/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 }
+if (in_array("26", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Reports</span>', '/Users/Reports',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
+
 ?> 

@@ -16,20 +16,32 @@
                 <div class="">
                     <?= $this->Form->create($expanseVoucher,['id'=>'form_sample_1']); ?>
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="col-md-1">&nbsp;</div>
+                        <div class="form-group col-md-4">
                             <label class="control-label col-md-12"> 
                                 Transaction Date <span class="required" aria-required="true">*</span>
                             </label>
-                            <div class="col-md-12">
+                            <div class=" ">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
                                     <input type="date" name="transaction_date" class="form-control" required="required" value="<?php echo date('Y-m-d'); ?>">
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label col-md-12"> 
+                                Narration <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class=" ">
+                                <div class="input-icon right">
+                                    <i class="fa"></i>
+                                    <textarea style="resize:none" name="narration" class="form-control" required="required"></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                   
-                   <div class="col-sm-8" style="margin-top:10px;" id="main">
+                   <div class="col-md-1">&nbsp;</div>
+                   <div class="col-md-10" style="margin-top:10px;" id="main">
                         <table class="table table-bordered" id="main_table">    
                             <thead class="bg_color">
                                 <tr align="">
@@ -98,7 +110,7 @@ $(document).ready(function() {
             name: { 
                 required: true 
             },
-            designation_id:{
+            narration:{
                 required: true,
             }
              
@@ -155,12 +167,22 @@ $(document).ready(function() {
     { 
         add_row();
     });
+    $(document).on('click', '.remove_row', function(e)
+    { 
+        var x=0;
+        $('#main_table tbody#main_tbody tr.main_tr').each(function(){
+            x++;
+        });
+        if(x>1){
+            $(this).closest('tr.main_tr').remove();
+        }
+        rename_rows();
+    });
 
     add_row();
     function add_row(){ 
         var tr=$('#sample tbody tr.main_tr').clone();
         $('#main_table tbody#main_tbody').append(tr);
-    
         rename_rows();
     }
 
@@ -196,9 +218,9 @@ $(document).ready(function() {
                 <?php echo $this->Form->input('expanse_head_id',['options'=>$ExpanseHeads,'class'=>'form-control expanse_head_id','empty' => '--Select Head--','label'=>false,'required'=>'required']); ?>
             </td>
             <td width="20%" >
-                <?php echo $this->Form->control('amount', ['label' => false, 'placeholder'=>'0.00','class'=>'form-control rightAligntextClass','required'=>'required',]); ?>
+                <?php echo $this->Form->control('amount', ['label' => false, 'placeholder'=>'0.00','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
             </td>
-            <td  width="20%">
+            <td width="20%">
                 <?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button']); ?>
             </td>
         </tr>

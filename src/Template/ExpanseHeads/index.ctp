@@ -24,7 +24,7 @@
             </div>
             <div class="portlet-body">
                 <div class="">
-                    <?= $this->Form->create($itemCategory,['id'=>'CountryForm']) ?>
+                    <?= $this->Form->create($expanseHead,['id'=>'CountryForm']) ?>
                         <div class="form-group">
                             <label class="control-label col-md-4">Expanse-Head  <span class="required"> * </span>
                             </span>

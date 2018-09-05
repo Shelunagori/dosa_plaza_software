@@ -97,8 +97,8 @@
             
         });
         $(document).ready(function(){
-        $('.checkAll').live('click', function(){
-            $('input:checkbox').not(this).prop('checked', this.checked);
+            $('.checkAll').live('click', function(){
+                $('input:checkbox').not(this).prop('checked', this.checked);
             });
         });
               ";
