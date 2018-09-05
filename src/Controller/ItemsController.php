@@ -144,6 +144,75 @@ class ItemsController extends AppController
         $periodFrom = date('Y-m-d', strtotime('-'.$period.' days', strtotime($to_date)));
         $periodTo = $to_date;
 
+        $BillRows=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
+        $BillRows->matching('Bills', function($q) use($from_date, $to_date){
+            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+        });
+        $BillRows->select([$BillRows->func()->sum('BillRows.quantity')]);
+
+        $BillRows2=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
+        $BillRows2->matching('Bills', function($q) use($from_date, $to_date){
+            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+        });
+        $BillRows2->select([$BillRows2->func()->sum('BillRows.net_amount')]);
+
+        $StockLedger=$this->Items->ItemRows->RawMaterials->StockLedgers->find()
+                    ->where([
+                        'RawMaterials.id = StockLedgers.raw_material_id',
+                        'StockLedgers.voucher_name'=> 'Purchase Voucher',
+                        'StockLedgers.transaction_date >=' => $periodFrom, 
+                        'StockLedgers.transaction_date <=' => $periodTo
+                    ]);
+        $StockLedger->select([$StockLedger->func()->sum('StockLedgers.quantity*StockLedgers.rate')]);
+ 
+        $StockLedger2=$this->Items->ItemRows->RawMaterials->StockLedgers->find()
+                    ->where([
+                        'RawMaterials.id = StockLedgers.raw_material_id',
+                        'StockLedgers.voucher_name'=> 'Purchase Voucher',
+                        'StockLedgers.transaction_date >=' => $periodFrom, 
+                        'StockLedgers.transaction_date <=' => $periodTo
+                    ]);
+        $StockLedger2->select([$StockLedger2->func()->sum('StockLedgers.quantity')]);
+
+
+    $itemCategories = $this->Items->ItemSubCategories->ItemCategories->find()
+        ->contain(['ItemSubCategories'=>['Items'=>function($q)use($BillRows,$BillRows2,$StockLedger, $StockLedger2){
+            return $q->select([
+                        'item_sub_category_id',
+                        'selling_quantity' => $BillRows,
+                        'selling_amount' => $BillRows2,
+                    ])
+                    ->contain(['ItemRows' => ['RawMaterials' => function($q) use($StockLedger, $StockLedger2){
+                        return $q
+                        ->select([
+                            'total_amount' => $StockLedger,
+                            'total_quantity' => $StockLedger2,
+                        ])
+                        ->autoFields(true);
+                    } ]])
+                    ->where(['Items.is_deleted'=>0])
+                    ->autoFields(true);
+        }]]);
+
+         
+
+       // pr($itemCategories->toArray()); exit;
+        $this->set(compact('itemCategories', 'from_date', 'to_date', 'period'));
+    }
+
+    public function foodCostingReportOld(){
+        $this->viewBuilder()->layout('admin');
+
+        $from_date=$this->request->query('from_date');
+        $to_date=$this->request->query('to_date');
+        $period=$this->request->query('period');
+        if(!$period){
+            $period = 30;
+        }
+
+        $periodFrom = date('Y-m-d', strtotime('-'.$period.' days', strtotime($to_date)));
+        $periodTo = $to_date;
+
 
         $BillRows=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
         $BillRows->matching('Bills', function($q) use($from_date, $to_date){
