@@ -157,7 +157,7 @@ class UsersController extends AppController
             'Total_sale' => $LastYearPreviousMonthSale->func()->sum('Bills.grand_total')
         ])
         ->group(['MONTH(transaction_date)']);
-        $LastYearPreviousMonthSale = $LastYearPreviousMonthSale->first()->Total_sale;
+        $LastYearPreviousMonthSale = @$LastYearPreviousMonthSale->first()->Total_sale;
 
         //last year current month//
         $LastYearCurrentMonthSale = $this->Users->Bills->find();
@@ -169,7 +169,7 @@ class UsersController extends AppController
             'Total_sale' => $LastYearCurrentMonthSale->func()->sum('Bills.grand_total')
         ])
         ->group(['MONTH(transaction_date)']);
-        $LastYearCurrentMonthSale = $LastYearCurrentMonthSale->first()->Total_sale;
+        $LastYearCurrentMonthSale = @$LastYearCurrentMonthSale->first()->Total_sale;
 
         $LastYearFutureMonthSale=0;
         if($CurrentMonth<12){
@@ -183,7 +183,7 @@ class UsersController extends AppController
                 'Total_sale' => $LastYearFutureMonthSale->func()->sum('Bills.grand_total')
             ])
             ->group(['MONTH(transaction_date)']);
-            $LastYearFutureMonthSale = $LastYearFutureMonthSale->first()->Total_sale;
+            $LastYearFutureMonthSale = @$LastYearFutureMonthSale->first()->Total_sale;
         }
 
         $CurrentYearLastMonthSale=0;
