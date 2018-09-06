@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Expanse-Vouchers-List | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Expense-Vouchers-List | DOSA PLAZA'); ?>
 
 <div class="row" style="margin-top:15px;">
     <div class="col-md-12 main-div">
@@ -7,7 +7,7 @@
         <div class="portlet box blue-hoki">
             <div class="portlet-title">
                 <div class="caption">
-                     Expanse Vouchers List
+                     Expense Vouchers List
                 </div>
                 <div class="tools"> 
                 </div>

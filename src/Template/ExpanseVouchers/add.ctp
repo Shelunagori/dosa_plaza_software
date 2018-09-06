@@ -1,12 +1,12 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Expanse Voucher | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Expense Voucher | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
     <div class="col-md-12 main-div">
         <!-- BEGIN ALERTS PORTLET-->
         <div class="portlet box blue-hoki">
             <div class="portlet-title">
-                <div class="caption">Add Expanse Voucher</div>
+                <div class="caption">Add Expense Voucher</div>
                 <div class="tools"> </div>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>

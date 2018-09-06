@@ -177,7 +177,7 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 		if (in_array("25", $userPages)){
 			echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Units</span>', '/Units/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 		}
-		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Expanse Heads</span>', '/ExpanseHeads',['escape' => false, 'class' => 'showLoader']).'</li>';
+		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Expense Heads</span>', '/ExpanseHeads',['escape' => false, 'class' => 'showLoader']).'</li>';
 		?>
  	</ul>
 </li>
@@ -186,7 +186,7 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 ?>
 <li class="start">
 	<a href="javascript:;">
-	<span class="title" style="margin-left: 15px;">Expanse Voucher</span>
+	<span class="title" style="margin-left: 15px;">Expense Voucher</span>
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">

@@ -1,5 +1,5 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Expanse-Heads | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Expense-Heads | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 <div class="row" style="margin-top:15px;">
     <div class="col-md-6">
@@ -8,9 +8,9 @@
             <div class="portlet-title">
                 <div class="caption">
                     <?php if(!empty($id)){ ?>
-                        Edit Expanse-Head
+                        Edit Expense-Head
                     <?php }else{ ?>
-                        Add Expanse-Head
+                        Add Expense-Head
                     <?php } ?>
                 </div>
                 <div class="tools">
@@ -26,13 +26,13 @@
                 <div class="">
                     <?= $this->Form->create($expanseHead,['id'=>'CountryForm']) ?>
                         <div class="form-group">
-                            <label class="control-label col-md-4">Expanse-Head  <span class="required"> * </span>
+                            <label class="control-label col-md-4">Expense-Head  <span class="required"> * </span>
                             </span>
                             </label>
                             <div class="col-md-8">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
-                                    <input type="text" value="<?php echo @$expanseHead->name; ?>" name="name" class="form-control" Placeholder="Enter Expanse-Head">
+                                    <input type="text" value="<?php echo @$expanseHead->name; ?>" name="name" class="form-control" Placeholder="Enter Expense-Head">
                                 </div>
                             </div>
                         </div>
