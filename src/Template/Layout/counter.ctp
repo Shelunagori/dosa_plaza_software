@@ -171,36 +171,23 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="page-header-inner">
 				<!-- BEGIN LOGO -->
 				<div class="page-logo">
-					<!-- <div style="font-size:20px;color:#FFF;margin-top: 10px;">LOGO</div> -->
-					<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 43px;']); ?>
-					<div class="menu-toggler sidebar-toggler hide">
-						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+					<div class="desktop-logo" >
+						<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.png',['style' => 'height: 43px;']); ?>
 					</div>
+					<div class="tablet-logo">
+						<?php echo $this->Html->Image('/img/favicon-tablet.png',['style' => 'height: 43px;']); ?>
+					</div>
+					
 				</div>
 				<!-- END LOGO -->
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<div class="top-menu">
 					<ul class="nav navbar-nav pull-right">
-						<!-- BEGIN USER LOGIN DROPDOWN -->
-						<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-						<!--<li class="dropdown dropdown-user">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
-								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;">Find Bill</span>
-							</a>
-						</li>-->
-						<!-- <li class="dropdown dropdown-user">
-							<div style="background: #2d4161;padding: 14px 0px 0px 0px;">
-						    	<span class="topBtnActive dinnerNewTab pointer">Dinner In</span>
-						        <span class="topBtn deleveryNewTab pointer">Delivery</span>
-						        <span class="topBtn takeAwayNewTab pointer">Take Away</span>
-						        <span class="topBtn Swift pointer">Shift Table</span>
-							</div>
-						</li> -->
-						<li class="dropdown dropdown-user">
+						<li class="dropdown">
 							<?= $this->element('header'); ?>
 						</li>
 						
-						<li class="dropdown dropdown-user">
+						<li class="dropdown dropdown-user logoutBtn">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" >
 								<span class="username username-hide-on-mobile" style="font-weight: bold; color: #FFF;"><?php echo ucwords($coreVariable['user_name']); ?></span>
 								<i class="fa fa-sort-down"></i>

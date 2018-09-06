@@ -362,15 +362,15 @@ $order=$pass[1];
 									<td width="40%" valign="top">
 										<table width="95%" style="margin-left:2%"  border="0">
 											<tr>
-												<td height="35px" width="65%"><b>Total :</b></td>
+												<td height="35px" ><b>Total :</b></td>
 												<td width="35%"><b> &#8377; <?php echo $total_amount_without_tax;?> </b></td>
 											</tr>
 											<tr>
-												<td height="35px" width="65%"><b>Tax :</b></td>
+												<td height="35px" ><b>Tax :</b></td>
 												<td width="35%"><span data-target="#deletemodal" data-toggle='modal' class="Taxbutn"><b> &#8377; <?php echo $total_tax_amount;?> </b></span></td>
 											</tr>
 											<tr style="background:#eee">
-												<td height="35px" width="65%"><b>Net Amount :</b></td>
+												<td height="35px" ><b>Net :</b></td>
 												<td width="35%"><b> &#8377; <?php echo $total_amount_with_tax;?> </b></td>
 											</tr>
 											<tr>
@@ -386,7 +386,7 @@ $order=$pass[1];
 											<tr>
 												<td colspan="2">
 													<div style="padding-top:20px;width:100%"  align="center">
-														<a href="javascript:void()" class="CreateBill btn blue-hoki btn-block" align="center"><i class="fa fa-rupee "></i> GENERATE BILL </a>
+														<a href="javascript:void()" class="CreateBill btn blue-hoki " align="center"><i class="fa fa-rupee "></i> GENERATE BILL </a>
 														</br></br> 
 													</div>
 												</td>
@@ -1555,7 +1555,9 @@ $order=$pass[1];
 
 		});
 
-
+		$('#ItemArea').die().live('swipeleft',function(event){
+			alert();
+		});
 
 
 	});
