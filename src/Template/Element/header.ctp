@@ -12,6 +12,37 @@
 .pointer{
     cursor: pointer;
 }
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .topBtn{
+        padding: 4px 6px;
+    }
+    .topBtn2{
+        padding: 4px 6px;
+    }
+    .topBtnActive{
+        padding: 4px 6px;
+    }
+    .tablet-logo{
+        display: block;
+    }
+    .desktop-logo{
+        display: none;
+    }
+    .logoutBtn{
+        display: none !important;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .topBtn{
+        padding: 6px 6px;
+    }
+    .tablet-logo{
+        display: none;
+    }
+    .desktop-logo{
+        display: block;
+    }
+}
 </style>
 <?php //pr($this->request->params);exit;
 $controller = strtolower($this->request->params['controller']); 
