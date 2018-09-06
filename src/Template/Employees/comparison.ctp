@@ -110,9 +110,12 @@
 
 							<?php 
 							$data = [];
-							foreach ($Employees as $Employee) { 
-								$data[] = [name => $Employee->name, y => round($Employee->Emp_Sales)];
-							}
+							 
+								foreach ($Employees as $Employee) { 
+									$data[] = ['name' => $Employee->name, 'y' => round(@$Employee->Emp_Sales)];
+								}
+							 
+							
 							$json_data = json_encode($data);
 							?>
 							
