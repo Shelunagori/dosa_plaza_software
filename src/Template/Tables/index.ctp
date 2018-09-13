@@ -121,7 +121,11 @@
 									</tr>
 								</table>
 							</div>
-							<a href="javascript:void(0)" class="UpdateCustomerInfo" table_id="<?php echo $Table->id; ?>" table_name="<?php echo $Table->name; ?>">CUSTOMER INFO</a>
+							<?php
+							$url=$this->Url->build(['controller'=>'Tables','action'=>'customerForm']);
+							$url=$url.'/'.$Table->id;
+							?>
+							<a href="<?php echo $url; ?>" class="UpdateCustomerInfo" table_id="<?php echo $Table->id; ?>" table_name="<?php echo $Table->name; ?>">CUSTOMER INFO</a>
 						</div>
 				<?php }
 				} else{ ?>
@@ -373,43 +377,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$('.UpdateCustomerInfo').die().live('click',function(event){
-		var table_id = $(this).attr('table_id');
-		var table_name = $(this).attr('table_name');
-		$('#tableName').text(table_name);
-		$('#WaitBox6 div#popupContent').html('<div align=center>Loading...</div>');
-		$('#WaitBox6').show();
-
-		var url='".$this->Url->build(['controller'=>'Tables','action'=>'customerForm'])."';
-		url=url+'/'+table_id; 
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$('#WaitBox6 div#popupContent').html(response);
-		});
-	});
-
-	$('.closeCustomerPopup').die().live('click',function(event){
-		$('#WaitBox6').hide();
-	});
-
-	$('.saveCommentInfo').die().live('click',function(event){
-		var customer_name = $('#customer_name').val();
-		var customer_mobile = $('#customer_mobile').val();
-		var customer_email = $('#customer_email').val();
-		var customer_dob = $('#customer_dob').val();
-		var customer_anniversary = $('#customer_anniversary').val();
-		var customer_address = $('#customer_address').val();
-		var table_id = $('#table_id').val();
-
-		var url='".$this->Url->build(['controller'=>'Customers','action'=>'saveCommentInfo'])."';
-		url=url+'?customer_name='+customer_name+'&customer_mobile='+customer_mobile+'&customer_email='+customer_email+'&customer_dob='+customer_dob+'&customer_anniversary='+customer_anniversary+'&customer_address='+customer_address+'&table_id='+table_id; 
-		$.ajax({
-			url: url,
-		}).done(function(response) {
-			$('#WaitBox6').hide();
-		});
-	});
+	
 
 	
 
@@ -635,15 +603,3 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 	</div>
 </div>
 
-<div id="WaitBox6" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
-	<div class="modal-backdrop fade in" ></div>
-	<div class="modal-dialog" >
-		<div class="modal-content" style="padding: 10px;">
-			<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">CUSTOMER INFORMATION : TABLE <span id="tableName"></span></div>
-			<div id="popupContent">
-				<div align="center">Loading...</div>
-			</div>
-			
-		</div>
-	</div>
-</div>

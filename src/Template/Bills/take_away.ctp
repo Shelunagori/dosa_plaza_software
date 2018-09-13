@@ -12,14 +12,14 @@
 </style>
 <?php foreach ($Bills as $Bill) { ?>
 <div class="Dbox"> 
-	<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Bills','action'=>'paymentinfo')) ?>">
+	<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Bills','action'=>'paymentinfo2')) ?>">
 		<div style="font-size:14px;">
 			<input type="hidden" name="bill_id" value="<?php echo $Bill->id; ?>" >
 			<div>
 				<table width="100%" style="font-size:12px;line-height: 22px; border: 2px solid #ccc;">
 					<tr>
 						<td valign="top" align="center">
-							<span style="font-size: 14px; color: #3b393a;">Delivery: <b> <?= h($Bill->delivery_no) ?> </b></span><br/>
+							<span style="font-size: 14px; color: #3b393a;">Take Away: <b> <?= h($Bill->take_away_no) ?> </b></span><br/>
 							<span style="font-size: 14px; color: #3b393a;">Customer <b> <?= h($Bill->customer->name) ?> </b></span><br/>
 							<span style="font-size: 14px; color: #3b393a;">Delivery <b> <?= h($Bill->created_on->format('d-m-Y H:i A')) ?> </b></span><br/>
 							<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> ₹ <?= h($Bill->grand_total) ?> </b></span>
@@ -54,7 +54,7 @@
 </div>
 <?php } ?>
 <div align="center"><br/>
-	<button type="button" class="btn btn-danger Newdelevery showLoader"><i class="fa fa-plus"></i> New Delivery</button>
+	<button type="button" class="btn btn-danger Newdelevery showLoader"><i class="fa fa-plus"></i> New Take Away</button>
 </div>
 
 
@@ -62,7 +62,7 @@
 $js="
 $(document).ready(function() {
     $('.Newdelevery').die().live('click',function(event){
-        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','delivery'])."'
+        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','takeaway'])."'
         window.location.href = url; 
     });
 });

@@ -22,10 +22,8 @@ class RawMaterialsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('admin');
-		$this->paginate = [
-            'contain' => ['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories']
-        ];
-        $rawMaterials = $this->paginate($this->RawMaterials->find());
+		
+        $rawMaterials = $this->RawMaterials->find()->contain(['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories']);
 
         $this->set(compact('rawMaterials'));
     }
@@ -256,12 +254,36 @@ class RawMaterialsController extends AppController
 		$this->set(compact('RawMaterials'));
 	}
 
+	public function currentStockExcel(){
+		$this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Current-Stock Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+	}
+
 
 	public function dailyReport()
 	{
 		$this->viewBuilder()->layout('admin');
 		
-		$date=$this->request->query('date');
+		$date=date('Y-m-d', strtotime($this->request->query('date')));
 		
 		$openingIn=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <' => $date]);
 		$openingIn->select([$openingIn->func()->sum('StockLedgers.quantity')]);
@@ -302,14 +324,40 @@ class RawMaterialsController extends AppController
 		$this->set(compact('RawMaterials', 'date'));
 	}
 
+	public function dailyReportExcel(){
+		$this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Daily-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+	}
+
 
 
 	public function consumptionReport()
 	{
 		$this->viewBuilder()->layout('admin');
 		
-		$from_date=$this->request->query('from_date');
-		$to_date=$this->request->query('to_date');
+		$date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
 
 
 		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
@@ -333,7 +381,31 @@ class RawMaterialsController extends AppController
 							->where(['RawMaterials.is_deleted'=>0]);
 		
 		
-		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+		$this->set(compact('RawMaterials', 'from_date', 'to_date', 'exploded_date_from_to'));
+	}
+
+	public function consumptionReportExcel(){
+		$this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Consumption-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
 	}
 
 
@@ -342,8 +414,10 @@ class RawMaterialsController extends AppController
 	{
 		$this->viewBuilder()->layout('admin');
 		
-		$from_date=$this->request->query('from_date');
-		$to_date=$this->request->query('to_date');
+		$date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
 
 
 
@@ -380,7 +454,32 @@ class RawMaterialsController extends AppController
 
 		//pr($RawMaterials->toArray()); exit;
 		
-		$this->set(compact('RawMaterials', 'from_date', 'to_date'));
+		$this->set(compact('RawMaterials', 'from_date', 'to_date', 'exploded_date_from_to'));
+	}
+
+	public function stockReportExcel()
+	{
+		$this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Stock-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
 	}
 
 	public function monthlyReport()
@@ -390,25 +489,11 @@ class RawMaterialsController extends AppController
 		$from_date=$this->request->query('from_date');
 		$to_date=$this->request->query('to_date');
 
-		// $RawMaterials = $this->RawMaterials->StockLedgers->find();
-		// $RawMaterials->select([
-		// 	'purchase' => $RawMaterials->func()->sum('quantity*rate'),
-		// 	'month' => 'MONTH(transaction_date)',
-		// 	'year' => 'YEAR(transaction_date)',
-		// ])
-		// ->where([
-		// 	'StockLedgers.transaction_date >=' => $from_date.'-1', 
-		// 	'StockLedgers.transaction_date <=' => $to_date.'-31', 
-		// 	'StockLedgers.status' => 'in',
-		// 	'StockLedgers.voucher_name' => 'Purchase Voucher'
-		// ])
-		// ->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
-		// ->order(['StockLedgers.transaction_date' => 'ASC']);
+		$from_date1 = explode('-', $from_date);
+		$to_date1 = explode('-', $to_date);
 
-		// $purchases=[];
-		// foreach ($RawMaterials as $RawMaterial) {
-		// 	$purchases[$RawMaterial->year][$RawMaterial->month]=$RawMaterial->purchase;
-		// }
+		$qw= $to_date1[1].'-'.$to_date1[0].'-1';
+		$tillDate = date("Y-m-t", strtotime($qw));
 
 		$PurchaseVouchers = $this->RawMaterials->PurchaseVoucherRows->PurchaseVouchers->find();
 		$PurchaseVouchers->select([
@@ -417,8 +502,8 @@ class RawMaterialsController extends AppController
 			'year' => 'YEAR(transaction_date)',
 		])
 		->where([
-			'PurchaseVouchers.transaction_date >=' => $from_date.'-1', 
-			'PurchaseVouchers.transaction_date <=' => $to_date.'-31'
+			'PurchaseVouchers.transaction_date >=' => $from_date1[1].'-'.$from_date1[0].'-1', 
+			'PurchaseVouchers.transaction_date <=' => $to_date1[1].'-'.$to_date1[0].'-1'
 		])
 		->group(['MONTH(transaction_date)', 'YEAR(transaction_date)'])
 		->order(['PurchaseVouchers.transaction_date' => 'ASC']);
@@ -429,26 +514,7 @@ class RawMaterialsController extends AppController
 		}
 
 
-		// $BillRows = $this->RawMaterials->ItemRows->Items->BillRows->find();
-		// $BillRows->select([
-		// 	'sale' => $BillRows->func()->sum('net_amount'),
-		// 	'month' => 'MONTH(transaction_date)',
-		// 	'year' => 'YEAR(transaction_date)',
-		// ])
-		// ->matching('Bills', function($q) use($from_date, $to_date){
-		// 	return $q
-		// 	->where([
-		// 		'Bills.transaction_date >=' => $from_date.'-1', 
-		// 		'Bills.transaction_date <=' => $to_date.'-31', 
-		// 	]);
-		// })
-		// ->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
-		// ->order(['Bills.transaction_date' => 'ASC']);
-		// $sales=[];
-		// foreach ($BillRows as $BillRow) {
-		// 	$sales[$BillRow->year][$BillRow->month]=$BillRow->sale;
-		// }
-
+		
 
 		$Bills = $this->RawMaterials->ItemRows->Items->BillRows->Bills->find();
 		$Bills->select([
@@ -457,21 +523,75 @@ class RawMaterialsController extends AppController
 			'year' => 'YEAR(transaction_date)',
 		])
 		->where([
-			'Bills.transaction_date >=' => $from_date.'-1', 
-			'Bills.transaction_date <=' => $to_date.'-31', 
+			'Bills.transaction_date >=' => $from_date1[1].'-'.$from_date1[0].'-1', 
+			'Bills.transaction_date <=' => $tillDate
 		])
 		->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
 		->order(['Bills.transaction_date' => 'ASC']);
+		
 		$sales=[];
 		foreach ($Bills as $Bill) {
 			$sales[$Bill->year][$Bill->month]=$Bill->sale;
 		}
 
-		$this->set(compact('from_date', 'to_date', 'purchases', 'sales'));
+		$this->set(compact('from_date', 'to_date', 'purchases', 'sales', 'from_date1', 'to_date1'));
 
 	}
 
+	public function monthlyReportExcel(){
+		$this->viewBuilder()->layout('');
 
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Monthly-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+	}
+
+	public function store()
+	{
+		$this->viewBuilder()->layout('admin');
+		
+	
+		
+		$q=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
+		$q->select([$q->func()->sum('StockLedgers.quantity')]);
+		
+		$q2=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
+		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+
+		$q3=$this->RawMaterials->StockLedgers->find()
+			->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.purchase_voucher_id >' => '0'])
+			->order(['StockLedgers.transaction_date' => 'DESC'])
+			->limit(1);
+		$q3->select(['StockLedgers.transaction_date']);
+		
+		$RawMaterials =	$this->RawMaterials->find();
+		$RawMaterials->select([
+			'total_in' => $q,
+			'total_out' => $q2,
+			'last_purchase' => $q3
+		])
+		->contain(['PrimaryUnits'])
+		->where(['RawMaterials.is_deleted'=>0])
+		->autoFields(true);
+
+		$this->set(compact('RawMaterials'));
+	}
 
 
 }

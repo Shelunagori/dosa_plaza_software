@@ -230,6 +230,20 @@ class UsersController extends AppController
 	public function dashboard2()
     {
         $this->viewBuilder()->layout('counter');
+
+        // $tmpdir = sys_get_temp_dir();
+        // $file =  tempnam($tmpdir, 'ctk');
+        // $handle = fopen($file, 'w');
+
+        // $data = 'hello';
+
+        // fwrite($handle, $data);
+        // fclose($handle);
+        // system('print '.$file.'');
+        // echo exec('lpr '.$file.'');
+        // echo system("lp ".$file);
+        // //unlink($file);
+        // exit;
 		
 		$Tables=$this->Users->Tables->find();
 		$ItemCategories=$this->Users->ItemCategories->find()->contain(['ItemSubCategories'=>['Items']]);

@@ -33,6 +33,8 @@ class Vendor extends Entity
         'contact_number' => true,
         'address' => true,
         'is_deleted' => true,
+        'gst_no' => true,
+        'email' => true,
         'vendor_items' => true
     ];
 }

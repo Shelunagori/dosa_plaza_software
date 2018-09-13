@@ -50,6 +50,7 @@ class KotsTable extends Table
 
         $this->belongsTo('ItemCategories');
         $this->belongsTo('Customers');
+        $this->belongsTo('Employees');
         
         $this->hasMany('KotRows', [
             'foreignKey' => 'kot_id'

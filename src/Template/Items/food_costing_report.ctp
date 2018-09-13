@@ -39,10 +39,17 @@ legend{
 									<table>
 										<tr>
 											<td>
-												<input type="date" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required />
-											</td>
-											<td>
-												<input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required />
+												<div class="form-group ">
+			                                        <div class="col-md-4">
+			                                            <div id="reportrange" class="btn default" style="padding: 5px;">
+			                                                <i class="fa fa-calendar"></i>
+			                                                &nbsp; 
+			                                                <span><?php echo $exploded_date_from_to[0].' - '.$exploded_date_from_to[1]; ?></span>
+			                                                <input type="hidden" name="date_from_to" id="date_from_to" value="<?php echo @$exploded_date_from_to[0].'/'.@$exploded_date_from_to[1]; ?>">
+			                                                <b class="fa fa-angle-down"></b>
+			                                            </div>
+			                                        </div>
+			                                    </div>
 											</td>
 											<td>
 												<?php
@@ -64,9 +71,18 @@ legend{
 							</div>
 						</td>
 						<td width="20%">
-							<div class="actions" style="margin-right: 10px;">
-								<input id="search3"  class="form-control" type="text" placeholder="Search" >
-							</div>
+							<table>
+								<tr>
+									<td>
+										<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;"> Excel</a>
+									</td>
+									<td>
+										<div class="actions" style="margin-right: 10px;">
+											<input id="search3"  class="form-control" type="text" placeholder="Search" >
+										</div>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -75,7 +91,7 @@ legend{
 					<div class="col-md-12 horizontal"></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" id="ExcelPage">
 
 				<?php if($from_date && $to_date){
 					$categoryWisetotalsellQuanity=0;
@@ -83,7 +99,7 @@ legend{
 					$categoryWisetotalpurchageAmount=0; 
 					foreach ($itemCategories as $itemCategorie) {
 						$category_name = $itemCategorie->name;
-						echo "<fieldset><legend class='catName'> &nbsp;".$category_name." &nbsp; </legend>";
+						echo "<fieldset class='FcatName'><legend class='catName'> &nbsp;".$category_name." &nbsp; </legend>";
 						$item_sub_categories = $itemCategorie->item_sub_categories;
 						$SubCategoryWisetotalsellQuanity=0;
 						$SubCategoryWisetotalsellAmount=0;
@@ -91,7 +107,7 @@ legend{
 						foreach ($item_sub_categories as $item_sub_category) {
 							$sub_category_name = $item_sub_category->name;
 							$Items=$item_sub_category->items;
-							echo "<fieldset><legend class='subcatName'> &nbsp;".$sub_category_name."&nbsp; </legend>";
+							echo "<fieldset class='FsubcatName'><legend class='subcatName'> &nbsp;".$sub_category_name."&nbsp; </legend>";
 							?>
 								<div class="table-scrollable">
 									<table class="table table-bordered table-str">
@@ -216,7 +232,7 @@ legend{
 								</thead>
 								<tfoot>
 									<tr>
-										<th colspan="2" style="text-align:right">Sub Total</th>
+										<th colspan="2" style="text-align:right">Total</th>
 										<th><?php echo $SubCategoryWisetotalsellQuanity;?></th>
  										<th><?php echo $SubCategoryWisetotalsellAmount;?></th>
  										<th><?php echo $SubCategoryWisetotalpurchageAmount;?></th>
@@ -245,13 +261,42 @@ legend{
 	</div>
 </div>
 
+<?php $formAction=$this->Url->build(['controller'=>'Items','action'=>'foodCostingReportExcel']); ?>
+<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
+	<textarea id="ExcelBox" name="excel_box"></textarea>
+	<button type="submit">EXCEL</button>
+</form>
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+<?php 
 
 
-
-
-
-<?php
-	$js="
+$js="
 	$(document).ready(function() {	
 		var rows = $('#main_tbody tr.main_tr');
 		$('#search3').on('keyup',function() {
@@ -270,9 +315,51 @@ legend{
     		}
     	}); 
 
+    	$('fieldset.FcatName').each(function(){
+    		$('fieldset.FsubcatName').each(function(){
+    			$(this).find('.table-bordered tbody tr').each(function(){
+					var sellingAmount = parseFloat($(this).find('td:nth-child(5)').text());
+					var purchaseAmount = parseFloat($(this).find('td:nth-child(7)').text());
+					if( ((!sellingAmount) || sellingAmount==0) && ((!purchaseAmount) || purchaseAmount==0) ){
+						$(this).remove();
+					}
+				});
+			});
+		});
+
+		$('fieldset.FcatName').each(function(){
+    		$('fieldset.FsubcatName').each(function(){
+    			var l = $(this).find('.table-bordered tbody tr').length;
+    			if(l==0){
+    				$(this).remove();
+    			}
+			});
+		});
+
+		$('fieldset.FcatName').each(function(){
+    		var l = $(this).find('fieldset.FsubcatName').length;
+    		if(l==0){
+				$(this).remove();
+			}
+		});
+
+		var ht = $('#ExcelPage').html();
+		$('#ExcelBox').html(ht);
+
+		
+		$('#exportExcel').die().live('click',function(event){
+			$('#ExcelForm').submit();
+		});
+
 
 		
 	});
 	";
-echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+
+	$js.="
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
+";
 ?>
+<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

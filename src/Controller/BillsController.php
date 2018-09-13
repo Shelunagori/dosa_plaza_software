@@ -51,6 +51,21 @@ class BillsController extends AppController
             $where['Bills.grand_total <=']=$amount_to;
         }
 
+        $customer_name=$this->request->query('customer_name');
+        if(!empty($customer_name)){
+            $where['Customers.name LIKE']='%'.$customer_name.'%';
+        }
+
+        $mobile_no=$this->request->query('mobile_no');
+        if(!empty($mobile_no)){
+            $where['Customers.mobile_no LIKE']='%'.$mobile_no.'%';
+        }
+
+        $customer_code=$this->request->query('customer_code');
+        if(!empty($customer_code)){
+            $where['Customers.customer_code']=$customer_code;
+        }
+
         $this->paginate = [
             'contain' => ['Tables', 'Customers']
         ];
@@ -58,7 +73,7 @@ class BillsController extends AppController
             $this->Bills->find()->where($where)
         );
 
-        $this->set(compact('bills', 'bill_no', 'from_date', 'to_date', 'amount_from', 'amount_to'));
+        $this->set(compact('bills', 'bill_no', 'from_date', 'to_date', 'amount_from', 'amount_to', 'customer_name', 'mobile_no', 'customer_code'));
     }
 
     /**
@@ -173,9 +188,7 @@ class BillsController extends AppController
         $bill->grand_total=$net;
 		$bill->customer_id=$customer_id;
 		$bill->order_type=$order_type;
-        if($order_type!='dinner'){
-            $bill->payment_type='';
-        }
+       
         $bill_rows=[];
 		foreach($q as $row){
 			$bill_row = $this->Bills->BillRows->newEntity();
@@ -206,6 +219,26 @@ class BillsController extends AppController
             $bill->no_of_pax=@$Table->no_of_pax;
         }
         
+        if($bill->order_type == "delivery"){
+            $last_voucher_no=$this->Bills->find()
+                        ->select(['delivery_no'])->order(['delivery_no' => 'DESC'])->where(['order_type' => 'delivery', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $bill->delivery_no=$last_voucher_no->delivery_no+1;
+            }else{
+                $bill->delivery_no=1;
+            }
+        }
+
+        if($bill->order_type == "takeaway"){
+            $last_voucher_no=$this->Bills->find()
+                        ->select(['take_away_no'])->order(['take_away_no' => 'DESC'])->where(['order_type' => 'takeaway', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $bill->take_away_no=$last_voucher_no->take_away_no+1;
+            }else{
+                $bill->take_away_no=1;
+            }
+        }
+
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
 			$query->update()
@@ -451,15 +484,18 @@ class BillsController extends AppController
     public function salesReport(){
         $this->viewBuilder()->layout('admin');
 
+        $urls=$this->request->here();
+        $seturl=explode('?',$urls);
+        $this->set(compact('seturl'));
+
         $where=[];
 
-        $from_date=$this->request->query('from_date');
-        if(!empty($from_date)){
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
             $where['Bills.transaction_date >=']=$from_date;
-        }
-
-        $to_date=$this->request->query('to_date');
-        if(!empty($to_date)){
             $where['Bills.transaction_date <=']=$to_date;
         }
 
@@ -513,12 +549,98 @@ class BillsController extends AppController
         }
 
         //pr($where); exit;
+
         $Bills = $this->paginate(
                     $this->Bills->find()
                     ->where($where)
                     ->autoFields(true)
                     ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ])
                 );
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        $Tables = $this->Bills->Tables->find('list');
+        $Employees = $this->Bills->Employees->find('list');
+        $Customers = $this->Bills->Customers->find('list');
+
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total', 'Tables', 'Employees', 'Customers'));
+    }
+
+
+    public function salesReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        
+
+
+        $where=[];
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bills.transaction_date >=']=$from_date;
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+
+        $no_of_pax=$this->request->query('no_of_pax');
+        $no_of_pax_parameter=$this->request->query('no_of_pax_parameter');
+        if(!empty($no_of_pax)){
+            if($no_of_pax_parameter=="Equal-to"){
+                $where['Bills.no_of_pax']=$no_of_pax;
+            }else if($no_of_pax_parameter=="Greater-than"){
+                $where['Bills.no_of_pax >']=$no_of_pax;
+            }else if($no_of_pax_parameter=="Less-than"){
+                $where['Bills.no_of_pax <']=$no_of_pax;
+            }
+        }
+
+        $payment_type=$this->request->query('payment_type');
+        if(!empty($payment_type)){
+            $where['Bills.payment_type']=$payment_type;
+        }
+
+        $order_type=$this->request->query('order_type');
+        if(!empty($order_type)){
+            $where['Bills.order_type']=$order_type;
+        }
+
+        $table_id=$this->request->query('table_id');
+        if(!empty($table_id)){
+            $where['Bills.table_id']=$table_id;
+        }
+
+        $employee_id=$this->request->query('employee_id');
+        if(!empty($employee_id)){
+            $where['Bills.employee_id']=$employee_id;
+        }
+
+        $customer_id=$this->request->query('customer_id');
+        if(!empty($customer_id)){
+            $where['Bills.customer_id']=$customer_id;
+        }
+
+        $bill_amount=$this->request->query('bill_amount');
+        $bill_amount_parameter=$this->request->query('bill_amount_parameter');
+        if(!empty($bill_amount)){
+            if($bill_amount_parameter=="Equal-to"){
+                $where['Bills.grand_total']=$bill_amount;
+            }else if($bill_amount_parameter=="Greater-than"){
+                $where['Bills.grand_total >']=$bill_amount;
+            }else if($bill_amount_parameter=="Less-than"){
+                $where['Bills.grand_total <']=$bill_amount;
+            }
+        }
+
+        //pr($where); exit;
+        $Bills =  $this->Bills->find()
+                    ->where($where)
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ]);
         //pr($Bills->toArray()); exit;
 
         $q=$this->Bills->find()->where($where);
@@ -526,9 +648,11 @@ class BillsController extends AppController
 
         $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
 
-        
+        $Tables = $this->Bills->Tables->find('list');
+        $Employees = $this->Bills->Employees->find('list');
+        $Customers = $this->Bills->Customers->find('list');
 
-        $this->set(compact('from_date', 'to_date', 'Bills', 'Total_grand_total'));
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total', 'Tables', 'Employees', 'Customers'));
     }
 
 
@@ -540,6 +664,16 @@ class BillsController extends AppController
                     ->order(['Bills.created_on' => 'ASC']);
         $this->set(compact('Bills'));
     }
+
+    function takeAway(){
+        $this->viewBuilder()->layout('counter');
+        $Bills = $this->Bills->find()
+                    ->where(['Bills.order_type' => 'takeaway', 'Bills.payment_type' => ''])
+                    ->contain(['Customers'])
+                    ->order(['Bills.created_on' => 'ASC']);
+        $this->set(compact('Bills'));
+    }
+
 
     function paymentinfo(){
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -553,18 +687,33 @@ class BillsController extends AppController
         }
     }
 
+    function paymentinfo2(){
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $bill_id = $this->request->data()['bill_id'];
+            $payment_type = $this->request->data()['payment_type'];
+
+            $Bill = $this->Bills->get($bill_id);
+            $Bill->payment_type = $payment_type;
+            $this->Bills->save($Bill);
+            return $this->redirect(['action' => 'takeAway']);
+        }
+    }
+
     public function billWiseSales(){
         $this->viewBuilder()->layout('admin');
 
+        $urls=$this->request->here();
+        $seturl=explode('?',$urls);
+        $this->set(compact('seturl'));
+
         $where=[];
 
-        $from_date=$this->request->query('from_date');
-        if(!empty($from_date)){
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
             $where['Bills.transaction_date >=']=$from_date;
-        }
-
-        $to_date=$this->request->query('to_date');
-        if(!empty($to_date)){
             $where['Bills.transaction_date <=']=$to_date;
         }
 
@@ -582,12 +731,53 @@ class BillsController extends AppController
 
         
 
-        $this->set(compact('from_date', 'to_date', 'Bills', 'Total_grand_total'));
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total'));
+    }
+
+    public function billWiseSalesExcel(){
+        $this->viewBuilder()->layout('');
+
+        $where=[];
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bills.transaction_date >=']=$from_date;
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+
+       
+        $Bills = $this->Bills->find()
+                    ->where($where)
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ]);
+        
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        
+
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total'));
+    }
+
+    public function billWiseSalesPdf(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+            $this->set(compact('excel_box'));
+        }
     }
 
     public function hourlyReport(){
         $this->viewBuilder()->layout('admin');
         $date=$this->request->query('date');
+        $date1=date('Y-m-d', strtotime($date));
 
         $Bills = $this->Bills->find();
         $Bills->select([
@@ -596,7 +786,7 @@ class BillsController extends AppController
             'Hourly_bill' => $Bills->func()->count('id'),
             'hour' => 'HOUR(created_on)'
         ])
-        ->where(['Bills.transaction_date' => $date])
+        ->where(['Bills.transaction_date' => $date1])
         ->group(['HOUR(created_on)'])
         ->order(['Bills.created_on' => 'ASC']);
 
@@ -612,10 +802,46 @@ class BillsController extends AppController
         $this->set(compact('date', 'HoyrlySalesData', 'HoyrlyPaxData', 'HoyrlyBillData'));
     }
 
+    public function hourlyReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Hourly-Sales-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+    }
+
     public function dateWiseSales(){
         $this->viewBuilder()->layout('admin');
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+
+        $urls=$this->request->here();
+        $seturl=explode('?',$urls);
+        $this->set(compact('seturl'));
+
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bookings.booking_date >=']=$from_date;
+            $where['Bookings.booking_date <=']=$to_date;
+        }
 
 
         // $TotalAmount = $this->Bills->BillRows->find()->Where(['BillRows.bill_id = Bills.id']);
@@ -638,8 +864,52 @@ class BillsController extends AppController
 
        
 
-        $this->set(compact('from_date', 'to_date', 'data'));
-    } 
+        $this->set(compact('exploded_date_from_to', 'data'));
+    }
+
+    public function dateWiseSalesExcel(){
+        $this->viewBuilder()->layout('');
+
+        
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bookings.booking_date >=']=$from_date;
+            $where['Bookings.booking_date <=']=$to_date;
+        }
+
+
+        // $TotalAmount = $this->Bills->BillRows->find()->Where(['BillRows.bill_id = Bills.id']);
+        // $TotalAmount->select([$TotalAmount->func()->sum('BillRows.amount')]);
+
+        $BillRows   = $this->Bills->BillRows->find();
+        $BillRows->matching('Bills')->group(['Bills.transaction_date']);
+        $BillRows->select([
+            'TotalAmount' => $BillRows->func()->sum('BillRows.amount'),
+            'TotalDiscountAmount' => $BillRows->func()->sum('BillRows.discount_amount'),
+            'TotalNetAmount' => $BillRows->func()->sum('BillRows.net_amount'),
+        ])
+        ->autoFields(true);
+
+        $data = [];
+        foreach ($BillRows as $BillRow) {
+            $data[ strtotime($BillRow->_matchingData['Bills']->transaction_date) ] = ['TotalAmount' => $BillRow->TotalAmount, 'TotalDiscountAmount' => $BillRow->TotalDiscountAmount, 'TotalNetAmount' => $BillRow->TotalNetAmount];
+        } 
+        
+
+        $this->set(compact('exploded_date_from_to', 'data'));
+    }
+
+    public function dateWiseSalesPdf(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+            $this->set(compact('excel_box'));
+        }
+    }
 
 
     

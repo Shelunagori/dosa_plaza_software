@@ -20,6 +20,7 @@
 		<?= $this->fetch('PAGE_LEVEL_CSS')?>
 		<!-- BEGIN THEME STYLES -->
 		<?php echo $this->Html->css('/assets/global/css/components.css'); ?>
+		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
 		<?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/layout.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/themes/darkblue.css'); ?>

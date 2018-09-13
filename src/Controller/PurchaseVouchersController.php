@@ -21,12 +21,22 @@ class PurchaseVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('admin');
+
+        $where=[];
+
+        $vendor_id = $this->request->query('vendor_id');
+        if(!empty($vendor_id)){
+            $where['PurchaseVouchers.vendor_id LIKE']=$vendor_id;
+        }
+
+        $Vendor = $this->PurchaseVouchers->Vendors->get($vendor_id);
+
         $this->paginate = [
             'contain' => ['Vendors']
         ];
-        $purchaseVouchers = $this->paginate($this->PurchaseVouchers);
+        $purchaseVouchers = $this->paginate($this->PurchaseVouchers->find()->where($where));
 
-        $this->set(compact('purchaseVouchers'));
+        $this->set(compact('purchaseVouchers', 'Vendor'));
     }
 
     /**

@@ -134,8 +134,11 @@ class ItemsController extends AppController
     public function foodCostingReport(){
         $this->viewBuilder()->layout('admin');
 
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
         $period=$this->request->query('period');
         if(!$period){
             $period = 30;
@@ -197,7 +200,31 @@ class ItemsController extends AppController
          
 
        // pr($itemCategories->toArray()); exit;
-        $this->set(compact('itemCategories', 'from_date', 'to_date', 'period'));
+        $this->set(compact('itemCategories', 'from_date', 'to_date', 'period', 'exploded_date_from_to'));
+    }
+
+    public function foodCostingReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Food-Costing-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
     }
 
     public function foodCostingReportOld(){

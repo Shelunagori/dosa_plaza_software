@@ -17,10 +17,10 @@
 									<table>
 										<tr>
 											<td>
-												<input type="month" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required />
+												<input name="from_date" class="form-control date-picker" type="text" value="<?php echo @$from_date; ?>" data-date-format="mm-yyyy" required="required" >
 											</td>
 											<td>
-												<input type="month" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required />
+												<input name="to_date" class="form-control date-picker" type="text" value="<?php echo @$to_date; ?>" data-date-format="mm-yyyy" required="required" >
 											</td>
 											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
@@ -31,9 +31,18 @@
 							</div>
 						</td>
 						<td width="20%">
-							<div class="actions" style="margin-right: 10px;">
-								<input id="search3"  class="form-control" type="text" placeholder="Search" >
-							</div>
+							<table>
+								<tr>
+									<td>
+										<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;"> Excel</a>
+									</td>
+									<td>
+										<div class="actions" style="margin-right: 10px;">
+											<input id="search3"  class="form-control" type="text" placeholder="Search" >
+										</div>
+									</td>
+								</tr>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -42,10 +51,19 @@
 					<div class="col-md-12 horizontal"></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" id="ExcelPage">
 				<?php if($from_date && $to_date){ ?>
+				<div align="center">
+					<h4><?php echo $coreVariable['company_name']; ?></h4>
+					<span><?php echo $coreVariable['company_address']; ?></span><br/>
+				</div>
+				<div>
+					<b>Bill Wise Sales Report</b><br/>
+					<b>From <?php echo @$from_date; ?> To <?php echo @$to_date; ?></b>
+					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
+				</div>
 				<div class="table-scrollable">
-					<table class="table table-str">
+					<table border="1" class="table table-str" style="border: none;">
 						<thead>
 							<tr>
 								<th>Month</th>
@@ -55,8 +73,8 @@
 						</thead>
 						<tbody id="main_tbody">
 						<?php 
-						$start    = (new DateTime($from_date))->modify('first day of this month');
-						$end      = (new DateTime($to_date))->modify('first day of next month');
+						$start    = (new DateTime($from_date1[1].'-'.$from_date1[0]))->modify('first day of this month');
+						$end      = (new DateTime($to_date1[1].'-'.$to_date1[0]))->modify('first day of next month');
 						$interval = DateInterval::createFromDateString('1 month');
 						$period   = new DatePeriod($start, $interval, $end);
 
@@ -77,10 +95,38 @@
 	</div>
 </div>
 
+<?php $formAction=$this->Url->build(['controller'=>'RawMaterials','action'=>'monthlyReportExcel']); ?>
+<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
+	<textarea id="ExcelBox" name="excel_box"></textarea>
+	<button type="submit">EXCEL</button>
+</form>
 
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
 
-
-
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
 
 <?php
 	$js="
@@ -102,9 +148,23 @@
     		}
     	}); 
 
+    	var ht = $('#ExcelPage').html();
+		$('#ExcelBox').html(ht);
+
+		
+		$('#exportExcel').die().live('click',function(event){
+			$('#ExcelForm').submit();
+		});
 
 		
 	});
 	";
+
+$js.="
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
+";
+
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>

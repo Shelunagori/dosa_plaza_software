@@ -416,7 +416,7 @@ class TablesController extends AppController
     }
 
     public function customerForm($table_id){
-        $this->viewBuilder()->layout('');
+        $this->viewBuilder()->layout('counter');
 
         $table = $this->Tables->get($table_id);
 
@@ -427,7 +427,7 @@ class TablesController extends AppController
         }
 
 
-        $this->set(compact('table_id', 'Customers'));
+        $this->set(compact('table_id', 'Customers', 'table'));
     }
 
 

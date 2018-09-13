@@ -88,11 +88,6 @@ var ComponentsPickers = function () {
                 opens: (Metronic.isRTL() ? 'left' : 'right'),
                 startDate: moment().subtract('days', 29),
                 endDate: moment(),
-                minDate: '01/01/2012',
-                maxDate: '12/31/2014',
-                dateLimit: {
-                    days: 60
-                },
                 showDropdowns: true,
                 showWeekNumbers: true,
                 timePicker: false,
@@ -109,7 +104,7 @@ var ComponentsPickers = function () {
                 buttonClasses: ['btn'],
                 applyClass: 'green',
                 cancelClass: 'default',
-                format: 'MM/DD/YYYY',
+                format: 'DD-MM-YYYY',
                 separator: ' to ',
                 locale: {
                     applyLabel: 'Apply',
@@ -122,11 +117,12 @@ var ComponentsPickers = function () {
                 }
             },
             function (start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#date_from_to').val(start.format('D-M-YYYY') + '/' + end.format('D-M-YYYY'));
+                $('#reportrange span').html(start.format('D-M-YYYY') + ' - ' + end.format('D-M-YYYY'));
             }
         );
         //Set the initial state of the picker label
-        $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+        //$('#reportrange span').html(moment().subtract('days', 29).format('D-M-YYYY') + ' - ' + moment().format('D-M-YYYY'));
     }
 
     var handleDatetimePicker = function () {

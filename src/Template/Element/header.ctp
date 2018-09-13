@@ -99,6 +99,7 @@ if($controller=='kots'){
         <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer showLoader">Dine In (<?php echo $occupiedTableCount; ?>)</span>
         <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer showLoader">Delivery</span>
         <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer showLoader">Take Away</span>
+        <span class="topBtn pointer showLoader Bookings">Bookings</span>
         <span class="dashboard topBtn pointer showLoader">Dashboard</span>
     </div>
 </div>
@@ -115,7 +116,7 @@ $(document).ready(function() {
         window.location.href = url; 
     });
     $('.takeAwayNewTab').die().live('click',function(event){
-        var url='".$this->Url->build(['controller'=>'kots','action'=>'generate','0','takeaway'])."'
+        var url='".$this->Url->build(['controller'=>'Bills','action'=>'takeAway'])."'
         window.location.href = url; 
     });
 
@@ -130,6 +131,10 @@ $(document).ready(function() {
         var url='".$this->Url->build(['controller'=>'Tables','action'=>'index'])."'
         //window.open(url);
         $('#loading').show();
+        window.location.href = url; 
+    });
+    $('.Bookings').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'Bookings','action'=>'add'])."'
         window.location.href = url; 
     });
 });

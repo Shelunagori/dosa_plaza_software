@@ -7,11 +7,28 @@
 		<div style="width: 300px;">
 			<div style=" padding: 5px; " id='DivIdToPrint'>
 				<div align="center" style="line-height: 24px;">
-					<span style="font-size: 14px;font-weight: bold;color: #606062;">KOT</span><br/>
 					<?php if($Kots->table_id>0 ){?>
 						<span style="font-size: 14px;font-weight: bold;color: #606062;">Table No.: <?php echo @$Kots->table->name; ?></span>
 					<?php } ?>
-					
+					<?php if($Kots->order_type=="delivery"){
+						if($last_voucher_no){
+				            $delivery_no=$last_voucher_no->delivery_no+1;
+				        }else{
+				            $delivery_no=1;
+				        }
+				        ?>
+						<span style="font-size: 14px;font-weight: bold;color: #606062;">Delivery No.: <?php echo @$delivery_no; ?></span>
+					<?php } ?>
+
+					<?php if($Kots->order_type=="takeaway"){
+						if($last_voucher_no){
+				            $take_away_no=$last_voucher_no->take_away_no+1;
+				        }else{
+				            $take_away_no=1;
+				        }
+				        ?>
+						<span style="font-size: 14px;font-weight: bold;color: #606062;">Take Away No.: <?php echo @$take_away_no; ?></span>
+					<?php } ?>
 				</div>
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
 					<table width="100%">
@@ -22,13 +39,13 @@
 							</td>
 							<td align="right">
 								<span style="color: #606062;">KOT Date: </span>
-								<span style="margin-left: 10px;"> <?php echo date('d-m-Y',strtotime($Kots->created_on)); ?> </span>
+								<span style="margin-left: 10px;"> <?php echo $Kots->created_on->format('d-m-Y'); ?> </span>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<span style="color: #606062;">Order Type: </span>
-								<span style="margin-left: 10px;"> 
+								<span> 
 								<?php 
 								if($Kots->order_type=='dinner'){ echo "Dine In";} 
 								if($Kots->order_type=='takeaway'){ echo "Take Away";} 

@@ -35,10 +35,20 @@
 									<table>
 										<tr>
 											<td>
-												<input type="date" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required />
+												<?= $this->Form->control('employee_id',['options' => $employees, 'class' => 'form-control', 'label' => false, 'empty' => '--All--', 'value' => @$employee_id]) ?>
 											</td>
 											<td>
-												<input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required />
+												<div class="form-group ">
+			                                        <div class="col-md-4">
+			                                            <div id="reportrange" class="btn default" style="padding: 5px;">
+			                                                <i class="fa fa-calendar"></i>
+			                                                &nbsp; 
+			                                                <span><?php echo $exploded_date_from_to[0].' - '.$exploded_date_from_to[1]; ?></span>
+			                                                <input type="hidden" name="date_from_to" id="date_from_to" value="<?php echo @$exploded_date_from_to[0].'/'.@$exploded_date_from_to[1]; ?>">
+			                                                <b class="fa fa-angle-down"></b>
+			                                            </div>
+			                                        </div>
+			                                    </div>
 											</td>
 											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
@@ -49,9 +59,19 @@
 							</div>
 						</td>
 						<td width="20%">
-							<div class="actions" style="margin-right: 10px;">
-								<input id="search3"  class="form-control" type="text" placeholder="Search" >
-							</div>
+							<table>
+								<tr>
+									<td>
+										<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;"> Excel</a>
+									</td>
+									<td>
+										<div class="actions" style="margin-right: 10px;">
+											<input id="search3"  class="form-control" type="text" placeholder="Search" >
+										</div>
+									</td>
+								</tr>
+							</table>
+							
 						</td>
 					</tr>
 				</table>
@@ -64,11 +84,23 @@
 				<div align="center" class="show_at_print" style="display: none;">
 					<h3>KOT HISTORY</h3>
 				</div>
-				<div class="table-scrollable">
-					<?php if($from_date && $to_date){ ?>
+				<div class="table-scrollable" id="ExcelPage">
+					<?php if($exploded_date_from_to){ ?>
+					<div align="center">
+						<h4><?php echo $coreVariable['company_name']; ?></h4>
+						<span><?php echo $coreVariable['company_address']; ?></span><br/>
+
+					</div>
+					<div>
+						<b>Bill Wise Sales Report</b><br/>
+						<b>Month <?php echo @$month; ?></b>
+						<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
+					</div>
 					<table width="100%">
 						<tbody id="main_tbody">
-						<?php foreach ($Kots as $Kot): ?>
+						<?php 
+						$totalAmount = 0;
+						foreach ($Kots as $Kot): ?>
 							<tr>
 								<td style="border-top: solid 1px #8c8c8c;padding: 10px 2px;">
 									<table width="100%">
@@ -120,7 +152,12 @@
 											<td><?= h($kot_row->item->name) ?></td>
 											<td style="text-align: center;"><?= h($kot_row->quantity) ?></td>
 											<td style="text-align: center;"><?= h($kot_row->rate) ?></td>
-											<td style="text-align: center;"><?= h($kot_row->amount) ?></td>
+											<td style="text-align: center;">
+												<?= h($kot_row->amount) ?>
+												<?php
+													$totalAmount+=$kot_row->amount;
+												?>
+											</td>
 											<td><?= h($kot_row->item_comment) ?></td>
 										</tr>
 										<?php } ?>
@@ -129,6 +166,24 @@
 							</tr>
 							<?php endforeach; ?>
 						</tbody>
+						<tfoot>
+							<tr style="border-top: solid 1px #CCC; ">
+								<td>
+									<div style="height: 10px;"></div>
+
+									
+									<span>TOTAL KOT AMOUNT</span>
+									<b><?php echo $Total_Kot_Amount; ?></b>
+									<?php if($employee_id){ ?>
+										<span style=" margin-left: 15px; ">TOTAL AMOUNT of <?php echo @$Employee->name; ?></span>
+										<b><?php echo $totalAmount; ?></b>
+
+										<span style=" margin-left: 15px; ">KOT AMOUNT % of <?php echo @$Employee->name; ?></span>
+										<b><?php echo round($totalAmount*100/$Total_Kot_Amount, 2); ?>%</b>
+									<?php } ?>
+								</td>
+							</tr>
+						</tfoot>
 					</table>
 					<?php } ?>
 				</div>
@@ -137,14 +192,47 @@
 	</div>
 </div>
 
+<?php $formAction=$this->Url->build(['controller'=>'kots','action'=>'kotReportExcel']); ?>
+<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
+	<textarea id="ExcelBox" name="excel_box"></textarea>
+	<button type="submit">EXCEL</button>
+</form>
 
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
 
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+<?php 
+$js="
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
+";
 
-
-
-<?php
-	$js="
-	$(document).ready(function() {	
+$js.="
+	$(document).ready(function() {
 		var rows = $('#main_tbody tr.main_tr');
 		$('#search3').on('keyup',function() {
 	      
@@ -162,9 +250,18 @@
     		}
     	}); 
 
+    	var ht = $('#ExcelPage').html();
+		$('#ExcelBox').html(ht);
+
+		
+		$('#exportExcel').die().live('click',function(event){
+			$('#ExcelForm').submit();
+		});
 
 		
 	});
 	";
-echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+
 ?>
+<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
+

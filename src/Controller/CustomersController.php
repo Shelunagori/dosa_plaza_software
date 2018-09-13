@@ -399,6 +399,12 @@ class CustomersController extends AppController
                 ->set(['customer_id' => $Customer->id])
                 ->where(['Tables.id' => $table_id])
                 ->execute();
+
+            $query = $this->Customers->query();
+            $query->update()
+                ->set(['name' => $customer_name])
+                ->where(['Customers.id' => $Customer->id])
+                ->execute();
         }else{
             $Customer = $this->Customers->newEntity();
             $Customer->name=$customer_name;
@@ -492,8 +498,8 @@ class CustomersController extends AppController
         $customer_name = $this->request->query('customer_name');
         $customer_mobile = $this->request->query('customer_mobile');
         $customer_email = $this->request->query('customer_email');
-        $customer_dob = $this->request->query('customer_dob');
-        $customer_anniversary = $this->request->query('customer_anniversary');
+        $customer_dob = date('Y-m-d', strtotime($this->request->query('customer_dob')));
+        $customer_anniversary = date('Y-m-d', strtotime($this->request->query('customer_anniversary')));
         $customer_address = $this->request->query('customer_address');
         $table_id = $this->request->query('table_id');
 

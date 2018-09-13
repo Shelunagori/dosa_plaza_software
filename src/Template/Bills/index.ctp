@@ -41,6 +41,15 @@
                                     <input type="text" class="form-control" placeholder="Amount to" name="amount_to" value="<?php echo @$amount_to; ?>">
                                 </td>
                                 <td valign="bottom">
+                                    <input type="text" class="form-control" placeholder="Name" name="customer_name" value="<?php echo @$customer_name; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <input type="text" class="form-control" placeholder="Mobile" name="mobile_no" value="<?php echo @$mobile_no; ?>">
+                                </td>
+                                <td valign="bottom">
+                                    <input type="text" class="form-control" placeholder="Code" name="customer_code" value="<?php echo @$customer_code; ?>">
+                                </td>
+                                <td valign="bottom">
                                     <button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;">Filter</button>
                                 </td>
                             </tr>

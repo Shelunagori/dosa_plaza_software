@@ -16,6 +16,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 
 /**
  * Application Controller
@@ -45,6 +47,8 @@ class AppController extends Controller
 		//FrozenDate::setToStringFormat('dd-MM-yyyy');  // For any immutable Date
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
+        FrozenTime::setToStringFormat('dd-M-yyyy hh:mm A');  // For any immutable DateTime
+        FrozenDate::setToStringFormat('dd-M-yyyy');  // For any immutable Date
 		$this->loadComponent('Auth', [
 		 'authenticate' => [
                 'Form' => [
@@ -70,6 +74,8 @@ class AppController extends Controller
         $coreVariable = [
             'user_name' => $this->Auth->User('name'),
             'role' => $this->Auth->User('role'), 
+            'company_name' => 'Dosa Plaza', 
+            'company_address' => '100 Feet Road, Shobhagpura, Udaipur, Rajasthan 313001', 
         ];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));

@@ -170,8 +170,19 @@ class KotsController extends AppController
     {
         $this->viewBuilder()->layout('');
         $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables" => ['Employees'],'KotRows'=>['Items'=>['Taxes']]])->first();
-        //pr($Kots->toArray());exit;
-        $this->set(compact('Kots'));
+
+        if($Kots->order_type == "delivery"){
+            $last_voucher_no=$this->Kots->Bills->find()
+                            ->select(['delivery_no'])->order(['delivery_no' => 'DESC'])->where(['order_type' => 'delivery', 'transaction_date' => date('Y-m-d')])->first();
+        }
+
+        if($Kots->order_type == "takeaway"){
+            $last_voucher_no=$this->Kots->Bills->find()
+                            ->select(['take_away_no'])->order(['take_away_no' => 'DESC'])->where(['order_type' => 'takeaway', 'transaction_date' => date('Y-m-d')])->first();
+        }
+        
+        
+        $this->set(compact('Kots', 'last_voucher_no'));
     }
 
     /**
@@ -425,7 +436,9 @@ class KotsController extends AppController
         $this->viewBuilder()->layout('admin');
 
         $from_date=$this->request->query('from_date');
+        $from_date1=date('Y-m-d', strtotime($from_date));
         $to_date=$this->request->query('to_date');
+        $to_date1=date('Y-m-d', strtotime($to_date));
 
         $deletedRows=$this->Kots->KotRows->find()
                     ->where([
@@ -439,8 +452,8 @@ class KotsController extends AppController
                     'deleted_rows' => $deletedRows
                 ])
                 ->where([
-                    'created_on >=' => $from_date.' 00:00:00',
-                    'created_on <=' => $to_date.' 23:59:59'
+                    'created_on >=' => $from_date1.' 00:00:00',
+                    'created_on <=' => $to_date1.' 23:59:59'
                 ])
                 ->contain([
                     'Tables',
@@ -452,11 +465,46 @@ class KotsController extends AppController
         $this->set(compact('Kots', 'from_date', 'to_date'));
     }
 
+    public function deleteReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="KOT-Delete-History-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+    }
+
     public function kotReport(){
         $this->viewBuilder()->layout('admin');
 
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
+        $emWhere=[];
+        $employee_id = $this->request->query('employee_id');
+        if($employee_id){
+            $emWhere['Bills.employee_id'] = $employee_id;
+
+            $Employee = $this->Kots->Employees->get($employee_id);
+        }
+        
 
         $Kots = $this->Kots->find()
                 ->where([
@@ -471,8 +519,52 @@ class KotsController extends AppController
                         return $q->where(['KotRows.is_deleted' => 0])->contain(['Items']);
                     } 
                 ])
+                ->matching('Bills', function($q) use($emWhere){
+                        return $q->where($emWhere);
+                    })
                 ->autoFields(true);
-        $this->set(compact('Kots', 'from_date', 'to_date'));
+
+        $employees = $this->Kots->Employees->find('list');
+
+        $KotRows = $this->Kots->KotRows->find();
+        $KotRows->matching('Kots', function($q) use($from_date, $to_date){
+            return $q->where([
+                'Kots.created_on >=' => $from_date.' 00:00:00',
+                'Kots.created_on <=' => $to_date.' 23:59:59',
+                'Kots.is_deleted' => 0
+            ]);
+        })
+        ->select([
+            'Total_Kot_Amount' => $KotRows->func()->sum('amount'),
+        ]);
+        $Total_Kot_Amount = $KotRows->toArray()[0]['Total_Kot_Amount']; 
+
+
+        $this->set(compact('Kots', 'exploded_date_from_to', 'employees', 'employee_id', 'Total_Kot_Amount', 'Employee'));
+    }
+
+    public function kotReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="KOT-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
     }
 
     public function updateKot(){

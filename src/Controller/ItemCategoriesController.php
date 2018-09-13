@@ -72,8 +72,11 @@ class ItemCategoriesController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        
 
         $Total_qty=$this->ItemCategories->ItemSubCategories->Items->BillRows->find()
                     ->where(['BillRows.item_id = Items.id'])
@@ -136,16 +139,52 @@ class ItemCategoriesController extends AppController
 
         //pr($ItemCategories->toArray()); exit;
 
-        $this->set(compact('from_date', 'to_date', 'ItemCategories'));
+        $this->set(compact('date_from_to', 'exploded_date_from_to', 'ItemCategories'));
 
     }
+
+    public function groupReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Item-Group+Sub-Group-Wise-Sales-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+    }
+
+    public function groupReportPdf(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $pdf_box = $this->request->data['pdf_box'];
+            $this->set(compact('pdf_box'));
+        }
+    }
+
 
     public function groupItemReport()
     {
         $this->viewBuilder()->layout('admin');
 
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
 
         $Total_qty=$this->ItemCategories->ItemSubCategories->Items->BillRows->find()
                     ->where(['BillRows.item_id = Items.id'])
@@ -206,10 +245,43 @@ class ItemCategoriesController extends AppController
         ])
         ->autoFields(true);
 
-        //pr($ItemCategories->toArray()); exit;
+        //pr($ItemCategories->toArray()); exit; 
 
-        $this->set(compact('from_date', 'to_date', 'ItemCategories'));
+        $this->set(compact('date_from_to', 'exploded_date_from_to', 'ItemCategories'));
 
+    }
+
+    public function groupItemReportExcel(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $excel_box = $this->request->data['excel_box'];
+
+            $date= date("d-m-Y"); 
+            $time=date('h:i:a',time());
+
+            $filename="Item-Group+Item-Wise-Sales-Report-".$date.'_'.$time;
+
+            header ("Expires: 0");
+            header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header ("Cache-Control: no-cache, must-revalidate");
+            header ("Pragma: no-cache");
+            header ("Content-type: application/vnd.ms-excel");
+            header ("Content-Disposition: attachment; filename=".$filename.".xls");
+            header ("Content-Description: Generated Report" );
+
+            echo $excel_box;
+        }
+        exit;
+    }
+
+    public function groupItemReportPdf(){
+        $this->viewBuilder()->layout('');
+
+        if ($this->request->is(['patch','post','put'])){
+            $pdf_box = $this->request->data['pdf_box'];
+            $this->set(compact('pdf_box'));
+        }
     }
 
 }

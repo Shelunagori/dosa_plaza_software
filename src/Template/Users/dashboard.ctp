@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<div class="portlet light" style="border-radius: 0;">
 				<div class="caption top-caption">
-					<span style="color:#67686B;float:left;font-size:19px;padding-left:30px;padding-top: 7px;">Total Sales: </span>
+					<span style="color:#67686B;float:left;font-size:19px;padding-left:30px;padding-top: 7px;">Today's Total Sales: </span>
 					<h3 style="color:#ef5f3f;float:left;margin:0;padding-left:17px;font-weight: 400;font-size:19px;line-height:25px;padding-top:7px;">&#8377; <?php if($TotalSale>0){echo $TotalSale;} else {echo 0; }?></h3>
 				</div>
 			</div> 

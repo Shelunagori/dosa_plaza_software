@@ -19,7 +19,7 @@
 										<table>
 											<tr>
 												<td>
-													<input type="month" class="form-control" name="month" value="<?php echo $month; ?>" required />
+													<input name="month" class="form-control date-picker" type="text" value="<?php echo @$month; ?>" data-date-format="mm-yyyy" required="required" placeholder="Month">
 												</td>
 												<td>
 													<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
@@ -30,9 +30,20 @@
 								</div>
 							</td>
 							<td width="20%">
-								<div class="actions" style="margin-right: 10px;">
-									<input id="search3"  class="form-control" type="text" placeholder="Search" >
-								</div>
+								<table>
+									<tr>
+										<td>
+											<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;">Excel</a>
+										</td>
+										<td>
+											<div class="actions" style="margin-right: 10px;">
+												<input id="search3"  class="form-control" type="text" placeholder="Search" >
+											</div>
+										</td>
+									</tr>
+								</table>
+								
+								
 							</td>
 						</tr>
 					</table>
@@ -45,9 +56,19 @@
 				$last_date=date('Y-m-t',strtotime($F_date));
 
 			?>
-			<div class="portlet-body">
+			<div class="portlet-body"  id="ExcelPage">
+				<div align="center">
+					<h4><?php echo $coreVariable['company_name']; ?></h4>
+					<span><?php echo $coreVariable['company_address']; ?></span><br/>
+
+				</div>
+				<div>
+					<b>Bill Wise Sales Report</b><br/>
+					<b>Month <?php echo @$month; ?></b>
+					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
+				</div>
 				<div class="table-scrollable">
-					<table class="table table-bordered Attendance_list " cellpadding="0" cellspacing="0">
+					<table border="1" class="table table-bordered Attendance_list " cellpadding="0" cellspacing="0">
 						<thead>
 							<tr style="white-space: nowrap;">
 								<th scope="col"style="width:4%;"><?= ('S.No.') ?></th>
@@ -147,8 +168,42 @@
 		</div>
 	</div>
 </div>
-<?php
-	$js="
+
+<?php $formAction=$this->Url->build(['controller'=>'Employees','action'=>'EmployeesAttendanceExcel']); ?>
+<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
+	<textarea id="ExcelBox" name="excel_box"></textarea>
+	<button type="submit">EXCEL</button>
+</form>
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+<?php 
+
+$js="
 	$(document).ready(function() {	
 		var rows = $('#main_tbody tr.main_tr');
 		$('#search3').on('keyup',function() {
@@ -167,10 +222,22 @@
     		}
     	}); 
 
+    	var ht = $('#ExcelPage').html();
+		$('#ExcelBox').html(ht);
 
+		
+		$('#exportExcel').die().live('click',function(event){
+			$('#ExcelForm').submit();
+		});
 		
 	});
 	";
-echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+
+$js.="
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
+";
 ?>
+<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 		

@@ -42,7 +42,7 @@
 					<thead>
 						<tr style="border-bottom: solid 1px #F1F1F2;font-size: 12px; " > 
 							<th width="5%">#</th>
-							<th width="50%">Item</th>
+							<th >Item</th>
 							<th style="text-align:center;" width="15%">Qty</th>
 							<th style="text-align:center;" width="10%">Rate</th>
 							<th style="text-align:center;" width="10%">Amount</th>

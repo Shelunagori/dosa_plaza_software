@@ -43,7 +43,7 @@
 			<div class="portlet-body"  style="min-height: 150px;">
 				<ul style=" line-height: 23px; ">
 					<?php
-					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Report</span>', '/Bills/salesReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Report</span>', '/Bills/salesReport',['escape' => false, 'class' => 'showLoader']).'</li>';
 					
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bill Wise Sales Report</span>', '/Bills/bill-Wise-Sales',['escape' => false, 'class' => 'showLoader']).'</li>';
 

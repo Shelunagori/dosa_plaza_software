@@ -7,7 +7,7 @@
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
-					Stock In Voucher List
+					Purchases from <?= h($Vendor->name) ?>
 				</div>
 				<div class="tools"> 
  				</div>

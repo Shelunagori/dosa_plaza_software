@@ -59,6 +59,24 @@
 							</div>
 						</div>
 						<span class="help-block">&nbsp;</span>
+
+						<div class="form-group">
+							<label class="control-label col-md-4"> GST Number </label>
+							<div class="col-md-8"> 
+									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->gst_no."'"; } ?> name="gst_no" class="form-control input-large" Placeholder="Enter GST Number"  style="margin:5px;" >
+								 
+							</div>
+						</div>
+						<span class="help-block">&nbsp;</span>
+
+						<div class="form-group">
+							<label class="control-label col-md-4"> Email </label>
+							<div class="col-md-8"> 
+									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->email."'"; } ?> name="email" class="form-control input-large" Placeholder="Enter Email"  style="margin:5px;" >
+								 
+							</div>
+						</div>
+						<span class="help-block">&nbsp;</span>
 						<div class="form-group">
 							<label class="control-label col-md-4"> Address </span>
 							</label>

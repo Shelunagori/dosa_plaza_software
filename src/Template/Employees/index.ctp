@@ -9,14 +9,15 @@
 				<div class="caption">
 					 Employee List
 				</div>
-				<div class="tools"> 
+				<div class="tools" style=" margin-right: 10px; "> 
+					<input id="search3"  class="form-control" type="text" placeholder="Search" >
  				</div>
 				<div class="row">	
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-str " cellpadding="0" cellspacing="0">
+				<table class="table table-str " cellpadding="0" cellspacing="0" id="main_tbody">
 					<thead>
 						<tr>
 							<th scope="col"><?= ('S.No.') ?></th>
@@ -31,7 +32,7 @@
 					</thead>
 					<tbody>
 						<?php $d=0; foreach ($employees as $vendor): ?>
-						<tr>
+						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td><?= h($vendor->name) ?></td>
 							<td><?= h($vendor->mobile_no) ?></td>
@@ -100,3 +101,27 @@
 		</div>
 	</div>
 </div>
+<?php
+	$js="
+	$(document).ready(function() {	
+		var rows = $('#main_tbody tr.main_tr');
+		$('#search3').on('keyup',function() {
+	      
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+			var v = $(this).val();
+			
+    		if(v){ 
+    			rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			rows.show();
+    		}
+    	}); 
+		
+	});
+	";
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>

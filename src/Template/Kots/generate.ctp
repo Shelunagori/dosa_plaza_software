@@ -107,7 +107,7 @@ $order=$pass[1];
 													<button type="button" class="btn default" style="" id="slideLeft" currentpage="0">  <i class="fa fa-chevron-left" style="color: #2d4161;"></i> </button>
 												</td>
 												<td width="90%">
-													<div style="max-height:300px; height:300px;" id="ItemArea" >
+													<div style="max-height:375px; height:375px;" id="ItemArea" >
 														
 													</div>	
 												</td>
@@ -217,7 +217,7 @@ $order=$pass[1];
 										<thead>
 											<tr>
 												<td style="text-align:center;width: 5%;">S.No.</td>
-												<td style="width: 50%;">Name</td>
+												<td style="">Name</td>
 												<td style="text-align:center;">Quantity</td>
 												<td style="text-align:center;">Rate</td>
 												<td style="text-align:center;">Amount</td>
@@ -855,6 +855,10 @@ $order=$pass[1];
 		
 		$('.CreateKOT').die().live('click',function(event){
 			event.preventDefault();
+			var employee_id = $('select[name=employee_id] option:selected').val();
+			if(!employee_id){
+				alert('Select Steward.'); return;
+			}
 			if($('#kotBox tbody tr').length==0){
 				alert('Add at-least one item.')
 				return;
@@ -1360,7 +1364,6 @@ $order=$pass[1];
 
 		$('#SaveNewCustomer').die().live('click',function(event){
 			var c_name=$('#c_name').val();
-			console.log(c_name);
 			if(!c_name){
 				alert('Enter Name');
 				return;

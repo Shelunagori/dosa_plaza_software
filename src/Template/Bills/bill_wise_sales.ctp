@@ -11,8 +11,9 @@
 .show_at_print {
 	display:block !important;
 }
-.qwerty td{
-		border: none;
+.qwerty2>thead>tr>th, .qwerty2>tbody>tr>th, .qwerty2>tfoot>tr>th, .qwerty2>thead>tr>td, .qwerty2>tbody>tr>td, .qwerty2>tfoot>tr>td 
+	{
+		border: none !important;
 	}
 </style>
 
@@ -35,10 +36,17 @@
 									<table>
 										<tr>
 											<td>
-												<input type="date" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required />
-											</td>
-											<td>
-												<input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required />
+												<div class="form-group ">
+			                                        <div class="col-md-4">
+			                                            <div id="reportrange" class="btn default" style="padding: 5px;">
+			                                                <i class="fa fa-calendar"></i>
+			                                                &nbsp; 
+			                                                <span><?php echo $exploded_date_from_to[0].' - '.$exploded_date_from_to[1]; ?></span>
+			                                                <input type="hidden" name="date_from_to" id="date_from_to" value="<?php echo @$exploded_date_from_to[0].'/'.@$exploded_date_from_to[1]; ?>">
+			                                                <b class="fa fa-angle-down"></b>
+			                                            </div>
+			                                        </div>
+			                                    </div>
 											</td>
 											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
@@ -48,21 +56,46 @@
 								</form>
 							</div>
 						</td>
-						<td width="20%"></td>
+						<td width="20%">
+							<a href="javascript:void()" id="exportPDF" class="btn btn-danger" style="float: right; margin-right: 10px;">PDF</a>
+							<?php 
+								$excelUrl = $this->Url->build(['controller'=>'Bills','action'=>'billWiseSalesExcel']);
+								$excelUrl.='?'.$seturl[1];
+							 ?>
+							<a href="<?php echo $excelUrl; ?>" class="btn btn-danger" style="margin-right: 10px; float: right;">Excel</a>
+
+						</td>
 					</tr>
 				</table>
 				<div class="row">	
 					<div class="col-md-12 horizontal"></div>
 				</div>
 			</div>
-			<div class="portlet-body">
-				<?php if($from_date && $to_date){ ?>
-				<div class="table-scrollable">
-					<table class="table table-bordered qwerty">
-						<?php foreach ($Bills as $Bill): ?>
+			<div class="portlet-body" id="ExcelPage">
+				<?php if($exploded_date_from_to){ ?>
+					
+				<div align="center">
+					<h4><?php echo $coreVariable['company_name']; ?></h4>
+					<span><?php echo $coreVariable['company_address']; ?></span><br/>
+				</div>
+				<div>
+					<span>Bill Wise Sales Report</span><br/>
+					<span>From <?php echo @$exploded_date_from_to[0].' To '.@$exploded_date_from_to[1]; ?></span><br/>
+					<span >Report generated on: <?php echo date('d-m-Y H:i A'); ?></span>
+					<hr>
+				</div>
+				<div class="table-scrollable" >
+					<table class="table table-bordered qwerty" cellpadding="0" cellspacing="0">
+						<?php 
+						$TOTAL_SALE=0;
+						$TOTAL_CGST=0;
+						$TOTAL_SGST=0;
+						$TOTAL_TAXABLE=0;
+						$TOTAL_DISCOUNT=0;
+						foreach ($Bills as $Bill): ?>
 							<tr>
 								<td>
-									<table width="100%">
+									<table width="100%" class=" qwerty2" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
 										<tr>
 											<td>
 												<span>Bill No.</span> 
@@ -74,6 +107,7 @@
 												<span>Bill Date</span> 
 												<span style="margin-left: 10px;color: #313131;">
 													<?php echo date('d-m-Y', strtotime($Bill->transaction_date)); ?>
+													<?php echo date(' H:i A', strtotime($Bill->created_on)); ?>
 												</span>
 											</td>
 											<td>
@@ -86,10 +120,13 @@
 												<span>Time Taken</span> 
 												<span style="margin-left: 10px;color: #313131;">
 													<?php 
-														$datetime1 = new DateTime($Bill->occupied_time);//start time
-														$datetime2 = new DateTime($Bill->created_on);//end time
-														$interval = $datetime1->diff($datetime2);
-														echo $interval->format(' %i min %s sec');
+													$Bill->occupied_time->format('Y-m-d H:i:s').'<br/>';
+													$Bill->created_on->format('Y-m-d H:i:s').'<br/>';
+													$datetime1 = new DateTime($Bill->occupied_time->format('Y-m-d H:i:s'));//start time
+													$datetime2 = new DateTime($Bill->created_on->format('Y-m-d H:i:s'));//end time
+													$interval = $datetime1->diff($datetime2);
+													echo $time    = $interval->format('%h')*60+$interval->format('%i') .' min ';
+													echo $interval->format('%s sec');
 													?>
 												</span>
 											</td>
@@ -141,7 +178,7 @@
 							</tr>
 							<tr class="main_tr">
 								<td style="padding: 0;">
-								 	<table width="100%" class="table table-bordered" style="margin: 0;">
+								 	<table width="100%" class="table table-bordered qwerty3" style="margin: 0;" cellpadding="0" cellspacing="0">
 								 		<tr>
 								 			<th>Item</th>
 								 			<th>Quantity</th>
@@ -150,21 +187,22 @@
 								 			<th>Discount %</th>
 								 			<th>Discount Rs</th>
 								 			<th>Taxable Value</th>
-								 			<th>GST %</th>
-								 			<th>GST Rs</th>
+								 			<th>CGST</th>
+								 			<th>SGST</th>
 								 			<th>Net</th>
 								 		</tr>
 								 		<?php 
 								 		$totalAmount=0;
 								 		$totalDisAmount=0;
 								 		$totalTV=0;
-								 		$totalGSTAmount=0;
+								 		$totalCGSTAmount=0;
+								 		$totalSGSTAmount=0;
 								 		$totalNet=0;
 								 		foreach ($Bill->bill_rows as $bill_row) { 
 								 			$totalAmount+=$bill_row->amount;
 								 			$totalDisAmount+=$bill_row->discount_amount;
 								 			$totalTV+=round($bill_row->amount-$bill_row->discount_amount,2);
-								 			$totalGSTAmount+=round(($bill_row->amount-$bill_row->discount_amount)*($bill_row->tax_per)/100,2);
+								 			
 								 			$totalNet+=$bill_row->net_amount;
 								 		?>
 								 		<tr>
@@ -175,8 +213,19 @@
 								 			<td><?php echo $bill_row->discount_per; ?></td>
 								 			<td><?php echo $bill_row->discount_amount; ?></td>
 								 			<td><?php echo round($bill_row->amount-$bill_row->discount_amount,2); ?></td>
-								 			<td><?php echo $bill_row->tax_per; ?></td>
-								 			<td><?php echo round(($bill_row->amount-$bill_row->discount_amount)*($bill_row->tax_per)/100,2); ?></td>
+								 			<td>
+								 				<?php $GST = ($bill_row->amount-$bill_row->discount_amount)*($bill_row->tax_per)/100;
+								 					echo round($GST/2, 2);
+								 					$totalCGSTAmount+=round($GST/2, 2);
+								 				?>
+								 			</td>
+								 			<td>
+								 				<?php
+								 					echo round($GST/2, 2);
+								 					$totalSGSTAmount+=round($GST/2, 2);
+
+								 				?>
+								 			</td>
 								 			<td><?php echo $bill_row->net_amount; ?></td>
 								 		</tr>
 								 		<?php }?>
@@ -186,8 +235,8 @@
 								 			<th>-</th>
 								 			<th><?php echo $totalDisAmount; ?></th>
 								 			<th><?php echo $totalTV; ?></th>
-								 			<th>-</th>
-								 			<th><?php echo $totalGSTAmount; ?></th>
+								 			<th><?php echo $totalCGSTAmount; ?></th>
+								 			<th><?php echo $totalSGSTAmount; ?></th>
 								 			<th><?php echo $totalNet; ?></th>
 								 		</tr>
 								 		<tr>
@@ -196,12 +245,41 @@
 								 		</tr>
 								 		<tr>
 								 			<th colspan="9" style="text-align: right;">Total Bill Amount</th>
-								 			<th><?= h(@$Bill->grand_total) ?></th>
+								 			<th>
+								 				<?= h(@$Bill->grand_total) ?>
+								 				<?php
+								 				$TOTAL_DISCOUNT+=@$totalDisAmount;
+								 				$TOTAL_CGST+=@$totalCGSTAmount;
+								 				$TOTAL_SGST+=@$totalSGSTAmount;
+								 				$TOTAL_SALE+=@$Bill->grand_total;
+								 				$TOTAL_TAXABLE+=@$totalTV;
+								 				?>
+								 			</th>
 								 		</tr>
 								 	</table>
 								 </td>
 							</tr>
 							<?php endforeach; ?>
+							<tfoot>
+								<tr>
+									<td style="text-align: right;">
+										<span>TOTAL DISCOUNT</span>
+										<span style="margin-left: 5px; margin-right: 20px;"><b><?php echo @$TOTAL_DISCOUNT; ?></b></span>
+
+										<span>TOTAL TAXABLE</span>
+										<span style="margin-left: 5px; margin-right: 20px;"><b><?php echo @$TOTAL_TAXABLE; ?></b></span>
+
+										<span>TOTAL CGST</span>
+										<span style="margin-left: 5px; margin-right: 20px;"><b><?php echo @$TOTAL_CGST; ?></b></span>
+
+										<span>TOTAL SGST</span>
+										<span style="margin-left: 5px; margin-right: 20px;"><b><?php echo @$TOTAL_SGST; ?></b></span>
+
+										<span>TOTAL SALE</span>
+										<span style="margin-left: 5px; "><b><?php echo @$TOTAL_SALE; ?></b></span>
+									</td>
+								</tr>
+							</tfoot>
 					</table>
 				</div>
 				<?php } ?>
@@ -209,4 +287,54 @@
 		</div>
 	</div>
 </div>
+
+<?php $formAction=$this->Url->build(['controller'=>'Bills','action'=>'billWiseSalesPdf']); ?>
+<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
+	<textarea id="ExcelBox" name="excel_box"></textarea>
+	<button type="submit">EXCEL</button>
+</form>
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+<?php 
+$js="
+$(document).ready(function() {
+
+	var ht = $('#ExcelPage').html();
+	$('#ExcelBox').html(ht);
+
+	
+	$('#exportPDF').die().live('click',function(event){
+		$('#ExcelForm').submit();
+	});
+
+    ComponentsPickers.init();
+});
+";
+?>
+<?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>
 

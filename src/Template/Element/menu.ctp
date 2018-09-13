@@ -3,31 +3,17 @@
 	if (in_array("1", $userPages)){
 		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Dashboard</span>', '/Users/Dashboard',['escape' => false, 'class' => 'showLoader']).'</li>';
 	}
+
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Store</span>', '/RawMaterials/store',['escape' => false, 'class' => 'showLoader']).'</li>';
 ?>
+
+<?php if (in_array("18", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vendors</span>', '/Vendors',['escape' => false, 'class' => 'showLoader']).'</li>';
+} ?>
+
+
 <?php 
-$target=array("2","3");
-if(!empty(count(array_intersect($userPages, $target)))){?>
-	<li class="start">
-		<a href="javascript:;">
-		<span class="title" style="margin-left: 15px;">Stock In Voucher</span>
-		<span class="arrow"></span>
-		</a>
-		<ul class="sub-menu">
-			<?php 
-			if (in_array("2", $userPages)){
-				echo '<li>'.$this->Html->link('Create', '/PurchaseVouchers/add',['escape' => false, 'class' => 'showLoader']).'</li>';
-			} 
-			if (in_array("3", $userPages)){
-				echo '<li>'.$this->Html->link('List', '/PurchaseVouchers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
-			}
-			?>
-	 	</ul>
-	</li>
-	<?php
-} 
-if (in_array("4", $userPages)){
-	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Stock Adjustment</span>', '/RawMaterials/stock_adjustment',['escape' => false, 'class' => 'showLoader']).'</li>';
-}
+
 if (in_array("5", $userPages)){
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Attendance</span>', '/Attendances/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 }
@@ -124,27 +110,9 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 <?php
 }
 ?>
+
+
 <?php 
-$target=array("17","18");
-if(!empty(count(array_intersect($userPages, $target)))){?>
-<li class="start">
-	<a href="javascript:;">
-	<span class="title" style="margin-left: 15px;">Vendors</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<?php 
-		if (in_array("17", $userPages)){
-			echo '<li>'.$this->Html->link('Create', '/Vendors/add',['escape' => false, 'class' => 'showLoader']).'</li>';
-		}?>
-		<?php 
-		if (in_array("18", $userPages)){
-			echo '<li>'.$this->Html->link('List', '/Vendors/index',['escape' => false, 'class' => 'showLoader']).'</li>';
-		}?>
- 	</ul>
-</li>
-<?php
-}
 if (in_array("19", $userPages)){ 
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Customers</span>', '/Customers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
 }

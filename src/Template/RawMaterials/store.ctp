@@ -1,47 +1,42 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Current-Stock Report | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Store Records | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption"style="padding:13px; color: red;">
-					Current-Stock Report
+					Store Records
 				</div>
 				<div class="actions" style="margin-right: 10px;">
 					<table>
 						<tr>
 							<td>
-								<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;color: #FFF;"> Excel</a>
+								<?= $this->Html->link('Stock In', '/PurchaseVouchers/add',['escape' => false, 'class' => 'showLoader btn btn-primary', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
 							</td>
 							<td>
-								<div class="actions" style="margin-right: 10px;">
-									<input id="search3"  class="form-control" type="text" placeholder="Search" >
-								</div>
+								<?= $this->Html->link('Stock Adjustment', '/RawMaterials/stock-adjustment',['escape' => false, 'class' => 'showLoader btn red', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+							</td>
+							<td>
+								<input id="search3"  class="form-control" type="text" placeholder="Search" style="float: right;">
 							</td>
 						</tr>
 					</table>
+					
+
+					
 				</div>
 				<br/>
 				<div class="row">	
 					<div class="col-md-12 horizontal"></div>
 				</div>
 			</div>
-			<div class="portlet-body" id="ExcelPage">
-				<div align="center">
-					<h4><?php echo $coreVariable['company_name']; ?></h4>
-					<span><?php echo $coreVariable['company_address']; ?></span><br/>
-
-				</div>
-				<div>
-					<b>Bill Wise Sales Report</b><br/>
-					<b>From <?php echo $exploded_date_from_to[0].' To '.$exploded_date_from_to[1]; ?></b>
-					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
-				</div>
-				<table border="1" class="table table-striped"  id="main_table" style="border: none;">
+			<div class="portlet-body">
+				<table class="table " cellpadding="0" cellspacing="0" id="main_table">
 					<thead>
 						<tr>
 							<th style="width:10%"><?= ('S.No.') ?></th>
 							<th style="width:15%"><?= ('Raw materials') ?></th>
+							<th style="width:5%"><?= ('Unit') ?></th>
 							<th style="width:15%" ><?= ('Current stock') ?></th>
 							<th style="width:15%"><?= ('Last Purchase ') ?></th> 
 						</tr>
@@ -51,6 +46,7 @@
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td><?= h($RawMaterial->name) ?></td>
+							<td><?= h($RawMaterial->primary_unit->name) ?></td>
 							<td>
 								<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
 								<?= h($RawMaterial->primary_unit->quantity.' '.$RawMaterial->primary_unit->name) ?> 
@@ -75,12 +71,6 @@
 	</div>
 </div>
 
-<?php $formAction=$this->Url->build(['controller'=>'RawMaterials','action'=>'currentStockExcel']); ?>
-<form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
-	<textarea id="ExcelBox" name="excel_box"></textarea>
-	<button type="submit">EXCEL</button>
-</form>
-
 <?php
 	$js="
 	$(document).ready(function() {	
@@ -99,15 +89,7 @@
     		}else{
     			rows.show();
     		}
-    	});
-
-    	var ht = $('#ExcelPage').html();
-		$('#ExcelBox').html(ht);
-
-		
-		$('#exportExcel').die().live('click',function(event){
-			$('#ExcelForm').submit();
-		});
+    	}); 
 		
 	});
 	";

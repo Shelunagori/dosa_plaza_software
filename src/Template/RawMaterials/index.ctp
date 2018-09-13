@@ -7,14 +7,15 @@
 				<div class="caption">
 					Row Materials List
 				</div>
-				
+				<div class="tools" style=" margin-right: 10px; "> 
+					<input id="search3"  class="form-control" type="text" placeholder="Search" >
+ 				</div>
 				<div class="row">	
 					<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?php $page_no=$this->Paginator->current('RawMaterials'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-str table-hover " cellpadding="0" cellspacing="0">
+				<table class="table table-str table-hover " cellpadding="0" cellspacing="0" id="main_tbody">
 					<thead>
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
@@ -29,8 +30,8 @@
 					</thead>
 					<tbody>
 						<?php $x=0; foreach ($rawMaterials as $rawMaterial): ?>
-							<tr>
-								<td><?= h(++$page_no) ?></td> 
+							<tr class="main_tr">
+								<td><?= h(++$x) ?></td> 
 								<td><?= h($rawMaterial->name) ?></td>
 								<td><?= h($rawMaterial->raw_material_sub_category->name) ?></td>
 								<td><?= h($rawMaterial->tax->name) ?></td>
@@ -87,17 +88,31 @@
 							<?php endforeach; ?> 
 					</tbody>
 				</table>
-				<div class="paginator">
-			        <ul class="pagination">
-			            <?= $this->Paginator->first('<< ' . __('first')) ?>
-			            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-			            <?= $this->Paginator->numbers() ?>
-			            <?= $this->Paginator->next(__('next') . ' >') ?>
-			            <?= $this->Paginator->last(__('last') . ' >>') ?>
-			        </ul>
-			        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-			    </div>
 			</div>
 		</div>
 	</div>	
 </div>	
+<?php
+	$js="
+	$(document).ready(function() {	
+		var rows = $('#main_tbody tr.main_tr');
+		$('#search3').on('keyup',function() {
+	      
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+			var v = $(this).val();
+			
+    		if(v){ 
+    			rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			rows.show();
+    		}
+    	}); 
+		
+	});
+	";
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>

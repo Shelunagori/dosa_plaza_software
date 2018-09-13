@@ -21,9 +21,31 @@ class BookingsController extends AppController
     public function index()
     {
         $this->viewBuilder()->layout('admin');
-        $bookings = $this->Bookings->find();
 
-        $this->set(compact('bookings'));
+        $where=[];
+
+        $customer_name = $this->request->query('customer_name');
+        if(!empty($customer_name)){
+            $where['Bookings.customer_name LIKE']='%'.$customer_name.'%';
+        }
+
+        $customer_mobile = $this->request->query('customer_mobile');
+        if(!empty($customer_mobile)){
+            $where['Bookings.customer_mobile LIKE']='%'.$customer_mobile.'%';
+        }
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bookings.booking_date >=']=$from_date;
+            $where['Bookings.booking_date <=']=$to_date;
+        }
+
+        $bookings = $this->paginate($this->Bookings->find()->where($where));
+
+        $this->set(compact('bookings', 'customer_name', 'customer_mobile', 'exploded_date_from_to'));
     }
 
     /**

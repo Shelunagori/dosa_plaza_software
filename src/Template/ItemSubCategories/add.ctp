@@ -67,14 +67,15 @@
 				<div class="caption">
 					 Sub Category List
 				</div>
-				<div class="tools"> 
+				<div class="tools" style=" margin-right: 10px; "> 
+					<input id="search3"  class="form-control" type="text" placeholder="Search" >
  				</div>
 				<div class="row">	
 						<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-str " cellpadding="0" cellspacing="0">
+				<table class="table table-str " cellpadding="0" cellspacing="0" id="main_tbody">
 					<thead ">
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
@@ -85,7 +86,7 @@
 					</thead>
 					<tbody>
 						<?php $x=0; foreach ($ItemSubCategoriesList as $country): ?>
-						<tr>
+						<tr class="main_tr">
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->item_category->name) ?></td>
@@ -205,7 +206,27 @@ $(document).ready(function() {
 			form[0].submit(); // submit the form
 		}
 		
-	}); 	
+	}); 
+
+	var rows = $("#main_tbody tr.main_tr");
+		$("#search3").on("keyup",function() {
+	      
+			var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+			var v = $(this).val();
+			
+    		if(v){ 
+    			rows.show().filter(function() {
+    				var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+		
+    				return !~text.indexOf(val);
+    			}).hide();
+    		}else{
+    			rows.show();
+    		}
+    	}); 
+
+
+		
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

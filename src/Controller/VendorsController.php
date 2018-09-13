@@ -50,7 +50,6 @@ class VendorsController extends AppController
 	 				$x++;	
 				}
 			}
-			 
             if ($this->Vendors->save($vendor)) {
                 $this->Flash->success(__('The vendor has been saved.'));
                 return $this->redirect(['action' => 'index']);

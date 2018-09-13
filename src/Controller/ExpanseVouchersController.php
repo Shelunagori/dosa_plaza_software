@@ -21,8 +21,20 @@ class ExpanseVouchersController extends AppController
     public function index()
     {
         $this->viewBuilder()->layout('admin');
-        $expanseVouchers = $this->paginate($this->ExpanseVouchers);
-        $this->set(compact('expanseVouchers'));
+
+        $where=[];
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['ExpanseVouchers.transaction_date >=']=$from_date;
+            $where['ExpanseVouchers.transaction_date <=']=$to_date;
+        }
+
+        $expanseVouchers = $this->paginate($this->ExpanseVouchers->find()->where($where));
+        $this->set(compact('expanseVouchers', 'exploded_date_from_to'));
     }
 
     /**
