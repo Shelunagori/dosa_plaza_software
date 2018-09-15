@@ -85,4 +85,56 @@ class ItemSubCategoriesController extends AppController
 
         return $this->redirect(['action' => 'add']);
     }
+
+    public function subGroupItemReportSearch(){
+        $this->viewBuilder()->layout('admin');
+    }
+
+    public function subGroupItemReport(){
+        $this->viewBuilder()->layout('');
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
+        $Total_qty=$this->ItemSubCategories->Items->BillRows->find()
+                    ->where(['BillRows.item_id = Items.id'])
+                    ->matching('Bills', function($q) use($from_date, $to_date){
+                        return $q->where([
+                                        'Bills.transaction_date >=' => $from_date, 
+                                        'Bills.transaction_date <=' => $to_date
+                                    ]);
+                    });
+        $Total_qty->select([$Total_qty->func()->sum('BillRows.quantity')]);
+
+
+        $Total_Net=$this->ItemSubCategories->Items->BillRows->find()
+                    ->where(['BillRows.item_id = Items.id'])
+                    ->matching('Bills', function($q) use($from_date, $to_date){
+                        return $q->where([
+                                        'Bills.transaction_date >=' => $from_date, 
+                                        'Bills.transaction_date <=' => $to_date
+                                    ]);
+                    });
+        $Total_Net->select([$Total_Net->func()->sum('BillRows.net_amount')]);
+
+        $ItemSubCategories = $this->ItemSubCategories->find();
+        $ItemSubCategories->contain([
+            'Items' =>function($q) use($Total_qty, $Total_Net){
+                return $q->select([
+                            'Items.id',
+                            'Items.item_sub_category_id',
+                            'Total_qty' => $Total_qty,
+                            'Total_Net' => $Total_Net,
+                        ])
+                        ->autoFields(true);
+            }
+        ])
+        ->autoFields(true);
+
+        //pr($ItemSubCategories->toArray()); exit; 
+
+        $this->set(compact('date_from_to', 'exploded_date_from_to', 'ItemSubCategories'));
+    }
 }

@@ -327,7 +327,7 @@ $order=$pass[1];
 								<tr>
 									<td width="60%" style="border-right:5px solid #f5f5f5;" valign="top">
 										<?php if($table_id){ ?>
-											<table width="100%" >
+											<table width="100%" style="display: none;">
 												<tr>
 													<td style="padding-right: 5px;" width="40%">
 														<?php echo $this->Form->input('customer_id',['options' =>$Customers,'label' => false,'class'=>'form-control input-medium input-sm select2me ','empty'=> 'Search']);?>
@@ -340,7 +340,7 @@ $order=$pass[1];
 													</td>
 												</tr>
 											</table>
-											<table width="100%" id="newCustomerTable" style="display: none;">
+											<table width="100%" id="newCustomerTable" style="display:block;">
 												<tr>
 													<td style="padding-right: 5px;width: 40%;" width="40%">
 														<?php echo $this->Form->input('customer_name',['label' => false,'class'=>'form-control  input-sm ', 'placeholder' => 'Name']);?>
@@ -974,8 +974,8 @@ $order=$pass[1];
 			});
 			var order_type=$('#order_type').val();
 			var table_id=$('#tableInput').val();
-			var c_name=$('#c_name').val();
-			var c_mobile_no=$('#c_mobile_no').val();
+			var c_name=$('#cus-name').val();
+			var c_mobile_no=$('#cus-mobile').val();
 			var c_pax=$('#c_pax').val();
 			var dob=$('#dob').val();
 			var doa=$('#doa').val();
@@ -983,7 +983,7 @@ $order=$pass[1];
 			var qwerty=$('#qwerty').val();
 			
 			var c_email=$('#c_email').val();
-			var c_address=$('#c_address').val();
+			var c_address=$('#cus-address').val();
 
 			var offer_id=$('span.offer_id').text();
 			
@@ -1421,6 +1421,7 @@ $order=$pass[1];
 				url: url,
 			}).done(function(response) {
 				$('#WaitBox7 div.modal-body').html(response);
+				$('.date-picker').datepicker();
 			});
 		});
 
@@ -1562,6 +1563,8 @@ $order=$pass[1];
 			alert();
 		});
 
+		ComponentsPickers.init();
+
 
 	});
 
@@ -1579,6 +1582,7 @@ $order=$pass[1];
 			$('#customer_info').html(response);
 		});
 	}
+
 	function amountcals(){
 		$('#kotBox tbody tr').each(function(){
 			var quantity=parseInt($(this).find('td span.qty').html());
@@ -1639,8 +1643,23 @@ $js.="
 	        default: return; // exit this handler for other keys
 	    }
 	    e.preventDefault(); // prevent the default action (scroll / move caret)
+
+	    
 	});
 ";
+
+$js.="
+	$(function(){
+	  $( '.KOTView' ).on( 'swipe', swipeHandler );
+	 
+	  function swipeHandler( event ){
+	    	alert();
+	  }
+
+	});
+";
+
+
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>

@@ -98,7 +98,8 @@ if($controller=='kots'){
         
         <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer showLoader">Dine In (<?php echo $occupiedTableCount; ?>)</span>
         <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer showLoader">Delivery</span>
-        <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer showLoader">Take Away</span>
+        <span class="topBtn takeAwayNewTab pointer">Take Away 1</span>
+        <span class="topBtn takeAwayNewTab2 pointer">Take Away 2</span>
         <span class="topBtn pointer showLoader Bookings">Bookings</span>
         <span class="dashboard topBtn pointer showLoader">Dashboard</span>
     </div>
@@ -118,6 +119,10 @@ $(document).ready(function() {
     $('.takeAwayNewTab').die().live('click',function(event){
         var url='".$this->Url->build(['controller'=>'Bills','action'=>'takeAway'])."'
         window.location.href = url; 
+    });
+    $('.takeAwayNewTab2').die().live('click',function(event){
+        var url='".$this->Url->build(['controller'=>'Bills','action'=>'takeAway'])."'
+        window.open(url);
     });
 
     

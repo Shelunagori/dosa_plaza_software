@@ -548,5 +548,17 @@ class CustomersController extends AppController
         echo 1; exit;
     }
 
+    public function portfolio($id=null){
+        $this->viewBuilder()->layout('admin');
+        $Customer = $this->Customers->get($id);
+
+         $Bills = $this->Customers->Bills->find()
+                    ->where(['Bills.customer_id' => $Customer->id])
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'BillRows'=>['Items'] ]);
+
+        $this->set(compact('Customer', 'Bills'));
+    }
+
     
 }

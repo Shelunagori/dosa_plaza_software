@@ -23,13 +23,13 @@
 					<td style="padding-right: 5px;">
 						<div class="input-icon">
 							Date of Birth<i class="fa fa-child"></i>
-							<input type="date" class="form-control" placeholder="Date of Birth" style="background-color: #f5f5f5 !important" name="dob" id="dob" value="<?php echo @date('Y-m-d', strtotime($Customer->dob)); ?>">
+							<input type="text" class="form-control date-picker" placeholder="Date of Birth" style="background-color: #f5f5f5 !important" name="dob" id="dob" value="<?php echo @$Customer->dob; ?>" data-date-format="dd-mm-yyyy">
 						</div>
 					</td>
 					<td style="padding-left: 5px;">
 						<div class="input-icon">
 							Date of Anniversary<i class="fa fa-empire"></i>
-							<input type="date" class="form-control" placeholder="Date of Anniversary" style="background-color: #f5f5f5 !important" name="doa" id="doa" value="<?php echo @date('Y-m-d', strtotime($Customer->anniversary)); ?>">
+							<input type="text" class="form-control date-picker" placeholder="Date of Anniversary" style="background-color: #f5f5f5 !important" name="doa" id="doa" value="<?php echo @$Customer->anniversary; ?>" data-date-format="dd-mm-yyyy">
 						</div>
 					</td>
 				</tr>

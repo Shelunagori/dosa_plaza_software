@@ -176,4 +176,10 @@ if (in_array("26", $userPages)){
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Reports</span>', '/Users/Reports',['escape' => false, 'class' => 'showLoader']).'</li>';
 }
 
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Inventory</span>', '/InventoryRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Records</span>', '/VegetableRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Sales - Sub Group Wise</span>', '/ItemSubCategories/subGroupItemReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+
 ?> 

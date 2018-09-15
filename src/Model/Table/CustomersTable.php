@@ -36,6 +36,9 @@ class CustomersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Tables');
+        $this->hasMany('Bills', [
+            'foreignKey' => 'customer_id'
+        ]);
     }
 
     /**

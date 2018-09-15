@@ -53,6 +53,7 @@
                             <th scope="col"><?= $this->Paginator->sort('anniversary') ?></th>
                             <th scope="col">Email</th>
                             <th scope="col">Address</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,6 +67,9 @@
                             <td><?php if($customer->anniversary){ echo $customer->anniversary->format('d-m-Y'); } ?></td>
                             <td><?= h($customer->email) ?></td>
                             <td><?= h($customer->address) ?></td>
+                            <td>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Customers', 'action' => 'portfolio', $customer->id], ['class' => 'btn btn-primary btn-sm']) ?>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

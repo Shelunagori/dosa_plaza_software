@@ -1,0 +1,141 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+
+/**
+ * VegetableRecords Controller
+ *
+ * @property \App\Model\Table\VegetableRecordsTable $VegetableRecords
+ *
+ * @method \App\Model\Entity\VegetableRecord[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ */
+class VegetableRecordsController extends AppController
+{
+
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index()
+    {
+        $this->viewBuilder()->layout('admin');
+
+        $month = $this->request->query('month');
+        $month1 = explode('-', $month);
+
+        $firstDate = $month1[1].'-'.$month1[0].'-1';
+        $lastDate = date("Y-m-t", strtotime($firstDate));
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $vegetables = $this->request->data['vegetable'];
+            $amounts = $this->request->data['amount'];
+            foreach ($vegetables as $vegetable_id) {
+                foreach ($amounts[$vegetable_id] as $tdate => $amount) {
+                    //Delete VegetableRecords
+                    $this->VegetableRecords->deleteAll(['transaction_date' => date('Y-m-d', $tdate), 'vegetable_id' => $vegetable_id]);
+
+                    $VegetableRecord = $this->VegetableRecords->newEntity();
+                    $VegetableRecord->vegetable_id = $vegetable_id;
+                    $VegetableRecord->transaction_date = date('Y-m-d', $tdate);
+                    $VegetableRecord->amount = $amount;
+                    $this->VegetableRecords->save($VegetableRecord);
+                }
+            }
+        }
+
+        $Vegetables = $this->VegetableRecords->Vegetables->find();
+
+        $VegetableRecords = $this->VegetableRecords->find()->where(['transaction_date >=' => $firstDate, 'transaction_date <=' => $lastDate]);
+
+        $data=[];
+        foreach ($VegetableRecords as $VegetableRecord) {
+            $data[$VegetableRecord->vegetable_id][strtotime($VegetableRecord->transaction_date)] = $VegetableRecord->amount;
+        }
+
+
+        $this->set(compact('Vegetables', 'month', 'month1', 'data'));
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Vegetable Record id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+        $vegetableRecord = $this->VegetableRecords->get($id, [
+            'contain' => []
+        ]);
+
+        $this->set('vegetableRecord', $vegetableRecord);
+    }
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+        $vegetableRecord = $this->VegetableRecords->newEntity();
+        if ($this->request->is('post')) {
+            $vegetableRecord = $this->VegetableRecords->patchEntity($vegetableRecord, $this->request->getData());
+            if ($this->VegetableRecords->save($vegetableRecord)) {
+                $this->Flash->success(__('The vegetable record has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The vegetable record could not be saved. Please, try again.'));
+        }
+        $this->set(compact('vegetableRecord'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Vegetable Record id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+        $vegetableRecord = $this->VegetableRecords->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $vegetableRecord = $this->VegetableRecords->patchEntity($vegetableRecord, $this->request->getData());
+            if ($this->VegetableRecords->save($vegetableRecord)) {
+                $this->Flash->success(__('The vegetable record has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The vegetable record could not be saved. Please, try again.'));
+        }
+        $this->set(compact('vegetableRecord'));
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Vegetable Record id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $vegetableRecord = $this->VegetableRecords->get($id);
+        if ($this->VegetableRecords->delete($vegetableRecord)) {
+            $this->Flash->success(__('The vegetable record has been deleted.'));
+        } else {
+            $this->Flash->error(__('The vegetable record could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'index']);
+    }
+}

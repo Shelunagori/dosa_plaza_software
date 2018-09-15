@@ -38,8 +38,8 @@ class KotsController extends AppController
             $table_id = $this->request->data()['table_id']; 
             $c_name = $this->request->data()['c_name']; 
             $c_mobile_no = $this->request->data()['c_mobile_no']; 
-            $dob = $this->request->data()['dob']; 
-            $anniversary = $this->request->data()['doa']; 
+            $dob = date('Y-m-d', strtotime($this->request->data()['dob'])); 
+            $anniversary = date('Y-m-d', strtotime($this->request->data()['doa'])); 
             $c_email = $this->request->data()['c_email']; 
             $c_address = $this->request->data()['c_address']; 
 

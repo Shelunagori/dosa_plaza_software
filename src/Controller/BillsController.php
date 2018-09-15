@@ -102,7 +102,6 @@ class BillsController extends AppController
      */
     public function add()
     {
-
         $qwerty=$this->request->query('qwerty');
         if($qwerty==1){
             $c_mobile_no=$this->request->query('c_mobile_no');
@@ -909,6 +908,42 @@ class BillsController extends AppController
             $excel_box = $this->request->data['excel_box'];
             $this->set(compact('excel_box'));
         }
+    }
+
+    public function avgBillReport(){
+        $this->viewBuilder()->layout('admin');
+
+        $urls=$this->request->here();
+        $seturl=explode('?',$urls);
+        $this->set(compact('seturl'));
+
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bookings.booking_date >=']=$from_date;
+            $where['Bookings.booking_date <=']=$to_date;
+        }
+
+
+
+        $Bills   = $this->Bills->find();
+        $Bills->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+
+        $data = [];
+        foreach ($Bills as $Bill) {
+            $data[ strtotime($Bill->transaction_date) ] = [
+                'grand_total' => @$data[ strtotime($Bill->transaction_date) ]['grand_total'] + $Bill->grand_total,
+                'no_of_pax' => @$data[ strtotime($Bill->transaction_date) ]['no_of_pax'] + $Bill->no_of_pax
+            ];
+        }
+
+        //pr($data); exit;
+        
+
+        $this->set(compact('exploded_date_from_to', 'data'));
     }
 
 
