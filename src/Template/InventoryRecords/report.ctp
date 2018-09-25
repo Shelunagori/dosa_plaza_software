@@ -1,14 +1,14 @@
 <?php echo $this->Html->css('mystyle'); ?>
-<?php $this->set("title", 'Stock-Report | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Manual Daily Inventory-Report | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
 			<div class="portlet-title">
 				<table width="100%" style=" margin-top: 5px; margin-bottom: 5px; ">
 					<tr>
-						<td width="20%">
+						<td width="30%">
 							<div class="caption"style="padding:13px; color: red;">
-								Stock-Report
+								Manual Daily Inventory-Report
 							</div>
 						</td>
 						<td valign="button">
@@ -37,19 +37,8 @@
 								</form>
 							</div>
 						</td>
-						<td width="20%">
-							<table>
-								<tr>
-									<td>
-										<a href="javascript:void()" id="exportExcel" class="btn btn-danger" style="margin-right: 10px;"> Excel</a>
-									</td>
-									<td>
-										<div class="actions" style="margin-right: 10px;">
-											<input id="search3"  class="form-control" type="text" placeholder="Search" >
-										</div>
-									</td>
-								</tr>
-							</table>
+						<td width="15%" style="padding-right: 5px;">
+							<input id="search3"  class="form-control" type="text" placeholder="Search" >
 						</td>
 					</tr>
 				</table>
@@ -59,17 +48,17 @@
 				</div>
 			</div>
 			<div class="portlet-body" id="ExcelPage">
-
 				<?php if($from_date && $to_date){ ?>
 
 				<?php
 				$stock=[];
 				foreach ($RawMaterials as $RawMaterial){
 					foreach ($RawMaterial->stock_ledgers as $stock_ledger) {
-						$stock[$RawMaterial->id][$stock_ledger->status][strtotime($stock_ledger->transaction_date)]=$stock_ledger->Total_quantity;
+						$stock[$RawMaterial->id][strtotime($stock_ledger->transaction_date)]=$stock_ledger->Total_quantity;
 					}
 				}
 				?>
+
 				<div align="center">
 					<h4><?php echo $coreVariable['company_name']; ?></h4>
 					<span><?php echo $coreVariable['company_address']; ?></span><br/>
@@ -80,58 +69,37 @@
 					<b>From <?php echo $exploded_date_from_to[0].' To '.$exploded_date_from_to[1]; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>
-				<div class="table-scrollable">
+				<div class="table-scrollable" >
 				<table border="1" class="table table-bordered table-str">
 					<thead>
 						<tr>
-							<th rowspan="2">S.No.</th>
-							<th rowspan="2">Raw materials</th>
-							<th rowspan="2">Unit</th>
-							<?php 
-							$start_date=$from_date;
-							$end_date=$to_date;
-							while (strtotime($start_date) <= strtotime($end_date)) {
-				                echo '<th style="white-space: nowrap;text-align:center;" colspan="2" >'.date('d-m-Y', strtotime($start_date)).'</th>';
-				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
-							} ?>
-						</tr>
-						<tr>
-							<?php 
-							$start_date=$from_date;
-							$end_date=$to_date;
-							while (strtotime($start_date) <= strtotime($end_date)) {
-				                echo '<th style="white-space: nowrap;">Opening</th>';
-				                echo '<th style="white-space: nowrap;">Closing</th>';
-				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
-							} ?>
+							<th>S.No.</th>
+							<th>Item</th>
+							<th>Unit</th>
+							<th>Op. Balance</th>
+							<th>Projection</th>
+							<th>Mall</th>
+							<th>100 F. Road</th>
+							<th>Consumption</th>
+							<th>Cls. Balance</th>
 						</tr>
 					</thead>
 					<tbody id="main_tbody">
-					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
-						<tr style="background-color: #d6d6d6;" class="subCatRow" raw_material_sub_category_id="<?= h($RawMaterial->raw_material_sub_category->id) ?>">
-							<td >
-								<?= h($RawMaterial->raw_material_sub_category->name) ?>
-							</td>
-						</tr>
+					<?php $d=0; foreach ($InventoryRecords as $InventoryRecord): ?>
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
-							<td><?= h($RawMaterial->name) ?></td>
-							<td><?= h($RawMaterial->primary_unit->name) ?></td>
-							<?php 
-							$start_date=$from_date;
-							$end_date=$to_date;
-
-							$opening=$RawMaterial->total_in_opening-$RawMaterial->total_out_opening;
-							$closing=0;
-							while (strtotime($start_date) <= strtotime($end_date)) {
-								$closing = $opening + (@$stock[$RawMaterial->id]['in'][strtotime($start_date)]) - (@$stock[$RawMaterial->id]['out'][strtotime($start_date)]); ?>
-				                <td style="text-align: center;"><?php echo ($opening) ? ($opening) : '' ?></td>
-				                <td style="text-align: center;"><?php echo ($closing) ? ($closing) : '' ?></td>
-				                <?php
-				                $opening=$closing;
-				                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
-							} ?>
-							
+							<td><?= h($InventoryRecord->item_list->name) ?></td>
+							<td><?= h($InventoryRecord->item_list->unit) ?></td>
+							<td><?php echo $openingData[$InventoryRecord->item_list_id]; ?></td>
+							<td><?= h($InventoryRecord->total_projection) ?></td>
+							<td><?= h($InventoryRecord->total_mall) ?></td>
+							<td><?= h($InventoryRecord->total_road) ?></td>
+							<td><?= h($InventoryRecord->total_consumption) ?></td>
+							<td>
+								<?php
+								echo $openingData[$InventoryRecord->item_list_id] + $InventoryRecord->total_projection - $InventoryRecord->total_mall - $InventoryRecord->total_road - $InventoryRecord->total_consumption;
+								?>
+							</td>
 						</tr>
 						<?php $x++; endforeach; ?>
 					</tbody>
@@ -143,12 +111,11 @@
 	</div>
 </div>
 
-<?php $formAction=$this->Url->build(['controller'=>'RawMaterials','action'=>'stockReportExcel']); ?>
+<?php $formAction=$this->Url->build(['controller'=>'RawMaterials','action'=>'consumptionReportExcel']); ?>
 <form method="POST" action="<?php echo $formAction; ?>" id="ExcelForm" style="display: none;">
 	<textarea id="ExcelBox" name="excel_box"></textarea>
 	<button type="submit">EXCEL</button>
 </form>
-
 
 <!-- BEGIN PAGE LEVEL STYLES -->
     <!-- BEGIN COMPONENTS DROPDOWNS -->
@@ -197,19 +164,7 @@ $js="
     		}
     	}); 
 
-    	var colspan = $('tr.main_tr:first').find('td').length;
-    	$('.subCatRow td').attr('colspan', colspan);
-
-    	var sub_category_id=0;
-    	$('.subCatRow').each(function(){
-    		var raw_material_sub_category_id= $(this).attr('raw_material_sub_category_id');
-			if(sub_category_id!=raw_material_sub_category_id){
-				sub_category_id = raw_material_sub_category_id;
-			}else{
-				$(this).remove();
-			}
-		});
-
+    
     	var ht = $('#ExcelPage').html();
 		$('#ExcelBox').html(ht);
 
@@ -217,6 +172,7 @@ $js="
 		$('#exportExcel').die().live('click',function(event){
 			$('#ExcelForm').submit();
 		});
+
 		
 	});
 	";

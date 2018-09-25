@@ -37,7 +37,7 @@
 					<b>From <?php echo $exploded_date_from_to[0].' To '.$exploded_date_from_to[1]; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>
-				<table border="1" class="table table-striped"  id="main_table" style="border: none;">
+				<table border="1" class="table table-condensed table-hover table-bordered"  id="main_table" style="border: none;">
 					<thead>
 						<tr>
 							<th style="width:10%"><?= ('S.No.') ?></th>
@@ -48,6 +48,11 @@
 					</thead>
 					<tbody id="main_tbody">
 					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+						<tr style="background-color: #d6d6d6;" class="subCatRow" raw_material_sub_category_id="<?= h($RawMaterial->raw_material_sub_category->id) ?>">
+							<td colspan="4"   >
+								<?= h($RawMaterial->raw_material_sub_category->name) ?>
+							</td>
+						</tr>
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td><?= h($RawMaterial->name) ?></td>
@@ -100,6 +105,16 @@
     			rows.show();
     		}
     	});
+
+    	var sub_category_id=0;
+    	$('.subCatRow').each(function(){
+    		var raw_material_sub_category_id= $(this).attr('raw_material_sub_category_id');
+			if(sub_category_id!=raw_material_sub_category_id){
+				sub_category_id = raw_material_sub_category_id;
+			}else{
+				$(this).remove();
+			}
+		});
 
     	var ht = $('#ExcelPage').html();
 		$('#ExcelBox').html(ht);

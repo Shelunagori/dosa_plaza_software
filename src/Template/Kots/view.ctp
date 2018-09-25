@@ -15,7 +15,18 @@ foreach($Kots as $Kot){
 <?php if(sizeof($items)>0){ ?>
 <table width="100%">
 	<tr>
-		<td colspan="2" align="center"><span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL</span></td>
+		<td colspan="2" align="center">
+			<span style=" color: #2D4161; font-weight: bold; font-size: 16px; ">GENERATE BILL: </span>
+			<?php if($table_id>0){ ?>
+				<span  style=" color: #2D4161; font-weight: bold; font-size: 16px; "> Table No. <?php echo $Table->name; ?></span>
+			<?php } ?>
+			<?php if($order_type=='delivery'){ ?>
+				<span  style=" color: #2D4161; font-weight: bold; font-size: 16px; "> Delivery No. <?php echo $delivery_no; ?></span>
+			<?php } ?>
+			<?php if($order_type=='takeaway'){ ?>
+				<span  style=" color: #2D4161; font-weight: bold; font-size: 16px; "> Take Away No. <?php echo $take_away_no; ?></span>
+			<?php } ?>
+		</td>
 	</tr>
 	<tr>
 		<td width="30%" valign="top">

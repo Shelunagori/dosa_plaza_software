@@ -12,7 +12,7 @@
     display:block !important;
 }
 </style>
-<?php $this->set("title", 'Daily Inventory | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Manual Daily Inventory | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
     <div class="col-md-12 main-div">
         <div class="portlet box blue-hoki">
@@ -21,7 +21,7 @@
                     <tr>
                         <td width="20%">
                             <div class="caption"style="padding:13px; color: red;">
-                                Daily Inventory
+                                Manual Daily Inventory
                             </div>
                         </td>
                         <td valign="button">
@@ -39,8 +39,64 @@
             </div>
 
             <div class="portlet-body"  id="ExcelPage">
+
+                <div align="center">
+                  <form method="GET">
+                    <table>
+                      <tr>
+                          <td>Previous Records</td>
+                          <td>
+                            <input type="text" class="form-control input-sm date-picker" name="date_from" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" value="<?php echo @$date_from; ?>" />
+                          </td>
+                          <td><button type="submit" class="btn btn-sm">GO</button></td>
+                      </tr>
+                    </table>
+                  </form>
+                </div>
+
+                <?php if($date_from){ 
+                  foreach ($OldData as $Tdate=>$OldDataRow) { ?>
+                  <div><span style="background-color: #CCC;padding: 5px;"><?php echo date('d-m-Y', $Tdate); ?></span></div>
+                  <table class="table table-bordered table-stripped">
+                      <tr>
+                         <th>Item</th>
+                         <th>Unit</th>
+                         <th width="15%">Op. Balance</th>
+                         <th>Projection</th>
+                         <th>Mall</th>
+                         <th>100 F. Road</th>
+                         <th>Cls. Balance</th>
+                         <th>Consumption</th>
+                     </tr>
+                      <?php foreach ($ItemLists as $ItemList) { ?>
+                         <tr>
+                             <td>
+                                  <?= h($ItemList->name) ?>
+                              </td>
+                             <td><?= h($ItemList->unit) ?></td>
+                             <td><?php echo @$OldData[ strtotime('-1 days', $Tdate) ][$ItemList->id]['closing_balance']; ?></td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['projection']; ?>
+                             </td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['mall']; ?>
+                             </td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['road']; ?>
+                             </td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['closing_balance']; ?>
+                             </td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['consumption']; ?>
+                             </td>
+                         </tr>
+                      <?php } ?>
+                  </table>
+                  <?php } ?>
+                <?php } ?>
                 <form method="POST">
-                    <label>Date</label>
+                    <label id="CurrentDate">Date</label>
                     <input name="date" class="form-control" type="text" value="<?php echo date('d-m-Y'); ?>" readonly="readonly" style="width: 150px;">
 
                     <div class="table-scrollable">
@@ -48,11 +104,12 @@
                             <tr>
                                <th>Item</th>
                                <th>Unit</th>
-                               <th>Op. Balance</th>
+                               <th width="15%">Op. Balance</th>
                                <th>Projection</th>
                                <th>Mall</th>
                                <th>100 F. Road</th>
                                <th>Cls. Balance</th>
+                               <th>Consumption</th>
                            </tr>
                             <?php foreach ($ItemLists as $ItemList) { ?>
                                <tr>
@@ -72,7 +129,10 @@
                                        <input type="text" class="form-control input-sm" name="road[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['road']; ?>" >
                                    </td>
                                    <td>
-                                       <input type="text" class="form-control input-sm" name="closing_balance[<?= h($ItemList->id) ?>]" placeholder="0" readonly='readonly' tabindex="-1" value="<?php echo @$TodayOBData[$ItemList->id]['closing_balance']; ?>">
+                                       <input type="text" class="form-control input-sm" name="closing_balance[<?= h($ItemList->id) ?>]" placeholder="0"   value="<?php echo @$TodayOBData[$ItemList->id]['closing_balance']; ?>">
+                                   </td>
+                                   <td>
+                                       <input type="text" class="form-control input-sm" name="consumption[<?= h($ItemList->id) ?>]" placeholder="0" readonly='readonly' tabindex="-1" value="<?php echo @$TodayOBData[$ItemList->id]['consumption']; ?>">
                                    </td>
                                </tr>
                             <?php } ?>
@@ -143,15 +203,19 @@ $(document).ready(function() {
         var Road = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
         if(isNaN(Road)){ Road=0; }
 
-        var Cls =  OB + Projection - Mall - Road;
+        var Cls = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+        if(isNaN(Cls)){ Cls=0; }
 
-        $(this).closest('tr').find('td:nth-child(7) input').val(Cls);
+        var Consumption =  OB + Projection - Mall - Road - Cls;
+
+        $(this).closest('tr').find('td:nth-child(8) input').val(Consumption);
     });
 
 
 
     ComponentsPickers.init();
 });
+jQuery(window).scrollTop(jQuery('#CurrentDate').offset().top);
 ";
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

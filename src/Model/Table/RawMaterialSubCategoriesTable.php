@@ -41,6 +41,10 @@ class RawMaterialSubCategoriesTable extends Table
             'foreignKey' => 'raw_material_category_id',
             'joinType' => 'INNER'
         ]);
+
+        $this->hasMany('RawMaterials', [
+            'foreignKey' => 'raw_material_sub_category_id'
+        ]);
     }
 
     /**

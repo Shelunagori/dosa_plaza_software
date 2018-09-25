@@ -31,7 +31,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table " cellpadding="0" cellspacing="0" id="main_table">
+				<table class="table table-condensed table-hover" cellpadding="0" cellspacing="0" id="main_table">
 					<thead>
 						<tr>
 							<th style="width:10%"><?= ('S.No.') ?></th>
@@ -43,13 +43,18 @@
 					</thead>
 					<tbody id="main_tbody">
 					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+						<tr style="background-color: #d6d6d6;">
+							<td colspan="5" raw_material_sub_category_id="<?= h($RawMaterial->raw_material_sub_category->id) ?>" class="subCatRow" >
+								<?= h($RawMaterial->raw_material_sub_category->name) ?>
+							</td>
+						</tr>
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td><?= h($RawMaterial->name) ?></td>
 							<td><?= h($RawMaterial->primary_unit->name) ?></td>
 							<td>
 								<span class="current_stock" name ="quantity"><?= h($RawMaterial->total_in - $RawMaterial->total_out) ?></span> 
-								<?= h($RawMaterial->primary_unit->quantity.' '.$RawMaterial->primary_unit->name) ?> 
+								<?= h($RawMaterial->primary_unit->quantity) ?> 
 							</td>
 							<td>
 								<?php
@@ -90,6 +95,16 @@
     			rows.show();
     		}
     	}); 
+
+    	var sub_category_id=0;
+    	$('.subCatRow').each(function(){
+    		var raw_material_sub_category_id= $(this).attr('raw_material_sub_category_id');
+			if(sub_category_id!=raw_material_sub_category_id){
+				sub_category_id = raw_material_sub_category_id;
+			}else{
+				$(this).remove();
+			}
+		});
 		
 	});
 	";

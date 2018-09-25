@@ -44,7 +44,7 @@ class RawMaterialsController extends AppController
 			if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
@@ -247,8 +247,9 @@ class RawMaterialsController extends AppController
 			'total_out' => $q2,
 			'last_purchase' => $q3
 		])
-		->contain(['PrimaryUnits'])
+		->contain(['PrimaryUnits', 'RawMaterialSubCategories'])
 		->where(['RawMaterials.is_deleted'=>0])
+		->order(['RawMaterialSubCategories.Name' => 'ASC'])
 		->autoFields(true);
 
 		$this->set(compact('RawMaterials'));
@@ -317,7 +318,8 @@ class RawMaterialsController extends AppController
 			'wastage' => $wastage,
 			'adjustmentOut' => $adjustmentOut,
 		])
-		->contain(['PrimaryUnits'])
+		->contain(['PrimaryUnits', 'RawMaterialSubCategories'])
+		->order(['RawMaterialSubCategories.Name' => 'ASC'])
 		->where(['RawMaterials.is_deleted'=>0])
 		->autoFields(true);
 		//pr($RawMaterials->toArray()); exit;
@@ -362,7 +364,7 @@ class RawMaterialsController extends AppController
 
 		$StockLedgers =	$this->RawMaterials->StockLedgers->find();
 		$RawMaterials =	$this->RawMaterials->find()
-							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+							->contain(['PrimaryUnits', 'RawMaterialSubCategories', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
 								return $q
 								->where([
 									'StockLedgers.transaction_date >=' => $from_date, 
@@ -378,6 +380,7 @@ class RawMaterialsController extends AppController
 								->group(['StockLedgers.transaction_date', 'StockLedgers.raw_material_id'])
 								->order(['StockLedgers.transaction_date' => 'ASC']);
 							}])
+							->order(['RawMaterialSubCategories.Name' => 'ASC'])
 							->where(['RawMaterials.is_deleted'=>0]);
 		
 		
@@ -434,7 +437,7 @@ class RawMaterialsController extends AppController
 								'total_in_opening' => $openingIn,
 								'total_out_opening' => $openingOut,
 							])
-							->contain(['PrimaryUnits', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
+							->contain(['PrimaryUnits', 'RawMaterialSubCategories', 'StockLedgers' => function($q) use($from_date, $to_date, $StockLedgers){
 								return $q
 								->where([
 									'StockLedgers.transaction_date >=' => date('Y-m-d', strtotime('0 day', strtotime($from_date))), 
@@ -450,6 +453,7 @@ class RawMaterialsController extends AppController
 								->order(['StockLedgers.transaction_date' => 'ASC']);
 							}])
 							->where(['RawMaterials.is_deleted'=>0])
+							->order(['RawMaterialSubCategories.Name' => 'ASC'])
 							->autoFields(true);
 
 		//pr($RawMaterials->toArray()); exit;
@@ -566,7 +570,6 @@ class RawMaterialsController extends AppController
 	{
 		$this->viewBuilder()->layout('admin');
 		
-	
 		
 		$q=$this->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
 		$q->select([$q->func()->sum('StockLedgers.quantity')]);
@@ -586,8 +589,9 @@ class RawMaterialsController extends AppController
 			'total_out' => $q2,
 			'last_purchase' => $q3
 		])
-		->contain(['PrimaryUnits'])
+		->contain(['PrimaryUnits', 'RawMaterialSubCategories'])
 		->where(['RawMaterials.is_deleted'=>0])
+		->order(['RawMaterialSubCategories.Name' => 'ASC'])
 		->autoFields(true);
 
 		$this->set(compact('RawMaterials'));

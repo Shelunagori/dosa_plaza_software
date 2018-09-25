@@ -560,5 +560,22 @@ class CustomersController extends AppController
         $this->set(compact('Customer', 'Bills'));
     }
 
+    public function autocompleteCustomers(){
+        $this->viewBuilder()->layout('');
+        $q = $this->request->query('q');
+
+        $Customers = $this->Customers->find()->where(['mobile_no LIKE' => '%'.$q.'%']);
+        $customers=[];
+        foreach ($Customers as $Customer) {
+            $customers[]=$Customer->name.'-'.$Customer->mobile_no;
+        }
+        
+
+        //$customers = ['manoj-9638527410', 'vikas-96385271015'];
+        $object = (object) $customers;
+        echo json_encode($object);
+        exit;
+    }
+
     
 }

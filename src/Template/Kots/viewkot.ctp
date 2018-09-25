@@ -8,7 +8,7 @@
 			<div style=" padding: 5px; " id='DivIdToPrint'>
 				<div align="center" style="line-height: 24px;">
 					<?php if($Kots->table_id>0 ){?>
-						<span style="font-size: 14px;font-weight: bold;color: #606062;">Table No.: <?php echo @$Kots->table->name; ?></span>
+						<span style="font-size: 16px;font-weight: bold;color: #606062;">Table No.: <?php echo @$Kots->table->name; ?></span>
 					<?php } ?>
 					<?php if($Kots->order_type=="delivery"){
 						if($last_voucher_no){
@@ -17,7 +17,7 @@
 				            $delivery_no=1;
 				        }
 				        ?>
-						<span style="font-size: 14px;font-weight: bold;color: #606062;">Delivery No.: <?php echo @$delivery_no; ?></span>
+						<span style="font-size: 16px;font-weight: bold;color: #606062;">Delivery No.: <?php echo @$delivery_no; ?></span>
 					<?php } ?>
 
 					<?php if($Kots->order_type=="takeaway"){
@@ -27,7 +27,7 @@
 				            $take_away_no=1;
 				        }
 				        ?>
-						<span style="font-size: 14px;font-weight: bold;color: #606062;">Take Away No.: <?php echo @$take_away_no; ?></span>
+						<span style="font-size: 16px;font-weight: bold;color: #606062;">Take Away No.: <?php echo @$take_away_no; ?></span>
 					<?php } ?>
 				</div>
 				<div style=" border-bottom: solid 1px #CCC; padding: 13px 5px; line-height: 22px;">
@@ -65,8 +65,8 @@
 							</td>
 							<td align="right">
 								<?php if($Kots->table_id>0 ){?>
-								<!-- <span style="color: #606062;">Table No.: </span>
-								<span style="margin-left: 10px;"> <?php echo @$Kots->table->name; ?> </span> -->
+								<span style="color: #606062;">No. of Pax: </span>
+								<span style="margin-left: 10px;"> <?php echo @$Kots->table->no_of_pax; ?> </span>
 								<?php } ?>
 							</td>
 						</tr>

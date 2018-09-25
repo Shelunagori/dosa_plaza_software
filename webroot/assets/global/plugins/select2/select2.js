@@ -809,7 +809,7 @@ the specific language governing permissions and limitations under the Apache Lic
             // for mouse events outside of itself so it can close itself. since the dropdown is now outside the select2's
             // dom it will trigger the popup close, which is not what we want
             // focusin can cause focus wars between modals and select2 since the dropdown is outside the modal.
-            this.dropdown.on("click mouseup mousedown touchstart touchend focusin", function (e) { e.stopPropagation(); });
+            this.dropdown.on("click mouseup mousedown touchstart touchend focusin", function (e) {  e.stopPropagation(); });
 
             this.nextSearchTerm = undefined;
 
@@ -1844,6 +1844,7 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // abstract
         selectHighlighted: function (options) {
+            //alert();
             if (this._touchMoved) {
               this.clearTouchMoved();
               return;
@@ -2444,6 +2445,8 @@ the specific language governing permissions and limitations under the Apache Lic
             if (!equal(old, this.id(data))) {
                 this.triggerChange({ added: data, removed: oldData });
             }
+            $('.QtyCatcher').focus();
+            $('.QtyCatcher').select();
         },
 
         // single

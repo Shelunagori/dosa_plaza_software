@@ -39,6 +39,8 @@ class VegetableRecordsTable extends Table
             'foreignKey' => 'vegetable_id',
             'joinType' => 'INNER'
         ]);
+
+        
     }
 
     /**

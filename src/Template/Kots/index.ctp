@@ -19,7 +19,7 @@
 
 		<div id="delete<?php echo $kot->id; ?>" class="modal fade" role="dialog">
 			<div class="modal-dialog modal-md" >
-				<form method="post" action="<?php echo $this->Url->build(array('controller'=>'Kots','action'=>'deletekot',$kot->id,$table_id,$order)) ?>">
+				<form method="POST" action="<?php echo $this->Url->build(array('controller'=>'Kots','action'=>'deletekot',$kot->id,$table_id,$order)) ?>">
 					<div class="modal-content">
 					  <div class="modal-header" align="center">
 							<h4 class="modal-title">
@@ -95,7 +95,7 @@
 													<textarea class="form-control" name="delete_comment" required="required"></textarea>
 												</div>
 												<div class="modal-footer" style="border:none;">
-													<button type="submit" class="btn  btn-sm btn-danger">Yes</button>
+													<button type="submit" name="xyz" class="btn  btn-sm btn-danger">Yes</button>
 													<button type="button" class="btn  btn-sm btn-danger" data-dismiss="modal"style="color:#000000;background-color:#DDDDDD;">Cancel</button>
 												</div>
 											</div>

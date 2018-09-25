@@ -66,9 +66,9 @@
 				</div>
 				<div class="table-scrollable">
 					<?php if($date){ ?>
-					<table border="1" class="table table-bordered" id="main_table">
+					<table border="1" class="table table-condensed table-hover table-bordered" id="main_table" >
 						<thead>
-							<tr>
+							<tr >
 								<th><?= ('S.No.') ?></th>
 								<th><?= ('Raw materials') ?></th>
 								<th style="text-align: center;"><?= ('Unit') ?></th>
@@ -85,6 +85,11 @@
 						</thead>
 						<tbody id="main_tbody">
 						<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+							<tr style="background-color: #d6d6d6;" class="subCatRow" raw_material_sub_category_id="<?= h($RawMaterial->raw_material_sub_category->id) ?>">
+								<td colspan="12"   >
+									<?= h($RawMaterial->raw_material_sub_category->name) ?>
+								</td>
+							</tr>
 							<tr class="main_tr">
 								<td><?= (++$d) ?></td>
 								<td style="white-space: nowrap;"><?= h($RawMaterial->name) ?></td>
@@ -176,6 +181,16 @@
     		}
     	});
 
+    	var sub_category_id=0;
+    	$('.subCatRow').each(function(){
+    		var raw_material_sub_category_id= $(this).attr('raw_material_sub_category_id');
+			if(sub_category_id!=raw_material_sub_category_id){
+				sub_category_id = raw_material_sub_category_id;
+			}else{
+				$(this).remove();
+			}
+		});
+
     	var ht = $('#ExcelPage').html();
 		$('#ExcelBox').html(ht);
 
@@ -183,6 +198,8 @@
 		$('#exportExcel').die().live('click',function(event){
 			$('#ExcelForm').submit();
 		});
+
+		
 		
 	});
 	";

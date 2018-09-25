@@ -504,21 +504,11 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 			<div class="modal-body">
 				<div style=" text-align: center; padding: 0px 0 15px 0px; font-size: 15px; font-weight: bold; color: #2D4161; ">OCCUPY THE TABLE</div>
 				<div align="center">TABLE: <span id="tableLabel"></span><input type="hidden" name="table_id"></div>
-				<!--<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-user"></i></span>
-					<input type="text" name="c_name" class="form-control" placeholder="Name" style="background-color: #F5F5F5;">
-				</div>
-				<br/>
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-mobile" style=" font-size: 20px; "></i></span>
-					<input type="text" name="c_mobile" class="form-control" placeholder="Mobile No." style="background-color: #F5F5F5;" maxlength="10" minlength="10">
-				</div>
-				<br/>-->
+				
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-sitemap"></i></span>
 					<select name="c_pax" class="form-control" style="background-color: #F5F5F5;">
-						<option value="" style="display: none;">Select No. of Pax</option>
-						<option value="1" selected="selected">1</option>
+						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
 						<option value="4">4</option>

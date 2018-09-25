@@ -163,11 +163,11 @@ $order=$pass[1];
 										$z=1; $zx=0; 
 										foreach($item_sub_category->items as $item){ 
 											$zx++;
-											if($zx==21){ $zx=1; $z++; }
+											if($zx==25){ $zx=1; $z++; }
 
 											if($item->is_favorite==1){
 												$fzx++;
-												if($fzx==21){ $fzx=1; $fz++; }
+												if($fzx==25){ $fzx=1; $fz++; }
 												$fav_attr='fav_display_no='.$fz;
 											}else{
 												$fav_attr='';
@@ -175,8 +175,13 @@ $order=$pass[1];
 											
 										?>
 											<span class="ItemBox" sub_category_id="<?= h($item_sub_category->id) ?>" item_id="<?= h($item->id) ?>" item_name="<?= h($item->name) ?>" rate="<?= h($item->rate) ?>" is_favorite="<?php echo (int)$item->is_favorite; ?>" display_no="<?php echo $z; ?>" <?php echo $fav_attr; ?>  style="background-color: <?php echo $item->color ?>">
-												<?= h($item->name) ?><br/>
-												[<?= h($item->rate) ?>]
+												<?= h($item->name) ?>
+												[<?= h($item->rate) ?>]<br/>
+												<p style="font-size:8px;line-height: 10px">
+													<?php if($item->description){ echo '('; } ?>
+													<?= h($item->description) ?>
+													<?php if($item->description){ echo ')'; } ?>
+												</p>
 											</span>
 										<?php } ?>
 										</div>
@@ -200,7 +205,7 @@ $order=$pass[1];
 												$options[]=['text' =>$Item->name, 'value' => $Item->id, 'rate' => $Item->rate];
 											}
 											
-											echo $this->Form->input('item_sub_category_id',['options' =>$options,'label' => false,'class'=>'form-control select2me ItemDropDown','empty'=> 'Search Item','autofocus']);?>
+											echo $this->Form->input('item_sub_category_id',['options' =>$options,'label' => false,'class'=>'form-control select2me ItemDropDown','empty'=> ' ','autofocus','data-placeholder'=>'Search Item']);?>
 										</td>
 										<td width="20%" style="padding:0 10px 0 0;">
 											<input type="text" class="form-control QtyCatcher" placeholder="Quantity" value="1">
@@ -218,7 +223,7 @@ $order=$pass[1];
 											<tr>
 												<td style="text-align:center;width: 5%;">S.No.</td>
 												<td style="">Name</td>
-												<td style="text-align:center;">Quantity</td>
+												<td style="text-align:center;width:55px;">Quantity</td>
 												<td style="text-align:center;">Rate</td>
 												<td style="text-align:center;">Amount</td>
 												<td style="text-align:center;">Comment</td>
@@ -356,6 +361,64 @@ $order=$pass[1];
 											<div id="CustomerInfo" style=" padding-top: 4px; ">
 												
 											</div>
+
+
+										<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+										<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+										<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+										
+										<script>
+										  $(function() {
+										    function log( message ) {
+										      $( "<div>" ).text( message ).prependTo( "#log" );
+										      $( "#log" ).scrollTop( 0 );
+										    }
+
+										    $( "#customer-mobile" ).autocomplete({
+										      source: function( request, response ) {
+										      	var url="<?php echo $this->Url->build(['controller'=>'Customers','action'=>'autocompleteCustomers']); ?>";
+										        $.ajax({
+										          url: url,
+										          dataType: "json",
+										          data: {
+										            q: request.term
+										          },
+										          success: function( data ) {
+										            response( data );
+										          },
+										          error: function(e){
+										          	console.log(e.responseText);
+										          }
+										        });
+										      },
+										      minLength: 1,
+										      select: function( event, ui ) {
+										        log( ui.item ?
+										          "Selected: " + ui.item.label :
+										          "Nothing selected, input was " + this.value);
+										        
+										      },
+										      open: function() {
+										        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+										      },
+										      close: function() {
+										      	var str = $("#customer-mobile").val();
+										        var res = str.split("-");
+										        var name = res[0];
+										        $('#customer-name').val(name);
+										        var mobile = res[1];
+										        $('#customer-mobile').val(mobile);
+
+										        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+										      }
+										    });
+										  });
+
+
+										</script>
+												
+										    
 										<?php } ?>
 										
 									</td>
@@ -469,7 +532,7 @@ $order=$pass[1];
 
 .ItemBox{
     width: 100px;
-    height: 60px;
+    height: 90px;
     float: left;
     font-size: 11px;
     padding: 2px 2px;
@@ -533,7 +596,7 @@ $order=$pass[1];
 
 	<!-- BEGIN COMPONENTS DROPDOWNS -->
 	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL PLUGINS -->
@@ -549,9 +612,15 @@ $order=$pass[1];
 	<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
 	<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
 	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-dropdowns.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+
+	<?php echo $this->Html->script('/js/mobile1.4.5.min.js', ['block' => 'MOBILE_JS']); ?>
 	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL SCRIPTS -->
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+
+
+
+
 <?php
 	$waitingMessage='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Submitting...</span></div>';
 	$waitingMessage2='<div align=center><br/><i class="fa fa-gear fa-spin" style="font-size:50px"></i><br/><span style="font-size: 18px; font-weight: bold;">Loading...</span></div>';
@@ -717,6 +786,7 @@ $order=$pass[1];
 				var qt= $('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text();
 
 				$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
+				amountcals();
 				return;
 			}
 
@@ -770,12 +840,20 @@ $order=$pass[1];
 				}
 			});
 		});
-		$('.ItemDropDown').select2('open');
-		//$('.ItemDropDown').die().live('change',function(event){
-		$(document).on('change','.ItemDropDown',function(event){
-			$('.QtyCatcher').focus();
-		});
+		var openDropdawn=1;
 
+		$('.ItemDropDown').keydown(function(event){
+			if(openDropdawn > 1)
+			{
+				$('.select2-container').addClass('select2-container-active  select2-dropdown-open');
+				$('.select2-focusser').prop('disabled',true);
+			}
+			
+			$('.select2-drop-active').css('display','block');
+			$('.select2-search').find('input').focus();
+
+		});
+		
 		$('.QtyCatcher').keypress(function(event){
 		    var keycode = (event.keyCode ? event.keyCode : event.which);
 		    if(keycode == '13'){
@@ -788,7 +866,9 @@ $order=$pass[1];
 					$('table#kotBox tbody tr td[item_id='+item_id+']').closest('tr').find('td:nth-child(3) span.qty').text(' '+(++qt)+' ');
 					
 					$('.ItemDropDown').select2('val',''); 
-					$('.ItemDropDown').select2('open');
+					$('.ItemDropDown').focus();
+					
+					
 					return;
 				}
 
@@ -805,8 +885,9 @@ $order=$pass[1];
 				}
 
 				$('.ItemDropDown').select2('val',''); 
-				$('.ItemDropDown').select2('open');
+				$('.ItemDropDown').focus();
 		    }
+		    openDropdawn++;
 		});
 
 
@@ -896,10 +977,10 @@ $order=$pass[1];
 
 					}
 					else {
-						$('.CreateBill').trigger('click');
 						var url='".$this->Url->build(['controller'=>'Kots','action'=>'viewkot'])."';
 						url=url+'/'+response;
-		        		window.open(url, '_blank');
+						location. reload();
+		        		window.open(url, '_blank'); 
 					}					
 				}else{
 					$('#WaitBox div.modal-body').html('".$errorMessage."');
@@ -915,10 +996,11 @@ $order=$pass[1];
 		$('.CreateBill').die().live('click',function(event){
 			event.preventDefault();
 			var table_id=$('#tableInput').val();
+			var order_type=$('#order_type').val();
 			$('#WaitBox3').show();
 			$('#WaitBox3 div.modal-body').html('".$waitingMessage2."');
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'view'])."';
-			url=url+'?table_id='+table_id;
+			url=url+'?table_id='+table_id+'&order_type='+order_type;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
@@ -976,13 +1058,7 @@ $order=$pass[1];
 			var table_id=$('#tableInput').val();
 			var c_name=$('#cus-name').val();
 			var c_mobile_no=$('#cus-mobile').val();
-			var c_pax=$('#c_pax').val();
-			var dob=$('#dob').val();
-			var doa=$('#doa').val();
 			var employee_id=$('#employee_id option:selected').val();
-			var qwerty=$('#qwerty').val();
-			
-			var c_email=$('#c_email').val();
 			var c_address=$('#cus-address').val();
 
 			var offer_id=$('span.offer_id').text();
@@ -994,8 +1070,9 @@ $order=$pass[1];
 			
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Bills','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&dob='+dob+'&doa='+doa+'&c_email='+c_email+'&c_address='+c_address+'&c_pax='+c_pax+'&order_type='+order_type+'&employee_id='+employee_id+'&offer_id='+offer_id+'&qwerty='+qwerty;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&total='+total+'&roundOff='+roundOff+'&net='+net+'&kot_ids='+kot_ids+'&c_name='+c_name+'&c_mobile_no='+c_mobile_no+'&c_address='+c_address+'&order_type='+order_type+'&employee_id='+employee_id+'&offer_id='+offer_id;
 			url=encodeURI(url);
+			
 			$.ajax({
 				url: url,
 			}).done(function(bill_id) {
@@ -1559,17 +1636,16 @@ $order=$pass[1];
 
 		});
 
-		$('#ItemArea').die().live('swipeleft',function(event){
-			alert();
-		});
+
+		
+
+		
 
 		ComponentsPickers.init();
 
 
 	});
 
-
-	
 	
 	function UpdateCustmber(){
 		var table_id=$('#tableInput').val();
@@ -1650,10 +1726,49 @@ $js.="
 
 $js.="
 	$(function(){
-	  $( '.KOTView' ).on( 'swipe', swipeHandler );
+	  $( '.KOTView' ).on( 'swipeleft', swipeleftHandler );
+	  $( '.KOTView' ).on( 'swiperight', swiperightHandler );
 	 
-	  function swipeHandler( event ){
-	    	alert();
+	  function swipeleftHandler( event ){
+	  		var currentPage=$('#slideRight').attr('currentPage');
+			currentPage++;
+			$('.ItemBox').hide();
+			if( $('#favStatus').val() ==1 ){
+				if($('.ItemBox[fav_display_no='+currentPage+']').length==0){
+					var currentPage=currentPage-1;
+				}
+				$('.ItemBox[is_favorite=1][fav_display_no='+currentPage+']').show();
+			}else{
+				var sub_category_id=$('#SubCategoryArea .activeSub').attr('sub_category_id');
+				if($('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').length==0){
+					var currentPage=currentPage-1;
+				}
+				$('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').show();
+			}
+
+			$('#slideLeft').attr('currentPage',currentPage);
+			$('#slideRight').attr('currentPage',currentPage);	
+	  }
+
+	  function swiperightHandler( event ){
+	    	var currentPage=$('#slideLeft').attr('currentPage');
+			currentPage--;
+			$('.ItemBox').hide();
+			if( $('#favStatus').val() ==1 ){
+				if($('.ItemBox[fav_display_no='+currentPage+']').length==0){
+					var currentPage=1;
+				}
+				$('.ItemBox[is_favorite=1][fav_display_no='+currentPage+']').show();
+			}else{
+				var sub_category_id=$('#SubCategoryArea .activeSub').attr('sub_category_id');
+				if($('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').length==0){
+					var currentPage=1;
+				}
+				$('.ItemBox[sub_category_id='+sub_category_id+'][display_no='+currentPage+']').show();
+			}
+
+			$('#slideLeft').attr('currentPage',currentPage);
+			$('#slideRight').attr('currentPage',currentPage);	
 	  }
 
 	});
@@ -1663,6 +1778,19 @@ $js.="
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>
+
+
+
+
+<div data-role="page" id="pageone" style="display: ;">
+  
+
+	<div data-role="main" class="ui-content">
+		
+	</div>
+
+	
+</div> 
 
 <div id="WaitBox" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3" aria-hidden="false" style="display: none; padding-right: 12px;">
 	<div class="modal-backdrop fade in" ></div>
@@ -1869,3 +1997,12 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		</div>
 	</div>
 </div>
+
+<style type="text/css">
+	.ui-loader{
+		display: none;
+	}
+	#pageone{
+		display: none;
+	}
+</style>

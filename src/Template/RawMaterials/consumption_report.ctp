@@ -99,6 +99,11 @@
 					</thead>
 					<tbody id="main_tbody">
 					<?php $d=0;$x=0; foreach ($RawMaterials as $RawMaterial): ?>
+						<tr style="background-color: #d6d6d6;" class="subCatRow" raw_material_sub_category_id="<?= h($RawMaterial->raw_material_sub_category->id) ?>">
+							<td >
+								<?= h($RawMaterial->raw_material_sub_category->name) ?>
+							</td>
+						</tr>
 						<tr class="main_tr">
 							<td><?= (++$d) ?></td>
 							<td style="white-space: nowrap;"><?= h($RawMaterial->name) ?></td>
@@ -174,6 +179,19 @@ $js="
     			rows.show();
     		}
     	}); 
+
+    	var colspan = $('tr.main_tr:first').find('td').length;
+    	$('.subCatRow td').attr('colspan', colspan);
+
+    	var sub_category_id=0;
+    	$('.subCatRow').each(function(){
+    		var raw_material_sub_category_id= $(this).attr('raw_material_sub_category_id');
+			if(sub_category_id!=raw_material_sub_category_id){
+				sub_category_id = raw_material_sub_category_id;
+			}else{
+				$(this).remove();
+			}
+		});
 
     	var ht = $('#ExcelPage').html();
 		$('#ExcelBox').html(ht);

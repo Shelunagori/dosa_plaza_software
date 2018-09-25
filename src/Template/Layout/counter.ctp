@@ -33,11 +33,13 @@ License: You must have a valid license purchased only from themeforest(the above
 		<?= $this->fetch('PAGE_LEVEL_CSS')?>
 		<!-- BEGIN THEME STYLES -->
 		<?php echo $this->Html->css('/assets/global/css/components.css'); ?>
+		<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css'); ?>
 		<?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/layout.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/themes/darkblue.css'); ?>
 		<?php echo $this->Html->css('/assets/admin/layout/css/custom.css'); ?>
 		<!-- END THEME STYLES -->
+
 		<style>
 		#loading{
 			background-color: rgba(0, 0, 0, 0.21);
@@ -242,7 +244,12 @@ License: You must have a valid license purchased only from themeforest(the above
 		<script src="../../assets/global/plugins/respond.min.js"></script>
 		<script src="../../assets/global/plugins/excanvas.min.js"></script> 
 		<![endif]-->
-		<?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?>
+		
+		
+		<!-- <?php echo $this->Html->script('/assets/global/plugins/jquery.min.js'); ?> -->
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+		<?= $this->fetch('MOBILE_JS')?>
 		<?php echo $this->Html->script('/assets/global/plugins/jquery-migrate.min.js'); ?>
 		<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 		<?php echo $this->Html->script('/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js'); ?>

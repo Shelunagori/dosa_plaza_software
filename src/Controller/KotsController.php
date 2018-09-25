@@ -20,6 +20,7 @@ class KotsController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->layout('');
         $table_id=$this->request->query('table_id');
         $order=$this->request->query('order');
         $kots = $this->Kots->find()->where(['table_id'=>$table_id, 'bill_pending'=>'yes', 'is_deleted'=>0, 'order_type'=>$order])
@@ -133,6 +134,7 @@ class KotsController extends AppController
     public function view()
     {
         $table_id=$this->request->query('table_id');
+        $order_type=$this->request->query('order_type');
         $search_mobile=$this->request->query('search_mobile');
         $search_code=$this->request->query('search_code');
 		
@@ -160,16 +162,37 @@ class KotsController extends AppController
             if($Table->customer_id){
                 $Customer = $this->Kots->Tables->Customers->get($Table->customer_id);
             }
-            
         }
+        if($order_type=="delivery"){
+            $last_voucher_no=$this->Kots->Bills->find()
+                        ->select(['delivery_no'])->order(['delivery_no' => 'DESC'])->where(['order_type' => 'delivery', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $delivery_no=$last_voucher_no->delivery_no+1;
+            }else{
+                $delivery_no=1;
+            }
+        }
+
+        if($order_type=="takeaway"){
+            $last_voucher_no=$this->Kots->Bills->find()
+                        ->select(['take_away_no'])->order(['take_away_no' => 'DESC'])->where(['order_type' => 'takeaway', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $take_away_no=$last_voucher_no->take_away_no+1;
+            }else{
+                $take_away_no=1;
+            }
+        }
+
 		$taxes=$this->Kots->Taxes->find();
-		$this->set(compact('Kots', 'Table', 'taxes','searchbox','searchBy', 'Customer'));
+		$this->set(compact('Kots', 'Table', 'taxes','searchbox','searchBy', 'Customer', 'table_id','order_type','delivery_no', 'take_away_no'));
     }
 
     public function viewkot($kot_id=null)
     {
         $this->viewBuilder()->layout('');
-        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables" => ['Employees'],'KotRows'=>['Items'=>['Taxes']]])->first();
+        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables" => ['Employees'],'KotRows'=> function($q){
+            return $q->where(['KotRows.is_deleted' => 0])->contain(['Items'=>['Taxes']]);
+        } ])->first();
 
         if($Kots->order_type == "delivery"){
             $last_voucher_no=$this->Kots->Bills->find()
@@ -382,54 +405,51 @@ class KotsController extends AppController
         $kot = $this->Kots->get($id, [
             'contain' => ['KotRows']
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $delete_comment = $this->request->getData()['delete_comment'];
-            $kot = $this->Kots->patchEntity($kot, $this->request->getData());
-            $kot->is_deleted=1;
-            $kot->delete_time=date('Y-m-d h:i:s');
-            if ($this->Kots->save($kot)) {
-                $this->Flash->success(__('The kot has been deleted.'));
-                $query = $this->Kots->KotRows->query();
-                $query->update()
-                        ->set(['is_deleted' => 1,'delete_time'=>date('Y-m-d h:i:s'), 'delete_comment' => $delete_comment ])
-                        ->where(['KotRows.kot_id'=>$id])
-                        ->execute();
-                return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
-            }
-            $this->Flash->error(__('The kot could not be deleted. Please, try again.'));
+        
+        $delete_comment = $this->request->getData()['delete_comment'];
+        $kot = $this->Kots->patchEntity($kot, $this->request->getData());
+        $kot->is_deleted=1;
+        $kot->delete_time=date('Y-m-d h:i:s');
+        if ($this->Kots->save($kot)) {
+            $this->Flash->success(__('The kot has been deleted.'));
+            $query = $this->Kots->KotRows->query();
+            $query->update()
+                    ->set(['is_deleted' => 1,'delete_time'=>date('Y-m-d h:i:s'), 'delete_comment' => $delete_comment ])
+                    ->where(['KotRows.kot_id'=>$id])
+                    ->execute();
+            return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
         }
+        $this->Flash->error(__('The kot could not be deleted. Please, try again.'));
     }
 
     public function deletekotitem($id = null,$Tid = null,$Order = null)
     {
         $kot = $this->Kots->KotRows->get($id); 
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        
+        $KotRow = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
+        $KotRow->is_deleted=1;
+        $KotRow->delete_time=date('Y-m-d h:i:s');
+        $KotRow->delete_comment=$this->request->getData()['delete_comment'];
 
-            $KotRow = $this->Kots->KotRows->patchEntity($kot, $this->request->getData());
-            $KotRow->is_deleted=1;
-            $KotRow->delete_time=date('Y-m-d h:i:s');
-            $KotRow->delete_comment=$this->request->getData()['delete_comment'];
+        if ($this->Kots->KotRows->save($KotRow)) {
 
-            if ($this->Kots->KotRows->save($KotRow)) {
+            $kot = $this->Kots->find()->where(['Kots.id' => $KotRow->kot_id])
+                    ->contain(['KotRows' => function($q){
+                        return $q->where(['KotRows.is_deleted' => 0]);
+                    }])
+                    ->first();
 
-                $kot = $this->Kots->find()->where(['Kots.id' => $KotRow->kot_id])
-                        ->contain(['KotRows' => function($q){
-                            return $q->where(['KotRows.is_deleted' => 0]);
-                        }])
-                        ->first();
-
-                if(sizeof($kot->kot_rows)==0){
-                    $Kot=$this->Kots->get($kot->id);
-                    $Kot->is_deleted=1;
-                    $Kot->delete_time=date('Y-m-d h:i:s');
-                    $this->Kots->save($Kot);
-                }
-
-                $this->Flash->success(__('The item has been deleted.'));
-                return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
+            if(sizeof($kot->kot_rows)==0){
+                $Kot=$this->Kots->get($kot->id);
+                $Kot->is_deleted=1;
+                $Kot->delete_time=date('Y-m-d h:i:s');
+                $this->Kots->save($Kot);
             }
-            $this->Flash->error(__('The item could not be deleted. Please, try again.'));
+
+            $this->Flash->success(__('The item has been deleted.'));
+            return $this->redirect(['action' => 'generate/'.$Tid.'/'.$Order]);
         }
+        $this->Flash->error(__('The item could not be deleted. Please, try again.'));
     }
 
     public function deleteReport(){

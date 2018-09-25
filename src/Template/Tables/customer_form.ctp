@@ -34,7 +34,7 @@
                                 ?>
                                  
                                 <label style=" float: left; ">Date of Birth</label>
-                                <input type="text" placeholder="dd-mm-yyyy" class="form-control" placeholder="Date of Birth"   name="dob" id="customer_dob" value="<?php echo $dob; ?>">
+                                <input type="text" placeholder="dd-mm-yyyy" class="form-control date-picker" data-date-format="dd-mm-yyyy" placeholder="Date of Birth"   name="dob" id="customer_dob"  value="<?php echo $dob; ?>">
                             </div>
                             <div class="col-md-6">
                                 <?php
@@ -45,7 +45,7 @@
                                 }
                                 ?>
                                 <label style=" float: left; ">Date of Anniversary</label>
-                                <input type="text" class="form-control" placeholder="Date of Anniversary"   name="customer_anniversary" id="customer_anniversary" value="<?php echo $doa; ?>">
+                                <input type="text" class="form-control date-picker" placeholder="Date of Anniversary "   name="customer_anniversary" data-date-format="dd-mm-yyyy" id="customer_anniversary" value="<?php echo $doa; ?>">
                             </div>
                         </div>
                         <br/>
@@ -75,6 +75,35 @@
     </div>
 </div>
 
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+
+
 <?php
 $js="
 $(document).ready(function(){ 
@@ -92,11 +121,12 @@ $(document).ready(function(){
         $.ajax({
             url: url,
         }).done(function(response) {
-            console.log(response); return;
             $('#C_Form').hide();
             $('#S_msg').show();
         });
     });
+
+    ComponentsPickers.init();
 });
 
 ";

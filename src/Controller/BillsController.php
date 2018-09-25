@@ -102,73 +102,63 @@ class BillsController extends AppController
      */
     public function add()
     {
-        $qwerty=$this->request->query('qwerty');
-        if($qwerty==1){
-            $c_mobile_no=$this->request->query('c_mobile_no');
-        }else{
-            $c_name=$this->request->query('c_name');
-            $c_mobile_no=$this->request->query('c_mobile_no');
-            $c_pax=$this->request->query('c_pax');
-            $dob=$this->request->query('dob');
-            $doa=$this->request->query('doa');
-            $c_email=$this->request->query('c_email');
-            $c_address=$this->request->query('c_address');
-        }
+        $c_name=$this->request->query('c_name');
+        $c_mobile_no=$this->request->query('c_mobile_no');
+        $c_address=$this->request->query('c_address');
         $order_type=$this->request->query('order_type');
+        $table_id=$this->request->query('table_id');
 
-        $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
-        if($qwerty==1 && $IsCustomerExist){
-            $c_name=@$IsCustomerExist->name;
-            $c_mobile_no=@$IsCustomerExist->mobile_no;
-            $dob=@$IsCustomerExist->dob;
-            $doa=@$IsCustomerExist->anniversary;
-            $c_email=@$IsCustomerExist->email;
-            $c_address=@$IsCustomerExist->address;
+        $bill = $this->Bills->newEntity();
+        if($table_id>0){
+            $Table = $this->Bills->Tables->get($table_id);
+            $bill->customer_id=$Table->customer_id;
             
-        }
-        if($IsCustomerExist){
-            $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
-            $Customer->name=$c_name;
-            $Customer->mobile_no=$c_mobile_no;
-            $Customer->dob=$dob;
-            $Customer->anniversary=$doa;
-            $Customer->email=$c_email;
-            $Customer->address=$c_address;
-            $this->Bills->Customers->save($Customer);
         }else{
-
-            $Customer = $this->Bills->Customers->newEntity();
-            $Customer->name=$c_name;
-            $Customer->address=$c_address;
-            $Customer->dob=$dob;
-            $Customer->anniversary=$doa;
-            $Customer->email=$c_email;
-            $Customer->address=$c_address;
-            $Customer->mobile_no=$c_mobile_no;
-            
-            $last_Customer=$this->Bills->Customers->find()
-                            ->order(['customer_code' => 'DESC'])->first();
-            if($last_Customer){
-                $Customer->customer_code=$last_Customer->customer_code+1;
-            }else{
-                $Customer->customer_code=2001;
-            }
-            if($Customer->mobile_no){
+            $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
+            if($IsCustomerExist){
+                //update
+                $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
+                $Customer->name=$c_name;
+                $Customer->address=$c_address;
                 $this->Bills->Customers->save($Customer);
+                
+                //link
+                $bill->customer_id=$Customer->id;
+            }else{
+                //insert
+                $Customer = $this->Bills->Customers->newEntity();
+                $Customer->name=$c_name;
+                $Customer->address=$c_address;
+                $Customer->mobile_no=$c_mobile_no;
+                
+                $last_Customer=$this->Bills->Customers->find()
+                                ->order(['customer_code' => 'DESC'])->first();
+                if($last_Customer){
+                    $Customer->customer_code=$last_Customer->customer_code+1;
+                }else{
+                    $Customer->customer_code=2001;
+                }
+                if($Customer->mobile_no){
+                    $this->Bills->Customers->save($Customer);
+                }
+
+                //link
+                $bill->customer_id=$Customer->id;
             }
-            
         }
+
+       
 
 		$myJSON=$this->request->query('myJSON');
 
-		$table_id=$this->request->query('table_id');
+		
 		$total=$this->request->query('total'); 
 		$roundOff=$this->request->query('roundOff');
         $net=$this->request->query('net');
-        $customer_id=@$Customer->id;
+        
 		$kot_ids=explode(',', $this->request->query('kot_ids'));
 		$q = json_decode($myJSON, true);
-        $bill = $this->Bills->newEntity();
+        
 		
 		$last_voucher_no=$this->Bills->find()
                         ->select(['voucher_no'])->order(['id' => 'DESC'])->first();
@@ -185,7 +175,8 @@ class BillsController extends AppController
 		$bill->total=$total; 
 		$bill->round_off=$roundOff;
         $bill->grand_total=$net;
-		$bill->customer_id=$customer_id;
+		
+
 		$bill->order_type=$order_type;
        
         $bill_rows=[];
@@ -238,6 +229,10 @@ class BillsController extends AppController
             }
         }
 
+        //*********************************//
+        //           SAVE BILL             
+        //*********************************//
+        
 		if ($this->Bills->save($bill)) {
 			$query = $this->Bills->Kots->query();
 			$query->update()

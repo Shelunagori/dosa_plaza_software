@@ -49,11 +49,17 @@
 						</div>
 
 						<div class="row">
+							<div class="form-group col-md-4">
+								<label class=""> Description</label>
+								<div class="col-md-12">
+									<?php echo $this->Form->input('description',['label' => false,'class'=>'form-control', 'placeholder' => 'Description']);?>
+								</div>
+							</div>
 							<?php if(empty($id)){?>  
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-2">
 									<label class=""> Select Tax <span class="required" aria-required="true">*</span></label>
 									<div class="col-md-12">
-										<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2me selectState input-large','empty'=> 'Select...']);?>
+										<?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2me selectState','empty'=> 'Select...']);?>
 									</div>
 								</div>
 							<?php } ?>
@@ -66,10 +72,10 @@
 									<input type="radio" name="discount_applicable" value="0" <?php  if(!empty($id)){ if($item->discount_applicable==0){ echo "checked";} } ?>> Not Applicable </label>
 								</div>
 							</div>
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-2">
 								<label  class="">Taste</label>
 								<?php
-								$options[]=['text' =>'spicy', 'value' => '#ffb3b3'];
+								$options[]=['text' =>'spicy', 'value' => '#fb8181'];
 								$options[]=['text' =>'medium spicy', 'value' => '#ffffaa'];
 								$options[]=['text' =>'non spicy', 'value' => '#9afd9a'];
 
@@ -87,8 +93,8 @@
 						</div>
 						<style>
 						.disabledbutton {
-						    pointer-events: none;
-						    opacity: 0.4;
+						    /*pointer-events: none;
+						    opacity: 0.4;*/
 						}
 						</style>
 						

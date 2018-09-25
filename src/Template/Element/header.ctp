@@ -12,15 +12,15 @@
 .pointer{
     cursor: pointer;
 }
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
+@media only screen and (min-width: 468px) and (max-width: 1100px) {
     .topBtn{
-        padding: 4px 6px;
+        padding: 2px 4px !important;
     }
     .topBtn2{
-        padding: 4px 6px;
+        padding: 2px 4px !important; 
     }
     .topBtnActive{
-        padding: 4px 6px;
+        padding: 2px 4px !important;
     }
     .tablet-logo{
         display: block;
@@ -30,6 +30,9 @@
     }
     .logoutBtn{
         display: none !important;
+    }
+    .hideInTablet{
+         display: none;
     }
 }
 @media only screen and (min-width: 1024px) {
@@ -41,6 +44,9 @@
     }
     .desktop-logo{
         display: block;
+    }
+    .hideInTablet{
+         display: ;
     }
 }
 </style>
@@ -68,7 +74,7 @@ if($controller=='kots'){
             
     }
 }
-if($controller=='kots'){ 
+if($controller=='kots'){
     if(!empty($pass)){
         if($pass[1]=='delivery'){
            $deleveryactive="topBtnActive"; 
@@ -76,17 +82,26 @@ if($controller=='kots'){
             
     }
 }
+if($controller=='bills'){
+    if($action=='delivery'){ 
+        $deleveryactive="topBtnActive"; 
+    }
+}
 if($controller=='kots'){ 
     if(!empty($pass)){
         if($pass[1]=='takeaway'){
            $takeawayactive="topBtnActive"; 
         }
-            
+    }
+}
+if($controller=='bills'){ 
+    if($action=='takeAway'){ 
+        $takeawayactive="topBtnActive"; 
     }
 }
 ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
-    <div >
+    <div>
     	<?php if(@$Table_data->name){ ?>
             <span style="color: #FFF;margin-right: 10px;border:  solid 1px #949494;padding: 3px 8px;">Table No: <?= h(@$Table_data->name) ?></span>
         <?php } ?>
@@ -98,10 +113,10 @@ if($controller=='kots'){
         
         <span class="<?php echo $dinneractive; ?> dinnerNewTab pointer showLoader">Dine In (<?php echo $occupiedTableCount; ?>)</span>
         <span class="<?php echo $deleveryactive ; ?> deleveryNewTab pointer showLoader">Delivery</span>
-        <span class="topBtn takeAwayNewTab pointer">Take Away 1</span>
-        <span class="topBtn takeAwayNewTab2 pointer">Take Away 2</span>
-        <span class="topBtn pointer showLoader Bookings">Bookings</span>
-        <span class="dashboard topBtn pointer showLoader">Dashboard</span>
+        <span class="<?php echo $takeawayactive ; ?> takeAwayNewTab pointer">Take Away 1</span>
+        <span class="topBtn takeAwayNewTab2 pointer hideInTablet">Take Away 2</span>
+        <span class="topBtn pointer showLoader Bookings hideInTablet">Bookings</span>
+        <span class="dashboard topBtn pointer showLoader hideInTablet">Dashboard</span>
     </div>
 </div>
 <?php 

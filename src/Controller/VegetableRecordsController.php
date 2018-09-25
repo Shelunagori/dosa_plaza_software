@@ -46,7 +46,11 @@ class VegetableRecordsController extends AppController
             }
         }
 
-        $Vegetables = $this->VegetableRecords->Vegetables->find();
+        $Vegetables = $this->VegetableRecords->Vegetables->find()->contain([
+            'VegetableRates' => function($q) use($month1){
+                return $q->where(['VegetableRates.month' => $month1[0], 'VegetableRates.year' => $month1[1] ]);
+            }
+            ]);
 
         $VegetableRecords = $this->VegetableRecords->find()->where(['transaction_date >=' => $firstDate, 'transaction_date <=' => $lastDate]);
 

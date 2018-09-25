@@ -38,6 +38,10 @@ class VegetablesTable extends Table
         $this->hasMany('VegetableRecords', [
             'foreignKey' => 'vegetable_id'
         ]);
+
+        $this->hasMany('VegetableRates', [
+            'foreignKey' => 'vegetable_id'
+        ]);
     }
 
     /**

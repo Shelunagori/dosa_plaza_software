@@ -12,12 +12,8 @@
     display:block !important;
 }
 </style>
-<style type="text/css">
-    .table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{
-        padding: 0; font-size: 12px;
-    }
-</style>
-<?php $this->set("title", 'Vegetable Records | DOSA PLAZA'); ?>
+
+<?php $this->set("title", 'Vegetable Rates | DOSA PLAZA'); ?>
 <div class="row" style="margin-top:15px;">
     <div class="col-md-12 main-div">
         <div class="portlet box blue-hoki">
@@ -26,7 +22,7 @@
                     <tr>
                         <td width="20%">
                             <div class="caption"style="padding:13px; color: red;">
-                                Vegetable Records
+                                Vegetable Rates
                             </div>
                         </td>
                         <td valign="button">
@@ -57,67 +53,26 @@
             <div class="portlet-body"  id="ExcelPage">
                 <?php if($month){ ?>
                 <form method="POST">
-                    <div class="table-scrollable">
+                    <div class="table-scrollable" style="width: 50%;">
                         <table class="table table-bordered table-stripped" >
                             <tr>
                                <th>Item</th>
-                               <th>Unit</th>
                                <th>Rate</th>
-                               <?php
-                                $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                $lastDate = date("Y-m-t", strtotime($firstDate));
-                                while (strtotime($firstDate) <= strtotime($lastDate)) {
-                                    echo '<th style="white-space: nowrap;">'.date('d', strtotime($firstDate)).'</th>';
-                                    $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                } ?>
-                                <th>Total</th>
                            </tr>
                             <?php 
-                            $total=[]; $totalItem=[];
                             foreach ($Vegetables as $Vegetable) { ?>
-                               <tr >
-                                   <td >
-                                        <?= h($Vegetable->name) ?>
-                                        <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
-                                    </td>
-                                   <td><?= h($Vegetable->unit) ?></td>
-                                   <td><?= h($Vegetable->vegetable_rates[0]['rate']) ?></td>
-                                    <?php
-                                    $TotalHorizontal = 0;
-                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                    $lastDate = date("Y-m-t", strtotime($firstDate));
-                                    while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
-                                        <td style="white-space: nowrap;">
-                                            <input type="text" placeholder="" class="form-control" name="amount[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; padding: 0;" />
-                                            <?php $TotalHorizontal+=@$data[$Vegetable->id][strtotime($firstDate)]; ?>
-                                        </td>
-                                        <?php 
-                                        $total[strtotime($firstDate)]=@$total[strtotime($firstDate)] + @$data[$Vegetable->id][strtotime($firstDate)];
-                                        $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                    } ?>
-                                    <th><?php echo $TotalHorizontal; ?></th>
-                               </tr>
-                            <?php } ?>
-                            <tfoot>
                                 <tr>
-                                    <th colspan="3">Total</th>
-                                    <?php
-                                    $TotalHorizontal = 0;
-                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                    $lastDate = date("Y-m-t", strtotime($firstDate));
-                                    while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
-                                        <th style="white-space: nowrap;">
-                                           <?php echo ($total[strtotime($firstDate)] >0 ? $total[strtotime($firstDate)] : "")?>
-                                           <?php $TotalHorizontal+=$total[strtotime($firstDate)]; ?>
-                                        </th>
-                                        <?php $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                    } ?>
-                                    <th><?php echo $TotalHorizontal; ?></th>
+                                    <td>
+                                        <?= h($Vegetable->name) ?>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control input-sm" name="rate[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?php echo $data[$Vegetable->id]; ?>" />
+                                    </td>
                                 </tr>
-                            </tfoot>
+                            <?php } ?>
                         </table>
                     </div>
-                    <div align="center">
+                    <div align="">
                         <button type="submit" class="btn btn-danger">Submit</button>
                     </div>
                 </form>
@@ -161,6 +116,7 @@
 <?php 
 $js="
 $(document).ready(function() {
+    
 
     ComponentsPickers.init();
 });

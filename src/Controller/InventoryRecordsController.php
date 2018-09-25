@@ -22,8 +22,8 @@ class InventoryRecordsController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
-        // $date=$this->request->query('date');
-        // $date1=date('Y-m-d', strtotime($date));
+        $date_from=$this->request->query('date_from');
+        $date_from1=date('Y-m-d', strtotime($date_from));
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $date = date('Y-m-d', strtotime($this->request->data['date']));
@@ -35,6 +35,7 @@ class InventoryRecordsController extends AppController
             $malls = $this->request->data['mall'];
             $roads = $this->request->data['road'];
             $closing_balances = $this->request->data['closing_balance'];
+            $consumptions = $this->request->data['consumption'];
             $item_lists = $this->request->data['item_list'];
 
             foreach ($projections as $key => $projection) {
@@ -45,6 +46,7 @@ class InventoryRecordsController extends AppController
                 $inventoryRecord->mall = $malls[$key];
                 $inventoryRecord->road = $roads[$key];
                 $inventoryRecord->closing_balance = $closing_balances[$key];
+                $inventoryRecord->consumption = $consumptions[$key];
                 $this->InventoryRecords->save($inventoryRecord);
             }
         }
@@ -69,12 +71,64 @@ class InventoryRecordsController extends AppController
             $TodayOBData[$TodayInventoryRecord->item_list->id]['mall']=$TodayInventoryRecord->mall;
             $TodayOBData[$TodayInventoryRecord->item_list->id]['road']=$TodayInventoryRecord->road;
             $TodayOBData[$TodayInventoryRecord->item_list->id]['closing_balance']=$TodayInventoryRecord->closing_balance;
+            $TodayOBData[$TodayInventoryRecord->item_list->id]['consumption']=$TodayInventoryRecord->consumption;
+        }
+
+        $OldInventoryRecords = $this->InventoryRecords->find()
+                                ->where(['transaction_date >=' => $date_from1, 'transaction_date <' => $currentDate])
+                                ->contain(['ItemLists']);
+        
+        $OldData=[];
+        foreach ($OldInventoryRecords as $OldInventoryRecord) {
+            $OldData[strtotime($OldInventoryRecord->transaction_date)][$OldInventoryRecord->item_list->id]['projection']=$OldInventoryRecord->projection;
+
+            $OldData[strtotime($OldInventoryRecord->transaction_date)][$OldInventoryRecord->item_list->id]['mall']=$OldInventoryRecord->mall;
+
+            $OldData[strtotime($OldInventoryRecord->transaction_date)][$OldInventoryRecord->item_list->id]['road']=$OldInventoryRecord->road;
+
+            $OldData[strtotime($OldInventoryRecord->transaction_date)][$OldInventoryRecord->item_list->id]['closing_balance']=$OldInventoryRecord->closing_balance;
+
+            $OldData[strtotime($OldInventoryRecord->transaction_date)][$OldInventoryRecord->item_list->id]['consumption']=$OldInventoryRecord->consumption;
         }
 
 
 
         $ItemLists = $this->InventoryRecords->ItemLists->find();
-        $this->set(compact('date', 'ItemLists', 'OBData', 'TodayOBData'));
+        $this->set(compact('date_from', 'ItemLists', 'OBData', 'TodayOBData', 'OldData'));
+    }
+
+    public function report(){
+        $this->viewBuilder()->layout('admin');
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
+        $openingInventoryRecords = $this->InventoryRecords->find()
+                            ->where(['InventoryRecords.transaction_date' => date('Y-m-d', strtotime('-1 day', strtotime($from_date))) ]);
+        $openingData=[];
+        foreach ($openingInventoryRecords as $openingInventoryRecord) {
+            $openingData[$openingInventoryRecord->item_list_id] = $openingInventoryRecord->closing_balance;
+        }
+
+        $InventoryRecords = $this->InventoryRecords->find();
+        $InventoryRecords->select([
+            'total_projection' => $InventoryRecords->func()->sum('InventoryRecords.projection'),
+            'total_mall' => $InventoryRecords->func()->sum('InventoryRecords.mall'),
+            'total_road' => $InventoryRecords->func()->sum('InventoryRecords.road'),
+            'total_consumption' => $InventoryRecords->func()->sum('InventoryRecords.consumption')
+        ])
+        ->where([
+            'InventoryRecords.transaction_date >=' => $from_date,
+            'InventoryRecords.transaction_date <=' => $to_date
+        ])
+        ->contain(['ItemLists'])
+        ->group(['item_list_id'])
+        ->autoFields(true);
+        //pr($InventoryRecords->toArray()); exit;
+
+        $this->set(compact('exploded_date_from_to', 'InventoryRecords', 'from_date', 'to_date', 'openingData'));
     }
 
     /**

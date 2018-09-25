@@ -176,10 +176,17 @@ if (in_array("26", $userPages)){
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Reports</span>', '/Users/Reports',['escape' => false, 'class' => 'showLoader']).'</li>';
 }
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Inventory</span>', '/InventoryRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
+$PreviousDate = date('d-m-Y', strtotime('-7 days'));
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory</span>', '/InventoryRecords?date_from='.$PreviousDate,['escape' => false, 'class' => 'showLoader']).'</li>';
+
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory-Report</span>', '/InventoryRecords/report',['escape' => false, 'class' => 'showLoader']).'</li>';
 
 echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Records</span>', '/VegetableRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
 
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Rates</span>', '/VegetableRates',['escape' => false, 'class' => 'showLoader']).'</li>';
+
 echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Sales - Sub Group Wise</span>', '/ItemSubCategories/subGroupItemReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+
+echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Stock</span>', '/ManualStocks',['escape' => false, 'class' => 'showLoader']).'</li>';
 
 ?> 
