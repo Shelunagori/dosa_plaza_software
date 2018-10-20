@@ -4,7 +4,9 @@
 		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Dashboard</span>', '/Users/Dashboard',['escape' => false, 'class' => 'showLoader']).'</li>';
 	}
 
-	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Store</span>', '/RawMaterials/store',['escape' => false, 'class' => 'showLoader']).'</li>';
+	if (in_array("29", $userPages)){
+		echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Store</span>', '/RawMaterials/store',['escape' => false, 'class' => 'showLoader']).'</li>';
+	}
 ?>
 
 <?php if (in_array("18", $userPages)){
@@ -152,6 +154,8 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 <?php
 }
 ?>
+
+<?php if( (in_array("30", $userPages)) or (in_array("31", $userPages)) or (in_array("32", $userPages))){ ?>
 <li class="start">
 	<a href="javascript:;">
 	<span class="title" style="margin-left: 15px;">Expense Voucher</span>
@@ -159,16 +163,28 @@ if(!empty(count(array_intersect($userPages, $target)))){?>
 	</a>
 	<ul class="sub-menu">
 		<?php 
-			echo '<li>'.$this->Html->link('Create', '/ExpanseVouchers/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+			if (in_array("30", $userPages)){
+				echo '<li>'.$this->Html->link('Create', '/ExpanseVouchers/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+			}
 		 
-			echo '<li>'.$this->Html->link('List', '/ExpanseVouchers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
+		 	if (in_array("31", $userPages)){
+				echo '<li>'.$this->Html->link('List', '/ExpanseVouchers/index',['escape' => false, 'class' => 'showLoader']).'</li>';
+			}
 
-			echo '<li>'.$this->Html->link('Report', '/ExpanseVouchers/view',['escape' => false, 'class' => 'showLoader']).'</li>';
+			if (in_array("32", $userPages)){
+				echo '<li>'.$this->Html->link('Report', '/ExpanseVouchers/view',['escape' => false, 'class' => 'showLoader']).'</li>';
+			}
 		 ?>
  	</ul>
 </li>
+<?php } ?>
 
 <?php
+if (in_array("33", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Users</span>', '/Users',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
+
+
 if (in_array("28", $userPages)){
 	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">User Rights</span>', '/UserRights/add',['escape' => false, 'class' => 'showLoader']).'</li>';
 }
@@ -177,16 +193,28 @@ if (in_array("26", $userPages)){
 }
 
 $PreviousDate = date('d-m-Y', strtotime('-7 days'));
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory</span>', '/InventoryRecords?date_from='.$PreviousDate,['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("34", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory</span>', '/InventoryRecords?date_from='.$PreviousDate,['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory-Report</span>', '/InventoryRecords/report',['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("35", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Daily Inventory-Report</span>', '/InventoryRecords/report',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Records</span>', '/VegetableRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("36", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Records</span>', '/VegetableRecords',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Rates</span>', '/VegetableRates',['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("37", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Vegetable Rates</span>', '/VegetableRates',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Sales - Sub Group Wise</span>', '/ItemSubCategories/subGroupItemReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("38", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Daily Sales - Sub Group Wise</span>', '/ItemSubCategories/subGroupItemReportSearch',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
-echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Stock</span>', '/ManualStocks',['escape' => false, 'class' => 'showLoader']).'</li>';
+if (in_array("39", $userPages)){
+	echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Manual Stock</span>', '/ManualStocks',['escape' => false, 'class' => 'showLoader']).'</li>';
+}
 
 ?> 

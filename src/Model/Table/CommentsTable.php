@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * Comments Model
@@ -35,6 +37,13 @@ class CommentsTable extends Table
         $this->setDisplayField('comment');
         $this->setPrimaryKey('id');
     }
+
+     public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        @$data['dob']       = trim(date('Y-m-d',strtotime(@$data['dob'])));
+        @$data['anniversary']       = trim(date('Y-m-d',strtotime(@$data['anniversary'])));
+    }
+
 
     /**
      * Default validation rules.

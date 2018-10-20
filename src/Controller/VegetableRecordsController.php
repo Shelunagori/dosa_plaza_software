@@ -31,17 +31,22 @@ class VegetableRecordsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             $vegetables = $this->request->data['vegetable'];
+            $quantitys = $this->request->data['quantity'];
             $amounts = $this->request->data['amount'];
             foreach ($vegetables as $vegetable_id) {
                 foreach ($amounts[$vegetable_id] as $tdate => $amount) {
                     //Delete VegetableRecords
                     $this->VegetableRecords->deleteAll(['transaction_date' => date('Y-m-d', $tdate), 'vegetable_id' => $vegetable_id]);
 
-                    $VegetableRecord = $this->VegetableRecords->newEntity();
-                    $VegetableRecord->vegetable_id = $vegetable_id;
-                    $VegetableRecord->transaction_date = date('Y-m-d', $tdate);
-                    $VegetableRecord->amount = $amount;
-                    $this->VegetableRecords->save($VegetableRecord);
+                    if($amount>0){
+                        $VegetableRecord = $this->VegetableRecords->newEntity();
+                        $VegetableRecord->vegetable_id = $vegetable_id;
+                        $VegetableRecord->transaction_date = date('Y-m-d', $tdate);
+                        $VegetableRecord->quantity = $quantitys[$vegetable_id][$tdate];
+                        $VegetableRecord->amount = $amount;
+                        $this->VegetableRecords->save($VegetableRecord);
+                    }
+                    
                 }
             }
         }
@@ -54,13 +59,14 @@ class VegetableRecordsController extends AppController
 
         $VegetableRecords = $this->VegetableRecords->find()->where(['transaction_date >=' => $firstDate, 'transaction_date <=' => $lastDate]);
 
-        $data=[];
+        $data=[]; $data2=[];
         foreach ($VegetableRecords as $VegetableRecord) {
             $data[$VegetableRecord->vegetable_id][strtotime($VegetableRecord->transaction_date)] = $VegetableRecord->amount;
+            $data2[$VegetableRecord->vegetable_id][strtotime($VegetableRecord->transaction_date)] = $VegetableRecord->quantity;
         }
 
 
-        $this->set(compact('Vegetables', 'month', 'month1', 'data'));
+        $this->set(compact('Vegetables', 'month', 'month1', 'data', 'data2'));
     }
 
     /**

@@ -60,39 +60,54 @@
                     <div class="table-scrollable">
                         <table class="table table-bordered table-stripped" >
                             <tr>
-                               <th>Item</th>
-                               <th>Unit</th>
-                               <th>Rate</th>
+                               <th rowspan="2">Item</th>
+                               <th rowspan="2">Unit</th>
+                               <th rowspan="2">Rate</th>
                                <?php
                                 $firstDate = $month1[1].'-'.$month1[0].'-1';
                                 $lastDate = date("Y-m-t", strtotime($firstDate));
                                 while (strtotime($firstDate) <= strtotime($lastDate)) {
-                                    echo '<th style="white-space: nowrap;">'.date('d', strtotime($firstDate)).'</th>';
+                                    echo '<th style="white-space: nowrap;text-align:center;" colspan="2" >'.date('d-m-Y', strtotime($firstDate)).'</th>';
                                     $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
                                 } ?>
-                                <th>Total</th>
+                                <th rowspan="2">Total</th>
+                           </tr>
+                           <tr>
+                                <?php
+                                $firstDate = $month1[1].'-'.$month1[0].'-1';
+                                $lastDate = date("Y-m-t", strtotime($firstDate));
+                                while (strtotime($firstDate) <= strtotime($lastDate)) {
+                                    echo '<th>Qty</th>
+                                            <th>Amt</th>';
+                                    $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+                                } ?>
+                               
                            </tr>
                             <?php 
-                            $total=[]; $totalItem=[];
+                            $total=[]; $totalQty=[]; $totalItem=[];
                             foreach ($Vegetables as $Vegetable) { ?>
                                <tr >
-                                   <td >
+                                   <td>
                                         <?= h($Vegetable->name) ?>
                                         <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
                                     </td>
                                    <td><?= h($Vegetable->unit) ?></td>
-                                   <td><?= h($Vegetable->vegetable_rates[0]['rate']) ?></td>
+                                   <td class="rate"><?= h($Vegetable->vegetable_rates[0]['rate']) ?></td>
                                     <?php
                                     $TotalHorizontal = 0;
                                     $firstDate = $month1[1].'-'.$month1[0].'-1';
                                     $lastDate = date("Y-m-t", strtotime($firstDate));
                                     while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
+                                        <td>
+                                            <input type="text" placeholder="" class="form-control qty" name="quantity[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data2[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;"  date_string="<?php echo strtotime($firstDate); ?>" />
+                                        </td>
                                         <td style="white-space: nowrap;">
-                                            <input type="text" placeholder="" class="form-control" name="amount[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; padding: 0;" />
+                                            <input type="text" placeholder="" class="form-control amt" name="amount[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;" date_string="<?php echo strtotime($firstDate); ?>" readonly="readonly" tabindex="-1" />
                                             <?php $TotalHorizontal+=@$data[$Vegetable->id][strtotime($firstDate)]; ?>
                                         </td>
                                         <?php 
                                         $total[strtotime($firstDate)]=@$total[strtotime($firstDate)] + @$data[$Vegetable->id][strtotime($firstDate)];
+                                        $totalQty[strtotime($firstDate)]=@$totalQty[strtotime($firstDate)] + @$data2[$Vegetable->id][strtotime($firstDate)];
                                         $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
                                     } ?>
                                     <th><?php echo $TotalHorizontal; ?></th>
@@ -106,6 +121,9 @@
                                     $firstDate = $month1[1].'-'.$month1[0].'-1';
                                     $lastDate = date("Y-m-t", strtotime($firstDate));
                                     while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
+                                        <th>
+                                            <?php echo ($totalQty[strtotime($firstDate)] >0 ? $totalQty[strtotime($firstDate)] : "")?>
+                                        </th>
                                         <th style="white-space: nowrap;">
                                            <?php echo ($total[strtotime($firstDate)] >0 ? $total[strtotime($firstDate)] : "")?>
                                            <?php $TotalHorizontal+=$total[strtotime($firstDate)]; ?>
@@ -161,6 +179,16 @@
 <?php 
 $js="
 $(document).ready(function() {
+
+    $('.qty').die().live('keyup',function(event){
+        var qty = $(this).val();
+        var date_string = $(this).attr('date_string');
+
+        var rate = parseFloat( $(this).closest('tr').find('.rate').text() );
+
+        var amt = round(qty*rate,2);
+        $(this).closest('tr').find('.amt[date_string='+date_string+']').val(amt);
+    });
 
     ComponentsPickers.init();
 });

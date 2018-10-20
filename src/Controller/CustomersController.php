@@ -14,6 +14,55 @@ use Cake\Datasource\ConnectionManager;
 class CustomersController extends AppController
 {
 
+    public function new()
+    {
+        $this->viewBuilder()->layout('admin');
+
+        $customer = $this->Customers->newEntity();
+
+        if ($this->request->is('post')) {
+            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
+
+            $lastCustomer=$this->Customers->find()->order(['Customers.id' => 'DESC'])->first();
+            if($lastCustomer){
+                $customer->customer_code = $lastCustomer->customer_code+1;
+            }else{
+                $customer->customer_code = 2001;
+            }
+
+            if ($this->Customers->save($customer)) {
+                $this->Flash->success(__('The customer has been saved.'));
+                return $this->redirect(['action' => 'new']);
+            }
+            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
+            
+        }
+        $this->set(compact('customer'));
+
+    }
+
+     public function edit($id)
+    {
+        $this->viewBuilder()->layout('admin');
+
+        $customer = $this->Customers->get($id, [
+            'contain' => []
+        ]);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
+
+            if ($this->Customers->save($customer)) {
+                $this->Flash->success(__('The customer has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
+            
+        }
+        $this->set(compact('customer'));
+
+    }
     /**
      * Index method
      *
@@ -574,6 +623,32 @@ class CustomersController extends AppController
         //$customers = ['manoj-9638527410', 'vikas-96385271015'];
         $object = (object) $customers;
         echo json_encode($object);
+        exit;
+    }
+	
+	public function checkUnique(){
+        $c_unique_code = $this->request->query('c_unique_code');
+
+        $Customers = $this->Customers->find()->where(['c_unique_code' => $c_unique_code])->first();
+        if($Customers){
+            echo 'false';
+        }else{
+            echo 'true';
+        }
+        exit;
+    }
+
+    public function checkUniqueEdit(){
+
+        $c_unique_code = $this->request->data['c_unique_code'];
+        $customer_id = $this->request->data['customer_id'];
+
+        $Customer = $this->Customers->find()->where(['c_unique_code' => $c_unique_code, 'Customers.id !=' => $customer_id])->first();
+        if($Customer){
+            echo 'false';
+        }else{
+            echo 'true';
+        }
         exit;
     }
 

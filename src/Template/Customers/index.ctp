@@ -14,6 +14,7 @@
 
                 </div>
                 <div class="actions">
+                    <?= $this->Html->link('Add',['action' => 'new',],['escape'=>false,'class'=>'btn btn-danger btn-sm', 'style' => 'margin-right: 20px;color:#FFF;']);  ?>
                     <?= $this->Html->link('Export Excel',['action' => 'excel',],['escape'=>false,'target'=>'_blank','class'=>'btn btn-danger btn-sm', 'style' => 'margin-right: 20px;color:#FFF;']);  ?>
                 </div>
                 <div class="row">   
@@ -27,6 +28,9 @@
                             <tr>
                                 <td>
                                     <input type="text" class="form-control" placeholder="Customer Code" name="code" value="<?php echo @$code; ?>">
+                                </td>
+                                 <td>
+                                    <input type="text" class="form-control" placeholder="Unique Code" name="c_unique_code" value="<?php echo @$c_unique_code; ?>">
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" placeholder="Mobile" name="mobile" value="<?php echo @$mobile; ?>">
@@ -47,6 +51,7 @@
                         <tr>
                             <th scope="col">Sr.N.</th>
                             <th scope="col"><?= $this->Paginator->sort('customer_code') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('c_unique_code', 'Unique Code') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('dob') ?></th>
@@ -61,6 +66,7 @@
                         <tr>
                             <td><?= h(++$page_no) ?></td>
                             <td><?= h($customer->customer_code) ?></td>
+                            <td><?= h($customer->c_unique_code) ?></td>
                             <td><?= h($customer->name) ?></td>
                             <td><?= h($customer->mobile_no) ?></td>
                             <td><?php if($customer->dob){ echo $customer->dob->format('d-m-Y'); } ?></td>
@@ -68,7 +74,8 @@
                             <td><?= h($customer->email) ?></td>
                             <td><?= h($customer->address) ?></td>
                             <td>
-                                <?= $this->Html->link(__('View'), ['controller' => 'Customers', 'action' => 'portfolio', $customer->id], ['class' => 'btn btn-primary btn-sm']) ?>
+                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Customers', 'action' => 'edit', $customer->id], ['class' => '']) ?>
+                                <?= $this->Html->link(__('View'), ['controller' => 'Customers', 'action' => 'portfolio', $customer->id], ['class' => '']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

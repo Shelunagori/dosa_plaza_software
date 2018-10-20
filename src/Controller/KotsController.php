@@ -112,7 +112,7 @@ class KotsController extends AppController
         }       
  
         $Comments = $this->Kots->Comments->find('list');
-        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
+        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0, 'Employees.designation_id' => 2]);
 
         $Customers = $this->Kots->Customers->find('list', 
                             [
