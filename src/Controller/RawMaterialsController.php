@@ -79,8 +79,7 @@ class RawMaterialsController extends AppController
         }
         $Taxes = $this->RawMaterials->Taxes->find('list');
         $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
-        $this->set(compact('rawMaterial','Taxes','units'));
-        
+        $this->set(compact('rawMaterial','Taxes','units','id'));
     }
 
     /**

@@ -15,6 +15,14 @@
 						Add Item
 					<?php } ?>
 				</div>
+				<?php if (in_array("9", $userPages)){ ?>
+				
+				<div class="caption" style="float: left;">
+					<?php
+					echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Item List', '/Items/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+					?>
+				</div>
+				<?php } ?>
 				<div class="tools">
 					<?php if(!empty($id)){ ?>
 						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/Items/add/',array('escape'=>false,'style'=>'color:#fff'));?>

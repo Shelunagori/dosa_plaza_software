@@ -9,6 +9,13 @@
             <div class="caption">
                 Edit Raw Materials
             </div>
+            <div class="tools" style="margin-right: 10px;">
+                <?php if(!empty($id)){ ?>
+                   <?php if (in_array("13", $userPages)){
+                        echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Raw Material List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+                        ?>
+                <?php } } ?>
+            </div>
             <div class="tools">
                 <?php if(!empty($id)){ ?>
                     <?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/RawMaterials/add/',array('escape'=>false,'style'=>'color:#fff'));?>

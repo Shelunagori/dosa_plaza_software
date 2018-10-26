@@ -14,11 +14,13 @@
                         New Booking
                     <?php } ?>
                 </div>
-                <div class="tools">
-                    <?php if(!empty($id)){ ?>
-                        <?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/Bookings/add/',array('escape'=>false,'style'=>'color:#fff'));?>
-                    <?php }?>
-                </div>
+               <?php if (in_array("16", $userPages)){ ?>
+                    <div class="tools" style="margin-right: 10px;">
+                        <?php
+                            echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Booking List', '/Bookings/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+                        ?>
+                    </div>
+                <?php } ?>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
                 </div>

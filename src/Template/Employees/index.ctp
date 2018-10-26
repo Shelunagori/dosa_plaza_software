@@ -12,6 +12,14 @@
 				<div class="tools" style=" margin-right: 10px; "> 
 					<input id="search3"  class="form-control" type="text" placeholder="Search" >
  				</div>
+ 				<?php if (in_array("15", $userPages)){ ?>
+				
+				<div class="caption" style="float: left;">
+					<?php
+					echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Add', '/Employees/add',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+					?>
+				</div>
+				<?php } ?>
 				<div class="row">	
 						<div class="col-md-12 horizontal "></div>
 				</div>
