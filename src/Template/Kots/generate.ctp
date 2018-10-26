@@ -438,12 +438,9 @@ $order=$pass[1];
 											</tr>
 											<tr>
 												<td colspan="2" height="35px">
-													<?php if($order_type=='dinner'){
-														echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
-														}
-														else{
-															echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
-														} ?>
+													<?php
+													echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Captain--','label'=>false,'required'=>'required','value'=>@$employee_id,'id'=>'employee_id']);
+													?>
 												</td>
 											</tr>
 											<tr>
