@@ -33,9 +33,6 @@ class KotsController extends AppController
     public function generate($table_id=null,$order_type=null)
     {
         $this->viewBuilder()->layout('counter');
-		$employee_id = $this->Auth->User('employee_id'); 
-		$designation_id = $this->Auth->User('employee.designation_id');
-		$user_id = $this->Auth->User('id');
 
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -115,13 +112,7 @@ class KotsController extends AppController
         }       
  
         $Comments = $this->Kots->Comments->find('list');
-        if($designation_id == 2)
-        {
-         $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0,'Employees.designation_id' => 2,'Employees.id'=>$employee_id]);    
-        }else
-        {
-        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0,'Employees.designation_id' => 2]);              
-        }
+        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0, 'Employees.designation_id' => 2]);
 
         $Customers = $this->Kots->Customers->find('list', 
                             [
@@ -130,7 +121,7 @@ class KotsController extends AppController
                                     return $row['name'] . '  (' . $row['mobile_no'].')';
                                 }
                             ]);
-        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees', 'Customers', 'employee_id'));
+        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees', 'Customers'));
     }
  
     /**

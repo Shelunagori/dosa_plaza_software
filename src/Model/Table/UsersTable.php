@@ -41,8 +41,6 @@ class UsersTable extends Table
         $this->belongsTo('Customers');
         $this->belongsTo('Attendances');
         $this->belongsTo('Bookings');
-        $this->belongsTo('Designations');
-        $this->belongsTo('Employees');
         
     }
 
