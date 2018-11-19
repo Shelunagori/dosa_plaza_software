@@ -60,7 +60,8 @@
                 <div class="caption">
                      Unit List
                 </div>
-                <div class="tools"> 
+                <div class="tools">
+                    <input id="search3"  class="form-control" type="text" placeholder="Search" >
                 </div>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
@@ -75,14 +76,15 @@
                             <th scope="col" class="actions" style="text-align:center"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="main_tbody">
                         <?php $x=0; foreach ($UnitsList as $country): ?>
                         <tr>
                             <td><?= ++$x; ?></td> 
                             <td><?= h($country->name) ?></td>
                             <td class="actions" style="text-align:center">
-                                <?php echo $this->Html->image('edit.png',['url'=>['controller'=>'Units','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Unit','data-container'=>'body']);?>
-                                <?php $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
+                                <?php 
+                                echo $this->Html->link('Edit ', '/Units/add/'.$country->id, ['class' => 'btn btn-xs blue showLoader']);
+                                $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal']);?>
                                 
                                 <div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
                                     <div class="modal-dialog modal-md" >
@@ -165,7 +167,23 @@ $(document).ready(function() {
 			$("#loading").show();
             form[0].submit(); // submit the form
         }
-    });     
+    });
+
+    var rows = $("#main_tbody tr");
+    $("#search3").on("keyup",function() {
+        var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+        var v = $(this).val();
+        
+        if(v){
+            rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+    
+                return !~text.indexOf(val);
+            }).hide();
+        }else{
+            rows.show();
+        }
+    }); 
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

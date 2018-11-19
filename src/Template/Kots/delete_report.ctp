@@ -17,10 +17,17 @@
 									<table>
 										<tr>
 											<td>
-												<input name="from_date" class="form-control date-picker" type="text" value="<?php echo @$from_date; ?>" data-date-format="dd-mm-yyyy" required="required" placeholder="From Date">
-											</td>
-											<td>
-												<input name="to_date" class="form-control date-picker" type="text" value="<?php echo @$to_date; ?>" data-date-format="dd-mm-yyyy" required="required" placeholder="To Date">
+												<div class="form-group ">
+			                                        <div class="col-md-4">
+			                                            <div id="reportrange" class="btn default" style="padding: 5px;">
+			                                                <i class="fa fa-calendar"></i>
+			                                                &nbsp; 
+			                                                <span><?php echo $exploded_date_from_to[0].' - '.$exploded_date_from_to[1]; ?></span>
+			                                                <input type="hidden" name="date_from_to" id="date_from_to" value="<?php echo @$exploded_date_from_to[0].'/'.@$exploded_date_from_to[1]; ?>">
+			                                                <b class="fa fa-angle-down"></b>
+			                                            </div>
+			                                        </div>
+			                                    </div>
 											</td>
 											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;" >GO</button>
@@ -60,7 +67,7 @@
 
 					</div>
 					<div>
-						<b>Bill Wise Sales Report</b><br/>
+						<b>KOT Delete History Report</b><br/>
 						<b>Month <?php echo @$month; ?></b>
 						<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 					</div>
@@ -69,6 +76,7 @@
 							<tr>
 								<th style="text-align: center;">S.No.</th>
 								<th style="text-align: center;">KOT No.</th>
+								<th style="text-align: center;">Captain</th>
 								<th style="text-align: center;">Table</th>
 								<th style="text-align: center;">Created on</th>
 								<th style="text-align: center;">Details</th>
@@ -80,6 +88,7 @@
 							<tr class="main_tr">
 								<td style="text-align: center;"><?= (++$x) ?></td>
 								<td style="text-align: center;"><?= h($Kot->voucher_no) ?></td>
+								<td style="text-align: center;"><?= h($Kot->employee->name) ?></td>
 								<td style="text-align: center;"><?= h(@$Kot->table->name) ?></td>
 								<td style="text-align: center;"><?= h($Kot->created_on->format('d-m-Y h:i A')) ?></td>
 								<td style="padding: 0;">

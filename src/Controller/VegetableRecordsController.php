@@ -33,6 +33,8 @@ class VegetableRecordsController extends AppController
             $vegetables = $this->request->data['vegetable'];
             $quantitys = $this->request->data['quantity'];
             $amounts = $this->request->data['amount'];
+            $vendor_amounts = $this->request->data['vendor_amount'];
+            //pr($vendor_amounts); exit();
             foreach ($vegetables as $vegetable_id) {
                 foreach ($amounts[$vegetable_id] as $tdate => $amount) {
                     //Delete VegetableRecords
@@ -46,7 +48,13 @@ class VegetableRecordsController extends AppController
                         $VegetableRecord->amount = $amount;
                         $this->VegetableRecords->save($VegetableRecord);
                     }
-                    
+                }
+
+                foreach ($vendor_amounts as $tdate => $vendor_amount) {
+                    $VendorAmount = $this->VegetableRecords->VendorAmounts->newEntity();
+                    $VendorAmount->transaction_date = date('Y-m-d', $tdate);
+                    $VendorAmount->amount = $vendor_amount;
+                    $this->VegetableRecords->VendorAmounts->save($VendorAmount);
                 }
             }
         }
@@ -55,7 +63,8 @@ class VegetableRecordsController extends AppController
             'VegetableRates' => function($q) use($month1){
                 return $q->where(['VegetableRates.month' => $month1[0], 'VegetableRates.year' => $month1[1] ]);
             }
-            ]);
+            ])
+        ->order(['Vegetables.name' => 'ASC']);
 
         $VegetableRecords = $this->VegetableRecords->find()->where(['transaction_date >=' => $firstDate, 'transaction_date <=' => $lastDate]);
 
@@ -65,8 +74,13 @@ class VegetableRecordsController extends AppController
             $data2[$VegetableRecord->vegetable_id][strtotime($VegetableRecord->transaction_date)] = $VegetableRecord->quantity;
         }
 
+        $VendorAmounts=$this->VegetableRecords->VendorAmounts->find()->where(['transaction_date >=' => $firstDate, 'transaction_date <=' => $lastDate]);
+        $VendorData=[];
+        foreach ($VendorAmounts as $VendorAmount) {
+            $VendorData[strtotime($VendorAmount->transaction_date)] = $VendorAmount->amount;
+        }
 
-        $this->set(compact('Vegetables', 'month', 'month1', 'data', 'data2'));
+        $this->set(compact('Vegetables', 'month', 'month1', 'data', 'data2', 'VendorData'));
     }
 
     /**

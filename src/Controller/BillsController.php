@@ -23,6 +23,7 @@ class BillsController extends AppController
         $this->viewBuilder()->layout('admin');
 
         $where=[];
+         $where['Bills.is_deleted']='no';
 
         $bill_no=$this->request->query('bill_no');
         if(!empty($bill_no)){
@@ -88,11 +89,23 @@ class BillsController extends AppController
 		$this->viewBuilder()->layout('');
 		$bill_id=$this->request->query('bill-id');
 		
-        $bill = $this->Bills->get($bill_id, [
+       /*  $bill = $this->Bills->get($bill_id, [
             'contain' => ['BillRows'=>['Items'], 'Customers', 'Tables'=>['Employees']]
-        ]);
+        ]); */
+		
+		$bill = $this->Bills->get($bill_id, [
+            'contain' => ['BillRows'=>['Items'], 'Customers', 'Employees']
+        ]); 	
+		
+
+        $Kot = $this->Bills->Kots->find()->where(['Kots.bill_id' => $bill_id])->first();
+        $kot_no = $Kot->voucher_no;
+
+        $BillSetting = $this->Bills->BillSettings->get(1);
 
         $this->set('bill', $bill);
+        $this->set('kot_no', $kot_no);
+        $this->set('BillSetting', $BillSetting);
     }
 
     /**
@@ -100,6 +113,205 @@ class BillsController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
+    public function addKotBill(){
+        $myJSON=$this->request->query('myJSON');
+        $q = json_decode($myJSON, true);
+
+        
+        $total=$this->request->query('total'); 
+        $roundOff=$this->request->query('roundOff');
+        $net=$this->request->query('net');
+        $c_name=$this->request->query('c_name');
+        $c_mobile_no=$this->request->query('c_mobile_no');
+        $c_address=$this->request->query('c_address');
+        $order_type=$this->request->query('order_type');
+        $employee_id=$this->request->query('employee_id');
+        $offer_id=$this->request->query('offer_id');
+        $oneComment=$this->request->query('oneComment');
+        
+        if($order_type=="takeaway"){
+            $payment_type=$this->request->query('payment_type');
+            $c_address="";
+        }else{
+            $payment_type="";
+            $c_address=$this->request->query('c_address');
+        }
+        
+
+        //*****************************************//
+        //      CREATE KOT START
+        //*****************************************//
+        $kot = $this->Bills->Kots->newEntity();
+        $last_voucher_no=$this->Bills->Kots->find()->select(['voucher_no'])
+                        ->order(['id' => 'DESC'])->first();
+        if($last_voucher_no){
+            $kot->voucher_no=$last_voucher_no->voucher_no+1;
+        }else{
+            $kot->voucher_no=1;
+        }
+        $kot->table_id=0;
+        $kot->bill_id=null;
+        $kot->bill_pending='no';
+        $kot->one_comment=$oneComment;
+        $kot->order_type=$order_type;
+
+        $kot_rows=[];
+        foreach($q as $row){
+            $kot_row = $this->Bills->Kots->KotRows->newEntity();
+            $kot_row->item_id=$row['item_id'];
+            $kot_row->quantity=$row['quantity'];
+            $kot_row->rate=$row['rate'];
+            $kot_row->amount=$row['amount'];
+            $kot_row->item_comment=$row['comment'];
+            $kot_rows[]=$kot_row;
+        }
+        $kot->kot_rows=$kot_rows;
+        $this->Bills->Kots->save($kot);
+        //*****************************************//
+        //      CREATE KOT END
+        //*****************************************//
+
+        //*****************************************//
+        //      CREATE BILL START 
+        //*****************************************//
+        $bill = $this->Bills->newEntity();
+
+        //SAVE CUSTOMER INFO 
+        $IsCustomerExist=$this->Bills->Customers->find()->where(['mobile_no' => $c_mobile_no])->first();
+        if($IsCustomerExist){
+            //update
+            $Customer=$this->Bills->Customers->get($IsCustomerExist->id);
+            $Customer->name=$c_name;
+            if($c_address){
+                $Customer->address=$c_address;
+            }
+            $this->Bills->Customers->save($Customer);
+            
+            //link
+            $bill->customer_id=$Customer->id;
+        }else{
+            $Customer = $this->Bills->Customers->newEntity();
+            $Customer->name=$c_name;
+            $Customer->mobile_no=$c_mobile_no;
+            $Customer->address=$c_address;
+            
+            $last_Customer=$this->Bills->Customers->find()
+                            ->order(['customer_code' => 'DESC'])->first();
+            if($last_Customer){
+                $Customer->customer_code=$last_Customer->customer_code+1;
+            }else{
+                $Customer->customer_code=2001;
+            }
+            if($Customer->mobile_no){
+                $this->Bills->Customers->save($Customer);
+            }
+
+            $bill->customer_id=$Customer->id;
+        }
+
+        $bill->transaction_date = date('Y-m-d');
+        $last_voucher_no=$this->Bills->find()
+                        ->select(['voucher_no'])->order(['id' => 'DESC'])->first();
+        if($last_voucher_no){
+            $bill->voucher_no=$last_voucher_no->voucher_no+1;
+        }else{
+            $bill->voucher_no=1;
+        }
+        $bill->table_id=0;
+        $bill->total=$total;
+        $bill->round_off=$roundOff;
+        $bill->grand_total=$net;
+        $bill->order_type=$order_type;
+
+        if($bill->order_type == "delivery"){
+            $last_voucher_no=$this->Bills->find()
+                        ->select(['delivery_no'])->order(['delivery_no' => 'DESC'])->where(['order_type' => 'delivery', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $bill->delivery_no=$last_voucher_no->delivery_no+1;
+            }else{
+                $bill->delivery_no=1;
+            }
+        }
+
+        if($bill->order_type == "takeaway"){
+            $last_voucher_no=$this->Bills->find()
+                        ->select(['take_away_no'])->order(['take_away_no' => 'DESC'])->where(['order_type' => 'takeaway', 'transaction_date' => date('Y-m-d')])->first();
+            if($last_voucher_no){
+                $bill->take_away_no=$last_voucher_no->take_away_no+1;
+            }else{
+                $bill->take_away_no=1;
+            }
+        }
+
+        $bill->occupied_time=date('Y-m-d H:i:s');
+        $bill->payment_status='';
+        $bill->payment_type=$payment_type;
+        $bill->employee_id=$employee_id;
+        $bill->offer_id=$offer_id;
+
+        $bill_rows=[];
+        foreach($q as $row){
+            $bill_row = $this->Bills->BillRows->newEntity();
+            $bill_row->item_id=$row['item_id'];
+            $bill_row->quantity=$row['quantity'];
+            $bill_row->rate=$row['rate'];
+            $bill_row->amount=$row['amount'];
+            $bill_row->discount_per=$row['discount_per'];
+            $bill_row->discount_amount=$row['discount_amt'];
+            $bill_row->net_amount=$row['net_amount'];
+            $bill_row->tax_per=$row['percen'];                        
+            $bill_rows[]=$bill_row;
+        }
+        $bill->bill_rows=$bill_rows;
+        $bill->payment_status=0;
+
+        $this->Bills->save($bill);
+        //*****************************************//
+        //      CREATE BILL END 
+        //*****************************************//
+
+        //UPDATE BILL-ID IN KOT
+        $query = $this->Bills->Kots->query();
+        $query->update()
+            ->set(['bill_id' => $bill->id])
+            ->where(['id' => $kot->id])
+            ->execute();
+
+
+        //Stock Impact Start//
+        foreach ($bill->bill_rows as $bill_row) {
+            $Items = $this->Bills->BillRows->Items->get($bill_row->item_id, [
+                        'contain' => ['ItemRows' => ['RawMaterials']]
+                    ]);
+            foreach ($Items->item_rows as $item_row) {
+                if($item_row->raw_material->recipe_unit_type=='primary'){
+                    $outQty=$item_row->quantity*$bill_row->quantity;
+                }else if($item_row->raw_material->recipe_unit_type=='secondary'){
+                    $outQty=($item_row->quantity*$bill_row->quantity)/$item_row->raw_material->formula;
+                }
+                $stockLedger = $this->Bills->BillRows->StockLedgers->newEntity();
+                $stockLedger->transaction_date = $bill->transaction_date;
+                $stockLedger->raw_material_id = $item_row->raw_material_id;
+                $stockLedger->quantity = $outQty;
+                $stockLedger->rate = 0;//To Be Calculate
+                $stockLedger->status = 'out';
+                $stockLedger->effected_on = date( "Y-m-d H:i:s" );
+                $stockLedger->voucher_name = 'Bill';
+                $stockLedger->adjustment_commant = '';
+                $stockLedger->wastage_commant = '';
+                $stockLedger->purchase_voucher_row_id = 0;
+                $stockLedger->purchase_voucher_id = 0;
+                $stockLedger->bill_id = $bill->id;
+                $stockLedger->bill_row_id = $bill_row->id;
+                $this->Bills->BillRows->StockLedgers->save($stockLedger);
+            } 
+
+        }
+        //Stock Impact End//
+
+        $Response = ['kot_id' => $kot->id, 'bill_id' => $bill->id];
+        echo json_encode($Response); exit;
+    }
     public function add()
     {
         $c_name=$this->request->query('c_name');
@@ -396,11 +608,12 @@ class BillsController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $bill = $this->Bills->get($id);
+
         $this->Bills->BillRows->StockLedgers->deleteAll(['bill_id' => $bill->id]);
-        $this->Bills->BillRows->deleteAll(['bill_id' => $bill->id]);
-        if ($this->Bills->delete($bill)) {
+        $bill->is_deleted="yes";
+        if ($this->Bills->save($bill)) {
             $this->Flash->success(__('The bill has been canceled.'));
-        } else {
+        }else{
             $this->Flash->error(__('The bill could not be canceled. Please, try again.'));
         }
 
@@ -483,6 +696,7 @@ class BillsController extends AppController
         $this->set(compact('seturl'));
 
         $where=[];
+        $where['Bills.is_deleted']='no';
 
         $date_from_to = $this->request->query('date_from_to');
         $exploded_date_from_to = explode('/', $date_from_to);
@@ -567,10 +781,8 @@ class BillsController extends AppController
     public function salesReportExcel(){
         $this->viewBuilder()->layout('');
 
-        
-
-
         $where=[];
+        $where['Bills.is_deleted']='no';
 
         $date_from_to = $this->request->query('date_from_to');
         $exploded_date_from_to = explode('/', $date_from_to);
@@ -701,6 +913,7 @@ class BillsController extends AppController
         $this->set(compact('seturl'));
 
         $where=[];
+        $where['Bills.is_deleted']='no';
 
         $date_from_to = $this->request->query('date_from_to');
         $exploded_date_from_to = explode('/', $date_from_to);
@@ -732,6 +945,7 @@ class BillsController extends AppController
         $this->viewBuilder()->layout('');
 
         $where=[];
+        $where['Bills.is_deleted']='no';
 
         $date_from_to = $this->request->query('date_from_to');
         $exploded_date_from_to = explode('/', $date_from_to);
@@ -741,6 +955,75 @@ class BillsController extends AppController
             $where['Bills.transaction_date >=']=$from_date;
             $where['Bills.transaction_date <=']=$to_date;
         }
+
+       
+        $Bills = $this->Bills->find()
+                    ->where($where)
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ]);
+        
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        
+
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total'));
+    }
+
+    public function billWiseSalesDelete(){
+        $this->viewBuilder()->layout('admin');
+
+        $urls=$this->request->here();
+        $seturl=explode('?',$urls);
+        $this->set(compact('seturl'));
+
+        $where=[];
+        $where['Bills.is_deleted']='no';
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bills.transaction_date >=']=$from_date;
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+        $where['Bills.is_deleted']='yes';
+
+       
+        $Bills = $this->Bills->find()
+                    ->where($where)
+                    ->autoFields(true)
+                    ->contain(['Tables', 'Employees', 'Customers', 'BillRows'=>['Items'] ]);
+        
+
+        $q=$this->Bills->find()->where($where);
+        $q->select([$q->func()->sum('Bills.grand_total')]);
+
+        $Total_grand_total = $this->Bills->find()->select(['Total_grand_total' => $q ])->first();
+
+        
+
+        $this->set(compact('exploded_date_from_to', 'Bills', 'Total_grand_total'));
+    }
+
+    public function billWiseSalesDeleteExcel(){
+        $this->viewBuilder()->layout('');
+
+        $where=[];
+
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+        if(!empty($date_from_to)){
+            $where['Bills.transaction_date >=']=$from_date;
+            $where['Bills.transaction_date <=']=$to_date;
+        }
+        $where['Bills.is_deleted']='yes'; 
 
        
         $Bills = $this->Bills->find()
@@ -780,7 +1063,7 @@ class BillsController extends AppController
             'Hourly_bill' => $Bills->func()->count('id'),
             'hour' => 'HOUR(created_on)'
         ])
-        ->where(['Bills.transaction_date' => $date1])
+        ->where(['Bills.transaction_date' => $date1, 'Bills.is_deleted' => 'no'])
         ->group(['HOUR(created_on)'])
         ->order(['Bills.created_on' => 'ASC']);
 
@@ -838,11 +1121,13 @@ class BillsController extends AppController
         }
 
 
-        // $TotalAmount = $this->Bills->BillRows->find()->Where(['BillRows.bill_id = Bills.id']);
-        // $TotalAmount->select([$TotalAmount->func()->sum('BillRows.amount')]);
+
 
         $BillRows   = $this->Bills->BillRows->find();
-        $BillRows->matching('Bills')->group(['Bills.transaction_date']);
+        $BillRows->matching('Bills', function($q){
+            return $q->where(['Bills.is_deleted' => 'no']);
+        })
+        ->group(['Bills.transaction_date']);
         $BillRows->select([
             'TotalAmount' => $BillRows->func()->sum('BillRows.amount'),
             'TotalDiscountAmount' => $BillRows->func()->sum('BillRows.discount_amount'),
@@ -879,7 +1164,10 @@ class BillsController extends AppController
         // $TotalAmount->select([$TotalAmount->func()->sum('BillRows.amount')]);
 
         $BillRows   = $this->Bills->BillRows->find();
-        $BillRows->matching('Bills')->group(['Bills.transaction_date']);
+        $BillRows->matching('Bills', function($q){
+            return $q->where(['Bills.is_deleted' => 'no']);
+        })
+        ->group(['Bills.transaction_date']);
         $BillRows->select([
             'TotalAmount' => $BillRows->func()->sum('BillRows.amount'),
             'TotalDiscountAmount' => $BillRows->func()->sum('BillRows.discount_amount'),
@@ -941,6 +1229,7 @@ class BillsController extends AppController
         $this->set(compact('exploded_date_from_to', 'data'));
     }
 
+    
 
     
 }

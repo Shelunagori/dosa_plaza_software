@@ -87,7 +87,7 @@
                             $total=[]; $totalQty=[]; $totalItem=[];
                             foreach ($Vegetables as $Vegetable) { ?>
                                <tr >
-                                   <td>
+                                   <td style="white-space: nowrap;">
                                         <?= h($Vegetable->name) ?>
                                         <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
                                     </td>
@@ -132,9 +132,26 @@
                                     } ?>
                                     <th><?php echo $TotalHorizontal; ?></th>
                                 </tr>
+                                <tr>
+                                    <th colspan="3">TARA & SONS</th>
+                                    <?php
+                                    $totalvendorAmount=0;
+                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
+                                    $lastDate = date("Y-m-t", strtotime($firstDate));
+                                    while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
+                                        <th></th>
+                                        <th style="white-space: nowrap;">
+                                           <input type="text" placeholder="" class="form-control" name="vendor_amount[<?php echo strtotime($firstDate); ?>]" style="margin: 0; height: 20px; width: 40px; padding: 0;"  autocomplete="off" value="<?php echo @$VendorData[strtotime($firstDate)]; ?>" >
+                                            <?php $totalvendorAmount+=@$VendorData[strtotime($firstDate)]; ?>
+                                        </th>
+                                        <?php $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+                                    } ?>
+                                    <th><?php echo $totalvendorAmount; ?></th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
+                    <div align="right" style="color: red;">Difference: <?php echo $totalvendorAmount-$TotalHorizontal; ?></div>
                     <div align="center">
                         <button type="submit" class="btn btn-danger">Submit</button>
                     </div>

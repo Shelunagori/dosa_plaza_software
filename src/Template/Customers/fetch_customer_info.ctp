@@ -21,12 +21,18 @@
 				</tr>
 				<tr>
 					<td style="padding-right: 5px;">
+						<?php if($Customer->dob=='01-1-1970'){
+							$Customer->dob='';
+						} ?>
 						<div class="input-icon">
 							Date of Birth<i class="fa fa-child"></i>
 							<input type="text" class="form-control date-picker" placeholder="dd-mm-yyyy" style="background-color: #f5f5f5 !important" name="dob" id="dob" value="<?php echo @$Customer->dob; ?>" data-date-format="dd-mm-yyyy" autocomplete="off">
 						</div>
 					</td>
 					<td style="padding-left: 5px;">
+						<?php if($Customer->anniversary=='01-1-1970'){
+							$Customer->anniversary='';
+						} ?>
 						<div class="input-icon">
 							Date of Anniversary<i class="fa fa-empire"></i>
 							<input type="text" class="form-control date-picker" placeholder="dd-mm-yyyy" style="background-color: #f5f5f5 !important" name="doa" id="doa" value="<?php echo @$Customer->anniversary; ?>" data-date-format="dd-mm-yyyy" autocomplete="off">

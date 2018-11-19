@@ -77,9 +77,11 @@
 							<th>Item</th>
 							<th>Unit</th>
 							<th>Op. Balance</th>
-							<th>Projection</th>
+							<th>Purchase</th>
+							<th>Manual adjustment</th>
 							<th>Mall</th>
-							<th>100 F. Road</th>
+							<th>SS</th>
+							<th>Wastage</th>
 							<th>Consumption</th>
 							<th>Cls. Balance</th>
 						</tr>
@@ -92,12 +94,14 @@
 							<td><?= h($InventoryRecord->item_list->unit) ?></td>
 							<td><?php echo $openingData[$InventoryRecord->item_list_id]; ?></td>
 							<td><?= h($InventoryRecord->total_projection) ?></td>
+							<td><?= h($InventoryRecord->total_adjustment) ?></td>
 							<td><?= h($InventoryRecord->total_mall) ?></td>
 							<td><?= h($InventoryRecord->total_road) ?></td>
+							<td><?= h($InventoryRecord->wastage) ?></td>
 							<td><?= h($InventoryRecord->total_consumption) ?></td>
 							<td>
 								<?php
-								echo $openingData[$InventoryRecord->item_list_id] + $InventoryRecord->total_projection - $InventoryRecord->total_mall - $InventoryRecord->total_road - $InventoryRecord->total_consumption;
+								echo $openingData[$InventoryRecord->item_list_id] + $InventoryRecord->total_projection + $InventoryRecord->total_adjustment - $InventoryRecord->total_mall - $InventoryRecord->total_road - $InventoryRecord->wastage - $InventoryRecord->total_consumption;
 								?>
 							</td>
 						</tr>

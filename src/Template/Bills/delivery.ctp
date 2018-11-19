@@ -21,7 +21,7 @@
 						<td valign="top" align="center">
 							<span style="font-size: 14px; color: #3b393a;">Delivery: <b> <?= h($Bill->delivery_no) ?> </b></span><br/>
 							<span style="font-size: 14px; color: #3b393a;">Customer <b> <?= h($Bill->customer->name) ?> </b></span><br/>
-							<span style="font-size: 14px; color: #3b393a;">Delivery <b> <?= h($Bill->created_on->format('d-m-Y H:i A')) ?> </b></span><br/>
+							<span style="font-size: 14px; color: #3b393a;">Delivery <b> <?= h($Bill->created_on->format('d-m-Y h:i A')) ?> </b></span><br/>
 							<span style="font-size: 14px; color: #3b393a;">Bill Amount <b> ₹ <?= h($Bill->grand_total) ?> </b></span>
 						</td>
 					</tr> 

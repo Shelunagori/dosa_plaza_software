@@ -40,6 +40,8 @@ class VegetableRecordsTable extends Table
             'joinType' => 'INNER'
         ]);
 
+         $this->belongsTo('VendorAmounts');
+
         
     }
 

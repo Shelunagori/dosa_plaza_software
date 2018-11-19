@@ -151,7 +151,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 		<!-- BEGIN LOGO -->
 		<div class="logo">
-			<?php echo $this->Html->Image('/img/Dosa-Plaza-Login.png',['style' => 'height: 90px;']); ?>
+			<?php echo $this->Html->Image('/img/Dosa-Plaza-Logo.jpeg',['style' => 'height: 90px;']); ?>
 		</div>
 		<!-- END LOGO -->
 		<!-- BEGIN SIDEBAR TOGGLER BUTTON -->

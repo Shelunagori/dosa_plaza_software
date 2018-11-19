@@ -44,6 +44,7 @@ class AttendancesController extends AppController
 		$this->viewBuilder()->layout('admin');
 		
 		$attendance_date=$this->request->query('attendance_date');
+        $attendance_date=date('Y-m-d', strtotime($attendance_date));
         
         if ($this->request->is('post')) {
 			 

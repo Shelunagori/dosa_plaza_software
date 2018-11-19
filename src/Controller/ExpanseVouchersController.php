@@ -47,8 +47,11 @@ class ExpanseVouchersController extends AppController
     public function view()
     {
         $this->viewBuilder()->layout('admin');
-        $from_date=$this->request->query('from_date');
-        $to_date=$this->request->query('to_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
         $condition=array();
         if(!empty($from_date) && !empty($to_date))
         {
@@ -66,7 +69,7 @@ class ExpanseVouchersController extends AppController
         ->contain(['ExpanseHeads'])
         ->autoFields(true);;
         //pr($ExpanseVoucherRows->toArray());   exit;
-        $this->set(compact('ExpanseVoucherRows','from_date','to_date'));
+        $this->set(compact('ExpanseVoucherRows','from_date','to_date', 'exploded_date_from_to'));
     }
 
     /**

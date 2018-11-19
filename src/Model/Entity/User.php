@@ -25,7 +25,8 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
+         'employee_id' => true,
+		'name' => true,
         'username' => true,
         'password' => true,
         'role' => true
@@ -40,7 +41,7 @@ class User extends Entity
         'password'
     ];
 
-    protected function _setPassword($password)
+     protected function _setPassword($password)
     {
         $hasher = new DefaultPasswordHasher();
         return $hasher->hash($password);

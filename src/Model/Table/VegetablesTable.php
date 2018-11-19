@@ -9,6 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Vegetables Model
  *
+ * @property \App\Model\Table\VegetableRatesTable|\Cake\ORM\Association\HasMany $VegetableRates
+ * @property \App\Model\Table\VegetableRecordsTable|\Cake\ORM\Association\HasMany $VegetableRecords
+ *
  * @method \App\Model\Entity\Vegetable get($primaryKey, $options = [])
  * @method \App\Model\Entity\Vegetable newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Vegetable[] newEntities(array $data, array $options = [])
@@ -35,11 +38,10 @@ class VegetablesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('VegetableRecords', [
+        $this->hasMany('VegetableRates', [
             'foreignKey' => 'vegetable_id'
         ]);
-
-        $this->hasMany('VegetableRates', [
+        $this->hasMany('VegetableRecords', [
             'foreignKey' => 'vegetable_id'
         ]);
     }

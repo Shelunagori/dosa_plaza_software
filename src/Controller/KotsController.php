@@ -34,6 +34,10 @@ class KotsController extends AppController
     {
         $this->viewBuilder()->layout('counter');
 
+        $session_employee_id=$this->Auth->User('employee.id');
+        $session_employee=$this->Kots->Employees->get($session_employee_id, [
+            'contain' => ['Designations']
+        ]);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $table_id = $this->request->data()['table_id']; 
@@ -82,7 +86,6 @@ class KotsController extends AppController
                     ->where(['Tables.id' => $table_id])
                     ->execute();
             }
-
         }
 
         $ItemCategories =   $this->Kots->ItemCategories->find()
@@ -112,16 +115,23 @@ class KotsController extends AppController
         }       
  
         $Comments = $this->Kots->Comments->find('list');
-        $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0, 'Employees.designation_id' => 2]);
+
+        if($session_employee->designation_id==4){
+            $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0, 'Employees.designation_id IN' => [2,4] ]);
+        }else{
+            $Employees = $this->Kots->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0, 'Employees.id' => $session_employee_id ]);
+        }
+        
 
         $Customers = $this->Kots->Customers->find('list', 
-                            [
-                                'keyField' => 'id',
-                                'valueField' => function ($row) {
-                                    return $row['name'] . '  (' . $row['mobile_no'].')';
-                                }
-                            ]);
-        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees', 'Customers'));
+                        [
+                            'keyField' => 'id',
+                            'valueField' => function ($row) {
+                                return $row['name'] . '  (' . $row['mobile_no'].')';
+                            }
+                        ]
+                    );
+        $this->set(compact('Table_data','itemsList','Tables', 'ItemCategories', 'Items', 'table_id', 'Comments','order_type','Employees', 'Customers', 'session_employee_id', 'session_employee'));
     }
  
     /**
@@ -190,9 +200,10 @@ class KotsController extends AppController
     public function viewkot($kot_id=null)
     {
         $this->viewBuilder()->layout('');
-        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id, 'Kots.bill_pending'=>'yes'])->contain(["Tables" => ['Employees'],'KotRows'=> function($q){
+        $Kots=$this->Kots->find()->where(['Kots.id'=>$kot_id])->contain(["Tables", "Employees", "Bills" => ['Customers'],'KotRows'=> function($q){
             return $q->where(['KotRows.is_deleted' => 0])->contain(['Items'=>['Taxes']]);
         } ])->first();
+        //pr($Kots); exit();
 
         if($Kots->order_type == "delivery"){
             $last_voucher_no=$this->Kots->Bills->find()
@@ -219,6 +230,7 @@ class KotsController extends AppController
         $table_id=$this->request->query('table_id');
         $one_comment=$this->request->query('one_comment');
         $order_type=$this->request->query('order_type'); 
+        $employee_id=$this->request->query('employee_id'); 
 		$q = json_decode($myJSON, true);
 		
         if(!$table_id){
@@ -238,6 +250,7 @@ class KotsController extends AppController
         $kot->table_id=$table_id;
 		$kot->one_comment=$one_comment;
         $kot->order_type=$order_type;
+        $kot->employee_id=$employee_id;
 		
 		$kot_rows=[];
 		foreach($q as $row){
@@ -455,9 +468,12 @@ class KotsController extends AppController
     public function deleteReport(){
         $this->viewBuilder()->layout('admin');
 
-        $from_date=$this->request->query('from_date');
+        $date_from_to = $this->request->query('date_from_to');
+        $exploded_date_from_to = explode('/', $date_from_to);
+        $from_date = date('Y-m-d', strtotime($exploded_date_from_to[0]));
+        $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
+
         $from_date1=date('Y-m-d', strtotime($from_date));
-        $to_date=$this->request->query('to_date');
         $to_date1=date('Y-m-d', strtotime($to_date));
 
         $deletedRows=$this->Kots->KotRows->find()
@@ -472,17 +488,18 @@ class KotsController extends AppController
                     'deleted_rows' => $deletedRows
                 ])
                 ->where([
-                    'created_on >=' => $from_date1.' 00:00:00',
-                    'created_on <=' => $to_date1.' 23:59:59'
+                    'Kots.created_on >=' => $from_date1.' 00:00:00',
+                    'Kots.created_on <=' => $to_date1.' 23:59:59'
                 ])
                 ->contain([
-                    'Tables',
+                    'Tables', 'Bills', 'Employees',
                     'KotRows'=> function($q){
                         return $q->where(['KotRows.is_deleted' => 1])->contain(['Items']);
                     } 
                 ])
                 ->autoFields(true);
-        $this->set(compact('Kots', 'from_date', 'to_date'));
+        
+        $this->set(compact('Kots', 'from_date', 'to_date', 'exploded_date_from_to'));
     }
 
     public function deleteReportExcel(){
@@ -518,6 +535,7 @@ class KotsController extends AppController
         $to_date = date('Y-m-d', strtotime($exploded_date_from_to[1]));
 
         $emWhere=[];
+        $emWhere['Bills.is_deleted'] = 'no';
         $employee_id = $this->request->query('employee_id');
         if($employee_id){
             $emWhere['Bills.employee_id'] = $employee_id;
@@ -532,9 +550,13 @@ class KotsController extends AppController
                     'Kots.created_on <=' => $to_date.' 23:59:59',
                     'Kots.is_deleted' => 0
                 ])
+                ->orWhere([
+                    'Kots.created_on >=' => $from_date.' 00:00:00',
+                    'Kots.created_on <=' => $to_date.' 23:59:59',
+                    'Kots.is_deleted is null'
+                ])
                 ->contain([
-                    'Tables',
-                    'Bills' => ['Employees'],
+                    'Tables', 'Employees', 'Bills',
                     'KotRows'=> function($q){
                         return $q->where(['KotRows.is_deleted' => 0])->contain(['Items']);
                     } 
@@ -552,7 +574,15 @@ class KotsController extends AppController
                 'Kots.created_on >=' => $from_date.' 00:00:00',
                 'Kots.created_on <=' => $to_date.' 23:59:59',
                 'Kots.is_deleted' => 0
+            ])
+            ->orWhere([
+                'Kots.created_on >=' => $from_date.' 00:00:00',
+                'Kots.created_on <=' => $to_date.' 23:59:59',
+                'Kots.is_deleted is null'
             ]);
+        })
+        ->matching('Kots.Bills', function($q) use($emWhere){
+            return $q->where($emWhere);
         })
         ->select([
             'Total_Kot_Amount' => $KotRows->func()->sum('amount'),
@@ -591,6 +621,7 @@ class KotsController extends AppController
         $myJSON=$this->request->query('myJSON');
         $overallComment=$this->request->query('overallComment');
         $kot_id=$this->request->query('kot_id');
+        $employee_id=$this->request->query('employee_id');
 
         $q = json_decode($myJSON, true);
 
@@ -611,6 +642,7 @@ class KotsController extends AppController
         $query->update()
             ->set([
                 'one_comment' => $overallComment,
+                'employee_id' => $employee_id,
             ])
             ->where(['Kots.id' => $kot_id])
             ->execute();

@@ -27,12 +27,24 @@
                                     <input type="text" class="form-control" placeholder="Bill No" name="bill_no" value="<?php echo @$bill_no; ?>">
                                 </td>
                                 <td valign="bottom">
+                                    <?php 
+                                    if(@$from_date=="1970-01-01" or $from_date==""){
+                                        $PrintDate1 = "";
+                                    }else{
+                                        $PrintDate1 = date('d-m-Y', strtotime($from_date));
+                                    } ?>
                                     <label>From Date</label>
-                                    <input type="date" class="form-control" placeholder="From Date" name="from_date" value="<?php echo @$from_date; ?>">
+                                    <input class="form-control date-picker" placeholder="From Date" name="from_date" value="<?php echo @$PrintDate1; ?>" data-date-format="dd-mm-yyyy" placeholder="Date" autocomplete="off">
                                 </td>
                                 <td valign="bottom">
+                                    <?php 
+                                    if(@$to_date=="1970-01-01" or $to_date==""){
+                                        $PrintDate2 = "";
+                                    }else{
+                                        $PrintDate2 = date('d-m-Y', strtotime($to_date));
+                                    } ?>
                                     <label>To Date</label>
-                                    <input type="date" class="form-control" placeholder="To Date" name="to_date" value="<?php echo @$to_date; ?>">
+                                    <input class="form-control date-picker" placeholder="To Date" name="to_date" value="<?php echo @$PrintDate2; ?>" data-date-format="dd-mm-yyyy" placeholder="Date" autocomplete="off">
                                 </td>
                                 <td valign="bottom">
                                     <input type="text" class="form-control" placeholder="Amount From" name="amount_from" value="<?php echo @$amount_from; ?>">
@@ -87,11 +99,11 @@
                             <td><?= h(@$bill->table->name) ?></td>
                             <td class="actions">
                                 <?php
-                                    echo $this->Html->image('edit.png',['url'=>['controller'=>'Bills','action'=>'customerinfo',$bill->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Customer Info','data-container'=>'body']);
-                                    echo $this->Html->image('edit.png',['url'=>['controller'=>'Bills','action'=>'edit',$bill->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Bill','data-container'=>'body']);
-                                    echo $this->Html->image('print.png',['url'=>['controller'=>'Bills','action'=>'view?bill_id='.$bill->id],'target'=>'_blank','class'=>'tooltips ','data-original-title'=>'Re-Print','data-container'=>'body']);
+                                    echo $this->Html->link('Edit Customer Info ', '/Bills/customerinfo/'.$bill->id, ['class' => 'btn btn-xs blue showLoader']);
+                                    echo $this->Html->link('Edit Bill ', '/Bills/edit/'.$bill->id, ['class' => 'btn btn-xs blue showLoader']);
+                                    echo $this->Html->link('Re-Print ', '/Bills/view?bill-id='.$bill->id, ['class' => 'btn btn-xs blue showLoader','target'=>'_blank']);
 
-                                    echo $this->Html->image('delete.png',['data-target'=>'#deletemodal'.$bill->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Delete Bill','data-container'=>'body']);
+                                    echo $this->Html->link('Delete ', '#', ['data-target'=>'#deletemodal'.$bill->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
                                     ?>
                                     <div id="deletemodal<?php echo $bill->id; ?>" class="modal fade" role="dialog">
                                         <div class="modal-dialog modal-md" >
@@ -129,3 +141,38 @@
         </div>
     </div>
 </div>
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+    <!-- BEGIN COMPONENTS DROPDOWNS -->
+    <?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+ <!-- BEGIN PAGE LEVEL PLUGINS -->
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+<!-- END PAGE LEVEL SCRIPTS -->
+<?php
+$js="
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
+";
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>

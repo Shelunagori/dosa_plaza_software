@@ -13,14 +13,15 @@ use App\Controller\AppController;
 class ItemsController extends AppController
 {   
 	public function index(){
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('');
 		
         $itemslist = $this->Items->find()->contain(['ItemSubCategories']);
 		$this->set(compact('itemslist'));
 	}
 
-    public function add($id = null)
+    public function add($id = null, $copy=null)
     {
+        $focus_id=$this->request->query('focus-id');
 		$this->viewBuilder()->layout('admin');
 		if(!$id)
 		{				
@@ -28,12 +29,15 @@ class ItemsController extends AppController
 		}
 		else
 		{
-			$item = $this->Items->get($id, [
-				'contain' => ['ItemRows']
-			]);
+            $item = $this->Items->get($id, [
+                    'contain' => ['ItemRows']
+                ]);
 		}
 		$loginId=$this->Auth->User('id'); 
         if ($this->request->is(['patch', 'post', 'put'])) {
+             if($copy=="copy"){
+                $item = $this->Items->newEntity();
+            }
             $item = $this->Items->patchEntity($item, $this->request->getData());
 			$item->created_by=$loginId;
 			$item->rate=$this->request->getData('rate'); 
@@ -41,11 +45,11 @@ class ItemsController extends AppController
             //pr($item); exit;
             if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add?focus-id='.$item->id]);
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-		if($id)
+		if($id && $copy!="copy")
         {
             $itemSubCategories = $this->Items->ItemSubCategories->find('list', ['limit' => 200])
                 ->where(['is_deleted'=>0])
@@ -61,7 +65,7 @@ class ItemsController extends AppController
         
         $Taxes = $this->Items->Taxes->find('list', ['limit' => 200])->order(['Taxes.id'=>'ASC']);
         
-        if($id)
+        if($id && $copy!="copy")
         {  
             $itemslist=array();
             foreach($item->item_rows as $raw_materials){
@@ -96,7 +100,7 @@ class ItemsController extends AppController
         }
 
         
-        $this->set(compact('item', 'itemSubCategories','id','Taxes','option'));
+        $this->set(compact('item', 'itemSubCategories','id','Taxes','option', 'focus_id'));
 
     }
  
@@ -113,7 +117,7 @@ class ItemsController extends AppController
             $this->Flash->error(__('The item could not be freeze. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add?focus-id='.$item->id]);
     }
     public function undelete($id = null)
     {
@@ -128,7 +132,7 @@ class ItemsController extends AppController
             $this->Flash->error(__('The item could not be unfreezed. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add?focus-id='.$item->id]);
     }
 
     public function foodCostingReport(){
@@ -149,13 +153,21 @@ class ItemsController extends AppController
 
         $BillRows=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
         $BillRows->matching('Bills', function($q) use($from_date, $to_date){
-            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+            return $q->where([
+                'Bills.transaction_date >=' => $from_date,
+                'Bills.transaction_date <=' => $to_date,
+                'Bills.is_deleted' => 'no'
+            ]);
         });
         $BillRows->select([$BillRows->func()->sum('BillRows.quantity')]);
 
         $BillRows2=$this->Items->BillRows->find()->where(['BillRows.item_id = Items.id']);
         $BillRows2->matching('Bills', function($q) use($from_date, $to_date){
-            return $q->where(['Bills.transaction_date >=' => $from_date, 'Bills.transaction_date <=' => $to_date]);
+            return $q->where([
+                'Bills.transaction_date >=' => $from_date, 
+                'Bills.transaction_date <=' => $to_date,
+                'Bills.is_deleted' => 'no'
+            ]);
         });
         $BillRows2->select([$BillRows2->func()->sum('BillRows.net_amount')]);
 
@@ -295,14 +307,16 @@ class ItemsController extends AppController
         $Item = $this->Items->get($item_id);
         $Item->is_favorite=1;
         $this->Items->save($Item);
-        return $this->redirect(['action' => 'index']);
+        echo '1'; exit();
+        //return $this->redirect(['action' => 'add?focus-id='.$Item->id]);
     }
 
     public function unfavorite($item_id=null){
         $Item = $this->Items->get($item_id);
         $Item->is_favorite=0;
         $this->Items->save($Item);
-        return $this->redirect(['action' => 'index']);
+        echo '1'; exit();
+        //return $this->redirect(['action' => 'add?focus-id='.$Item->id]);
     }
 
 }

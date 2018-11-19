@@ -58,7 +58,8 @@
 				<div class="caption">
 					View Designation List
 				</div>
-				<div class="tools"> 
+				<div class="tools">
+					<input id="search3"  class="form-control" type="text" placeholder="Search" > 
  				</div>
 				<div class="row">	
 						<div class="col-md-12 horizontal "></div>
@@ -73,13 +74,15 @@
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="main_tbody">
 						<?php $x=0; foreach ($Designations as $country): ?>
 						<tr>
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td class="actions">
-								<?php echo $this->Html->image('edit.png',['url'=>['controller'=>'designations','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
+								<?php 
+								echo $this->Html->link('Edit ', '/designations/add/'.$country->id, ['class' => 'btn btn-xs blue showLoader']);
+								?>
 							</td>
 						</tr>
 						<?php endforeach; ?> 
@@ -142,6 +145,22 @@ $(document).ready(function() {
             error2.hide();
 			$("#loading").show();
             form[0].submit(); // submit the form
+        }
+    }); 
+
+    var rows = $("#main_tbody tr");
+    $("#search3").on("keyup",function() {
+        var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+        var v = $(this).val();
+        
+        if(v){
+            rows.show().filter(function() {
+                var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+    
+                return !~text.indexOf(val);
+            }).hide();
+        }else{
+            rows.show();
         }
     });     
  });';

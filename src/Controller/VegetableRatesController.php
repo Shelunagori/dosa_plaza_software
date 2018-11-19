@@ -25,7 +25,7 @@ class VegetableRatesController extends AppController
         $month1 = explode('-', $month);
         $this->viewBuilder()->layout('admin');
 
-        $Vegetables = $this->VegetableRates->Vegetables->find();
+        $Vegetables = $this->VegetableRates->Vegetables->find()->order(['name'=>'ASC']);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $rates = $this->request->data()['rate'];

@@ -58,7 +58,8 @@
                             
                             <td class="actions">
                                 <?php
-                                echo $this->Html->image('edit.png',['url'=>['controller'=>'ExpanseVouchers','action'=>'edit',$expanseVoucher->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Item','data-container'=>'body']);?>                                
+                                echo $this->Html->link('Edit ', '/ExpanseVouchers/edit/'.$expanseVoucher->id, ['class' => 'btn btn-xs blue showLoader']);
+                                ?>                                
                             </td>
                         </tr>
                         <?php endforeach; ?> 

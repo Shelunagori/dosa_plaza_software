@@ -254,9 +254,10 @@ $(document).ready(function() {
 		var c_name='';//$('input[name=c_name]').val();
 		var c_mobile='';//$('input[name=c_mobile]').val();
 		var c_pax=$('select[name=c_pax] option:selected').val();
+		var session_employee_id='".$session_employee_id."';
 		
 		var url='".$this->Url->build(['controller'=>'Tables','action'=>'save-table'])."';
-		url=url+'?c_name='+c_name+'&c_mobile='+c_mobile+'&c_pax='+c_pax+'&table_id='+table_id;
+		url=url+'?c_name='+c_name+'&c_mobile='+c_mobile+'&c_pax='+c_pax+'&table_id='+table_id+'&session_employee_id='+session_employee_id;
 		$.ajax({
 			url: url,
 		}).done(function(response) {

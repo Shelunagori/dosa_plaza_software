@@ -12,23 +12,18 @@
             <div class="tools" style="margin-right: 10px;">
                 <?php if(!empty($id)){ ?>
                    <?php if (in_array("13", $userPages)){
-                        echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Raw Material List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
-                        ?>
-                <?php } } ?>
-            </div>
-            <div class="tools">
-                <?php if(!empty($id)){ ?>
-                    <?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/RawMaterials/add/',array('escape'=>false,'style'=>'color:#fff'));?>
-                    <?php } ?>
+						//echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Raw Material List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+						?>
+				<?php } } ?>
             </div>
             <div class="row">   
                 <div class="col-md-12 horizontal "></div>
             </div>
         </div>
-        <div class="portlet-body">
+        <div class="portlet-body" style="height: 200px; overflow: auto;">
             <?= $this->Form->create($rawMaterial, ['id'=>'form_sample_1']) ?>
                 <div class="row">
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-4">
                         <label class="control-label col-md-12"> Name  <span class="required"> * </span></label>
                         <div class ="row">
                             <div class="col-md-12 input-icon right">
@@ -36,6 +31,26 @@
                                 <?php echo $this->Form->control('name',['class'=>'form-control  ','label'=>false,'placeholder'=>'Raw Material Name','required'=>'required','id'=>'name']); ?>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="form-group col-md-4 ">
+                        <label class="control-label col-md-12"> Sub Category  <span class="required"> * </span></label>
+                        <div class="row">
+                            <div class="col-md-12 input-icon right">
+                                <i class="fa"></i>
+                                <?php echo $this->Form->input('raw_material_sub_category_id',['options' =>$rawMaterialCategories,'label' => false,'class'=>'form-control select2 ','required'=>'required','id'=>'tax_id','empty'=>'Select...']);?>
+                            </div>
+                        </div>  
+                    </div>
+
+                    <div class="form-group col-md-4 ">
+                        <label class="control-label col-md-12"> Tax  <span class="required"> * </span></label>
+                        <div class="row">
+                            <div class="col-md-12 input-icon right">
+                                <i class="fa"></i>
+                                <?php echo $this->Form->input('tax_id',['options' =>$Taxes,'label' => false,'class'=>'form-control select2 ','required'=>'required','id'=>'tax_id','empty'=>'Select...']);?>
+                            </div>
+                        </div>  
                     </div>
                     
                 </div> 
@@ -52,6 +67,15 @@
         </div> 
     </div>
 </div>
+
+<?php if (in_array("13", $userPages)){ ?>
+<div class="row">
+    <div class="col-md-12" id="itemList" >
+        <div align="center">Loading raw material list...</div>
+    </div>
+</div>
+<?php } ?>
+
 <!-- BEGIN PAGE LEVEL STYLES -->
     <?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <!-- BEGIN COMPONENTS DROPDOWNS -->
@@ -131,6 +155,41 @@ $js="
     });
 FormValidation.init();
 ";
+
+if(!$focus_id){ $focus_id=0; }
+$url = $this->Url->build(["controller"=>"RawMaterials","action"=>"index"]);
+$js.='
+    $(document).ready(function() {
+        $.ajax({
+          url: "'.$url.'",
+          success: function( data ) {
+            $("#itemList").html(data);
+
+            $("tr[data-id='.$focus_id.']").find("a").focus();
+
+            var rows = $("#main_tbody2 tr.main_tr");
+            $("#search3").live("keyup",function() {
+                var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+                var v = $(this).val();
+                console.log(v);
+                if(v){ 
+                    rows.show().filter(function() {
+                        var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+            
+                        return !~text.indexOf(val);
+                    }).hide();
+                }else{
+                    rows.show();
+                }
+            }); 
+          },
+          error: function(e){
+            //console.log(e.responseText);
+          }
+        });
+    });
+';
+
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
     

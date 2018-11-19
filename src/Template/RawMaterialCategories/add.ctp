@@ -56,14 +56,14 @@
                      Category List
                 </div>
                 <div class="tools"> 
-                     <input id="search3"  class="form-control" type="text" placeholder="Search" >
+                    <input id="search3"  class="form-control" type="text" placeholder="Search" >
                 </div>
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
                 </div>
             </div>
             <div class="portlet-body">
-                <table class="table table-str table-hover " cellpadding="0" cellspacing="0">
+                <table class="table table-str table-hover"  >
                     <thead>
                         <tr>
                             <th scope="col"><?= ('S.No') ?></th> 
@@ -77,15 +77,14 @@
                             <td><?= ++$x; ?></td> 
                             <td><?= h($country->name) ?></td>
                             <td class="actions">
-                                 
                                 <?php
                                     if($country->is_deleted==0){
-                                     echo $this->Html->image('edit.png',['url'=>['controller'=>'RawMaterialCategories','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Category','data-container'=>'body']);?>
-                                    <?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips ','data-original-title'=>'Freeze Category','data-container'=>'body']);
-                                    } else { ?>
-                                        <?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Category','data-container'=>'body']);
+                                    echo $this->Html->link('Edit ', '/RawMaterialCategories/add/'.$country->id, ['class' => 'btn btn-xs blue showLoader']);
+                                    echo $this->Html->link('Freeze ', '#', ['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
+                                    } else {
+                                        echo $this->Html->link('Unfreeze ', '#', ['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
                                     }
-                                    ?>
+                                ?>
                                 <div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
                                     <div class="modal-dialog modal-md" >
                                         <form method="post" action="<?php echo $this->Url->build(array('controller'=>'RawMaterialCategories','action'=>'delete',$country->id)) ?>">
@@ -189,7 +188,7 @@ $(document).ready(function() {
             
             form[0].submit(); // submit the form
         }
-    });  
+    });
 
     var rows = $("#main_tbody tr");
     $("#search3").on("keyup",function() {
@@ -205,8 +204,8 @@ $(document).ready(function() {
         }else{
             rows.show();
         }
-    });
-     
+    }); 
+
  });';
 ?>
 <?php echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  ?>

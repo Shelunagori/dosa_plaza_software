@@ -83,7 +83,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_qty->select([$Total_qty->func()->sum('BillRows.quantity')]);
@@ -94,7 +95,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Amount->select([$Total_Amount->func()->sum('BillRows.amount')]);
@@ -104,7 +106,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Discount->select([$Total_Discount->func()->sum('BillRows.discount_amount')]);
@@ -114,7 +117,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Net->select([$Total_Net->func()->sum('BillRows.net_amount')]);
@@ -194,7 +198,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_qty->select([$Total_qty->func()->sum('BillRows.quantity')]);
@@ -205,7 +210,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Amount->select([$Total_Amount->func()->sum('BillRows.amount')]);
@@ -215,7 +221,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Discount->select([$Total_Discount->func()->sum('BillRows.discount_amount')]);
@@ -225,7 +232,8 @@ class ItemCategoriesController extends AppController
                     ->matching('Bills', function($q) use($from_date, $to_date){
                         return $q->where([
                                         'Bills.transaction_date >=' => $from_date, 
-                                        'Bills.transaction_date <=' => $to_date
+                                        'Bills.transaction_date <=' => $to_date,
+                                        'Bills.is_deleted' => 'no'
                                     ]);
                     });
         $Total_Net->select([$Total_Net->func()->sum('BillRows.net_amount')]);

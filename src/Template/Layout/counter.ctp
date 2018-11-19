@@ -278,6 +278,32 @@ License: You must have a valid license purchased only from themeforest(the above
 			$('a[role=button]').live('click',function(e) {
 				e.preventDefault();
 			});
+
+			$('.allowCharSpace').keypress(function(event){
+			    //get envent value       
+			    var inputValue = event.which;
+			    // check whitespaces only.
+			    if(inputValue == 32){
+			        return true;    
+			    }
+			     // check number only.
+			    if(inputValue == 48 || inputValue == 49 || inputValue == 50 || inputValue == 51 || inputValue == 52 || inputValue == 53 ||  inputValue ==  54 ||  inputValue == 55 || inputValue == 56 || inputValue == 57){
+			        event.preventDefault();
+			    }
+			    // check special char.
+			    if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)) { 
+			        event.preventDefault(); 
+			    }
+			});
+
+			$('.allowMobileOnly').keypress(function(evt){
+			    evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					event.preventDefault(); 
+				}
+			});
+
 		});
 		
 		
@@ -302,6 +328,56 @@ License: You must have a valid license purchased only from themeforest(the above
 		$('.showLoader').live('click',function(e) {
 			$('#loading').show();
 		});
+
+		$(document).keydown(function(e) {
+            switch(e.which) {
+                case 37: // left
+                var i;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                for (i = TDindex-1; i >= 0; i--){
+                	var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+	                if(l){
+	                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+	                	break;
+	                }
+                }
+                break;
+            
+                case 39: // right
+                var i;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                for (i = TDindex+1; i <= 1000; i++){
+                	var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+	                if(l){
+	                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+	                	break;
+	                }
+                }
+                break;
+
+                case 40: // down
+                var focused = $(':focus');
+                var num=focused.closest('td').index();
+                var is_exist=focused.closest('tr').next('tr').find('td:eq('+num+') input').length;
+                focused.closest('tr').next('tr').find('td:eq('+num+') input').focus();
+                break;
+
+                case 38: // up
+                var focused = $(':focus');
+                var num=focused.closest('td').index();
+                var is_exist=focused.closest('tr').prev('tr').find('td:eq('+num+') input').length;
+                focused.closest('tr').prev('tr').find('td:eq('+num+') input').focus();
+                break;
+
+                default: return; // exit this handler for other keys
+            }
+
+            e.preventDefault(); // prevent the default action (scroll / move caret)
+        });
+
+
 		</script>
 		<?= $this->fetch('scriptBottom')?>
 		<!-- END JAVASCRIPTS -->

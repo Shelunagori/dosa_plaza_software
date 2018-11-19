@@ -21,15 +21,29 @@ class ManualStocksController extends AppController
     public function index()
     {
         $this->viewBuilder()->layout('admin');
+        $employee_id = $this->Auth->User('employee_id'); 
+        $designation_id = $this->Auth->User('employee.designation_id');
 
         $date = date('Y-m-d');
-
+        $fromDate=date('Y-m-d', strtotime('-10 day', strtotime($date)));
+        $toDate=date('Y-m-d', strtotime('-1 day', strtotime($date)));
         if ($this->request->is(['patch', 'post', 'put'])) {
             
             //Delete Attendance
             $this->ManualStocks->deleteAll(['transaction_date' => $date]);
 
             $physicals = $this->request->data['physical'];
+            $old_physicals = $this->request->data['old_physical'];
+            
+            foreach ($old_physicals as $tdate => $value) {
+                foreach ($value as $rm_id => $qty) {
+                    $ManualStock = $this->ManualStocks->newEntity();
+                    $ManualStock->transaction_date = date('Y-m-d', $tdate);
+                    $ManualStock->raw_material_id = $rm_id;
+                    $ManualStock->physical = $qty;
+                    $this->ManualStocks->save($ManualStock);
+                }
+            }
 
             foreach ($physicals as $key => $physical) {
                 $ManualStock = $this->ManualStocks->newEntity();
@@ -40,37 +54,77 @@ class ManualStocksController extends AppController
             }
         }
 
-        $data=[];
-        $ManualStocks = $this->ManualStocks->find()->where(['ManualStocks.transaction_date' => $date]);
-        foreach ($ManualStocks as $ManualStock) {
-            $data[$ManualStock->raw_material_id] = $ManualStock->physical;
+
+        $data=[]; $RawMaterials=[];
+
+		$ManualStocks = $this->ManualStocks->find()->where(['ManualStocks.transaction_date' => $date]);
+		foreach ($ManualStocks as $ManualStock) {
+			$data[$ManualStock->raw_material_id] = $ManualStock->physical;
+		}			
+		
+        $start_date=$fromDate;
+        $end_date=$toDate;
+        while (strtotime($start_date) <= strtotime($end_date)) {
+            $in[strtotime($start_date)]=$this->ManualStocks->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.transaction_date <=' => date('Y-m-d', strtotime($start_date)) ]);
+            $in[strtotime($start_date)]->select([$in[strtotime($start_date)]->func()->sum('StockLedgers.quantity')]);
+            $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
+        }
+
+        
+
+		$q=$this->ManualStocks->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
+		$q->select([$q->func()->sum('StockLedgers.quantity')]);
+		
+		$q2=$this->ManualStocks->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
+		$q2->select([$q2->func()->sum('StockLedgers.quantity')]);
+		
+        $select=[];
+        $select['total_in'] = $q;
+        $select['total_out'] = $q2;
+
+        $start_date=$fromDate;
+        $end_date=$toDate;
+        while (strtotime($start_date) <= strtotime($end_date)) {
+            $select['total_in'.strtotime($start_date)] = $in[strtotime($start_date)];
+
+            $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
         }
         
-        
-        $q=$this->ManualStocks->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in']);
-        $q->select([$q->func()->sum('StockLedgers.quantity')]);
-        
-        $q2=$this->ManualStocks->RawMaterials->StockLedgers->find()->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'out']);
-        $q2->select([$q2->func()->sum('StockLedgers.quantity')]);
 
-        $q3=$this->ManualStocks->RawMaterials->StockLedgers->find()
-            ->where(['StockLedgers.raw_material_id = RawMaterials.id', 'StockLedgers.status' => 'in', 'StockLedgers.purchase_voucher_id >' => '0'])
-            ->order(['StockLedgers.transaction_date' => 'DESC'])
-            ->limit(1);
-        $q3->select(['StockLedgers.transaction_date']);
-        
-        $RawMaterials = $this->ManualStocks->RawMaterials->find();
-        $RawMaterials->select([
-            'total_in' => $q,
-            'total_out' => $q2,
-            'last_purchase' => $q3
-        ])
-        ->contain(['PrimaryUnits', 'RawMaterialSubCategories'])
-        ->where(['RawMaterials.is_deleted'=>0])
-        ->order(['RawMaterialSubCategories.Name' => 'ASC'])
-        ->autoFields(true);
+		$RawMaterials = $this->ManualStocks->RawMaterials->find();
+		$RawMaterials->select($select)
+		->contain(['PrimaryUnits', 'RawMaterialSubCategories'])
+		->where(['RawMaterials.is_deleted'=>0])
+		->order(['RawMaterialSubCategories.Name' => 'ASC'])
+		->autoFields(true);
 
-        $this->set(compact('RawMaterials', 'data'));
+        //pr($RawMaterials->toArray()); exit();
+
+        $OldComputerData=[];
+        foreach ($RawMaterials as $RawMaterial) {
+            $start_date=$fromDate;
+            $end_date=$toDate;
+            while (strtotime($start_date) <= strtotime($end_date)) {
+                //$in = 'total_in'.strtotime($start_date);
+                if($RawMaterial->total_in){
+                    $OldComputerData[strtotime($start_date)][$RawMaterial->id] = $RawMaterial->toArray()['total_in'.strtotime($start_date)];
+                }
+                
+                $start_date = date ("Y-m-d", strtotime("+1 day", strtotime($start_date)));
+            }
+        }
+        //pr($OldComputerData); exit();
+
+         
+        //$designation_id=2;
+		
+        $ManualStocks = $this->ManualStocks->find()->where(['transaction_date >=' => $fromDate, 'transaction_date <=' => $toDate]);
+        $OldPhysical=[];
+        foreach ($ManualStocks as $ManualStock) {
+            $OldPhysical[strtotime($ManualStock->transaction_date)][$ManualStock->raw_material_id] = $ManualStock->physical;
+        }
+
+        $this->set(compact('RawMaterials', 'data','designation_id','date', 'fromDate', 'toDate', 'OldPhysical', 'OldComputerData', 'designation_id'));
     }
 
     /**

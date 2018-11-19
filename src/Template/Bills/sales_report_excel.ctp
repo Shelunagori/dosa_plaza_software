@@ -35,7 +35,7 @@
 			<th>Time Taken</th>
 			<th>Order Type</th>
 			<th>Table No.</th>
-			<th>Steward</th>
+			<th>Prepared by</th>
 			<th>Payment Mode</th>
 			<th>Customer Code</th>
 			<th>Customer Mobile</th>

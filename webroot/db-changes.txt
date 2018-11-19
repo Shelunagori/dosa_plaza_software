@@ -1,0 +1,8 @@
+13-11-2018
+1. pages table
+2. drop salary employees
+3. is_deleted in bill
+
+14-11-2018
+1. inventory_records table
+2. ALTER TABLE `kots` ADD `employee_id` INT(10) NULL DEFAULT NULL AFTER `delete_time`;

@@ -72,7 +72,7 @@
 							    <tr>
 							      <td>/-</td>
 							      <?php foreach ($Employees as $Employee) { ?>
-							      	<td><?php echo $Employee->Emp_Sales; ?></td>
+							      	<td><?php echo $Employee->kot_ro_amount; ?></td>
 							      <?php } ?>
 							    </tr>
 							  </tbody>
@@ -119,7 +119,7 @@
 							$data = [];
 							 
 								foreach ($Employees as $Employee) { 
-									$data[] = ['name' => $Employee->name, 'y' => round(@$Employee->Emp_Sales)];
+									$data[] = ['name' => $Employee->name, 'y' => round(@$Employee->kot_ro_amount)];
 								}
 							 
 							
@@ -180,9 +180,6 @@
 							</script>
 						</div>
 					</div>
-
-					
-
 				</div>
 				<?php } ?>
 			</div>

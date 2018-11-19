@@ -40,6 +40,7 @@ class BillsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Customers');
+        $this->belongsTo('BillSettings');
         
         $this->belongsTo('Tables', [
             'foreignKey' => 'table_id',

@@ -74,8 +74,8 @@
                             <td><?= h($customer->email) ?></td>
                             <td><?= h($customer->address) ?></td>
                             <td>
-                                 <?= $this->Html->link(__('Edit'), ['controller' => 'Customers', 'action' => 'edit', $customer->id], ['class' => '']) ?>
-                                <?= $this->Html->link(__('View'), ['controller' => 'Customers', 'action' => 'portfolio', $customer->id], ['class' => '']) ?>
+                                <?= $this->Html->link(__('Edit'), ['controller' => 'Customers', 'action' => 'edit', $customer->id], ['class' => '']) ?>
+                                <?= $this->Html->link(__('Bill Summary'), ['controller' => 'Customers', 'action' => 'portfolio', $customer->id], ['class' => '']) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

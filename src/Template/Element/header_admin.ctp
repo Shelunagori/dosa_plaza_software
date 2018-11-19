@@ -1,7 +1,7 @@
 
 <style type="text/css">
 .topBtn{
-	color: #FFF !important; border-radius: 5px !important; background-color: #41526d !important; padding: 6px 18px;border:none !important;margin-left: 8px;
+    color: #FFF !important; border-radius: 5px !important; background-color: #41526d !important; padding: 6px 18px;border:none !important;margin-left: 8px;
 }
 .pointer{
     cursor: pointer;

@@ -22,7 +22,7 @@
 				<div class="row">
 					<div class="form-group col-md-2">
 						<label class="control-label" style="padding:0;">Transaction Date <span class="required">* </span></label>
-						<input class="form-control input-sm" type="date" name="transaction_date" required /> 
+						<input class="form-control input-sm date-picker" data-date-format="dd-mm-yyyy" name="transaction_date" required  autocomplete="off" placeholder="Date" value="<?php echo date('d-m-Y'); ?>" /> 
 					</div>	
 					<div class="form-group col-md-4">
 						<label class="control-label" style="padding:0;">Vendors <span class="required" required name="vandors">*</span></label>

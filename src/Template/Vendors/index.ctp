@@ -93,11 +93,12 @@
 							<td class="actions">
 								<?php
 									if($vendor->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'Vendors','action'=>'add',$vendor->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Vendor','data-container'=>'body']);
+									echo $this->Html->link('Edit ', '/Vendors/add/'.$vendor->id, ['class' => 'btn btn-xs blue showLoader']);
 
-									echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Vendor','data-container'=>'body']);
+									echo $this->Html->link('Freeze ', '#', ['data-target'=>'#deletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
 									} else { ?>
-										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Vendor','data-container'=>'body']);
+										<?php 
+										echo $this->Html->link('Unfreeze ', '#', ['data-target'=>'#undeletemodal'.$vendor->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
 									}
 									?>
 

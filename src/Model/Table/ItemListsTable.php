@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * ItemLists Model
  *
+ * @property |\Cake\ORM\Association\HasMany $InventoryRecords
+ *
  * @method \App\Model\Entity\ItemList get($primaryKey, $options = [])
  * @method \App\Model\Entity\ItemList newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\ItemList[] newEntities(array $data, array $options = [])
@@ -34,6 +36,10 @@ class ItemListsTable extends Table
         $this->setTable('item_lists');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('InventoryRecords', [
+            'foreignKey' => 'item_list_id'
+        ]);
     }
 
     /**

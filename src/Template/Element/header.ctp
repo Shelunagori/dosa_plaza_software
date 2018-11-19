@@ -1,13 +1,13 @@
 
 <style type="text/css">
 .topBtnActive{
-	color: #FFF; border-radius: 5px !important; background-color: #FA6775; padding: 7px 18px;margin-left: 8px;
+    color: #FFF; border-radius: 5px !important; background-color: #FA6775; padding: 7px 18px;margin-left: 8px;
 }
 .topBtn{
-	color: #FFF !important; border-radius: 5px !important; background-color: #41526d !important; padding: 6px 18px;border:none !important;margin-left: 8px;
+    color: #FFF !important; border-radius: 5px !important; background-color: #41526d !important; padding: 6px 18px;border:none !important;margin-left: 8px;
 }
 .topBtn2{
-	color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
+    color: #818182; border-radius: 5px !important; background-color: #F5F5F5; padding: 7px 18px;border:solid 1px #f0f0f0;margin-left: 8px;
 }
 .pointer{
     cursor: pointer;
@@ -102,7 +102,7 @@ if($controller=='bills'){
 ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
     <div>
-    	<?php if(@$Table_data->name){ ?>
+        <?php if(@$Table_data->name){ ?>
             <span style="color: #FFF;margin-right: 10px;border:  solid 1px #949494;padding: 3px 8px;">Table No: <?= h(@$Table_data->name) ?></span>
         <?php } ?>
     

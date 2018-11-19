@@ -137,4 +137,46 @@ class ItemSubCategoriesController extends AppController
 
         $this->set(compact('date_from_to', 'exploded_date_from_to', 'ItemSubCategories'));
     }
+
+    public function dailySalesInventory(){
+        $this->viewBuilder()->layout('admin');
+        $date=$this->request->query('date');
+        $data1=date('Y-m-d', strtotime($date));
+        $ItemSubCategories=$this->ItemSubCategories->find()
+                            ->contain(['Items' => ['ItemRows' => ['RawMaterials' => ['PrimaryUnits'] ] ] ]);
+        $receipeMatrials=[];
+        foreach ($ItemSubCategories as $ItemSubCategory) {
+            foreach ($ItemSubCategory->items as $item) {
+                foreach ($item->item_rows as $item_row) {
+                    $receipeMatrials[$ItemSubCategory->id][$item_row->raw_material_id]=$item_row->raw_material;
+                }
+            }
+            //$receipeMatrials[$ItemSubCategory->id]=array_unique($receipeMatrials[$ItemSubCategory->id]);
+        }
+        //pr($receipeMatrials); exit;
+        $Bills=$this->ItemSubCategories->Items->BillRows->Bills->find()
+                ->where(['Bills.transaction_date' => $data1])
+                ->contain(['BillRows']);
+        $billItems=[];
+        foreach ($Bills as $Bill) {
+            foreach ($Bill->bill_rows as $bill_row) {
+                $billItems[$bill_row->item_id]+=$bill_row->quantity;
+            }
+        }
+
+
+        $InventoryRecords = $this->ItemSubCategories->InventoryRecords->find();
+        $InventoryRecords->select([
+            'total_consumption' => $InventoryRecords->func()->sum('InventoryRecords.consumption')
+        ])
+        ->where([
+            'InventoryRecords.transaction_date >=' => $data1,
+            'InventoryRecords.transaction_date <=' => $data1
+        ])
+        ->contain(['ItemLists'])
+        ->group(['item_list_id'])
+        ->autoFields(true);
+
+        $this->set(compact('ItemSubCategories', 'date', 'billItems', 'receipeMatrials', 'InventoryRecords'));
+    }
 }

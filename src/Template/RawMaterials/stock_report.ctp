@@ -60,7 +60,14 @@
 			</div>
 			<div class="portlet-body" id="ExcelPage">
 
-				<?php if($from_date && $to_date){ ?>
+				<?php 
+				if($from_date=='1970-01-01'){
+					$from_date='';
+				}
+				if($to_date=='1970-01-01'){
+					$to_date='';
+				}
+				if($from_date && $to_date){ ?>
 
 				<?php
 				$stock=[];
@@ -76,7 +83,7 @@
 
 				</div>
 				<div>
-					<b>Bill Wise Sales Report</b><br/>
+					<b>Stock-Report</b><br/>
 					<b>From <?php echo $exploded_date_from_to[0].' To '.$exploded_date_from_to[1]; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>
@@ -180,7 +187,7 @@
 
 $js="
 	$(document).ready(function() {	
-		var rows = $('#main_tbody tr.main_tr');
+		var rows = $('#main_tbody tr');
 		$('#search3').on('keyup',function() {
 	      
 			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();

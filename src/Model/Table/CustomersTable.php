@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * Customers Model
@@ -41,6 +43,12 @@ class CustomersTable extends Table
         ]);
     }
 
+    public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        @$data['dob']       = trim(date('Y-m-d',strtotime(@$data['dob'])));
+        @$data['anniversary']       = trim(date('Y-m-d',strtotime(@$data['anniversary'])));
+    }
+
     /**
      * Default validation rules.
      *
@@ -62,11 +70,7 @@ class CustomersTable extends Table
             ->scalar('address')
             ->allowEmpty('address');
 
-        $validator
-            ->scalar('mobile')
-            ->maxLength('mobile', 10)
-            ->requirePresence('mobile', 'create')
-            ->notEmpty('mobile');
+       
 
         return $validator;
     }

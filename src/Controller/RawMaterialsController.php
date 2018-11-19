@@ -21,7 +21,7 @@ class RawMaterialsController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('');
 		
         $rawMaterials = $this->RawMaterials->find()->contain(['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories']);
 
@@ -44,15 +44,14 @@ class RawMaterialsController extends AppController
 			if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
-                return $this->redirect(['action' => 'add']);
+                return $this->redirect(['action' => 'add?focus-id='.$rawMaterial->id]);
             }
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
 		$Taxes = $this->RawMaterials->Taxes->find('list');
         $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
-        $rawMaterialCategories = $this->RawMaterials->RawMaterialSubCategories->find('list', ['limit' => 200])
-        	->where(['RawMaterialSubCategories.is_deleted'=>0]);
-        $this->set(compact('rawMaterial','Taxes','units','rawMaterialCategories'));
+        $rawMaterialCategories = $this->RawMaterials->RawMaterialSubCategories->find('list')->where(['RawMaterialSubCategories.is_deleted'=>0]);
+        $this->set(compact('rawMaterial','Taxes','units','rawMaterialCategories', 'focus_id'));
     }
 
     /**
@@ -73,13 +72,14 @@ class RawMaterialsController extends AppController
             if ($this->RawMaterials->save($rawMaterial)) {
                 $this->Flash->success(__('The raw material has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add?focus-id='.$rawMaterial->id]);
             }
             $this->Flash->error(__('The raw material could not be saved. Please, try again.'));
         }
         $Taxes = $this->RawMaterials->Taxes->find('list');
         $units = $this->RawMaterials->SecondaryUnits->find()->where(['is_deleted'=>0]);
-        $this->set(compact('rawMaterial','Taxes','units','id'));
+        $rawMaterialCategories = $this->RawMaterials->RawMaterialSubCategories->find('list')->where(['RawMaterialSubCategories.is_deleted'=>0]);
+        $this->set(compact('rawMaterial','Taxes','units','id', 'rawMaterialCategories'));
     }
 
     /**
@@ -102,7 +102,7 @@ class RawMaterialsController extends AppController
             $this->Flash->error(__('The raw material could not be freezed. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add?focus-id='.$rawMaterial->id]);
     }
     public function undelete($id = null)
     {
@@ -117,7 +117,7 @@ class RawMaterialsController extends AppController
             $this->Flash->error(__('The raw material could not be unfreezed. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'add?focus-id='.$rawMaterial->id]);
     }
 
 	public function stockAdjustment(){
@@ -527,7 +527,8 @@ class RawMaterialsController extends AppController
 		])
 		->where([
 			'Bills.transaction_date >=' => $from_date1[1].'-'.$from_date1[0].'-1', 
-			'Bills.transaction_date <=' => $tillDate
+			'Bills.transaction_date <=' => $tillDate,
+			'Bills.is_deleted' => 'no',
 		])
 		->group(['MONTH(Bills.transaction_date)', 'YEAR(Bills.transaction_date)'])
 		->order(['Bills.transaction_date' => 'ASC']);
@@ -595,6 +596,4 @@ class RawMaterialsController extends AppController
 
 		$this->set(compact('RawMaterials'));
 	}
-
-
 }

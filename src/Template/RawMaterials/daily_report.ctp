@@ -60,7 +60,7 @@
 
 				</div>
 				<div>
-					<b>Bill Wise Sales Report</b><br/>
+					<b>Daily Report</b><br/>
 					<b>Month <?php echo @$month; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>

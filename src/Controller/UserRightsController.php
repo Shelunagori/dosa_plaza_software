@@ -71,7 +71,16 @@ class UserRightsController extends AppController
             $this->Flash->error(__('The user right could not be saved. Please, try again.'));
         }
         $pages = $this->UserRights->Pages->find('list', ['limit' => 200]);
-        $users = $this->UserRights->Users->find('list', ['limit' => 200]);
+        $userDatas = $this->UserRights->Users->find()->contain(['Employees']);
+		$users = [];
+	
+		if(!empty($userDatas->toArray()))
+		{
+			foreach($userDatas as $userData)
+			{
+				$users[$userData->id] = $userData->employee->name;
+			}
+		}
 
         $this->set(compact('userRight', 'pages','users'));
     }

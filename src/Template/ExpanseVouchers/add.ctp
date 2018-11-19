@@ -24,7 +24,7 @@
                             <div class=" ">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
-                                    <input type="date" name="transaction_date" class="form-control" required="required" value="<?php echo date('Y-m-d'); ?>">
+                                    <input name="transaction_date" class="form-control date-picker" data-date-format="dd-mm-yyyy" required="required" placeholder="Date" value="<?php echo date('d-m-Y'); ?>">
                                 </div>
                             </div>
                         </div>
@@ -82,6 +82,7 @@
     <?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
     <?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
     <?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+    <?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <!-- END COMPONENTS DROPDOWNS -->
 <!-- BEGIN COMPONENTS DROPDOWNS -->
     <?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
@@ -92,6 +93,7 @@
     <!-- BEGIN VALIDATEION -->
     <?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+    <?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 
     <!-- END VALIDATEION --> 
 <!-- END PAGE LEVEL SCRIPTS -->
@@ -198,7 +200,9 @@ $(document).ready(function() {
 
 });
 
-
+$(document).ready(function() {
+    ComponentsPickers.init();
+});
 ";
 ?>
 

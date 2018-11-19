@@ -129,7 +129,7 @@
 											</td>
 											<td>
 												<span style="color: #606062;">Steward: </span>
-												<span style="margin-left: 10px;"> <?= h(@$Kot->bill->employee->name) ?> </span>
+												<span style="margin-left: 10px;"> <?= h(@$Kot->employee->name) ?> </span>
 											</td>
 										</tr>
 									</table>

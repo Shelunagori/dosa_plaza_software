@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * PurchaseVouchers Model
@@ -50,8 +52,12 @@ class PurchaseVouchersTable extends Table
             'foreignKey' => 'purchase_voucher_id',
             'joinType' => 'INNER'
         ]);
+	}
 
-		}
+    public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        @$data['transaction_date']       = trim(date('Y-m-d',strtotime(@$data['transaction_date'])));
+    }
 
     /**
      * Default validation rules.

@@ -30,6 +30,11 @@
                             </div>
                         </td>
                         <td width="20%">
+                          <?php
+                            if (in_array("46", $userPages)){
+                                echo $this->Html->link('Daily Inventory Item Master ', '/ItemLists',['escape' => false, 'class' => 'btn btn-danger showLoader']);
+                            }
+                          ?>
                         </td>
                     </tr>
                 </table>
@@ -56,15 +61,20 @@
 
                 <?php if($date_from){ 
                   foreach ($OldData as $Tdate=>$OldDataRow) { ?>
-                  <div><span style="background-color: #CCC;padding: 5px;"><?php echo date('d-m-Y', $Tdate); ?></span></div>
+                  <div>
+                    <span style="background-color: #CCC;padding: 5px;"><?php echo date('d-m-Y', $Tdate); ?></span>
+                    <?= $this->Html->link('Edit','/InventoryRecords/edit/'.$Tdate,['class'=>'btn blue btn-xs pull-right']) ?>
+                  </div>
                   <table class="table table-bordered table-stripped">
                       <tr>
                          <th>Item</th>
                          <th>Unit</th>
                          <th width="15%">Op. Balance</th>
-                         <th>Projection</th>
+                         <th>Purchase</th>
+                         <th>Manual adjustment</th>
                          <th>Mall</th>
-                         <th>100 F. Road</th>
+                         <th>SS</th>
+                         <th>Wastage</th>
                          <th>Cls. Balance</th>
                          <th>Consumption</th>
                      </tr>
@@ -79,10 +89,16 @@
                                 <?php echo @$OldData[$Tdate][$ItemList->id]['projection']; ?>
                              </td>
                              <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['adjustment']; ?>
+                             </td>
+                             <td>
                                 <?php echo @$OldData[$Tdate][$ItemList->id]['mall']; ?>
                              </td>
                              <td>
                                 <?php echo @$OldData[$Tdate][$ItemList->id]['road']; ?>
+                             </td>
+                             <td>
+                                <?php echo @$OldData[$Tdate][$ItemList->id]['wastage']; ?>
                              </td>
                              <td>
                                 <?php echo @$OldData[$Tdate][$ItemList->id]['closing_balance']; ?>
@@ -105,9 +121,11 @@
                                <th>Item</th>
                                <th>Unit</th>
                                <th width="15%">Op. Balance</th>
-                               <th>Projection</th>
+                               <th>Purchase</th>
+                               <th>Manual adjustment</th>
                                <th>Mall</th>
-                               <th>100 F. Road</th>
+                               <th>SS</th>
+                               <th>Wastage</th>
                                <th>Cls. Balance</th>
                                <th>Consumption</th>
                            </tr>
@@ -120,13 +138,19 @@
                                    <td><?= h($ItemList->unit) ?></td>
                                    <td><?php echo @$OBData[$ItemList->id]; ?></td>
                                    <td>
-                                       <input type="text" class="form-control input-sm" name="projection[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['projection']; ?>" >
+                                        <input type="text" class="form-control input-sm" name="projection[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['projection']; ?>" >
+                                   </td>
+                                   <td>
+                                      <input type="text" class="form-control input-sm" name="adjustment[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['adjustment']; ?>" >
                                    </td>
                                    <td>
                                        <input type="text" class="form-control input-sm" name="mall[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['mall']; ?>" >
                                    </td>
                                    <td>
                                        <input type="text" class="form-control input-sm" name="road[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['road']; ?>" >
+                                   </td>
+                                   <td>
+                                      <input type="text" class="form-control input-sm" name="wastage[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['wastage']; ?>" >
                                    </td>
                                    <td>
                                        <input type="text" class="form-control input-sm" name="closing_balance[<?= h($ItemList->id) ?>]" placeholder="0"   value="<?php echo @$TodayOBData[$ItemList->id]['closing_balance']; ?>">
@@ -197,18 +221,24 @@ $(document).ready(function() {
         var Projection = parseFloat($(this).closest('tr').find('td:nth-child(4) input').val());
         if(isNaN(Projection)){ Projection=0; }
 
-        var Mall = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
+        var adjustment = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
+        if(isNaN(adjustment)){ adjustment=0; }
+
+        var Mall = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
         if(isNaN(Mall)){ Mall=0; }
 
-        var Road = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+        var Road = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
         if(isNaN(Road)){ Road=0; }
 
-        var Cls = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+        var Wastage = parseFloat($(this).closest('tr').find('td:nth-child(8) input').val());
+        if(isNaN(Wastage)){ Wastage=0; }
+
+        var Cls = parseFloat($(this).closest('tr').find('td:nth-child(9) input').val());
         if(isNaN(Cls)){ Cls=0; }
 
-        var Consumption =  OB + Projection - Mall - Road - Cls;
-
-        $(this).closest('tr').find('td:nth-child(8) input').val(Consumption);
+        var Consumption =  OB + Projection + adjustment - Mall - Road - Wastage - Cls;
+        Consumption = round(Consumption,2);
+        $(this).closest('tr').find('td:nth-child(10) input').val(Consumption);
     });
 
 

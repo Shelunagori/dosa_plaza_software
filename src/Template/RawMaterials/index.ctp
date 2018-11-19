@@ -1,12 +1,13 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'RawMaterialslist | DOSA PLAZA '); ?>	
-<div class="row" style="margin:15px">
+<div class="row" style="margin-top:-15px">
 	<div class="col-md-12">
 		<div class="portlet  box blue-hoki">
 			<div class="portlet-title">
 				<div class="caption">
 					Row Materials List
 				</div>
+				
 				<?php if (in_array("12", $userPages)){ ?>
 				
 				<div class="caption" style="float: left;">
@@ -15,6 +16,8 @@
 					?>
 				</div>
 				<?php } ?>
+				
+				
 				<div class="tools" style=" margin-right: 10px; "> 
 					<input id="search3"  class="form-control" type="text" placeholder="Search" >
  				</div>
@@ -22,7 +25,7 @@
 					<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" style="height: 200px; overflow: auto;">
 				<table class="table table-str table-hover " cellpadding="0" cellspacing="0" id="main_tbody">
 					<thead>
 						<tr>
@@ -46,13 +49,12 @@
 								<td><?= h($rawMaterial->primary_unit->name) ?></td>
 								<td><?= h(@$rawMaterial->secondary_unit->name) ?></td>
 								<td class="actions">
-									
 									<?php
 									if($rawMaterial->is_deleted==0){
-									 echo $this->Html->image('edit.png',['url'=>['controller'=>'rawMaterials','action'=>'edit',$rawMaterial->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Raw Material','data-container'=>'body']);?>
-									<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Raw Material','data-container'=>'body']);
-									} else { ?>
-										<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Raw Material','data-container'=>'body']);
+									echo $this->Html->link('Edit ', '/rawMaterials/edit/'.$rawMaterial->id, ['class' => 'btn btn-xs blue showLoader']);
+									echo $this->Html->link('Freeze ', '#', ['data-target'=>'#deletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
+									} else {
+										echo $this->Html->link('Unfreeze ', '#', ['data-target'=>'#undeletemodal'.$rawMaterial->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
 									}
 									?>
 

@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * Bookings Model
@@ -34,6 +36,11 @@ class BookingsTable extends Table
         $this->setTable('bookings');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+    }
+
+    public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        @$data['booking_date']       = trim(date('Y-m-d',strtotime(@$data['booking_date'])));
     }
 
     /**

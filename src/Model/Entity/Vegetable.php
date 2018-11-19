@@ -9,6 +9,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $unit
+ * @property float $rate
+ *
+ * @property \App\Model\Entity\VegetableRecord[] $vegetable_records
+ * @property \App\Model\Entity\VegetableRate[] $vegetable_rates
  */
 class Vegetable extends Entity
 {
@@ -24,6 +28,9 @@ class Vegetable extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'unit' => true
+        'unit' => true,
+        'rate' => true,
+        'vegetable_records' => true,
+        'vegetable_rates' => true
     ];
 }

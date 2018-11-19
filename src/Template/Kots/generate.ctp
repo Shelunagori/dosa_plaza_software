@@ -438,12 +438,14 @@ $order=$pass[1];
 											</tr>
 											<tr>
 												<td colspan="2" height="35px">
-													<?php if($order_type=='dinner'){
+													<?php
+													if($session_employee->designation_id==4){
 														echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
-														}
-														else{
-															echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2','empty' => '--Select Steward--','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
-														} ?>
+													}else{
+														echo $this->Form->input('employee_id',['options'=>$Employees,'class'=>'form-control input-sm select2 employee_id','label'=>false,'required'=>'required','value'=>@$Table_data->employee_id,'id'=>'employee_id']);
+													}
+													
+													?>
 												</td>
 											</tr>
 											<tr>
@@ -961,7 +963,7 @@ $order=$pass[1];
 			var one_comment=$('#oneComment').val();
 			var myJSON = JSON.stringify(postData);
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'add'])."';
-			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment+'&order_type='+order_type;
+			url=url+'?myJSON='+myJSON+'&table_id='+table_id+'&one_comment='+one_comment+'&order_type='+order_type+'&employee_id='+employee_id;
 			$.ajax({
 				url: url,
 			}).done(function(response) {
@@ -1439,26 +1441,7 @@ $order=$pass[1];
 			$('#WaitBox6').show();
 		});
 
-		$('#SaveNewCustomer').die().live('click',function(event){
-			var c_name=$('#c_name').val();
-			if(!c_name){
-				alert('Enter Name');
-				return;
-			}
 
-			var c_mobile_no=$('#c_mobile_no').val();
-			if(!c_mobile_no){
-				alert('Enter Mobile No.');
-				return;
-			}
-
-			if(c_mobile_no.length!=10){
-				alert('Enter Valid Mobile No.');
-				return;
-			}
-
-			$('form#customerForm').submit();
-		});
 
 		$('#UpdateCustomer').die().live('click',function(event){
 
@@ -1601,6 +1584,7 @@ $order=$pass[1];
 
 		$('.saveReprint ').die().live('click',function(event){
 			var kot_id = $(this).attr('kot_id');
+			var employee_id = '".$session_employee_id."';
 
 			var postData=[];
 			$('table[kot_id='+kot_id+'] tbody tr').each(function(){
@@ -1618,9 +1602,8 @@ $order=$pass[1];
 			var overallComment = $('textarea.oneCommentOld_'+kot_id).val();
 
 			var url='".$this->Url->build(['controller'=>'Kots','action'=>'updateKot'])."';
-			url=url+'?myJSON='+myJSON+'&overallComment='+overallComment+'&kot_id='+kot_id;
+			url=url+'?myJSON='+myJSON+'&overallComment='+overallComment+'&kot_id='+kot_id+'&employee_id='+employee_id;
 			url=encodeURI(url);
-			console.log(url);
 			$.ajax({
 				url: url,
 			}).done(function(response) {

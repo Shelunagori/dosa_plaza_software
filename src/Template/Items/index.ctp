@@ -1,7 +1,7 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Item-List | DOSA PLAZA'); ?>
 
-<div class="row" style="margin-top:15px;">
+<div class="row" style="margin-top:-15px;">
 	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet box blue-hoki">
@@ -9,6 +9,7 @@
 				<div class="caption">
 					 Item List
 				</div>
+				
 				<?php if (in_array("8", $userPages)){ ?>
 				
 				<div class="caption" style="float: left;">
@@ -25,7 +26,7 @@
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table class="table table-str" cellpadding="0" cellspacing="0" id="main_tbody">
+				<table class="table table-str" cellpadding="0" cellspacing="0" id="main_tbody2">
 					<thead>
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
@@ -38,7 +39,7 @@
 					</thead>
 					<tbody>
 						<?php $x=0; foreach ($itemslist as $country): ?>
-						<tr class="main_tr">
+						<tr class="main_tr" data-id="<?php echo ($country->id) ?>">
 							<td><?= ++$x; ?></td> 
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->rate) ?></td>
@@ -47,10 +48,11 @@
 							<td class="actions">
 								<?php
 								if($country->is_deleted==0){
-								 echo $this->Html->image('edit.png',['url'=>['controller'=>'Items','action'=>'add',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Edit Item','data-container'=>'body']);?>
-								<?php echo $this->Html->image('lock.png',['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Freeze Item','data-container'=>'body']);
+								 	echo $this->Html->link('Edit ', '/Items/add/'.$country->id, ['class' => 'btn btn-xs blue showLoader']);
+									echo $this->Html->link('Freeze ', '#', ['data-target'=>'#deletemodal'.$country->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
 								} else { ?>
-									<?php echo $this->Html->image('unlock.png',['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'tooltips','data-original-title'=>'Unfreeze Item','data-container'=>'body']);
+									<?php 
+									echo $this->Html->link('Unfreeze ', '#', ['data-target'=>'#undeletemodal'.$country->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
 								}
 								?>
 								<div id="deletemodal<?php echo $country->id; ?>" class="modal fade" role="dialog">
@@ -93,12 +95,23 @@
 								<?php
 								if($country->is_deleted==0){
 									if($country->is_favorite==0){
-										echo $this->Html->image('unfavorite.png',['url'=>['controller'=>'Items','action'=>'favorite',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Mark as favorite','data-container'=>'body']);
+										$favdisplay="display:";
+										$unfavdisplay="display:none";
 									}else{
-										echo $this->Html->image('favorite.png',['url'=>['controller'=>'Items','action'=>'unfavorite',$country->id],'class'=>'tooltips showLoader','data-original-title'=>'Remove from favorite list','data-container'=>'body']);
+										$favdisplay="display:none";
+										$unfavdisplay="display:";
 									}
+									echo '<span class=favbox row_no='.$country->id.' style='.$favdisplay.'>';
+									echo $this->Html->image('unfavorite.png',['url'=>['controller'=>'Items','action'=>'favorite',$country->id],'class'=>'tooltips markFav','data-original-title'=>'Mark as favorite','data-container'=>'body','row_no'=>$country->id]);
+									echo '</span>';
+
+									echo '<span class=unfavbox row_no='.$country->id.' style='.$unfavdisplay.'>';
+									echo $this->Html->image('favorite.png',['url'=>['controller'=>'Items','action'=>'unfavorite',$country->id],'class'=>'tooltips markunFav','data-original-title'=>'Remove from favorite list','data-container'=>'body','row_no'=>$country->id]);
+									echo '</span>';
 								}
 								?>
+
+								<?= $this->Html->link('Copy', '/Items/add/'.$country->id.'/copy', ['class'=>'btn btn-xs blue']) ?>
 							    
 							</td>
 						</tr>

@@ -149,7 +149,7 @@
 								<th>Time Taken</th>
 								<th scope="col"><?= $this->Paginator->sort('order_type', 'Order Type') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('table_id', 'Table No.') ?></th>
-								<th scope="col"><?= $this->Paginator->sort('employee_id', 'Steward') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('employee_id', 'Prepared by') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('payment_type', 'Payment Mode') ?></th>
 								<th>Customer Code</th>
 								<th>Customer Mobile</th>

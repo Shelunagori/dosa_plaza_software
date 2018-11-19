@@ -77,7 +77,7 @@
 
 				</div>
 				<div>
-					<b>Bill Wise Sales Report</b><br/>
+					<b>Consumption-Report</b><br/>
 					<b>Month <?php echo @$month; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>
@@ -163,7 +163,7 @@
 
 $js="
 	$(document).ready(function() {	
-		var rows = $('#main_tbody tr.main_tr');
+		var rows = $('#main_tbody tr');
 		$('#search3').on('keyup',function() {
 	      
 			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();

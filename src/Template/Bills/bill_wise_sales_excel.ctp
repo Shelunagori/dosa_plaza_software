@@ -88,7 +88,7 @@
 							</span>
 						</td>
 						<td>
-							<span>Steward</span> 
+							<span>Prepared by</span> 
 							<span style="margin-left: 10px;color: #313131;">
 								<?= h(@$Bill->employee->name) ?>
 							</span>

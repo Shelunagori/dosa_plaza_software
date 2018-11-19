@@ -35,7 +35,7 @@
 							<div class="col-md-8">
 								<div class="input-icon right">
 									<i class="fa"></i>
-									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->name."'"; } ?> name="name" class="form-control" Placeholder="Enter Vendor Name">
+									<input type="text" <?php if(!empty($id)){ echo "value='".$vendor->name."'"; } ?> name="name" class="form-control allowCharSpace" Placeholder="Enter Vendor Name">
 								</div>
 							</div>
 						</div>

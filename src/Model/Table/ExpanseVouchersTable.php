@@ -5,6 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use ArrayObject;
 
 /**
  * ExpanseVouchers Model
@@ -41,6 +43,11 @@ class ExpanseVouchersTable extends Table
             'foreignKey' => 'expanse_voucher_id',
             'saveStrategy'=>'replace'
         ]);
+    }
+
+    public function beforeMarshal(Event $event, ArrayObject $data)
+    {
+        @$data['transaction_date']       = trim(date('Y-m-d',strtotime(@$data['transaction_date'])));
     }
 
     /**

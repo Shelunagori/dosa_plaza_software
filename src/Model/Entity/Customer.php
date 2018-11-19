@@ -24,8 +24,7 @@ class Customer extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
-        'address' => true,
-        'mobile' => true
+        '*' => true,
+        'id' => false
     ];
 }

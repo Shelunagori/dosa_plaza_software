@@ -14,13 +14,17 @@
                         New Booking
                     <?php } ?>
                 </div>
-               <?php if (in_array("16", $userPages)){ ?>
-                    <div class="tools" style="margin-right: 10px;">
-                        <?php
-                            echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Booking List', '/Bookings/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
-                        ?>
-                    </div>
-                <?php } ?>
+
+
+				<?php if (in_array("16", $userPages)){ ?>
+					<div class="tools" style="margin-right: 10px;">
+						<?php
+							echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Booking List', '/Bookings/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+						?>
+					</div>
+				<?php } ?>
+
+
                 <div class="row">   
                         <div class="col-md-12 horizontal "></div>
                 </div>
@@ -36,7 +40,7 @@
                             <div class="col-md-12">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
-                                    <input type="date" <?php if(!empty($id)){ echo "value='".date('Y-m-d', strtotime($booking->booking_date))."'"; } ?> name="booking_date" class="form-control" required="required">
+                                    <input <?php if(!empty($id)){ echo "value='".date('d-m-Y', strtotime($booking->booking_date))."'"; } ?> name="booking_date" class="form-control date-picker" data-date-format="dd-mm-yyyy" required="required" placeholder="dd-mm-yyyy">
                                 </div>
                             </div>
                         </div>
@@ -46,16 +50,14 @@
                             <div class="col-md-12">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
-                                    <input type="text" <?php if(!empty($id)){ echo "value='".$booking->no_of_guests."'"; } ?> name="no_of_guests" class="form-control " Placeholder="0" >
+                                    <input type="text" <?php if(!empty($id)){ echo "value='".$booking->no_of_guests."'"; } ?> name="no_of_guests" class="form-control allowMobileOnly" Placeholder="0" >
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">   
                         <div class="form-group col-md-6">
-                            <label class="control-label col-md-12"> Customer Name <span class="required" aria-required="true">*
-                             </span>
-                            </label>
+                            <label class="control-label col-md-12"> Customer Name </label>
                             <div class="col-md-12">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
@@ -64,9 +66,7 @@
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label class="control-label col-md-12"> Customer Mobile <span class="required" aria-required="true">*
-                             </span>
-                            </label>
+                            <label class="control-label col-md-12"> Customer Mobile </label>
                             <div class="col-md-12">
                                 <div class="input-icon right">
                                     <i class="fa"></i>
@@ -113,12 +113,13 @@
     <?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+    <?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <!-- END COMPONENTS DROPDOWNS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
     <!-- BEGIN VALIDATEION -->
     <?php echo $this->Html->script('/assets/global/plugins/jquery-validation/js/jquery.validate.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <?php echo $this->Html->script('/assets/admin/pages/scripts/form-validation.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
-
+    <?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
     <!-- END VALIDATEION --> 
 <!-- END PAGE LEVEL SCRIPTS -->
 
@@ -185,6 +186,9 @@ $(document).ready(function() {
             form[0].submit(); // submit the form
         }
     });
+});
+$(document).ready(function() {
+    ComponentsPickers.init();
 });
 ";
 ?>

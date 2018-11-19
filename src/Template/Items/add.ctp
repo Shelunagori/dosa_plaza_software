@@ -15,14 +15,17 @@
 						Add Item
 					<?php } ?>
 				</div>
+				
 				<?php if (in_array("9", $userPages)){ ?>
 				
 				<div class="caption" style="float: left;">
 					<?php
-					echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Item List', '/Items/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
+					//echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Item List', '/Items/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
 					?>
 				</div>
 				<?php } ?>
+				
+				
 				<div class="tools">
 					<?php if(!empty($id)){ ?>
 						<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/Items/add/',array('escape'=>false,'style'=>'color:#fff'));?>
@@ -175,6 +178,14 @@
 		</div>
 	</div>
 </div>
+
+<?php if (in_array("9", $userPages)){ ?>
+<div class="row">
+	<div class="col-md-12" id="itemList" >
+		<div align="center">Loading item list...</div>
+	</div>
+</div>
+<?php } ?>
 <!-- BEGIN PAGE LEVEL STYLES -->
 	<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
 <!-- BEGIN COMPONENTS DROPDOWNS -->
@@ -272,14 +283,68 @@ if(!empty($id)){
 	}
 }
 
+if(!$focus_id){ $focus_id=0; }
+$url = $this->Url->build(["controller"=>"items","action"=>"index"]);
 $js.=';
 $(document).ready(function() {
+	
+	$.ajax({
+      url: "'.$url.'",
+      success: function( data ) {
+        $("#itemList").html(data);
+
+        $("tr[data-id='.$focus_id.']").find("a").focus();
+
+        var rows = $("#main_tbody2 tr.main_tr");
+		$("#search3").live("keyup",function() {
+			var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+			var v = $(this).val();
+			console.log(v);
+			if(v){ 
+				rows.show().filter(function() {
+					var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+		
+					return !~text.indexOf(val);
+				}).hide();
+			}else{
+				rows.show();
+			}
+		}); 
+      },
+      error: function(e){
+      	//console.log(e.responseText);
+      }
+    });
+
+    $(".markFav").die().live("click",function(event){
+    	event.preventDefault();
+    	var row_no=$(this).attr("row_no");
+		var url=$(this).closest("a").attr("href");
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("span.unfavbox[row_no="+row_no+"]").show();
+			$("span.favbox[row_no="+row_no+"]").hide();
+		});
+	});
+
+	$(".markunFav").die().live("click",function(event){
+    	event.preventDefault();
+    	var row_no=$(this).attr("row_no");
+		var url=$(this).closest("a").attr("href");
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$("span.unfavbox[row_no="+row_no+"]").hide();
+			$("span.favbox[row_no="+row_no+"]").show();
+		});
+	});
+
+
 	rename_rows();
 	$(document).on("change",".ShowUnit", function(){
 		var unit_name = $("option:selected", this).attr("unit_name");
 		$(this).closest("tr.main_tr").find(".unitType").val(unit_name); 
-		 
-		
 	});
 
 	$(document).on("click", ".add_row", function(e)

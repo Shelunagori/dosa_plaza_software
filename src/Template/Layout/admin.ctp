@@ -189,6 +189,7 @@
 							<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
+								
 								<li>
 									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
 								</li>
@@ -272,6 +273,8 @@
 		<!-- BEGIN PAGE LEVEL SCRIPTS -->
 		<?= $this->fetch('PAGE_LEVEL_SCRIPTS_JS')?>
 		<!-- END PAGE LEVEL SCRIPTS -->
+
+
 		<script>
 		jQuery(document).ready(function() {  
 			Metronic.init(); // init metronic core components
@@ -287,6 +290,31 @@
 			});
 			
 			$('input[type="text"]'). attr("autocomplete", "off");
+
+			$('.allowCharSpace').keypress(function(event){
+			    //get envent value       
+			    var inputValue = event.which;
+			    // check whitespaces only.
+			    if(inputValue == 32){
+			        return true;    
+			    }
+			     // check number only.
+			    if(inputValue == 48 || inputValue == 49 || inputValue == 50 || inputValue == 51 || inputValue == 52 || inputValue == 53 ||  inputValue ==  54 ||  inputValue == 55 || inputValue == 56 || inputValue == 57){
+			        event.preventDefault();
+			    }
+			    // check special char.
+			    if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)) { 
+			        event.preventDefault(); 
+			    }
+			});
+
+			$('.allowMobileOnly').keypress(function(evt){
+			    evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					event.preventDefault(); 
+				}
+			});
 		});
 		
 		
@@ -313,6 +341,80 @@
 		$('.showLoader').live('click',function(e) {
 			$('#loading').show();
 		});
+
+		$(document).keydown(function(e) {
+            switch(e.which) {
+                case 37: // left
+                var i;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                for (i = TDindex-1; i >= 0; i--){
+                	var tabindex=focused.closest('tr').find('td:eq('+i+')').find('input').attr('tabindex');
+                	if(!tabindex){ tabindex=0; }
+                	if(tabindex=='-1'){
+
+                	}else{
+                		var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+		                if(l){
+		                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+		                	break;
+		                }
+                	}
+                }
+                break;
+
+                case 39: // right
+                var i;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                for (i = TDindex+1; i <= 1000; i++){
+                	var tabindex=focused.closest('tr').find('td:eq('+i+')').find('input').attr('tabindex');
+                	if(!tabindex){ tabindex=0; }
+                	if(tabindex=='-1'){
+
+                	}else{
+                		var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+		                if(l){
+		                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+		                	break;
+		                }
+                	}
+                }
+                break;
+
+                case 40: // down
+                var dw;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                var TRindex=focused.closest('tr').index();
+	            for (dw = TRindex+1; dw <= 1000; dw++){
+	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').length;
+	            	if(l){
+	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').focus();
+	                	break;
+	                }
+	            }
+                break;
+
+                case 38: // up
+                var dw;
+                var focused = $(':focus');
+                var TDindex=focused.closest('td').index();
+                var TRindex=focused.closest('tr').index();
+	            for (dw = TRindex-1; dw >= 0; dw--){
+	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').length;
+	            	if(l){
+	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').focus();
+	                	break;
+	                }
+	            }
+                break;
+
+                default: return; // exit this handler for other keys
+            }
+
+            e.preventDefault(); // prevent the default action (scroll / move caret)
+        });
 		</script>
 		<?= $this->fetch('scriptBottom')?>
 		<!-- END JAVASCRIPTS -->

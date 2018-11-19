@@ -20,6 +20,7 @@ class TablesController extends AppController
      */
     public function index()
     {
+        $session_employee_id=$this->Auth->User('employee.id');
 		$this->viewBuilder()->layout('counter');
         $q = $this->Tables->Kots->KotRows->find();
         $q->select([$q->func()->sum('KotRows.amount')]);
@@ -48,7 +49,7 @@ class TablesController extends AppController
         } 
          
         $Employees = $this->Tables->Employees->find('list')->where(['Employees.is_deleted'=>0]);
-        $this->set(compact('Tables', 'Employees','tableWiseAmount', 'BillAmountArray'));
+        $this->set(compact('Tables', 'Employees','tableWiseAmount', 'BillAmountArray', 'session_employee_id'));
     }
 
     public function saveTable()
@@ -59,11 +60,13 @@ class TablesController extends AppController
         $c_mobile=$this->request->query('c_mobile');
         $c_pax=$this->request->query('c_pax');
         $table_id=$this->request->query('table_id');
+        $session_employee_id=$this->request->query('session_employee_id');
         $Table=$this->Tables->get($table_id);
         $Table->status='occupied';
         $Table->c_name=$c_name;
         $Table->c_mobile=$c_mobile;
         $Table->no_of_pax=$c_pax;
+        $Table->employee_id=$session_employee_id;
         $Table->occupied_time=date( "Y-m-d H:i:s" );
         if($this->Tables->save($Table)){
             echo '1';
