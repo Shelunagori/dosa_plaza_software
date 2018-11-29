@@ -15,10 +15,8 @@ class EmployeesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('admin');
-        $this->paginate = [
-            'contain' => ['Designations']
-        ];
-        $employees = $this->Employees->find();
+        
+        $employees = $this->Employees->find()->contain(['Designations']);
         $this->set(compact('employees'));
     }
  

@@ -54,6 +54,8 @@
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Hourly Sales Report</span>', '/Bills/hourly-Report',['escape' => false, 'class' => 'showLoader']).'</li>';
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Steward Comparison Report</span>', '/Employees/comparison',['escape' => false, 'class' => 'showLoader']).'</li>';
 					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Bill Delete Report</span>', '/Bills/bill-Wise-Sales-Delete',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Summary - Payment Mode Wise</span>', '/Bills/sales-summary-payment-wise',['escape' => false, 'class' => 'showLoader']).'</li>';
+					echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Sales Summary - Order Type Wise</span>', '/Bills/sales-summary-order-wise',['escape' => false, 'class' => 'showLoader']).'</li>';
 					?>
 			 	</ul>
 				

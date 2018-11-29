@@ -86,7 +86,7 @@
 					<b>Date <?php echo @$date; ?></b>
 					<b style="float: right;"><?php echo date('d-m-Y H:i A'); ?></b>
 				</div>
-				<div class="table-scrollable">
+				<div >
 					<?php if($date){ ?>
 						<?php foreach ($ItemSubCategories as $ItemSubCategory) { ?>
 							<div class="panel panel-primary">
@@ -94,57 +94,59 @@
 									<h3 class="panel-title"><?php echo $ItemSubCategory->name; ?></h3>
 								</div>
 								<div class="panel-body">
-									<table class="table table-condensed table-bordered table-hover">
-										<thead>
-											<tr>
-												<th rowspan="2"><b>Item</b></th>
-												<th rowspan="2" style="text-align: center;"><b>Sale Qty</b></th>
-												<?php foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
-												<th style="text-align: center;"><b><?php echo $raw_material->name; ?></b></th>
+									<div class="table-scrollable">
+										<table class="table table-condensed table-bordered table-hover">
+											<thead>
+												<tr>
+													<th rowspan="2"><b>Item</b></th>
+													<th rowspan="2" style="text-align: center;"><b>Sale Qty</b></th>
+													<?php foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
+													<th style="text-align: center;"><b><?php echo $raw_material->name; ?></b></th>
+													<?php } ?>
+												</tr>
+												<tr>
+													<?php foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
+													<th style="text-align: center;"><b><?php echo $raw_material->primary_unit->name; ?></b></th>
+													<?php } ?>
+												</tr>
+											</thead>
+											<tbody class="tbody">
+												<?php foreach ($ItemSubCategory->items as $item) {
+													$itemReceipe=[];
+													foreach ($item->item_rows as $item_row) {
+														$itemReceipe[$item_row->raw_material_id]=$item_row->quantity;
+													}
+													if($billItems[$item->id]){ ?>
+														<tr>
+															<td><?= h($item->name) ?></td>
+															<td style="text-align: center;"><?= h($billItems[$item->id]) ?></td>
+															<?php 
+															//$total=0;
+															foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
+																<td style="text-align: center;">
+																	<?php if($itemReceipe[$raw_material_id]){
+																		echo $itemReceipe[$raw_material_id]*$billItems[$item->id];
+																		$total[$raw_material_id]+=$itemReceipe[$raw_material_id]*$billItems[$item->id];
+																	}else{
+																		echo '-';
+																	} ?>
+																</td>
+															<?php } ?>
+														</tr>
+													<?php } ?>
 												<?php } ?>
-											</tr>
-											<tr>
-												<?php foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
-												<th style="text-align: center;"><b><?php echo $raw_material->primary_unit->name; ?></b></th>
-												<?php } ?>
-											</tr>
-										</thead>
-										<tbody class="tbody">
-											<?php foreach ($ItemSubCategory->items as $item) {
-												$itemReceipe=[];
-												foreach ($item->item_rows as $item_row) {
-													$itemReceipe[$item_row->raw_material_id]=$item_row->quantity;
-												}
-												if($billItems[$item->id]){ ?>
-													<tr>
-														<td><?= h($item->name) ?></td>
-														<td style="text-align: center;"><?= h($billItems[$item->id]) ?></td>
-														<?php 
-														//$total=0;
-														foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id=>$raw_material) { ?>
-															<td style="text-align: center;">
-																<?php if($itemReceipe[$raw_material_id]){
-																	echo $itemReceipe[$raw_material_id]*$billItems[$item->id];
-																	$total[$raw_material_id]+=$itemReceipe[$raw_material_id]*$billItems[$item->id];
-																}else{
-																	echo '-';
-																} ?>
-															</td>
-														<?php } ?>
-													</tr>
-												<?php } ?>
-											<?php } ?>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td colspan="2" style="text-align: right;"><b>Total</b></td>
-												<?php
-												foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id => $raw_material) { ?>
-													<td style="text-align: center;"><b><?php echo @$total[$raw_material_id]; ?></b></td>
-												<?php } ?>
-											</tr>
-										</tfoot>
-									</table>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="2" style="text-align: right;"><b>Total</b></td>
+													<?php
+													foreach ($receipeMatrials[$ItemSubCategory->id] as $raw_material_id => $raw_material) { ?>
+														<td style="text-align: center;"><b><?php echo @$total[$raw_material_id]; ?></b></td>
+													<?php } ?>
+												</tr>
+											</tfoot>
+										</table>
+									</div>
 								</div>
 							</div>
 						<?php } ?>

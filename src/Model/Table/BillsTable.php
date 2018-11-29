@@ -65,6 +65,8 @@ class BillsTable extends Table
         $this->hasMany('BillRows', [
             'foreignKey' => 'bill_id'
         ]);
+        $this->belongsTo('CopyBills');
+        $this->belongsTo('CopyBillRows');
     }
 
     /**

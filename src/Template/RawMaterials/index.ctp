@@ -25,13 +25,14 @@
 					<div class="col-md-12 horizontal "></div>
 				</div>
 			</div>
-			<div class="portlet-body" style="height: 200px; overflow: auto;">
+			<div class="portlet-body">
 				<table class="table table-str table-hover " cellpadding="0" cellspacing="0" id="main_tbody">
 					<thead>
 						<tr>
 							<th scope="col"><?= ('S.No') ?></th> 
 							<th scope="col"><?= ('Name') ?></th>
 							<th scope="col"><?= ('Sub Category') ?></th>
+							<th scope="col"><?= ('Category') ?></th>
 							<th scope="col"><?= ('Tax') ?></th>
 							<th scope="col"><?= ('Primary Unit') ?></th>
 							<th scope="col"><?= ('Secondary Unit') ?></th>
@@ -45,6 +46,7 @@
 								<td><?= h(++$x) ?></td> 
 								<td><?= h($rawMaterial->name) ?></td>
 								<td><?= h($rawMaterial->raw_material_sub_category->name) ?></td>
+								<td><?= h($rawMaterial->raw_material_sub_category->raw_material_category->name) ?></td>
 								<td><?= h($rawMaterial->tax->name) ?></td>
 								<td><?= h($rawMaterial->primary_unit->name) ?></td>
 								<td><?= h(@$rawMaterial->secondary_unit->name) ?></td>

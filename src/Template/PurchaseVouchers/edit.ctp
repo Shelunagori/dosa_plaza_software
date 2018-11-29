@@ -3,6 +3,10 @@
     .help-block-error{
         font-size: 12px; 
     }
+    input{
+        padding: 0 !important;
+        font-size: 12px !important;
+    }
 </style>
 <div style="height: 10px;" >.</div>
 <div class="row">

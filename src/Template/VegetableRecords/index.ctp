@@ -57,106 +57,111 @@
             <div class="portlet-body"  id="ExcelPage">
                 <?php if($month){ ?>
                 <form method="POST">
-                    <div class="table-scrollable">
-                        <table class="table table-bordered table-stripped" >
-                            <tr>
-                               <th rowspan="2">Item</th>
-                               <th rowspan="2">Unit</th>
-                               <th rowspan="2">Rate</th>
-                               <?php
-                                $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                $lastDate = date("Y-m-t", strtotime($firstDate));
-                                while (strtotime($firstDate) <= strtotime($lastDate)) {
-                                    echo '<th style="white-space: nowrap;text-align:center;" colspan="2" >'.date('d-m-Y', strtotime($firstDate)).'</th>';
-                                    $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                } ?>
-                                <th rowspan="2">Total</th>
-                           </tr>
-                           <tr>
-                                <?php
-                                $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                $lastDate = date("Y-m-t", strtotime($firstDate));
-                                while (strtotime($firstDate) <= strtotime($lastDate)) {
-                                    echo '<th>Qty</th>
-                                            <th>Amt</th>';
-                                    $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                } ?>
-                               
-                           </tr>
-                            <?php 
-                            $total=[]; $totalQty=[]; $totalItem=[];
-                            foreach ($Vegetables as $Vegetable) { ?>
-                               <tr >
-                                   <td style="white-space: nowrap;">
-                                        <?= h($Vegetable->name) ?>
-                                        <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
-                                    </td>
-                                   <td><?= h($Vegetable->unit) ?></td>
-                                   <td class="rate"><?= h($Vegetable->vegetable_rates[0]['rate']) ?></td>
+                    <div class="ContenedorTabla">
+                       <!--  <table class="table table-bordered table-stripped fht-table" id="pruebatabla4"> -->
+                        <table class="table table-bordered table-stripped fht-table" id="pruebatabla4">
+                            <thead>
+                                <tr>
+                                   <th rowspan="2" style="background-color: #c8e8ff;">Item</th>
+                                   <th rowspan="2" style="background-color: #c8e8ff;">Unit</th>
+                                   <th rowspan="2" style="background-color: #c8e8ff;">Rate</th>
+                                   <?php
+                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
+                                    $lastDate = date("Y-m-t", strtotime($firstDate));
+                                    while (strtotime($firstDate) <= strtotime($lastDate)) {
+                                        echo '<th style="white-space: nowrap;text-align:center;background-color: #c8e8ff;" colspan="2" >'.date('d-m-Y', strtotime($firstDate)).'</th>';
+                                        $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+                                    } ?>
+                                    <th rowspan="2" style="background-color: #c8e8ff;">Total</th>
+                               </tr>
+                               <tr>
+                                    <?php
+                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
+                                    $lastDate = date("Y-m-t", strtotime($firstDate));
+                                    while (strtotime($firstDate) <= strtotime($lastDate)) {
+                                        echo '<th style="background-color: #c8e8ff;text-align:center;" class="qaz">Qty</th>
+                                            <th style="background-color: #c8e8ff;text-align:center;" class="qaz">Amt</th>';
+                                        $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+                                    } ?>
+                               </tr>
+                            </thead>
+                            <tbody>
+                               <?php 
+                                $total=[]; $totalQty=[]; $totalItem=[];
+                                foreach ($Vegetables as $Vegetable) { ?>
+                                   <tr>
+                                       <td style="white-space: nowrap;">
+                                            <?= h($Vegetable->name) ?>
+                                            <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
+                                        </td>
+                                       <td><?= h($Vegetable->unit) ?></td>
+                                       <td class="rate"><?= h($Vegetable->vegetable_rates[0]['rate']) ?></td>
+                                        <?php
+                                        $TotalHorizontal = 0;
+                                        $firstDate = $month1[1].'-'.$month1[0].'-1';
+                                        $lastDate = date("Y-m-t", strtotime($firstDate));
+                                        while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
+                                            <td>
+                                                <input type="text" placeholder="" class="form-control qty autoSave" name="quantity[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data2[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;"  date_string="<?php echo strtotime($firstDate); ?>" vegitable_id="<?php echo $Vegetable->id; ?>" />
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                <input type="text" placeholder="" class="form-control amt" name="amount[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;" date_string="<?php echo strtotime($firstDate); ?>" readonly="readonly" tabindex="-1" vegitable_id="<?php echo $Vegetable->id; ?>" />
+                                                <?php $TotalHorizontal+=@$data[$Vegetable->id][strtotime($firstDate)]; ?>
+                                            </td>
+                                            <?php 
+                                            $total[strtotime($firstDate)]=@$total[strtotime($firstDate)] + @$data[$Vegetable->id][strtotime($firstDate)];
+                                            $totalQty[strtotime($firstDate)]=@$totalQty[strtotime($firstDate)] + @$data2[$Vegetable->id][strtotime($firstDate)];
+                                            $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+                                        } ?>
+                                        <th><?php echo $TotalHorizontal; ?></th>
+                                   </tr>
+                                <?php } ?>
+                                <tr>
+                                    <td colspan="3">Total</td>
                                     <?php
                                     $TotalHorizontal = 0;
                                     $firstDate = $month1[1].'-'.$month1[0].'-1';
                                     $lastDate = date("Y-m-t", strtotime($firstDate));
                                     while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
                                         <td>
-                                            <input type="text" placeholder="" class="form-control qty" name="quantity[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data2[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;"  date_string="<?php echo strtotime($firstDate); ?>" />
+                                            <?php echo ($totalQty[strtotime($firstDate)] >0 ? $totalQty[strtotime($firstDate)] : "")?>
                                         </td>
                                         <td style="white-space: nowrap;">
-                                            <input type="text" placeholder="" class="form-control amt" name="amount[<?php echo $Vegetable->id; ?>][<?php echo strtotime($firstDate); ?>]" value="<?php echo @$data[$Vegetable->id][strtotime($firstDate)]; ?>" style="margin: 0; height: 20px; width: 40px; padding: 0;" date_string="<?php echo strtotime($firstDate); ?>" readonly="readonly" tabindex="-1" />
-                                            <?php $TotalHorizontal+=@$data[$Vegetable->id][strtotime($firstDate)]; ?>
-                                        </td>
-                                        <?php 
-                                        $total[strtotime($firstDate)]=@$total[strtotime($firstDate)] + @$data[$Vegetable->id][strtotime($firstDate)];
-                                        $totalQty[strtotime($firstDate)]=@$totalQty[strtotime($firstDate)] + @$data2[$Vegetable->id][strtotime($firstDate)];
-                                        $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
-                                    } ?>
-                                    <th><?php echo $TotalHorizontal; ?></th>
-                               </tr>
-                            <?php } ?>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="3">Total</th>
-                                    <?php
-                                    $TotalHorizontal = 0;
-                                    $firstDate = $month1[1].'-'.$month1[0].'-1';
-                                    $lastDate = date("Y-m-t", strtotime($firstDate));
-                                    while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
-                                        <th>
-                                            <?php echo ($totalQty[strtotime($firstDate)] >0 ? $totalQty[strtotime($firstDate)] : "")?>
-                                        </th>
-                                        <th style="white-space: nowrap;">
                                            <?php echo ($total[strtotime($firstDate)] >0 ? $total[strtotime($firstDate)] : "")?>
                                            <?php $TotalHorizontal+=$total[strtotime($firstDate)]; ?>
-                                        </th>
+                                        </td>
                                         <?php $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
                                     } ?>
-                                    <th><?php echo $TotalHorizontal; ?></th>
+                                    <td><?php echo $TotalHorizontal; ?></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="3">TARA & SONS</th>
+                                    <td colspan="3">TARA & SONS</td>
                                     <?php
                                     $totalvendorAmount=0;
                                     $firstDate = $month1[1].'-'.$month1[0].'-1';
                                     $lastDate = date("Y-m-t", strtotime($firstDate));
                                     while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
-                                        <th></th>
-                                        <th style="white-space: nowrap;">
-                                           <input type="text" placeholder="" class="form-control" name="vendor_amount[<?php echo strtotime($firstDate); ?>]" style="margin: 0; height: 20px; width: 40px; padding: 0;"  autocomplete="off" value="<?php echo @$VendorData[strtotime($firstDate)]; ?>" >
+                                        <td></td>
+                                        <td style="white-space: nowrap;">
+                                           <input type="text" placeholder="" class="form-control vautosave" name="vendor_amount[<?php echo strtotime($firstDate); ?>]" style="margin: 0; height: 20px; width: 40px; padding: 0;"  autocomplete="off" value="<?php echo @$VendorData[strtotime($firstDate)]; ?>" date_string="<?php echo strtotime($firstDate); ?>" >
                                             <?php $totalvendorAmount+=@$VendorData[strtotime($firstDate)]; ?>
-                                        </th>
+                                        </td>
                                         <?php $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
                                     } ?>
-                                    <th><?php echo $totalvendorAmount; ?></th>
+                                    <td><?php echo $totalvendorAmount; ?></td>
                                 </tr>
-                            </tfoot>
+                            </tbody>
                         </table>
                     </div>
                     <div align="right" style="color: red;">Difference: <?php echo $totalvendorAmount-$TotalHorizontal; ?></div>
                     <div align="center">
-                        <button type="submit" class="btn btn-danger">Submit</button>
+                        <a href="javascript:void()" class="btn btn-danger" onClick="window.location.reload()">Submit</a>
                     </div>
                 </form>
                 <?php } ?>
+
+
+
             </div>
         </div>
     </div>
@@ -193,9 +198,47 @@
 <?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 <?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
 <!-- END PAGE LEVEL SCRIPTS -->
+
+
+<?php echo $this->Html->css('/fixedHeader/ScrollTabla.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+<?php echo $this->Html->script('/fixedHeader/jquery.CongelarFilaColumna.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+
 <?php 
 $js="
 $(document).ready(function() {
+    $('#pruebatabla4').CongelarFilaColumna({Columnas:3});
+
+    $('.fht-tbody table tbody tr td').css('height','21px');
+    $('.qaz').css('width','41px');
+    $('.fht-tbody').css('height','348px');
+
+    $('.autoSave').die().live('blur',function(event){
+        var date_string=$(this).attr('date_string');
+        var vegitable_id=$(this).attr('vegitable_id');
+        var quantity=$(this).val();
+        var amount=$('.amt[date_string='+date_string+'][vegitable_id='+vegitable_id+']').val();
+
+        var url='".$this->Url->build(['controller'=>'VegetableRecords','action'=>'autosave'])."';
+        url=url+'?date_string='+date_string+'&vegitable_id='+vegitable_id+'&quantity='+quantity+'&amount='+amount;
+        $.ajax({
+            url: url,
+        }).done(function(response) {
+        });
+    });
+
+    $('.vautosave').die().live('blur',function(event){
+        var date_string=$(this).attr('date_string');
+        var amount=$(this).val();
+
+        var url='".$this->Url->build(['controller'=>'VegetableRecords','action'=>'vautosave'])."';
+        url=url+'?date_string='+date_string+'&amount='+amount;
+        $.ajax({
+            url: url,
+        }).done(function(response) {
+        });
+    });
+
+    
 
     $('.qty').die().live('keyup',function(event){
         var qty = $(this).val();

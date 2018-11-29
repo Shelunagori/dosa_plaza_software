@@ -8,12 +8,14 @@
 }
 </style>
 <?php
+if($coreVariable['current_software']=='Actual'){
 if (in_array("40", $userPages)){ ?>
 <div style="background: #2d4161;padding: 14px 0px 0px 0px;">
     <div >
         <span class="counter topBtn pointer">Billing</span>
     </div>
 </div>
+<?php }?>
 <?php }?>
 <?php 
 

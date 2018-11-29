@@ -1,5 +1,12 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Employee-Attendance | DOSA PLAZA'); ?>
+<?php
+$color[1]='#9797ff';
+$color[2]='yellow';
+$color[3]='#909090';
+$color[4]='#fd6060';
+$color[5]='#4646f3';
+?>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -131,7 +138,7 @@
 										$total_F++;
 										$show_Lable='Full';
 									}
-									echo '<td scope="col"style="width:10%;">'.$show_Lable.'</td>';
+									echo '<td scope="col" style="width:10%;background-color:'.$color[$status].';">'.$show_Lable.'</td>';
 									$first_date = date ("Y-m-d", strtotime("+1 day", strtotime($first_date)));
 								}
 								?>

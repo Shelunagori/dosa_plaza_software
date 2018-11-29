@@ -189,7 +189,19 @@
 							<i class="fa fa-angle-down"></i>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
-								
+								<?php if($coreVariable['current_software']=='Actual'){ ?>
+									<li>
+										<?php 
+										echo '<li>'.$this->Html->link('Switch to Actual', '/Users/switchToDummy',['escape' => false]).'</li>'; 
+										echo '<li>'.$this->Html->link('Bulk Edit', '/Bills/bulk',['escape' => false]).'</li>';  ?>
+									</li>
+								<?php }else{ ?>
+									<li>
+										<?php 
+										echo '<li>'.$this->Html->link('Switch to Edited', '/Users/switchToActual',['escape' => false]).'</li>'; 
+										?>
+									</li>
+								<?php } ?>
 								<li>
 									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
 								</li>
@@ -269,6 +281,8 @@
 
 		<?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
 		<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
+
+		
 
 		<!-- BEGIN PAGE LEVEL SCRIPTS -->
 		<?= $this->fetch('PAGE_LEVEL_SCRIPTS_JS')?>
@@ -354,9 +368,13 @@
                 	if(tabindex=='-1'){
 
                 	}else{
-                		var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+                		var l=focused.closest('tr').find('td:eq('+i+')').find('input, select').length;
 		                if(l){
-		                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+		                	focused.closest('tr').find('td:eq('+i+')').find('input, select').focus();
+		                	if(focused.closest('div.fht-tbody').length){
+		                		var q=focused.closest('div.fht-tbody').scrollLeft();
+		                		focused.closest('div.fht-tbody').scrollLeft( q-60 );
+		                	}
 		                	break;
 		                }
                 	}
@@ -373,9 +391,9 @@
                 	if(tabindex=='-1'){
 
                 	}else{
-                		var l=focused.closest('tr').find('td:eq('+i+')').find('input').length;
+                		var l=focused.closest('tr').find('td:eq('+i+')').find('input, select').length;
 		                if(l){
-		                	focused.closest('tr').find('td:eq('+i+')').find('input').focus();
+		                	focused.closest('tr').find('td:eq('+i+')').find('input, select').focus();
 		                	break;
 		                }
                 	}
@@ -388,9 +406,13 @@
                 var TDindex=focused.closest('td').index();
                 var TRindex=focused.closest('tr').index();
 	            for (dw = TRindex+1; dw <= 1000; dw++){
-	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').length;
+	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input, select').length;
 	            	if(l){
-	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').focus();
+	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input, select').focus();
+	                	if(focused.closest('div.fht-tbody').length){
+	                		var q=focused.closest('div.fht-tbody').scrollTop();
+	                		focused.closest('div.fht-tbody').scrollTop( q+15 );
+	                	}
 	                	break;
 	                }
 	            }
@@ -402,9 +424,9 @@
                 var TDindex=focused.closest('td').index();
                 var TRindex=focused.closest('tr').index();
 	            for (dw = TRindex-1; dw >= 0; dw--){
-	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').length;
+	            	var l=focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input, select').length;
 	            	if(l){
-	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input').focus();
+	                	focused.closest('tbody').find('tr:eq('+dw+')').find('td:eq('+TDindex+')').find('input, select').focus();
 	                	break;
 	                }
 	            }

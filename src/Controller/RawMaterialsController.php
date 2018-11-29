@@ -23,7 +23,7 @@ class RawMaterialsController extends AppController
     {
 		$this->viewBuilder()->layout('');
 		
-        $rawMaterials = $this->RawMaterials->find()->contain(['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories']);
+        $rawMaterials = $this->RawMaterials->find()->contain(['Taxes', 'PrimaryUnits','SecondaryUnits','RawMaterialSubCategories'=>['RawMaterialCategories'] ])->order(['RawMaterials.name'=>'ASC']);
 
         $this->set(compact('rawMaterials'));
     }

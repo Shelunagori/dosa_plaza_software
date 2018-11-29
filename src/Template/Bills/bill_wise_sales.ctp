@@ -239,23 +239,6 @@
 								 			<th><?php echo $totalSGSTAmount; ?></th>
 								 			<th><?php echo $totalNet; ?></th>
 								 		</tr>
-								 		<tr>
-								 			<th colspan="9" style="text-align: right;">Round off</th>
-								 			<th><?= h(@$Bill->round_off) ?></th>
-								 		</tr>
-								 		<tr>
-								 			<th colspan="9" style="text-align: right;">Total Bill Amount</th>
-								 			<th>
-								 				<?= h(@$Bill->grand_total) ?>
-								 				<?php
-								 				$TOTAL_DISCOUNT+=@$totalDisAmount;
-								 				$TOTAL_CGST+=@$totalCGSTAmount;
-								 				$TOTAL_SGST+=@$totalSGSTAmount;
-								 				$TOTAL_SALE+=@$Bill->grand_total;
-								 				$TOTAL_TAXABLE+=@$totalTV;
-								 				?>
-								 			</th>
-								 		</tr>
 								 	</table>
 								 </td>
 							</tr>

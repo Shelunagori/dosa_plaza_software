@@ -98,12 +98,21 @@
                             <td><?= h(@$bill->customer->mobile_no) ?></td>
                             <td><?= h(@$bill->table->name) ?></td>
                             <td class="actions">
+                                <?php if($coreVariable['current_software']=='Actual'){ ?>
                                 <?php
                                     echo $this->Html->link('Edit Customer Info ', '/Bills/customerinfo/'.$bill->id, ['class' => 'btn btn-xs blue showLoader']);
-                                    echo $this->Html->link('Edit Bill ', '/Bills/edit/'.$bill->id, ['class' => 'btn btn-xs blue showLoader']);
-                                    echo $this->Html->link('Re-Print ', '/Bills/view?bill-id='.$bill->id, ['class' => 'btn btn-xs blue showLoader','target'=>'_blank']);
+                                    if (in_array("47", $userPages)){
+                                        echo $this->Html->link('Edit Bill ', '/Bills/edit/'.$bill->id, ['class' => 'btn btn-xs blue showLoader']);
+                                    }
+                                    if (in_array("50", $userPages)){
+                                        echo $this->Html->link('Re-Print ', '/Bills/view?bill-id='.$bill->id, ['class' => 'btn btn-xs blue showLoader','target'=>'_blank']);
+                                    }
+                                    
 
-                                    echo $this->Html->link('Delete ', '#', ['data-target'=>'#deletemodal'.$bill->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
+                                    if (in_array("48", $userPages)){
+                                        echo $this->Html->link('Delete ', '#', ['data-target'=>'#deletemodal'.$bill->id,'data-toggle'=>'modal','class'=>'btn btn-xs red','data-container'=>'body']);
+                                    }
+                                    
                                     ?>
                                     <div id="deletemodal<?php echo $bill->id; ?>" class="modal fade" role="dialog">
                                         <div class="modal-dialog modal-md" >
@@ -122,6 +131,7 @@
                                             </form>
                                         </div>
                                     </div>
+                                <?php } ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

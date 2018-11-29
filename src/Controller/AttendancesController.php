@@ -27,11 +27,42 @@ class AttendancesController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('admin');
-        $attendance = $this->Attendances->get($id, [
-            'contain' => ['Employees']
-        ]);
+        $month = $this->request->query('month');
+        $month1 = explode('-', $month);
 
-        $this->set('attendance', $attendance);
+        $firstDate = $month1[1].'-'.$month1[0].'-1';
+        $lastDate = date("Y-m-t", strtotime($firstDate));
+
+        $Employees=$this->Attendances->Employees->find()->where(['is_deleted'=>0])->order(['Employees.name'=>'ASC']);
+
+        $Attendances = $this->Attendances->find()->where(['attendance_date >=' => $firstDate, 'attendance_date <=' => $lastDate]);
+
+        $data=[];
+        foreach ($Attendances as $Attendance) {
+            $data[$Attendance->employee_id][strtotime($Attendance->attendance_date)] = $Attendance->attendance_status;
+        }
+
+        $this->set(compact('month','month1','Employees','data'));
+    }
+
+    public function autosave(){
+        $date_string=date('Y-m-d',$this->request->query('date_string'));
+        $employee_id=$this->request->query('employee_id');
+        $attdnc=$this->request->query('attdnc');
+
+        //Delete Attendance
+        $this->Attendances->deleteAll(['employee_id' => $employee_id, 'attendance_date' => $date_string]);
+
+        if($attdnc){
+            //Insert Attendance
+            $attendanceinsert = $this->Attendances->newEntity();
+            $attendanceinsert->employee_id=$employee_id;
+            $attendanceinsert->attendance_status=$attdnc;
+            $attendanceinsert->remarks='';
+            $attendanceinsert->attendance_date=$date_string;
+            $this->Attendances->save($attendanceinsert);
+        }
+        exit();
     }
 
     /**

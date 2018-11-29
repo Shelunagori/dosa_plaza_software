@@ -3,33 +3,18 @@
  
 <div class="col-md-2">&nbsp;
 </div>	
-<div class="col-md-8" style="margin-top:15px">
+<div class="col-md-8">
 	<div class="portlet box blue-hoki">
-		<div class="portlet-title">
+		<!-- <div class="portlet-title">
 			<div class="caption">
 				Add Raw Material
 			</div>
-			
-			<?php if (in_array("13", $userPages)){ ?>
-			
-			<div class="tools" style="margin-right: 10px;">
-				<?php
-				//echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Raw Material List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
-				?>
-			</div>
-			<?php } ?>
-			
-			
-			<!-- <div class="tools">
-				<?php if(!empty($id)){ ?>
-					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Add ','/RawMaterials/add/',array('escape'=>false));?>
-					<?php } ?>
-			</div> -->
+			<div class="tools" style="margin-right: 10px;"></div>
 			<div class="row">	
 				<div class="col-md-12 horizontal "></div>
 			</div>
-		</div>
-		<div class="portlet-body" style="height: 200px; overflow: auto;">
+		</div> -->
+		<div class="portlet-body">
 			<?= $this->Form->create($rawMaterial, ['id'=>'form_sample_1']) ?>
 				<div class="row">
 					<div class="form-group col-md-4">
@@ -151,16 +136,10 @@
 						</div>
 					</div>
 				</div>
-
-				<div class="form-actions">
-					<div class="row">
-						<div class="col-md-12" align="center">
-							<hr></hr>
-							<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
-						
-						</div>
-					</div>
+				<div align="center">
+					<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?>
 				</div>
+				
  			<?= $this->Form->end() ?>
 		</div> 
 	</div>
@@ -299,6 +278,22 @@ if(!$focus_id){ $focus_id=0; }
 $url = $this->Url->build(["controller"=>"RawMaterials","action"=>"index"]);
 $js.='
 	$(document).ready(function() {
+
+		$("input[name=name]").live("keyup",function() {
+			var rows = $("#main_tbody tr.main_tr");
+			var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+			var v = $(this).val();
+			if(v){ 
+				rows.show().filter(function() {
+					var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+		
+					return !~text.indexOf(val);
+				}).hide();
+			}else{
+				rows.show();
+			}
+		});
+
 		$.ajax({
 	      url: "'.$url.'",
 	      success: function( data ) {
@@ -306,11 +301,11 @@ $js.='
 
 	        $("tr[data-id='.$focus_id.']").find("a").focus();
 
-	        var rows = $("#main_tbody2 tr.main_tr");
+	        var rows = $("#main_tbody tr.main_tr");
+
 			$("#search3").live("keyup",function() {
 				var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
 				var v = $(this).val();
-				console.log(v);
 				if(v){ 
 					rows.show().filter(function() {
 						var text = $(this).text().replace(/\s+/g, " ").toLowerCase();

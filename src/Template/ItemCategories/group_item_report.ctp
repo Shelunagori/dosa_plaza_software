@@ -57,7 +57,15 @@
 		<span><?php echo date('d-m-Y H:i A'); ?></span>
 	</div>
 
-	<?php foreach ($ItemCategories as $ItemCategory) { ?>
+	<?php 
+	$GTQuantity=0;
+	$GTAmount=0;
+	$GTDiscount=0;
+	$GTTaxable=0;
+	$GTCGST=0;
+	$GTSGST=0;
+	$GTNet=0;
+	foreach ($ItemCategories as $ItemCategory) { ?>
 		<div>
 			<table width="100%" border="1" class="table table-condensed table-striped" cellpadding="0" cellspacing="0">
 					<tr>
@@ -78,31 +86,98 @@
 						<td style="width: 10%; text-align: center;">Net Value</td>
 					</tr>
 				<?php 
+				$TQuantity=0;
+				$TAmount=0;
+				$TDiscount=0;
+				$TTaxable=0;
+				$TCGST=0;
+				$TSGST=0;
+				$TNet=0;
 				foreach ($ItemCategory->item_sub_categories as $item_sub_category) {
+					
 					foreach ($item_sub_category->items as $item) { ?>
 						<tr>
 							<td><?= h($item->name) ?></td>
-							<td style="text-align: center;"><?= h($item->Total_qty) ?></td>
-							<td style="text-align: center;"><?= h($item->Total_Amount) ?></td>
-							<td style="text-align: center;"><?= h($item->Total_Discount) ?></td>
+							<td style="text-align: center;">
+								<?= h($item->Total_qty) ?>
+								<?php $TQuantity+=$item->Total_qty; ?>
+								<?php $GTQuantity+=$item->Total_qty; ?>
+							</td>
+							<td style="text-align: center;">
+								<?= h($item->Total_Amount) ?>
+								<?php $TAmount+=$item->Total_Amount; ?>
+								<?php $GTAmount+=$item->Total_Amount; ?>
+							</td>
+							<td style="text-align: center;">
+								<?= h($item->Total_Discount) ?>
+								<?php $TDiscount+=$item->Total_Discount; ?>
+								<?php $GTDiscount+=$item->Total_Discount; ?>
+							</td>
 							<td style="text-align: center;">
 								<?php 
 								($Taxable = $item->Total_Amount - $item->Total_Discount);
-								echo ($Taxable)?$Taxable:''
+								echo ($Taxable)?$Taxable:'';
+								$TTaxable+=$Taxable;
+								$GTTaxable+=$Taxable;
 								?>
 							</td>
 							<?php 
 							($GST = $item->Total_Net - $Taxable);
 							?>
-							<td style="text-align: center;"><?php echo round($GST/2, 2); ?></td>
-							<td style="text-align: center;"><?php echo round($GST/2, 2); ?></td>
-							<td style="text-align: center;" class="NetValue"><?= h($item->Total_Net) ?></td>
+							<td style="text-align: center;">
+								<?php echo round($GST/2, 2); ?>
+								<?php $TCGST+=round($GST/2, 2); ?>
+								<?php $GTCGST+=round($GST/2, 2); ?>
+							</td>
+							<td style="text-align: center;">
+								<?php echo round($GST/2, 2); ?>
+								<?php $TSGST+=round($GST/2, 2); ?>
+								<?php $GTSGST+=round($GST/2, 2); ?>
+							</td>
+							<td style="text-align: center;" class="NetValue">
+								<?= h($item->Total_Net) ?>
+								<?php $TNet+=$item->Total_Net; ?>
+								<?php $GTNet+=$item->Total_Net; ?>
+							</td>
 						</tr>
-					<?php }
-				} ?>
+					<?php } ?>
+					
+				<?php } ?>
+				<tr>
+					<th>Total</th>
+					<th style="width: 10%; text-align: center;"><?php echo $TQuantity; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TAmount; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TDiscount; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TTaxable; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TCGST; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TSGST; ?></th>
+					<th style="width: 10%; text-align: center;"><?php echo $TNet; ?></th>
+				</tr>
 			</table>
 		</div>
 	<?php } ?>
+	<table class="table table-bordered">
+		<tr>
+			<th></td>
+			<td style="width: 10%; text-align: center;">Quantity</td>
+			<td style="width: 10%; text-align: center;">Amount</td>
+			<td style="width: 10%; text-align: center;">Discount</td>
+			<td style="width: 10%; text-align: center;">Taxable</td>
+			<td style="width: 10%; text-align: center;">CGST</td>
+			<td style="width: 10%; text-align: center;">SGST</td>
+			<td style="width: 10%; text-align: center;">Net Value</td>
+		</tr>
+		<tr>
+			<th>Total</th>
+			<th style="text-align: center;"><?php echo $GTQuantity; ?></th>
+			<th style="text-align: center;"><?php echo $GTAmount; ?></th>
+			<th style="text-align: center;"><?php echo $GTDiscount; ?></th>
+			<th style="text-align: center;"><?php echo $GTTaxable; ?></th>
+			<th style="text-align: center;"><?php echo $GTCGST; ?></th>
+			<th style="text-align: center;"><?php echo $GTSGST; ?></th>
+			<th style="text-align: center;"><?php echo $GTNet; ?></th>
+		</tr>
+	</table>
 </div>
 
 <?php $formAction=$this->Url->build(['controller'=>'ItemCategories','action'=>'groupItemReportExcel']); ?>

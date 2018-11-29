@@ -70,11 +70,15 @@ class AppController extends Controller
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
+        $this->loadModel('BillSettings');
+        $BillSetting=$this->BillSettings->find()->first();
+
 		 $coreVariable = [
 			'designation_id' => $this->Auth->User('employee.designation_id'),
             'user_name' => $this->Auth->User('employee.name'),
             'company_name' => 'Shivam Plaza', 
-            'company_address' => '100 Feet Road, Shobhagpura, Udaipur, Rajasthan 313001', 
+            'company_address' => '100 Feet Road, Shobhagpura, Udaipur, Rajasthan 313001',
+            'current_software' => $BillSetting->current_software
         ];
 		$this->coreVariable = $coreVariable;
 		$this->set(compact('coreVariable'));
@@ -82,7 +86,7 @@ class AppController extends Controller
         $this->loadModel('Bills');
         $query=$this->Bills->find();  
         $query  ->select(['TotalSale' => $query->func()->sum('Bills.grand_total')])
-                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59'])
+                ->where(['Bills.created_on >=' => date('Y-m-d').' 00:00:00', 'Bills.created_on <=' => date('Y-m-d').' 23:59:59', 'Bills.is_deleted'=>'no'])
                 ->toArray();
         $TotalSale=0;
         foreach ($query as $value) {

@@ -3,24 +3,17 @@
  
 <div class="col-md-2">&nbsp;
 </div>  
-<div class="col-md-8" style="margin-top:15px">
+<div class="col-md-8">
     <div class="portlet box blue-hoki">
-        <div class="portlet-title">
+        <!-- <div class="portlet-title">
             <div class="caption">
                 Edit Raw Materials
-            </div>
-            <div class="tools" style="margin-right: 10px;">
-                <?php if(!empty($id)){ ?>
-                   <?php if (in_array("13", $userPages)){
-						//echo $this->Html->link('<i class="fa fa-plus" style="font-size: 16px;padding-right:2px;" ></i> Raw Material List', '/RawMaterials/index',['escape' => false, 'class' => 'showLoader','style'=>'text-decoration: none;']);
-						?>
-				<?php } } ?>
             </div>
             <div class="row">   
                 <div class="col-md-12 horizontal "></div>
             </div>
-        </div>
-        <div class="portlet-body" style="height: 200px; overflow: auto;">
+        </div> -->
+        <div class="portlet-body">
             <?= $this->Form->create($rawMaterial, ['id'=>'form_sample_1']) ?>
                 <div class="row">
                     <div class="form-group col-md-4">
@@ -52,16 +45,26 @@
                             </div>
                         </div>  
                     </div>
-                    
                 </div> 
-                <div class="form-actions">
-                    <div class="row">
-                        <div class="col-md-12" align="center">
-                            <hr></hr>
-                            <?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
-                        
+                <div class="row">
+                    <div class="form-group col-md-4 ">
+                        <label class="control-label col-md-12"> Primary Unit  <span class="required"> * </span></label>
+                        <div class ="row">
+                            <div class="col-md-12 input-icon right">
+                                <i class="fa"></i>
+                                <?php 
+                                $options=array();
+                                foreach($units as $unit)
+                                {
+                                    $options[] = ['value'=>$unit->id,'text'=>$unit->name,'UnitName'=>$unit->name];
+                                };
+                                echo $this->Form->input('primary_unit_id',['options' =>$options,'label' => false,'class'=>'form-control select2 primary_unit','empty'=> 'Select...','required'=>'required','id'=>'primary_unit_id']); ?>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div align="center">
+                    <?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?>
                 </div>
             <?= $this->Form->end() ?>
         </div> 
@@ -167,7 +170,7 @@ $js.='
 
             $("tr[data-id='.$focus_id.']").find("a").focus();
 
-            var rows = $("#main_tbody2 tr.main_tr");
+            var rows = $("#main_tbody tr.main_tr");
             $("#search3").live("keyup",function() {
                 var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
                 var v = $(this).val();

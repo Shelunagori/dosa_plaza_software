@@ -33,6 +33,7 @@
 							<th scope="col"><?= ('Name') ?></th>
 							<th scope="col"><?= ('Rate') ?></th>
 							<th scope="col"><?= ('Item Sub Category') ?></th>
+							<th scope="col"><?= ('Item Category') ?></th>
 							<th scope="col"><?= ('Discount Applicable') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
@@ -44,6 +45,7 @@
 							<td><?= h($country->name) ?></td>
 							<td><?= h($country->rate) ?></td>
 							<td><?= h($country->item_sub_category->name) ?></td>
+							<td><?= h($country->item_sub_category->item_category->name) ?></td>
 							<td><?php if($country->discount_applicable==0){ echo "No";} else{ echo "Yes";}?></td>
 							<td class="actions">
 								<?php

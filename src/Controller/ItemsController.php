@@ -15,7 +15,7 @@ class ItemsController extends AppController
 	public function index(){
 		$this->viewBuilder()->layout('');
 		
-        $itemslist = $this->Items->find()->contain(['ItemSubCategories']);
+        $itemslist = $this->Items->find()->contain(['ItemSubCategories'=>['ItemCategories'] ])->order(['Items.name'=>'ASC']);
 		$this->set(compact('itemslist'));
 	}
 

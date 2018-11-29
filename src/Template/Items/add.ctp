@@ -2,11 +2,11 @@
 <?php $this->set("title", 'Item | DOSA PLAZA'); ?>
 <!-- BEGIN PAGE CONTENT-->
 	
-<div class="row" style="margin-top:15px">
+<div class="row" style="margin-top:5px">
 	<div class="col-md-12 main-div">
 		<!-- BEGIN ALERTS PORTLET-->
 		<div class="portlet box blue-hoki">
-			<div class="portlet-title">
+			<!-- <div class="portlet-title">
 				<div class="caption">
 					
 					<?php if(!empty($id)){ ?>
@@ -34,7 +34,7 @@
 				<div class="row">	
 						<div class="col-md-12 horizontal "></div>
 				</div>
-			</div>
+			</div> -->
 			<div class="portlet-body">
 				<div class="">
 					<?= $this->Form->create($item,['id'=>'form_sample_1']) ; ?>
@@ -94,8 +94,8 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-12">
-								<div class="portlet light">
+							<div class="col-md-12" style="margin-top: -15px;">
+								<div class="portlet light" style="margin: 0px 0px -15px !important;">
 									<div class="caption top-caption">
 										<span style="color:#f35b72">Create Recipe</span>
 									</div>
@@ -111,14 +111,14 @@
 						
 						<div <?php if(!empty($id)){ echo 'class="row disabledbutton"'; }else{ echo 'class="row"'; } ?> >
 							<div class="col-sm-12" style="margin-top:10px;" id="main">
-								<table class="table table-bordered" id="main_table">	
+								<table class="table table-bordered" id="main_table" style=" margin: 0; ">	
 									<thead class="bg_color">
 										<tr align="">
-											<th style="text-align:left;">Sr</th>
-											<th style="text-align:left;width:15%">Item <span class="required" required name="vandors">*</span></th>
-											<th style="text-align:left;">Quantity <span class="required" required name="vandors">*</span></th> 
-											<th style="text-align:left;">Unit</th>
-											<th style="text-align:left;">Action</th>
+											<th style="text-align:left;padding: 0px;">Sr</th>
+											<th style="text-align:left;width:15%;padding: 0px;">Item <span class="required" required name="vandors">*</span></th>
+											<th style="text-align:left;padding: 0px;">Quantity <span class="required" required name="vandors">*</span></th> 
+											<th style="text-align:left;padding: 0px;">Unit</th>
+											<th style="text-align:left;padding: 0px;">Action</th>
 										</tr> 
 										
 									</thead>
@@ -157,17 +157,20 @@
 									<tfoot>
 										<tr>
 											<td colspan="4"></td>
-											<td colspan=""><?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']),['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?></td>
+											<td colspan="" style="padding: 0;">
+												<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-plus']),['class'=>'btn btn-primary btn-xs add_row','type'=>'button']); ?>
+												<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger btn-sm']); ?> 
+											</td>
 										</tr>
 									</tfoot>
 								</table>
 							</div>
 						</div>
 						
-						<div class="form-actions">
+						<div class="">
 							<div class="row">
 								<div class=" col-md-12" align="center">
-									<?php echo $this->Form->button('SUBMIT',['class'=>'btn btn-danger']); ?> 
+									
 								</div>
 							</div>
 						</div>
@@ -287,6 +290,21 @@ if(!$focus_id){ $focus_id=0; }
 $url = $this->Url->build(["controller"=>"items","action"=>"index"]);
 $js.=';
 $(document).ready(function() {
+
+	$("input[name=name]").live("keyup",function() {
+		var rows = $("#main_tbody2 tr.main_tr");
+		var val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
+		var v = $(this).val();
+		if(v){ 
+			rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
+	
+				return !~text.indexOf(val);
+			}).hide();
+		}else{
+			rows.show();
+		}
+	});
 	
 	$.ajax({
       url: "'.$url.'",
@@ -406,13 +424,13 @@ FormValidation.init();
 		<tr class="main_tr">
 			<td style="vertical-align: top !important;"></td>
 			<td width="30%" align="left">
-				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control select2 ShowUnit','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
+				<?php echo $this->Form->input('raw_material_id',['options'=>$option,'class'=>'form-control input-sm select2 ShowUnit','empty' => '--Select Item--','label'=>false,'required'=>'required']); ?>
 			</td>
 			<td width="30%" align="">
-				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
+				<?php echo $this->Form->control('quantity', ['label' => false,'placeholder'=>'Please Enter Quantity','class'=>'form-control input-sm rightAligntextClass','required'=>'required','oninput'=>"this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"]); ?>
 			</td>
 			<td width="15%" class="">
-				<?php echo $this->Form->control('dasd', ['label' => false,'placeholder'=>'Unit','class'=>'form-control unitType','readonly'=>'readonly','tabindex'=>'1']); ?>
+				<?php echo $this->Form->control('dasd', ['label' => false,'placeholder'=>'Unit','class'=>'form-control input-sm unitType','readonly'=>'readonly','tabindex'=>'1']); ?>
 			</td>
 			<td  width="20%">
 				<?php echo $this->Form->button($this->Html->tag('i', '', ['class'=>'fa fa-times']),['class'=>'btn  btn-danger btn-xs remove_row','type'=>'button']); ?>

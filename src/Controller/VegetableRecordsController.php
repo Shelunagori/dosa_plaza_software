@@ -83,6 +83,36 @@ class VegetableRecordsController extends AppController
         $this->set(compact('Vegetables', 'month', 'month1', 'data', 'data2', 'VendorData'));
     }
 
+    public function autosave(){
+        $date_string=$this->request->query('date_string');
+        $vegitable_id=$this->request->query('vegitable_id');
+        $quantity=$this->request->query('quantity');
+        $amount=$this->request->query('amount');
+
+        $this->VegetableRecords->deleteAll(['transaction_date' => date('Y-m-d', $date_string), 'vegetable_id' => $vegetable_id]);
+
+        $vegetableRecord = $this->VegetableRecords->newEntity();
+        $vegetableRecord->vegetable_id=$vegitable_id;
+        $vegetableRecord->transaction_date=date('Y-m-d', $date_string);
+        $vegetableRecord->quantity=$quantity;
+        $vegetableRecord->amount=$amount;
+        $this->VegetableRecords->save($vegetableRecord);
+        exit();
+    }
+
+    public function vautosave(){
+        $date_string=$this->request->query('date_string');
+        $amount=$this->request->query('amount');
+
+        $this->VegetableRecords->VendorAmounts->deleteAll(['transaction_date' => date('Y-m-d', $date_string)]);
+
+        $vegetableRecord = $this->VegetableRecords->newEntity();
+        $vegetableRecord->transaction_date=date('Y-m-d', $date_string);
+        $vegetableRecord->amount=$amount;
+        $this->VegetableRecords->VendorAmounts->save($vegetableRecord);
+        exit();
+    }
+
     /**
      * View method
      *

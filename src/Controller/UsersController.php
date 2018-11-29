@@ -366,4 +366,60 @@ class UsersController extends AppController
     public function reports(){
         $this->viewBuilder()->layout('admin');
     }
+
+    public function createCopy()
+    {
+        $this->viewBuilder()->layout('admin');
+        
+        $conn = ConnectionManager::get('default');
+        
+        $stmt = $conn->execute(" SELECT * FROM `bill_settings` ");
+        $rows = $stmt->fetchAll('assoc');
+        $last_copied_bill_id=$rows[0]['last_copied_bill_id'];
+        $stmt = $conn->execute(" INSERT INTO copy_bill SELECT * FROM bills WHERE `id`>$last_copied_bill_id  ");
+        $stmt = $conn->execute(" INSERT INTO copy_bill_row SELECT * FROM bill_rows WHERE `bill_id`>$last_copied_bill_id  ");
+
+        $stmt = $conn->execute(" SELECT * FROM `bills` ORDER BY `id` DESC LIMIT 1  ");
+        $rows = $stmt->fetchAll('assoc');
+        $last_copied_bill_id=$rows[0]['id'];
+        if(!$last_copied_bill_id){ $last_copied_bill_id=0; }
+
+        $stmt = $conn->execute(" UPDATE `bill_settings` SET `last_copied_bill_id`=$last_copied_bill_id WHERE `id`=1  ");
+
+        return $this->redirect(['action' => 'switchToDummy']);
+    }
+
+    public function switchToDummy()
+    {
+        $this->viewBuilder()->layout('admin');
+        
+        $conn = ConnectionManager::get('default');
+        
+        $stmt = $conn->execute("RENAME TABLE `bills` TO `copy_bill` ");
+        $stmt = $conn->execute("RENAME TABLE `bill_rows` TO `copy_bill_row` ");
+        $stmt = $conn->execute("RENAME TABLE `copy_bills` TO `bills` ");
+        $stmt = $conn->execute("RENAME TABLE `copy_bill_rows` TO `bill_rows` ");
+
+        $stmt = $conn->execute(" UPDATE `bill_settings` SET `current_software`='Dummy' WHERE `id`=1  ");
+        
+        $this->Flash->success(__('System prepared with dummy data.'));
+        return $this->redirect(['action' => 'Dashboard']);
+    }
+
+    public function switchToActual()
+    {
+        $this->viewBuilder()->layout('admin');
+        
+        $conn = ConnectionManager::get('default');
+        
+        $stmt = $conn->execute("RENAME TABLE `bills` TO `copy_bills` ");
+        $stmt = $conn->execute("RENAME TABLE `bill_rows` TO `copy_bill_rows` ");
+        $stmt = $conn->execute("RENAME TABLE `copy_bill` TO `bills` ");
+        $stmt = $conn->execute("RENAME TABLE `copy_bill_row` TO `bill_rows` ");
+
+        $stmt = $conn->execute(" UPDATE `bill_settings` SET `current_software`='Actual' WHERE `id`=1  ");
+        
+        $this->Flash->success(__('System prepared with actual data.'));
+        return $this->redirect(['action' => 'Dashboard']);
+    }
 }
