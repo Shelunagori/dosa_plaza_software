@@ -202,6 +202,8 @@
 		</div>
 
 		<div class="col-md-6">
+			<div id="categoryWiseSales"></div>
+
 			<div class="portlet light" style="border-radius: 0;padding: 5px !important;">
 				
 				<script src="https://code.highcharts.com/highcharts.js"></script>
@@ -279,7 +281,6 @@
 					  }
 					});
 				</script>
-
 			</div>
 		</div>
 	</div>
@@ -296,6 +297,13 @@
 		$('.goToBrithday').die().live('click',function(event){
 			var url='".$this->Url->build(['controller'=>'Customers','action'=>'birthdayList'])."';
 			var win = window.open(url, '_blank');
+		});
+
+		var url='".$this->Url->build(['controller'=>'Bills','action'=>'categoryWiseSales'])."';
+		$.ajax({
+			url: url,
+		}).done(function(response) {
+			$('#categoryWiseSales').html(response);
 		});
 	});	
 	";

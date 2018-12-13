@@ -12,7 +12,7 @@
     display:block !important;
 }
 </style>
-<?php $this->set("title", 'Manual Daily Inventory | DOSA PLAZA'); ?>
+<?php $this->set("title", 'Manual Daily Inventory | '.$coreVariable['company_name']); ?>
 <div class="row" style="margin-top:15px;">
     <div class="col-md-12 main-div">
         <div class="portlet box blue-hoki">
@@ -138,22 +138,22 @@
                                    <td><?= h($ItemList->unit) ?></td>
                                    <td><?php echo @$OBData[$ItemList->id]; ?></td>
                                    <td>
-                                        <input type="text" class="form-control input-sm" name="projection[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['projection']; ?>" >
+                                        <input type="text" class="form-control input-sm Fst" name="projection[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['projection']; ?>" >
                                    </td>
                                    <td>
-                                      <input type="text" class="form-control input-sm" name="adjustment[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['adjustment']; ?>" >
+                                      <input type="text" class="form-control input-sm Fst" name="adjustment[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['adjustment']; ?>" >
                                    </td>
                                    <td>
-                                       <input type="text" class="form-control input-sm" name="mall[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['mall']; ?>" >
+                                       <input type="text" class="form-control input-sm Fst" name="mall[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['mall']; ?>" >
                                    </td>
                                    <td>
-                                       <input type="text" class="form-control input-sm" name="road[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['road']; ?>" >
+                                       <input type="text" class="form-control input-sm Fst" name="road[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['road']; ?>" >
                                    </td>
                                    <td>
-                                      <input type="text" class="form-control input-sm" name="wastage[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['wastage']; ?>" >
+                                      <input type="text" class="form-control input-sm Fst" name="wastage[<?= h($ItemList->id) ?>]" placeholder="0" value="<?php echo @$TodayOBData[$ItemList->id]['wastage']; ?>" >
                                    </td>
                                    <td>
-                                       <input type="text" class="form-control input-sm" name="closing_balance[<?= h($ItemList->id) ?>]" placeholder="0"   value="<?php echo @$TodayOBData[$ItemList->id]['closing_balance']; ?>">
+                                       <input type="text" class="form-control input-sm Scnd" name="closing_balance[<?= h($ItemList->id) ?>]" placeholder="0"   value="<?php echo @$TodayOBData[$ItemList->id]['closing_balance']; ?>">
                                    </td>
                                    <td>
                                        <input type="text" class="form-control input-sm" name="consumption[<?= h($ItemList->id) ?>]" placeholder="0" readonly='readonly' tabindex="-1" value="<?php echo @$TodayOBData[$ItemList->id]['consumption']; ?>">
@@ -214,7 +214,32 @@ $(document).ready(function() {
         $('#ExcelForm').submit();
     });
 
-    $('input').die().live('keyup',function(event){
+    $('.Fst').die().live('keyup',function(event){
+        var OB = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
+        if(isNaN(OB)){ OB=0; }
+
+        var Projection = parseFloat($(this).closest('tr').find('td:nth-child(4) input').val());
+        if(isNaN(Projection)){ Projection=0; }
+
+        var adjustment = parseFloat($(this).closest('tr').find('td:nth-child(5) input').val());
+        if(isNaN(adjustment)){ adjustment=0; }
+
+        var Mall = parseFloat($(this).closest('tr').find('td:nth-child(6) input').val());
+        if(isNaN(Mall)){ Mall=0; }
+
+        var Road = parseFloat($(this).closest('tr').find('td:nth-child(7) input').val());
+        if(isNaN(Road)){ Road=0; }
+
+        var Wastage = parseFloat($(this).closest('tr').find('td:nth-child(8) input').val());
+        if(isNaN(Wastage)){ Wastage=0; }
+
+
+        var Cls =  OB + Projection + adjustment - Mall - Road - Wastage;
+        Cls = round(Cls,2);
+        $(this).closest('tr').find('td:nth-child(9) input').val(Cls);
+    });
+
+    $('.Scnd').die().live('keyup',function(event){
         var OB = parseFloat($(this).closest('tr').find('td:nth-child(3)').text());
         if(isNaN(OB)){ OB=0; }
 
@@ -241,6 +266,7 @@ $(document).ready(function() {
         $(this).closest('tr').find('td:nth-child(10) input').val(Consumption);
     });
 
+    
 
 
     ComponentsPickers.init();

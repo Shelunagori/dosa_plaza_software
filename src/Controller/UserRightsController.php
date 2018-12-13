@@ -20,12 +20,37 @@ class UserRightsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Pages']
-        ];
-        $userRights = $this->paginate($this->UserRights);
+        $this->viewBuilder()->layout('admin');
 
-        $this->set(compact('userRights'));
+        //$employees=$this->UserRights->Employees->find();
+        $users=$this->UserRights->Users->find()->contain(['Employees']);
+
+        $pages=$this->UserRights->Pages->find();
+
+        $userRights=$this->UserRights->find();
+        $assign_rights=array();
+        foreach($userRights as $right) {
+            $assign_rights[$right->user_id][]=$right->page_id;
+        }
+
+        $this->set(compact('users', 'pages', 'assign_rights'));
+    }
+
+    public function autosave(){
+        $user_id=$this->request->query('user_id');
+        $page_id=$this->request->query('page_id');
+        $entry=$this->request->query('entry');
+        if($entry=="insert"){
+            //Insert
+            $UserRight = $this->UserRights->newEntity();
+            $UserRight->user_id=$user_id;
+            $UserRight->page_id=$page_id;
+            $this->UserRights->save($UserRight);
+        }else{
+            //Delete 
+            $this->UserRights->deleteAll(['user_id' => $user_id, 'page_id' => $page_id]);
+        }
+        exit();
     }
 
     /**

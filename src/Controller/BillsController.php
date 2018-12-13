@@ -80,7 +80,12 @@ class BillsController extends AppController
             $this->Bills->find()->where($where)->order(['voucher_no'=>'ASC'])
         );
 
-        $this->set(compact('bills', 'bill_no', 'from_date', 'to_date', 'amount_from', 'amount_to', 'customer_name', 'mobile_no', 'customer_code'));
+        $query=$this->Bills->find();
+        $query->select(['sum' => $query->func()->sum('Bills.grand_total')])
+        ->contain(['Tables', 'Customers'])
+        ->where($where);
+
+        $this->set(compact('bills', 'bill_no', 'from_date', 'to_date', 'amount_from', 'amount_to', 'customer_name', 'mobile_no', 'customer_code', 'query'));
     }
 
     public function bulk()
@@ -1497,6 +1502,21 @@ class BillsController extends AppController
         }
         
         $this->set(compact('exploded_date_from_to', 'dinnerBills', 'deliveryBills', 'takeawayBills', 'order_type'));
+    }
+
+    public function categoryWiseSales(){
+        $this->viewBuilder()->layout('');
+
+        $Rows=$this->Bills->BillRows->find();
+        $Rows->innerJoinWith('Items.ItemSubCategories.ItemCategories')
+        ->innerJoinWith('Bills')
+        ->group(['ItemCategories.id'])
+        ->select([
+            'TotalSale' => $Rows->func()->sum('BillRows.net_amount'),
+            'Category_name' => 'ItemCategories.name'
+        ])
+        ->where(['Bills.transaction_date' => date('Y-m-d'), 'Bills.is_deleted'=>'no'])->toArray();
+        $this->set(compact('Rows'));
     }
 
     

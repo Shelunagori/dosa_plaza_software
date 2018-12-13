@@ -109,4 +109,16 @@ class StockLedgersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function userlog(){
+        $this->viewBuilder()->layout('admin');
+        $from_date=$this->request->query('from_date');
+        $from_date=date('Y-m-d', strtotime($from_date));
+        $to_date=$this->request->query('to_date');
+        $to_date=date('Y-m-d', strtotime($to_date));
+        $rm_id=$this->request->query('rm_id');
+
+        $StockLedgers=$this->StockLedgers->find()->Where(['transaction_date >='=>$from_date, 'transaction_date <='=>$to_date,'raw_material_id'=>$rm_id,'quantity !='=>0,'voucher_name'=>'stock adjustment'])->order(['transaction_date'=>'ASC'])->contain(['Users']);
+        $this->set(compact('StockLedgers'));
+    }
 }

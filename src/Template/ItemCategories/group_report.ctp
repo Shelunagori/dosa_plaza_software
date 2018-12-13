@@ -157,8 +157,8 @@
 						</td>
 						<td style="width: 10%; text-align: center;" class="NetValue">
 							<?php echo $Total_Net; ?>
-							<?php $TNet+= round($Total_Net/2, 2); ?>
-							<?php $GTNet+= round($Total_Net/2, 2); ?>
+							<?php $TNet+= $Total_Net; ?>
+							<?php $GTNet+= $Total_Net; ?>
 						</td>
 					</tr>
 				<?php } ?>

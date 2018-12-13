@@ -332,7 +332,7 @@
 				var rate=amount/quantity;
 			}
 			if(isNaN(rate)){ rate=0; }
-			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			$(this).closest('tr').find('input.rate').val(round(rate,3));
 			calculation();
 		});
 
@@ -362,7 +362,7 @@
 				var rate=amount/quantity;
 			}
 			if(isNaN(rate)){ rate=0; }
-			$(this).closest('tr').find('input.rate').val(round(rate,2));
+			$(this).closest('tr').find('input.rate').val(round(rate,3));
 			calculation();
 
 		});

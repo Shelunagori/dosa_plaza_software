@@ -311,7 +311,7 @@ $(document).ready(function() {
       success: function( data ) {
         $("#itemList").html(data);
 
-        $("tr[data-id='.$focus_id.']").find("a").focus();
+        //$("tr[data-id='.$focus_id.']").find("a").focus();
 
         var rows = $("#main_tbody2 tr.main_tr");
 		$("#search3").live("keyup",function() {

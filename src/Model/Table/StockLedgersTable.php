@@ -45,6 +45,10 @@ class StockLedgersTable extends Table
             'foreignKey' => 'purchase_voucher_row_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'LEFT'
+        ]);
     }
 
     /**

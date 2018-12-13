@@ -196,7 +196,7 @@ License: You must have a valid license purchased only from themeforest(the above
 							</a>
 							<ul class="dropdown-menu dropdown-menu-default">
 								<li>
-									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
+									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false,'class'=>'LogOut']).'</li>'; ?>
 								</li>
 							</ul>
 						</li>
@@ -277,6 +277,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		$(document).ready(function() {
 			$('a[role=button]').live('click',function(e) {
 				e.preventDefault();
+			});
+
+			$('.LogOut').live('click',function(e) {
+				var url='<?php echo $this->Url->build(['controller'=>'users','action'=>'logout']); ?>';
+        		window.location.href = url; 
 			});
 
 			$('.allowCharSpace').keypress(function(event){

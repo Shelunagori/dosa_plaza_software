@@ -68,7 +68,13 @@
                         </table>
                     </div>
                 </form>
-
+                <br>
+                <table class="pull-right">
+                    <tr>
+                        <td style=" padding: 3px 10px; background-color: #FA6775; color: #FFF; border: solid 1px #FA6775; font-size: 14px; ">Total Sale</td>
+                        <td style=" border: solid 1px #FA6775; padding: 3px 10px; font-size: 14px; color: #FA6775; "><?php echo $query->toArray()[0]->sum; ?></td>
+                    </tr>
+                </table>
                  <?php $page_no=$this->Paginator->current('Bills'); $page_no=($page_no-1)*20; ?>
                 <table class="table table-str " cellpadding="0" cellspacing="0">
                     <thead>

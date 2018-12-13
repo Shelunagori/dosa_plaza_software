@@ -97,10 +97,21 @@ $color[5]='#4646f3';
                                             <input type="hidden" class="form-control input-sm" name="vegetable[<?= h($Vegetable->id) ?>]" placeholder="0" value="<?= h($Vegetable->id) ?>" >
                                         </td>
                                         <?php
+                                        $isToday=strtotime(date('Y-m-d'));
                                         $TotalHorizontal = 0;
                                         $firstDate = $month1[1].'-'.$month1[0].'-1';
                                         $lastDate = date("Y-m-t", strtotime($firstDate));
-                                        while (strtotime($firstDate) <= strtotime($lastDate)) { ?>
+                                        while (strtotime($firstDate) <= strtotime($lastDate)) { 
+                                            if($session_employee->designation_id==4){
+                                                $disabledAttr='';
+                                            }else{
+                                                if($isToday==strtotime($firstDate)){
+                                                   $disabledAttr='';
+                                                }else{
+                                                    $disabledAttr='disabled';
+                                                }
+                                            }
+                                            ?>
                                             <td>
                                                 <?php echo $this->Form->select(
                                                     'attendance',
@@ -112,7 +123,8 @@ $color[5]='#4646f3';
                                                         ['value' => '5', 'text' => 'Full']
                                                     ],
                                                     ['value' => @$data[$Employee->id][strtotime($firstDate)], 'empty'=>' ', 'class' => 'form-control input-sm autoSave', 'date_string'=>strtotime($firstDate), 'employee_id'=>$Employee->id,
-                                                        'style' => 'background-color:'.$color[@$data[$Employee->id][strtotime($firstDate)]]
+                                                        'style' => 'background-color:'.$color[@$data[$Employee->id][strtotime($firstDate)]],
+                                                        $disabledAttr
                                                     ]
                                                 ); ?>
                                             </td>

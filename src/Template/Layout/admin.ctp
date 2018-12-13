@@ -203,7 +203,7 @@
 									</li>
 								<?php } ?>
 								<li>
-									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', '/Users/logout',['escape' => false]).'</li>'; ?>
+									<?php echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-lock']).'Log Out', 'javascript:void()',['escape' => false,'class'=>'LogOut']).'</li>'; ?>
 								</li>
 							</ul>
 						</li>
@@ -299,6 +299,11 @@
 				e.preventDefault();
 			});
 			
+			$('.LogOut').live('click',function(e) {
+				var url='<?php echo $this->Url->build(['controller'=>'users','action'=>'logout']); ?>';
+        		window.location.href = url; 
+			});
+
 			$('.PointBox').live('click',function(e) {
 				$(this).select();
 			});

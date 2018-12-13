@@ -1,5 +1,10 @@
 <?php echo $this->Html->css('mystyle'); ?>
 <?php $this->set("title", 'Daily Report | DOSA PLAZA'); ?>
+<style type="text/css" media="print">
+a[href]::after {
+    content: none !important;
+}
+</style>
 <div class="row" style="margin-top:15px;">
 	<div class="col-md-12 main-div">
 		<div class="portlet box blue-hoki">
@@ -17,13 +22,17 @@
 									<table>
 										<tr>
 											<td>
-												<?php 
-												if(@$date=="1970-01-01"){
-													$PrintDate = "";
-												}else{
-													$PrintDate = date('d-m-Y', strtotime($date));
-												} ?>
-												<input name="date" class="form-control date-picker" type="text" value="<?php echo $PrintDate; ?>" data-date-format="dd-mm-yyyy" required="required" placeholder="Date">
+												<div class="form-group ">
+			                                        <div class="col-md-4">
+			                                            <div id="reportrange" class="btn default" style="padding: 5px;">
+			                                                <i class="fa fa-calendar"></i>
+			                                                &nbsp; 
+			                                                <span><?php echo $exploded_date_from_to[0].' - '.$exploded_date_from_to[1]; ?></span>
+			                                                <input type="hidden" name="date_from_to" id="date_from_to" value="<?php echo @$exploded_date_from_to[0].'/'.@$exploded_date_from_to[1]; ?>">
+			                                                <b class="fa fa-angle-down"></b>
+			                                            </div>
+			                                        </div>
+			                                    </div>
 											</td>
 											<td>
 												<button type="submit" class="btn" style="background-color: #FA6775;color: #FFF;">GO</button>
@@ -68,7 +77,7 @@
 					<?php if($date){ ?>
 					<table border="1" class="table table-condensed table-hover table-bordered" id="main_table" >
 						<thead>
-							<tr >
+							<tr>
 								<th><?= ('S.No.') ?></th>
 								<th><?= ('Raw materials') ?></th>
 								<th style="text-align: center;"><?= ('Unit') ?></th>
@@ -96,7 +105,9 @@
 								<td style="text-align: center;"><?= h($RawMaterial->primary_unit->name) ?></td>
 								<td style="text-align: center;"><?php echo ($RawMaterial->total_in_opening - $RawMaterial->total_out_opening) ? ($RawMaterial->total_in_opening - $RawMaterial->total_out_opening) : '' ?></td>
 								<td style="text-align: center;"><?= h($RawMaterial->inward) ?></td>
-								<td style="text-align: center;"><?= h($RawMaterial->adjustmentIn) ?></td>
+								<td style="text-align: center;">
+									<?= $this->Html->Link($RawMaterial->adjustmentIn,'/StockLedgers/userlog?from_date='.$exploded_date_from_to[0].'&to_date='.$exploded_date_from_to[1].'&rm_id='.$RawMaterial->id,['target'=>'blank']) ?>
+								</td>
 								<td style="text-align: center;">
 									<?php 
 									$totalInStock=$RawMaterial->total_in_opening - $RawMaterial->total_out_opening + $RawMaterial->inward + $RawMaterial->adjustmentIn;
@@ -104,8 +115,12 @@
 									<?php echo ($totalInStock) ? ($totalInStock) : '' ?>
 								</td>
 								<td style="text-align: center;"><?= h($RawMaterial->used) ?></td>
-								<td style="text-align: center;"><?= h($RawMaterial->wastage) ?></td>
-								<td style="text-align: center;"><?= h($RawMaterial->adjustmentOut) ?></td>
+								<td style="text-align: center;">
+									<?= $this->Html->Link($RawMaterial->wastage,'/StockLedgers/userlog?from_date='.$exploded_date_from_to[0].'&to_date='.$exploded_date_from_to[1].'&rm_id='.$RawMaterial->id,['target'=>'blank']) ?>
+								</td>
+								<td style="text-align: center;">
+									<?= $this->Html->Link($RawMaterial->adjustmentOut,'/StockLedgers/userlog?from_date='.$exploded_date_from_to[0].'&to_date='.$exploded_date_from_to[1].'&rm_id='.$RawMaterial->id,['target'=>'blank']) ?>
+								</td>
 								<td style="text-align: center;">
 									<?php 
 									$totalConsumedStock=$RawMaterial->used + $RawMaterial->wastage + $RawMaterial->adjustmentOut;

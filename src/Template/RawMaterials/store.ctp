@@ -11,11 +11,17 @@
 					<table>
 						<tr>
 							<td>
-								<?= $this->Html->link('Stock In', '/PurchaseVouchers/add',['escape' => false, 'class' => 'showLoader btn btn-primary', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
-								<?= $this->Html->link('List-Stock In', '/PurchaseVouchers',['escape' => false, 'class' => 'showLoader btn btn-primary', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+								<?php if (in_array("2", $userPages)){ ?>
+									<?= $this->Html->link('Stock In', '/PurchaseVouchers/add',['escape' => false, 'class' => 'showLoader btn btn-primary', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+								<?php } ?>
+								<?php if (in_array("3", $userPages)){ ?>
+									<?= $this->Html->link('List-Stock In', '/PurchaseVouchers',['escape' => false, 'class' => 'showLoader btn btn-primary', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+								<?php } ?>
 							</td>
 							<td>
-								<?= $this->Html->link('Stock Adjustment', '/RawMaterials/stock-adjustment',['escape' => false, 'class' => 'showLoader btn red', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+								<?php if (in_array("4", $userPages)){ ?>
+									<?= $this->Html->link('Stock Adjustment', '/RawMaterials/stock-adjustment',['escape' => false, 'class' => 'showLoader btn red', 'style' => 'color:#FFF;margin-right: 10px;']) ?>
+								<?php } ?>
 							</td>
 							<td>
 								<input id="search3"  class="form-control" type="text" placeholder="Search" style="float: right;">

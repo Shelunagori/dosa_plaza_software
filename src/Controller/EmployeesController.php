@@ -108,7 +108,9 @@ class EmployeesController extends AppController
             'contain' => []
         ]);
 		$employee = $this->Employees->patchEntity($employee, $this->request->getData());
-		$employee->is_deleted=1;
+        $employee->is_deleted=1;
+        $employee->delete_month=date('m');
+		$employee->delete_year=date('Y');
 		if ($this->Employees->save($employee)) {
             $this->Flash->success(__('The employee has been deleted.'));
         } else {

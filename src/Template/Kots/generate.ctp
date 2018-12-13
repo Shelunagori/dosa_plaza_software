@@ -4,10 +4,10 @@ $order=$pass[1];
 ?>
 <style>
 .minus{
-	color: #FFF; background-color: #FA6775;padding: 0px 7px;font-size:15px;cursor: pointer; font-weight: bold;
+	color: #FFF; background-color: #FA6775;padding: 0px 6px;font-size:14px;cursor: pointer; font-weight: bold;
 } 
 .plus{
-	color: #FFF; background-color: #2d4161de;padding: 0px 7px;font-size:15px;cursor: pointer;font-weight: bold;
+	color: #FFF; background-color: #2d4161de;padding: 0px 6px;font-size:14px;cursor: pointer;font-weight: bold;
 }
 .minusOld{
 	color: #FFF; background-color: #FA6775;padding: 0px 7px;font-size:15px;cursor: pointer; font-weight: bold;
@@ -103,16 +103,16 @@ $order=$pass[1];
 									<td style="padding-bottom: 5px; border-bottom: solid 1px #CCC;height: 300px;" valign="top">
 										<table width="100%">
 											<tr>
-												<td width="5%">
-													<button type="button" class="btn default" style="" id="slideLeft" currentpage="0">  <i class="fa fa-chevron-left" style="color: #2d4161;"></i> </button>
+												<td>
+													<button type="button" style=" width: 15px; height: 100px; " id="slideLeft" currentpage="0">  <i class="fa fa-chevron-left" style="color: #2d4161;margin: -3px;font-size: 10px;"></i> </button>
 												</td>
-												<td width="90%">
+												<td>
 													<div style="max-height:375px; height:375px;" id="ItemArea" >
 														
 													</div>	
 												</td>
-												<td width="5%">
-													<button type="button" class="btn default" style="" id="slideRight" currentpage="1">  <i class="fa fa-chevron-right" style="color: #2d4161;"></i> </button>
+												<td>
+													<button type="button" style=" width: 15px; height: 100px; " id="slideRight" currentpage="1">  <i class="fa fa-chevron-right" style="color: #2d4161;margin: -3px;font-size: 10px;"></i> </button>
 												</td>
 											</tr>
 										</table>
@@ -218,15 +218,15 @@ $order=$pass[1];
 							</div>
 							<div style="max-height:280px; height:280px; overflow-y:scroll;">
 								<div style="padding-top:12px" >
-									<table class="table table-striped" id="kotBox" style=" margin: 0; ">
+									<table class="table table-striped table-bordered" id="kotBox" style="margin: 0;font-size: 12px;">
 										<thead>
 											<tr>
 												<td style="text-align:center;width: 5%;">S.No.</td>
 												<td style="">Name</td>
 												<td style="text-align:center;width:55px;">Quantity</td>
 												<td style="text-align:center;">Rate</td>
-												<td style="text-align:center;">Amount</td>
-												<td style="text-align:center;">Comment</td>
+												<td style="text-align:center;">Amt</td>
+												<td style="text-align:center;">Cmt</td>
 												<td></td>
 											</tr>
 										</thead>
@@ -238,7 +238,7 @@ $order=$pass[1];
 									<div align="center" style="margin-top: 10px;">
 										<textarea id="oneComment" style="display: none;"></textarea>
 										<a href="javascript:void(0)" class="KOTComment btn default btn-sm" >KOT COMMENT</a>
-										<a href="javascript:void(0)"  class="CreateKOT btn btn-danger btn-sm" >CREATE KOT </a>
+										<a href="javascript:void(0)"  class="CreateKOT btn btn-danger btn-sm" >CREATE KOT (F3) </a>
 									</div>
 								</div>
 								
@@ -451,7 +451,7 @@ $order=$pass[1];
 											<tr>
 												<td colspan="2">
 													<div style="padding-top:20px;width:100%"  align="center">
-														<a href="javascript:void()" class="CreateBill btn blue-hoki " align="center"><i class="fa fa-rupee "></i> GENERATE BILL </a>
+														<a href="javascript:void()" class="CreateBill btn blue-hoki " align="center"><i class="fa fa-rupee "></i> GENERATE BILL (F2) </a>
 														</br></br> 
 													</div>
 												</td>
@@ -616,6 +616,7 @@ $order=$pass[1];
 	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-dropdowns.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
 
 	<?php echo $this->Html->script('/js/mobile1.4.5.min.js', ['block' => 'MOBILE_JS']); ?>
+	<?php echo $this->Html->script('/js/shortcut.js', ['block' => 'MOBILE_JS']); ?>
 	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL SCRIPTS -->
 <?php echo $this->Html->css('/assets/animate.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
@@ -747,6 +748,15 @@ $order=$pass[1];
 			$('#all_kot_data').html(response);
 		});
 
+		shortcut.add('F2', function() {
+		    $('.CreateBill').trigger('click');
+		});
+
+		shortcut.add('F3', function() {
+		    $('.CreateKOT').trigger('click');
+		});
+
+
 		
 		//--
 		$('.plus').die().live('click',function(event){
@@ -796,7 +806,7 @@ $order=$pass[1];
 			var rate=$(this).attr('rate');
 			var c=$('#kotBox tbody tr').length;
 			c=c+1;
-			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> 1 </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+			$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> 1 </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #ff0000; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 			amountcals();
 		});
 
@@ -882,7 +892,7 @@ $order=$pass[1];
 					
 					var c=$('#kotBox tbody tr').length;
 					c=c+1; 
-					$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+					$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #ff0000; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 					amountcals();
 				}
 
@@ -915,7 +925,7 @@ $order=$pass[1];
 				
 				var c=$('#kotBox tbody tr').length;
 				c=c+1; 
-				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i></td></tr>');
+				$('#kotBox').append('<tr row_no='+c+'><td style=text-align:center;>'+c+'</td><td item_id='+item_id+'>'+item_name+'</td><td style=text-align:center;><span class=\"minus\">-</span><span class=\"qty\"> '+Qty+' </span><span class=\"plus\">+</span></td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;>'+rate+'</td><td style=text-align:center;><i class=\"fa fa-ellipsis-h commentRow\" style=\"color: #BDBFC1; font-size: 18px; cursor: pointer;\"></i><textarea style=\"display:none;\" class=\"comment\"></textarea></td><td style=text-align:center;><i class=\"fa fa-trash-o removeRow\" style=\"color: #ff0000; font-size: 18px; cursor: pointer;\"></i></td></tr>');
 				amountcals();
 			}
 

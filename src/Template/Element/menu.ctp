@@ -110,7 +110,7 @@ if(!empty(count(array_intersect($userPages, $target)))){
 				echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Employee Master</span>', '/Employees/index',['escape' => false, 'class' => 'showLoader']).'</li>';
 			}
 			if (in_array("28", $userPages)){
-				echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Permissions</span>', '/UserRights/add',['escape' => false, 'class' => 'showLoader']).'</li>';
+				echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Permissions</span>', '/UserRights',['escape' => false, 'class' => 'showLoader']).'</li>';
 			}
 			if (in_array("23", $userPages)){
 				echo '<li>'.$this->Html->link('<span style="margin-left: 15px;">Designations</span>', '/Designations/add',['escape' => false, 'class' => 'showLoader']).'</li>';

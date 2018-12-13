@@ -27,13 +27,22 @@ class AttendancesController extends AppController
     public function view($id = null)
     {
 		$this->viewBuilder()->layout('admin');
+
+        $session_employee_id=$this->Auth->User('employee.id');
+        $session_employee=$this->Attendances->Employees->get($session_employee_id, [
+            'contain' => ['Designations']
+        ]);
+
         $month = $this->request->query('month');
         $month1 = explode('-', $month);
 
         $firstDate = $month1[1].'-'.$month1[0].'-1';
         $lastDate = date("Y-m-t", strtotime($firstDate));
 
-        $Employees=$this->Attendances->Employees->find()->where(['is_deleted'=>0])->order(['Employees.name'=>'ASC']);
+        $Employees=$this->Attendances->Employees->find()
+                        ->where(['is_deleted'=>0,'delete_month IS NULL','delete_year IS NULL' ])
+                        ->orWhere(['is_deleted'=>1,'delete_month >='=>$month1[0],'delete_year >='=>$month1[1] ])
+                        ->order(['Employees.name'=>'ASC']);
 
         $Attendances = $this->Attendances->find()->where(['attendance_date >=' => $firstDate, 'attendance_date <=' => $lastDate]);
 
@@ -42,7 +51,7 @@ class AttendancesController extends AppController
             $data[$Attendance->employee_id][strtotime($Attendance->attendance_date)] = $Attendance->attendance_status;
         }
 
-        $this->set(compact('month','month1','Employees','data'));
+        $this->set(compact('month','month1','Employees','data', 'session_employee'));
     }
 
     public function autosave(){
